@@ -11,6 +11,18 @@
 | النظام (تطبيق الويب) | https://script.google.com/macros/s/AKfycbyOlWoG2qxREQoahc9sTmXgelljI3C15_j6NAaNEb3CkXp6uEEelcSxfqEX0kcsWYQqUw/exec |
 | مشروع Apps Script | https://script.google.com/home/projects/1r6FuCZ7UOKhRxDBWlEwxnmwbTfi4JjUV4MnFuc1Rx2DYGhgDRueBKlPb/edit |
 
+## النسخة HTML المستقلة
+
+الملف [`index.html`](index.html) نسخة كاملة من النظام في ملف واحد، تعمل بفتحه في أي متصفح دون Google ودون إنترنت (عدا الخطوط). تشغّل شيفرة الخادم نفسها (`Code.gs`) داخل المتصفح، وتحفظ البيانات في المتصفح فقط، وتأتي ببيانات وحسابات تجريبية:
+
+| اسم المستخدم | كلمة المرور | الدور |
+| --- | --- | --- |
+| zubair | Demo2026 | مسؤول النظام |
+| sara | Sara2026 | مساهم (التبرعات والكفالات) |
+| view | View2026 | مشاهد |
+
+للتجربة والعرض والتدريب فقط؛ التشغيل الفعلي على رابط Apps Script أعلاه. يُعاد بناؤها بعد أي تعديل في `src/` بالأمر `node tools/build-demo.js`.
+
 ## ما الذي يقدمه
 
 - **بوابة دخول** بأسماء مستخدمين وكلمات مرور مشفّرة، مع قفل مؤقت بعد 5 محاولات خاطئة، وتغيير إجباري لكلمة المرور المؤقتة، وخيار «تذكرني».
