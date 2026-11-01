@@ -4,6 +4,13 @@
 
 > الإصدار 3.0.1 · نوفمبر 2026 · المشرف العام على النظام: د.م. زبير الفضل
 
+## الروابط
+
+| | |
+| --- | --- |
+| النظام (تطبيق الويب) | https://script.google.com/macros/s/AKfycbyOlWoG2qxREQoahc9sTmXgelljI3C15_j6NAaNEb3CkXp6uEEelcSxfqEX0kcsWYQqUw/exec |
+| مشروع Apps Script | https://script.google.com/home/projects/1r6FuCZ7UOKhRxDBWlEwxnmwbTfi4JjUV4MnFuc1Rx2DYGhgDRueBKlPb/edit |
+
 ## ما الذي يقدمه
 
 - **بوابة دخول** بأسماء مستخدمين وكلمات مرور مشفّرة، مع قفل مؤقت بعد 5 محاولات خاطئة، وتغيير إجباري لكلمة المرور المؤقتة، وخيار «تذكرني».
