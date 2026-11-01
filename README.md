@@ -9,11 +9,12 @@
 | | |
 | --- | --- |
 | النظام (تطبيق الويب) | https://script.google.com/macros/s/AKfycbyOlWoG2qxREQoahc9sTmXgelljI3C15_j6NAaNEb3CkXp6uEEelcSxfqEX0kcsWYQqUw/exec |
+| النسخة HTML (GitHub Pages) | https://benmakkh-crypto.github.io/doctor-system/ |
 | مشروع Apps Script | https://script.google.com/home/projects/1r6FuCZ7UOKhRxDBWlEwxnmwbTfi4JjUV4MnFuc1Rx2DYGhgDRueBKlPb/edit |
 
 ## النسخة HTML المستقلة
 
-الملف [`index.html`](index.html) نسخة كاملة من النظام في ملف واحد، تعمل بفتحه في أي متصفح دون Google ودون إنترنت (عدا الخطوط). تشغّل شيفرة الخادم نفسها (`Code.gs`) داخل المتصفح، وتحفظ البيانات في المتصفح فقط، وتأتي ببيانات وحسابات تجريبية:
+الملف [`index.html`](index.html)، ومنشور على https://benmakkh-crypto.github.io/doctor-system/ ، نسخة كاملة من النظام في ملف واحد، تعمل بفتحه في أي متصفح دون Google ودون إنترنت (عدا الخطوط). تشغّل شيفرة الخادم نفسها (`Code.gs`) داخل المتصفح، وتحفظ البيانات في المتصفح فقط، وتأتي ببيانات وحسابات تجريبية:
 
 | اسم المستخدم | كلمة المرور | الدور |
 | --- | --- | --- |
