@@ -6,7 +6,7 @@ const OUT = __dirname + "/shots/"; fs.mkdirSync(OUT, { recursive: true });
   const g = makeGas(), A = g.__api;
   const pw = /المؤقتة: (\S+)/.exec(A.setup())[1];
   // seed: change admin pw + samples so the app opens in a working state
-  let T = A.login("admin", pw, false).data.token;
+  let T = A.login("zubair", pw, false).data.token;
   A.api(T, "changePassword", { current: pw, next: "Admin2026pass" });
   A.api(T, "addSamples");
   A.api(T, "saveSettings", { orgName: "جمعية البر الخيرية (تجربة)", threshold: 5000, sod: false, notify: true });
@@ -37,7 +37,7 @@ const OUT = __dirname + "/shots/"; fs.mkdirSync(OUT, { recursive: true });
   }
   const p = await page(1360, 860);
   await p.screenshot({ path: OUT + "01-login.png" });
-  await p.fill("#lgUser", "admin"); await p.fill("#lgPass", "wrong-pass1"); await p.click("#lgBtn");
+  await p.fill("#lgUser", "zubair"); await p.fill("#lgPass", "wrong-pass1"); await p.click("#lgBtn");
   await p.waitForSelector("#lgMsg:not([hidden])"); await p.waitForTimeout(500);
   console.log("wrong pw msg:", await p.textContent("#lgMsg"));
   await p.fill("#lgPass", "Admin2026pass"); await p.click("#lgBtn");

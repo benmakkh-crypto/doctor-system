@@ -10,8 +10,8 @@ ok(adminPw.length >= 12, "temp password generated");
 ok(A.getPublicConfig().ready, "ready after setup");
 
 // --- login & forced change
-ok(!A.login("admin", "wrong", false).ok, "wrong password rejected");
-let r = A.login("ADMIN ", adminPw, false); ok(r.ok && r.data.mustChange, "login (case-insensitive) with mustChange");
+ok(!A.login("zubair", "wrong", false).ok, "wrong password rejected");
+let r = A.login("ZUBAIR ", adminPw, false); ok(r.ok && r.data.mustChange, "login (case-insensitive) with mustChange");
 let T = r.data.token;
 ok(A.api(T, "bootstrap").code === "MUST_CHANGE", "bootstrap blocked until password change");
 ok(A.api(T, "changePassword", { current: adminPw, next: "short" }).code === "VALIDATION", "policy enforced");
@@ -23,7 +23,7 @@ let u = A.api(T, "saveUser", { username: "sara", name: "سارة المحصلة"
 ok(u.ok && u.data.password, "contributor created with temp password");
 const v = A.api(T, "saveUser", { username: "view", name: "مراجع", role: "viewer", depts: [] });
 ok(A.api(T, "saveUser", { username: "Bad Name", name: "x", role: "viewer" }).code === "VALIDATION", "username format enforced");
-ok(A.api(T, "saveUser", { username: "admin", name: "x", role: "viewer" }).code === "VALIDATION", "cannot demote self");
+ok(A.api(T, "saveUser", { username: "zubair", name: "x", role: "viewer" }).code === "VALIDATION", "cannot demote self");
 
 // --- samples & numbering
 ok(A.api(T, "addSamples").data.count === 9, "samples added");
@@ -45,7 +45,7 @@ ok(A.api(ST, "create", { g: 6, m: 6, title: "مكرر", date: today, f: { donor:
 ok(A.api(ST, "create", { g: 6, m: 6, title: "x", date: today, f: { donor: "س", amount: 5, phone: "123" } }).field === "phone", "phone validated server-side");
 ok(A.api(ST, "create", { g: 6, m: 6, title: "x", date: today, f: { donor: "س", amount: 5, method: "بيتكوين" } }).field === "method", "select validated server-side");
 let ap = A.api(T, "status", { id: big, status: "مكتمل" });
-ok(ap.ok && ap.data.decision && ap.data.decision.by === "admin", "admin approval recorded as decision");
+ok(ap.ok && ap.data.decision && ap.data.decision.by === "zubair", "admin approval recorded as decision");
 ok(g.__mails.some(m => m.to === "sara@example.org"), "creator notified by email");
 let up = A.api(ST, "update", { id: big, g: 6, m: 6, title: "تبرع كبير", date: today, f: { donor: "مؤسسة س", amount: 15000, receipt: "RC-1" } });
 ok(up.ok && up.data.record.status === "بانتظار الاعتماد" && !up.data.decision, "changing approved amount returns it to pending");
@@ -63,7 +63,7 @@ ok(A.api(T, "status", { id: mine.id, status: "مكتمل" }).code === "FORBIDDEN
 ok(A.getPublicConfig().orgName === "جمعية تجربة", "org name public");
 
 // --- routing, escalation, notes, delete
-ok(A.api(ST, "route", { id: big, to: "admin", note: "راجع" }).data.record.to === "admin", "routed");
+ok(A.api(ST, "route", { id: big, to: "zubair", note: "راجع" }).data.record.to === "zubair", "routed");
 ok(A.api(ST, "escalate", { id: big, level: 2, note: "عاجل" }).data.record.pri === 2, "escalated");
 ok(A.api(ST, "note", { id: big, text: "تم الاتصال" }).data.record.hist[0].a === "ملاحظة متابعة", "note in history");
 ok(A.api(ST, "remove", { id: big }).data.record.deleted === true, "soft delete");

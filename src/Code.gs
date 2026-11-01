@@ -8,7 +8,9 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '3.0.0';
+const APP_VERSION = '3.0.1';
+/** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
+const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
   users: 'المستخدمون',
   records: 'المعاملات',
@@ -53,7 +55,9 @@ function getPublicConfig() {
   const ready = !!PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
   let org = '';
   if (ready) { try { org = getSettings_().orgName || ''; } catch (e) { org = ''; } }
-  return { ready: ready, orgName: org, version: APP_VERSION };
+  let sup = FIRST_ADMIN.name;
+  if (ready) { try { sup = getSettings_().supervisor || sup; } catch (e) { } }
+  return { ready: ready, orgName: org, supervisor: sup, version: APP_VERSION };
 }
 
 /* =====================================================================
@@ -101,6 +105,7 @@ function setup() {
     putSetting_('orgName', '');
     putSetting_('notify', true);
   }
+  if (!getSettings_().supervisor) putSetting_('supervisor', FIRST_ADMIN.name);
 
   ScriptApp.getProjectTriggers().forEach(function (t) {
     if (t.getHandlerFunction() === 'dailyBackup') ScriptApp.deleteTrigger(t);
@@ -111,22 +116,22 @@ function setup() {
   let msg = 'الجدول: ' + ss.getUrl();
   if (!users.rows.length) {
     const pw = tempPassword_();
-    addUser_({ username: 'admin', name: 'مسؤول النظام', email: Session.getEffectiveUser().getEmail(), role: 'admin', depts: '', password: pw, mustChange: true });
-    msg += '\nاسم المستخدم: admin\nكلمة المرور المؤقتة: ' + pw + '\n(سيُطلب تغييرها عند أول دخول)';
+    addUser_({ username: FIRST_ADMIN.username, name: FIRST_ADMIN.name, email: FIRST_ADMIN.email, role: 'admin', depts: '', password: pw, mustChange: true });
+    msg += '\nالمشرف العام: ' + FIRST_ADMIN.name + '\nاسم المستخدم: ' + FIRST_ADMIN.username + '\nكلمة المرور المؤقتة: ' + pw + '\n(سيُطلب تغييرها عند أول دخول)';
   }
   bumpRev_();
   Logger.log(msg);
   return msg;
 }
 
-/** يعيد تعيين كلمة مرور المسؤول الأول إن فُقدت. شغّلها من المحرر فقط. */
+/** يعيد تعيين كلمة مرور المشرف العام إن فُقدت. شغّلها من المحرر فقط. */
 function resetAdminPassword() {
   const pw = tempPassword_();
-  const u = findUser_('admin');
-  if (!u) throw new Error('لا يوجد مستخدم admin. شغّل setup() أولًا.');
+  const u = findUser_(FIRST_ADMIN.username) || findUser_('admin');
+  if (!u) throw new Error('لا يوجد حساب للمشرف العام. شغّل setup() أولًا.');
   setPassword_(u, pw, true);
   setUserCells_(u._row, { active: true, failed: 0, lockedUntil: '' });
-  Logger.log('كلمة المرور المؤقتة الجديدة للمستخدم admin: ' + pw);
+  Logger.log('كلمة المرور المؤقتة الجديدة للمستخدم ' + u.username + ': ' + pw);
 }
 
 /* =====================================================================
