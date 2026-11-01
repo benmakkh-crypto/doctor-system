@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '3.0.1';
+const APP_VERSION = '3.0.2';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -47,7 +47,9 @@ const HIST_MAX = 60;
 function doGet() {
   return HtmlService.createHtmlOutputFromFile('Index')
     .setTitle('نظام الدكتور')
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    // يسمح بفتح النظام داخل إطار (لوحة المتصفح المدمجة في التطبيقات، أو Google Sites)؛ بدونه تظهر صفحة بيضاء.
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 /** معلومات عامة لشاشة الدخول (لا تتطلب جلسة). */
