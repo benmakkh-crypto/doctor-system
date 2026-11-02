@@ -1435,6 +1435,38 @@ td.pc small{display:block;font-size:10.5px;color:var(--muted)}
 .ibdec b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ibdec small{font-size:11px;color:var(--muted)}
 @media (max-width:900px){.ibc{grid-template-columns:1fr}.iba{justify-content:flex-start}.ibs4{grid-template-columns:1fr 1fr}.ibdec>div{grid-template-columns:1fr}}
 @media (max-width:760px){.ibhero{grid-template-columns:1fr}.ibhero .fcring{justify-self:center}}
+
+/* ================= الوصول السريع ================= */
+.qx{position:relative;padding:18px;border-radius:22px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
+.qx::before{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='none' stroke='%23c9a227' stroke-opacity='.10'%3E%3Crect x='14' y='14' width='28' height='28'/%3E%3Crect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.qx>*{position:relative}
+.qx>header{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.qxh{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;color:#3b2a06;background:linear-gradient(145deg,#f6dc98,var(--gold,#deb24e));box-shadow:0 6px 14px rgba(222,178,78,.35)}.qxh svg{width:22px;height:22px}
+.qx>header>div{flex:1;min-width:200px}.qx h3{margin:0;font-size:18px;font-family:var(--f-display);color:var(--brand)}.qx>header small{color:var(--muted);font-size:12px}
+.qx .opq{min-width:220px;flex:0 1 280px}
+.qxg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;align-items:start}
+.qxc{position:relative;display:grid;justify-items:center;align-content:start;gap:4px;padding:16px 10px 14px;border-radius:18px;text-align:center;text-decoration:none!important;color:var(--ink)!important;font:inherit;cursor:pointer;
+ background:linear-gradient(170deg,color-mix(in srgb,var(--qc) 9%,var(--surface)),var(--surface) 65%);border:1px solid color-mix(in srgb,var(--qc) 20%,var(--line));overflow:hidden;
+ transition:transform .3s cubic-bezier(.3,.7,.3,1.3),box-shadow .3s,border-color .3s;animation:qxin .5s both;animation-delay:var(--d)}
+@keyframes qxin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.qxc::after{content:"";position:absolute;inset:auto -30% -60% -30%;height:80%;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--qc) 16%,transparent),transparent);opacity:0;transition:opacity .3s}
+.qxc:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--qc) 55%,transparent);box-shadow:0 16px 32px color-mix(in srgb,var(--qc) 22%,transparent)}
+.qxc:hover::after{opacity:1}
+.qxs{position:relative;width:78px;height:78px;margin-bottom:4px}
+.qxs svg{width:100%;height:100%;transition:transform .7s cubic-bezier(.3,.7,.3,1)}
+.qxs .o{fill:color-mix(in srgb,var(--qc) 12%,var(--surface));stroke:var(--qc);stroke-width:1.4}.qxs .i{fill:none;stroke:var(--qc);stroke-width:.7;stroke-dasharray:2 3;opacity:.6}
+.qxc:hover .qxs svg{transform:rotate(45deg) scale(1.05)}
+.qxs>span{position:absolute;inset:17px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,color-mix(in srgb,var(--qc),#fff 22%),var(--qc));box-shadow:0 6px 14px color-mix(in srgb,var(--qc) 40%,transparent);transition:transform .3s}
+.qxs>span svg{width:22px;height:22px}.qxc:hover .qxs>span{transform:scale(1.08)}
+.qxs em{position:absolute;top:-2px;inset-inline-end:-6px;min-width:24px;height:24px;padding:0 6px;border-radius:999px;display:grid;place-items:center;font-style:normal;font-size:11.5px;font-weight:800;color:#fff;background:var(--qc);box-shadow:0 0 0 2px var(--surface)}
+.qxc b{font-size:14px;line-height:1.4}.qxc>small{font-size:11.5px;color:var(--muted)}
+.qxt{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin-top:4px;max-height:0;opacity:0;overflow:hidden;transition:max-height .35s,opacity .3s}
+.qxc:hover .qxt,.qxc:focus-visible .qxt{max-height:110px;opacity:1}
+.qxt i{font-style:normal;font-size:10.5px;padding:1px 7px;border-radius:999px;color:var(--qc);background:color-mix(in srgb,var(--qc) 10%,transparent)}
+.qxa{position:absolute;top:10px;inset-inline-start:10px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;color:var(--qc);background:color-mix(in srgb,var(--qc) 10%,transparent);opacity:0;transform:translateX(6px);transition:opacity .25s,transform .25s}
+.qxa svg{width:12px;height:12px;transform:rotate(90deg)}.qxc:hover .qxa{opacity:1;transform:none}
+@media (max-width:640px){.qxg{grid-template-columns:repeat(2,minmax(0,1fr))}.qxs{width:64px;height:64px}.qxs>span{inset:14px}}
+@media (prefers-reduced-motion:reduce){.qxc{animation:none}}
 </style>
 <!-- نسخة تجريبية مستقلة: تُبنى آليًا من src/ بالأمر node tools/build-demo.js. لا تعدّلها يدويًا. -->
 <script>/*
@@ -2897,6 +2929,7 @@ function viewOrgs(){
    ${L.map(o=>`<tr><td><input type="checkbox" data-osel="${esc(o.id)}" ${sel.has(o.id)?"checked":""}></td><td class="t">${esc(o.name)}<span class="code">${esc(o.code)}</span></td><td>${esc(o.type||"—")}</td><td>${esc(o.city||"—")}</td><td>${esc(o.manager||"—")}</td><td class="num">${o.stats.users}</td><td class="num">${o.stats.records}</td><td class="num">${o.stats.open}</td><td class="num">${o.stats.late}</td><td class="num">${money(o.stats.donations)}</td><td class="num">${o.stats.lastActivity?ago(o.stats.lastActivity):"—"}</td><td><span class="badge tone-${o.status==="active"?"good":"bad"}">${o.status==="active"?"نشطة":"موقوفة"}</span></td><td><span class="flow"><button class="btn sm pri" data-setorg="${esc(o.id)}">${ro?"اطلاع":"دخول"}</button><button class="btn sm" data-oprof="${esc(o.id)}">الملف</button>${ro?"":`<button class="btn sm" data-oedit="${esc(o.id)}">تعديل</button>`}</span></td></tr>`).join("")}</tbody></table></div>`;
   const W=[
    {id:"o-pick",title:"اختر مؤسسة للاطلاع",span:12,html:orgPickHTML(O)},
+   {id:"o-quick",title:"الوصول السريع للكشاف",span:12,html:orgQuick(!S.platform)},
    {id:"o-kpis",title:"مؤشرات المنصة",span:12,html:`<div class="kgrid okgrid">${[["المؤسسات",O.length,"#0e7a5f","building"],["النشطة",O.filter(o=>o.status==="active").length,"#1f8a4c","check"],["الموقوفة",O.filter(o=>o.status!=="active").length,"#cf3f3f","xcircle"],["المستخدمون",sum("users"),"#3157b8","people"],["المعاملات",sum("records"),"#6d3fc0","list"],["المفتوحة",sum("open"),"#d9702a","spin"],["المتأخرة",sum("late"),"#cf3f3f","alert"],["التبرعات هذا العام",sum("donations"),"#b98a14","coins",1]].map(([l,v,c,i,m])=>`<div class="kt" style="--t:${c}"><span class="ki">${ico(i)}</span><small>${l}</small><b>${m?NFc.format(v):NF.format(v)}${m?" <i>ر.س</i>":""}</b></div>`).join("")}</div>`},
    {id:"o-region",title:"المؤسسات حسب المنطقة",span:6,html:chartCard("o-region","المؤسسات حسب المنطقة","توزيع جغرافي","visit","#0e7a5f",byCount("region",O),{type:"hbar",pal:"brand"})},
    {id:"o-type",title:"المؤسسات حسب النوع",span:6,html:chartCard("o-type","المؤسسات حسب نوع الكيان","","building","#6d3fc0",byCount("type",O),{type:"rosette",pal:"islamic"})},
@@ -3377,9 +3410,28 @@ function homeReport(A){
     {type:"table",title:"المعاملات حسب الحالة",head:["الحالة","العدد","النسبة"],rows:STATUSES.map(s=>{const c=A.filter(r=>eff(r)===s.n).length;return[s.n,c,(A.length?Math.round(c/A.length*100):0)+"%"]})},
     {type:"table",title:"المعاملات المتأخرة",head:["الرقم","المعاملة","الإدارة","الاستحقاق","المسؤول"],rows:late.map(r=>[r.no||"",r.title,G[r.g]?.n||"",r.due||"",whoFor(r)])}]};
 }
+/** شبكة وصول سريع زخرفية: عناصر {href|qx, icon, title, sub, color, n, tags} */
+function qxGrid(title,sub,items,id){const q=(ui["qx"+id]||"").trim();const L=items.filter(x=>!q||(x.title+" "+(x.sub||"")+" "+(x.tags||[]).join(" ")).includes(q));
+  return `<section class="qx"><header><span class="qxh">${ico("grid")}</span><div><h3>${title}</h3><small>${sub}</small></div>${items.length>8?`<label class="opq">${ico("search")}<input data-qxq="${id}" id="qxq-${id}" type="search" placeholder="ابحث…" value="${esc(q)}" autocomplete="off"></label>`:""}</header>
+   <div class="qxg">${L.map((x,k)=>{const tag=x.qx?"button":"a";const at=x.qx?`type="button" data-qx="${esc(x.qx)}"`:`href="${esc(x.href)}"`;
+     return `<${tag} class="qxc" ${at} style="--qc:${x.color};--d:${k*35}ms"><span class="qxs"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="${star8(50,50,47,.8)}" class="o"/><path d="${star8(50,50,39,.8)}" class="i"/></svg><span>${ico(x.icon)}</span>${x.n?`<em>${NF.format(x.n)}</em>`:""}</span>
+      <b>${esc(x.title)}</b><small>${esc(x.sub||"")}</small>${x.tags&&x.tags.length?`<span class="qxt">${x.tags.slice(0,3).map(t=>`<i>${esc(t)}</i>`).join("")}</span>`:""}<span class="qxa">${ico("chev")}</span></${tag}>`}).join("")||`<div class="empty-s">لا نتائج.</div>`}</div></section>`}
 function quickAccess(){
-  return `<section class="qacc"><h3>قائمة الوصول السريع</h3><div class="qg">${ORDER.map(i=>{const g=G[i];return !shownDept(i)?"":`<a href="#g${i}" style="${dc(i)}"><span class="qi">${ico(g.ic||g.c)}<i></i></span><b>${esc(g.n)}</b><small>${nMod(g.items.length)}</small></a>`}).join("")}</div></section>`;
+  const A=active();
+  const items=ORDER.filter(i=>shownDept(i)).map(i=>{const g=G[i];const secs=secsOf(i);return {href:"#g"+i,icon:g.ic||g.c,title:g.n,sub:`${secs.length} ${secs.length>2&&secs.length<11?"عناوين":"عنوان"} · ${nMod(g.items.length)}`,color:g.col||"#0e7a5f",n:i?A.filter(r=>r.g===i&&isOpen(r)).length:0,tags:secs.map(x=>x[0])}});
+  return qxGrid("قائمة الوصول السريع","كل الإدارات بعناوينها، والرقم على النجمة عدد المعاملات المفتوحة",items,"home");
 }
+function orgQuick(ro){
+  const L=[];
+  if(!ro)L.push({qx:"[data-onew]",icon:"building",title:"مؤسسة جديدة",sub:"بياناتها وحساب مسؤولها",color:"#0e7a5f"},{qx:"[data-oimport]",icon:"down",title:"استيراد من Excel",sub:"عشرات المؤسسات دفعة واحدة",color:"#2f6fd8"},{qx:"[data-otpl]",icon:"doc",title:"نموذج الاستيراد",sub:"كل الأعمدة والقيم المسموحة",color:"#5b4bc4"});
+  L.push({qx:"#opq",icon:"search",title:"ابحث عن مؤسسة",sub:"بالاسم أو الرمز أو المدينة",color:"#1f8f86"},
+    {qx:'[data-rep="orgs"][data-fmt="print"]',icon:"doc",title:"طباعة الكشاف",sub:"تقرير رسمي بكل المؤسسات",color:"#8a5a2b"},
+    {qx:'[data-rep="orgs"][data-fmt="xlsx"]',icon:"grid",title:"تصدير Excel",sub:"بيانات المؤسسات وإحصاءاتها",color:"#2e7d4f"},
+    {qx:'[data-oview="table"]',icon:"list",title:"عرض جدول",sub:"كل المؤسسات في جدول واحد",color:"#3d6b9a"});
+  if(S.platform)L.push({href:"#users",icon:"users",title:"المستخدمون",sub:"الحسابات وكلمات المرور",color:"#c2334d"},{href:"#audit",icon:"audit",title:"سجل التدقيق",sub:"كل العمليات على المنصة",color:"#4a6a8a"});
+  return qxGrid("الوصول السريع للكشاف","أهم أعمال المنصة بضغطة واحدة",L,"orgs");
+}
+
 function viewHome(){
   const A=active().filter(r=>canDept(r.g));const open=A.filter(isOpen);
   const pend=A.filter(r=>eff(r)==="بانتظار الاعتماد"),late=A.filter(isLate);
@@ -3743,6 +3795,8 @@ function bindMain(){
   main.querySelectorAll("[data-pg]").forEach(b=>b.onclick=()=>{ui.page+=+b.dataset.pg;render();window.scrollTo(0,0)});
   main.querySelectorAll("[data-export]").forEach(b=>b.onclick=()=>exportCSV(filtered(curList),curCols));
   main.querySelectorAll("[data-inf]").forEach(b=>b.onclick=()=>{ui.inf=b.dataset.inf;render()});
+  main.querySelectorAll("[data-qx]").forEach(b=>b.onclick=()=>{const t=main.querySelector(b.dataset.qx);if(!t){toast("هذا الإجراء غير متاح هنا.");return}if(t.tagName==="INPUT"){t.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>t.focus(),300)}else t.click()});
+  main.querySelectorAll("[data-qxq]").forEach(i=>i.oninput=()=>{ui["qx"+i.dataset.qxq]=i.value;render()});
   main.querySelectorAll("[data-flmore]").forEach(b=>b.onclick=e=>{e.stopPropagation();ui["fl"+b.dataset.flmore]=1;render()});
   const fm=main.querySelector("[data-focusmode]");if(fm)fm.onclick=()=>{setFocus(!document.body.classList.contains("focus"));render()};
   main.querySelectorAll("[data-quick]").forEach(b=>b.onclick=e=>{e.stopPropagation();const r=S.recs.find(x=>x.id===b.dataset.quick);if(r)changeStatus(r,b.dataset.st)});
