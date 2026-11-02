@@ -1342,6 +1342,99 @@ td.pc small{display:block;font-size:10.5px;color:var(--muted)}
 .pmx.parts select{min-width:130px}
 @media (max-width:1100px){.thed{grid-template-columns:1fr}.thpv{position:relative;top:0}.thhero{grid-template-columns:1fr}}
 @media (max-width:640px){.thcta{grid-template-columns:1fr auto}.thcta .tpv{display:none}.thcols{grid-template-columns:1fr 1fr}.thfr .thsc{height:60vh}}
+
+/* ================= مهامي والأولويات ================= */
+.fchero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 22px;align-items:center;padding:22px 24px;border-radius:22px;margin-bottom:14px;color:#fff;overflow:hidden;
+ background:radial-gradient(120% 160% at 100% 0%,#e0703a 0%,#a8381f 45%,#5a1a10 100%);box-shadow:0 16px 36px rgba(168,56,31,.28)}
+.fchero::before{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cg fill='none' stroke='%23ffd9a0' stroke-opacity='.16'%3E%3Crect x='16' y='16' width='32' height='32'/%3E%3Crect x='16' y='16' width='32' height='32' transform='rotate(45 32 32)'/%3E%3Ccircle cx='32' cy='32' r='7'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.fchero>*{position:relative}
+.fcm{display:flex;gap:14px;align-items:flex-start;min-width:0}
+.fci{width:58px;height:58px;border-radius:17px;display:grid;place-items:center;flex:none;color:#7a2a12;background:linear-gradient(145deg,#ffe1b8,#f6b25e);box-shadow:0 8px 20px rgba(0,0,0,.25)}.fci svg{width:28px;height:28px}
+.fcm small{color:#ffd9a0;font-weight:700;font-size:11.5px;letter-spacing:.3px}.fcm h1{margin:2px 0;font-size:26px;color:#fff}.fcm p{margin:0 0 10px;color:rgba(255,255,255,.82);font-size:13px}
+.fcbtn{display:inline-flex;gap:6px;align-items:center;border:0;border-radius:999px;padding:7px 14px;font-weight:700;font-size:12.5px;color:#7a2a12;background:#fff;cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,.2);transition:transform .2s}.fcbtn:hover{transform:translateY(-2px)}.fcbtn svg{width:15px;height:15px}
+.fcring{position:relative;width:132px;height:132px;grid-row:span 2}
+.fcring svg{width:100%;height:100%}.fcring circle:last-child{transition:stroke-dasharray .8s}
+.fcring span{position:absolute;inset:0;display:grid;place-content:center;text-align:center;line-height:1.15}.fcring b{font-size:26px;font-weight:800}.fcring small{font-size:10.5px;color:rgba(255,255,255,.8)}
+.fcs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.fcs a{display:grid;grid-template-columns:auto 1fr;column-gap:8px;align-items:center;padding:9px 12px;border-radius:15px;background:rgba(0,0,0,.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);color:#fff!important;text-decoration:none!important;transition:background .2s,transform .2s}
+.fcs a:hover{background:rgba(0,0,0,.3);transform:translateY(-2px)}
+.fcs svg{grid-row:span 2;width:30px;height:30px;padding:6px;border-radius:10px;color:var(--sc);background:rgba(255,255,255,.1)}
+.fcs b{font-size:21px;font-weight:800;line-height:1.1;color:var(--sc)}.fcs small{font-size:11px;color:rgba(255,255,255,.75)}
+.fweek h3,.fmx h3{display:flex;gap:6px;align-items:center}.fweek h3 svg,.fmx h3 svg{width:18px;height:18px;color:var(--accent)}
+.fwd{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.fwd>div{position:relative;display:grid;gap:3px;align-content:start;justify-items:center;padding:10px 6px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);text-align:center;min-width:0}
+.fwd>div.today{background:color-mix(in srgb,#e0703a 10%,var(--surface));border-color:color-mix(in srgb,#e0703a 45%,var(--line))}
+.fwd small{font-size:11px;color:var(--muted)}.fwd b{font-size:20px;font-family:var(--f-display)}
+.fwb{width:10px;height:44px;border-radius:9px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);display:flex;align-items:flex-end;overflow:hidden}.fwb i{width:100%;height:var(--h);background:linear-gradient(0deg,#d9822b,#f6c35a);border-radius:9px;transition:height .6s}
+.fwd em{font-style:normal;font-size:11px;color:var(--muted)}.fwd .has em{color:#b05a10;font-weight:700}
+.fwd button{width:100%;border:0;background:var(--surface);border-radius:7px;padding:2px 5px;font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.flanes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:14px 0}
+.fl{border-radius:20px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;scroll-margin-top:90px}
+.fl header{display:flex;gap:12px;align-items:center;padding:14px 16px;background:linear-gradient(120deg,color-mix(in srgb,var(--lc) 14%,var(--surface)),var(--surface) 70%);border-bottom:1px solid color-mix(in srgb,var(--lc) 20%,var(--line))}
+.fli{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,color-mix(in srgb,var(--lc),#fff 22%),var(--lc));box-shadow:0 6px 14px color-mix(in srgb,var(--lc) 35%,transparent)}.fli svg{width:20px;height:20px}
+.fl header div{flex:1;min-width:0}.fl h3{margin:0;font-size:16px;color:var(--lc)}.fl header small{color:var(--muted);font-size:11.5px}
+.fl header strong{min-width:40px;height:40px;padding:0 8px;border-radius:12px;display:grid;place-items:center;font-size:19px;font-weight:800;color:var(--lc);background:color-mix(in srgb,var(--lc) 10%,var(--surface));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--lc) 30%,transparent)}
+.flb{padding:10px;display:grid;gap:7px}
+.fq{position:relative;display:flex;gap:10px;align-items:center;width:100%;text-align:start;padding:10px 12px 10px 10px;border-radius:13px;border:1px solid var(--line);background:var(--surface);cursor:pointer;color:var(--ink);transition:transform .2s,box-shadow .2s,border-color .2s;overflow:hidden}
+.fq:hover{transform:translateX(-3px);border-color:color-mix(in srgb,var(--gc) 45%,var(--line));box-shadow:0 8px 18px rgba(0,0,0,.07)}
+.fqs{position:absolute;inset-block:0;inset-inline-start:0;width:4px;background:var(--gc)}.fq.p1 .fqs{background:#d9822b}.fq.p2 .fqs{background:#c2334d;width:5px}
+.fqm{flex:1;min-width:0;display:grid;gap:3px}
+.fqm b{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fqm small{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fqm small i{width:8px;height:8px;border-radius:50%;flex:none}.fqm code{font-size:10.5px}
+.fqc{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.fqc em{display:inline-flex;gap:3px;align-items:center;font-style:normal;font-size:11px;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--surface-2);color:var(--muted)}.fqc em svg{width:12px;height:12px}
+.fdue.bad{background:color-mix(in srgb,#c2334d 12%,transparent)!important;color:#b0291f!important}.fdue.warn{background:color-mix(in srgb,#d9822b 14%,transparent)!important;color:#a85a0a!important}
+.fpri.p1{background:color-mix(in srgb,#d9822b 14%,transparent)!important;color:#a85a0a!important}.fpri.p2{background:#c2334d!important;color:#fff!important}
+.famt{color:var(--ink)!important}
+.fqw{width:32px;height:32px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:800;font-size:13px;color:#fff;background:linear-gradient(145deg,color-mix(in srgb,var(--gc),#fff 20%),var(--gc))}
+.flmore{border:1px dashed var(--line);background:transparent;border-radius:11px;padding:7px;font-size:12.5px;color:var(--brand);cursor:pointer}
+.flz{position:relative;display:grid;justify-items:center;gap:2px;padding:16px 8px 18px;text-align:center}
+.flz svg{width:86px;height:86px}.flz>span{position:absolute;top:16px;width:86px;height:86px;display:grid;place-items:center;color:var(--lc)}.flz>span svg{width:30px;height:30px}
+.flz b{font-size:13.5px;margin-top:4px}.flz small{color:var(--muted);font-size:11.5px}
+.fmxg{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:22px 26px 6px 6px}
+.fmxg .ax{position:absolute;font-size:11px;font-weight:700;color:var(--muted);display:flex;gap:4px;align-items:center}.fmxg .ax svg{width:12px;height:12px}
+.fmxg .ax.y{inset-inline-end:-4px;top:50%;writing-mode:vertical-rl}.fmxg .ax.y svg{transform:rotate(180deg)}
+.fmxg .ax.x{top:0;inset-inline-start:30%}.fmxg .ax.x svg{transform:rotate(90deg)}
+.fmc{display:grid;gap:5px;align-content:start;padding:12px;border-radius:15px;background:color-mix(in srgb,var(--mc) 7%,var(--surface));border:1px solid color-mix(in srgb,var(--mc) 28%,var(--line));min-height:120px}
+.fmc header{display:flex;gap:7px;align-items:center}.fmc header svg{width:26px;height:26px;padding:5px;border-radius:8px;color:#fff;background:var(--mc)}
+.fmc header b{flex:1;color:var(--mc);font-size:14px}.fmc header strong{font-size:20px;color:var(--mc)}
+.fmc small{color:var(--muted);font-size:11.5px}
+.fmc button{text-align:start;border:0;background:var(--surface);border-radius:8px;padding:4px 8px;font-size:12px;color:var(--ink);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:inset 0 0 0 1px var(--line)}
+.fmc em{font-style:normal;font-size:11px;color:var(--muted)}
+@media (max-width:1100px){.fcs{grid-template-columns:repeat(3,1fr)}.flanes{grid-template-columns:1fr}}
+@media (max-width:760px){.fchero{grid-template-columns:1fr}.fcring{grid-row:auto;justify-self:center}.fcs{grid-template-columns:1fr 1fr}.fwd{grid-template-columns:repeat(4,1fr)}.fmxg{grid-template-columns:1fr}.fqw{display:none}}
+
+/* ================= صندوق الاعتمادات ================= */
+.ibhero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 22px;align-items:center;padding:22px 24px;border-radius:22px;margin-bottom:14px;color:#fff;overflow:hidden;
+ background:radial-gradient(120% 160% at 100% 0%,#8a6ae0 0%,#4f2f9e 45%,#24124f 100%);box-shadow:0 16px 36px rgba(79,47,158,.3)}
+.ibhero::before{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cg fill='none' stroke='%23e6dcff' stroke-opacity='.16'%3E%3Crect x='16' y='16' width='32' height='32'/%3E%3Crect x='16' y='16' width='32' height='32' transform='rotate(45 32 32)'/%3E%3Ccircle cx='32' cy='32' r='7'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.ibhero>*{position:relative}.ibhero .fcm small{color:#e6dcff}.ibhero mark{background:rgba(255,255,255,.2);color:#fff;border-radius:6px;padding:0 6px;font-weight:800}
+.fci.ib{color:#3a1f7a;background:linear-gradient(145deg,#efe6ff,#b9a0ff)}
+.ibs4{grid-template-columns:repeat(4,minmax(0,1fr))}.ibs4 span{display:grid;grid-template-columns:auto 1fr;column-gap:8px;align-items:center;padding:9px 12px;border-radius:15px;background:rgba(0,0,0,.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.ibs4 svg{grid-row:span 2;width:30px;height:30px;padding:6px;border-radius:10px;color:var(--sc);background:rgba(255,255,255,.1)}.ibs4 b{font-size:18px;font-weight:800;color:var(--sc);line-height:1.15;white-space:nowrap}.ibs4 small{font-size:11px;color:rgba(255,255,255,.75)}
+.ibf small{opacity:.7}
+.iblist{display:grid;gap:10px;margin-bottom:14px}
+.ibc{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 210px auto;gap:16px;align-items:center;padding:14px 16px 14px 14px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);cursor:pointer;overflow:hidden;transition:transform .2s,box-shadow .2s,border-color .2s}
+.ibc:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.09);border-color:color-mix(in srgb,var(--gc) 40%,var(--line))}
+.ibc .ibs{position:absolute;inset-block:0;inset-inline-start:0;width:5px;background:var(--gc)}.ibc.p1 .ibs{background:#d9822b}.ibc.p2 .ibs{background:#c2334d}
+.ibm{display:grid;gap:4px;min-width:0}
+.ibt{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.ibt b{font-size:15px}.ibt code{font-size:11px;background:var(--surface-2);padding:1px 6px;border-radius:6px}
+.ibt em{display:inline-flex;gap:3px;align-items:center;font-style:normal;font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px}.ibt em svg{width:12px;height:12px}
+.ibm>small{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:12px}.ibm>small i{width:8px;height:8px;border-radius:50%}
+.ibmeta{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--muted)}.ibmeta span{display:inline-flex;gap:4px;align-items:center}.ibmeta svg{width:13px;height:13px}.ibmeta .bad{color:#b0291f;font-weight:700}
+.ibv{display:grid;gap:4px;justify-items:start}.ibv b{font-size:18px;font-family:var(--f-display)}.ibv small{font-size:11px;color:var(--muted)}
+.ibbar{width:100%;height:7px;border-radius:9px;background:var(--surface-2);overflow:hidden}.ibbar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#9b86e8,#6a4cb0)}.ibbar.over i{background:linear-gradient(90deg,#f39a7a,#c2334d)}
+.iba{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.iba .btn{display:inline-flex;gap:4px;align-items:center}.iba .btn svg{width:14px;height:14px}
+.ibwhy{display:inline-flex;gap:5px;align-items:center;max-width:220px;font-size:11.5px;color:var(--muted);background:var(--surface-2);padding:5px 10px;border-radius:10px}.ibwhy svg{width:13px;height:13px;flex:none}
+.ibc.ro{opacity:.9}
+.ibempty{display:grid;place-items:center;padding:18px}.ibempty .flz svg{width:110px;height:110px}.ibempty .flz>span{width:110px;height:110px}.ibempty .flz b{font-size:16px}
+.ibdec h3{display:flex;gap:6px;align-items:center}.ibdec h3 svg{width:18px;height:18px;color:var(--accent)}
+.ibdec>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ibdec button{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:center;text-align:start;padding:9px 12px;border-radius:13px;border:1px solid var(--line);background:var(--surface);cursor:pointer;color:var(--ink)}
+.ibdec button span{grid-row:span 2;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:#fff;background:#1d7548}.ibdec button.bad span{background:#c2334d}.ibdec button span svg{width:16px;height:16px}
+.ibdec b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ibdec small{font-size:11px;color:var(--muted)}
+@media (max-width:900px){.ibc{grid-template-columns:1fr}.iba{justify-content:flex-start}.ibs4{grid-template-columns:1fr 1fr}.ibdec>div{grid-template-columns:1fr}}
+@media (max-width:760px){.ibhero{grid-template-columns:1fr}.ibhero .fcring{justify-self:center}}
 </style>
 <!-- نسخة تجريبية مستقلة: تُبنى آليًا من src/ بالأمر node tools/build-demo.js. لا تعدّلها يدويًا. -->
 <script>/*
@@ -3361,15 +3454,43 @@ function viewFocus(){
   const esc2=A.filter(r=>pri(r)>0).sort(sortP);
   const late=A.filter(isLate).sort(sortP);
   const soon=A.filter(r=>r.due&&daysTo(r.due)>=0&&daysTo(r.due)<=7).sort(sortP);
+  const hot=new Set([...mine,...esc2,...late].map(r=>r.id)).size;
+  const load=A.length?Math.round(hot/A.length*100):0;
+  const h=new Date().getHours();const greet=h<5?"طاب ليلك":h<12?"صباح الخير":h<17?"طاب يومك":"مساء الخير";
+  const first=((S.meP&&S.meP.name)||"").split(" ").slice(0,2).join(" ");
+  const C=2*Math.PI*44;const ringC=load>=60?"#ff8a7a":load>=30?"#f6c35a":"#7fe0b9";
+  const dueTxt=r=>{if(!r.due)return "";const d=daysTo(r.due);return d<0?`<em class="fdue bad">${ico("alert")} متأخرة ${NF.format(-d)} ${-d===1?"يوم":-d===2?"يومان":"أيام"}</em>`:d===0?`<em class="fdue warn">${ico("hourglass")} تستحق اليوم</em>`:`<em class="fdue">${ico("cal")} بعد ${NF.format(d)} ${d===1?"يوم":d===2?"يومين":"أيام"}</em>`};
+  const item=r=>{const p=pri(r);const gc=G[r.g]?.col||"#0e7a5f";return `<button class="fq p${p}" data-open="${esc(r.id)}" style="--gc:${gc}"><span class="fqs"></span>
+     <span class="fqm"><b>${esc(r.title)}</b><small><i style="background:${gc}"></i>${esc(G[r.g]?.n||"")} · ${esc(modName(r.g,r.m))}${r.no?` · <code>${esc(r.no)}</code>`:""}</small>
+     <span class="fqc">${p?`<em class="fpri p${p}">${ico("alert")} ${esc(PRI[p]?.n||"")}</em>`:""}${dueTxt(r)}${recSum(r)?`<em class="famt">${money(recSum(r))}</em>`:""}${badge(eff(r))}</span></span>
+     <span class="fqw" title="${esc(whoFor(r))}">${esc(String(whoFor(r)||"—").trim().charAt(0))}</span></button>`};
+  const lane=(k,title,sub,icon,c,L,empty)=>`<section class="fl" style="--lc:${c}" id="fl-${k}"><header><span class="fli">${ico(icon)}</span><div><h3>${title}</h3><small>${sub}</small></div><strong>${NF.format(L.length)}</strong></header>
+     <div class="flb">${L.length?L.slice(0,ui["fl"+k]?999:6).map(item).join("")+(L.length>6&&!ui["fl"+k]?`<button class="flmore" data-flmore="${k}">عرض الكل (${NF.format(L.length)})</button>`:""):`<div class="flz"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="${star8(50,50,44,.8)}" fill="color-mix(in srgb,${c} 10%,transparent)" stroke="${c}" stroke-width="1.5" stroke-dasharray="3 3"/></svg><span>${ico("check")}</span><b>${empty}</b><small>لا شيء يحتاجك هنا الآن.</small></div>`}</div></section>`;
+  // الأيام السبعة القادمة
+  const days=Array.from({length:7},(_,i)=>{const d=new Date(asDate(todayISO()).getTime()+i*864e5);const iso=d.toISOString().slice(0,10);const L=A.filter(r=>r.due===iso);return {d,iso,L}});
+  const mx=Math.max(1,...days.map(x=>x.L.length));
+  const DN=["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+  // مصفوفة الأولويات
+  const q=[[A.filter(r=>pri(r)>0&&(isLate(r)||(r.due&&daysTo(r.due)<=7))),"افعلها الآن","مصعّدة وموعدها قريب أو فات","#c2334d","alert"],
+    [A.filter(r=>pri(r)>0&&!(isLate(r)||(r.due&&daysTo(r.due)<=7))),"خطّط لها","مصعّدة وموعدها بعيد","#6d3fc0","cal"],
+    [A.filter(r=>!pri(r)&&(isLate(r)||(r.due&&daysTo(r.due)<=7))),"أنجزها بسرعة","عادية وموعدها قريب أو فات","#d9822b","hourglass"],
+    [A.filter(r=>!pri(r)&&!(isLate(r)||(r.due&&daysTo(r.due)<=7))),"تابعها لاحقًا","عادية بلا استعجال","#1f8f86","inbox"]];
   return `${crumb([["مهامي والأولويات"]])}
-   <div class="head"><div><h1>مهامي والأولويات</h1><p>كل ما يحتاج تدخلًا الآن، مرتبًا حسب الأولوية ثم الاستحقاق. فعّل «تركيز» من الشريط العلوي لإخفاء القائمة الجانبية.</p></div></div>
-   <div class="grid2">
-    ${!!S.me?`<section class="box"><h3>موجّهة إليك <small>${mine.length}</small></h3>${queue(mine,"لا معاملات موجهة إليك حاليًا.")}</section>`:""}
-    <section class="box"><h3>مصعّدة <small>${esc2.length}</small></h3>${queue(esc2,"لا معاملات مصعّدة.")}</section>
-    <section class="box"><h3>متأخرة <small>${late.length}</small></h3>${queue(late,"لا معاملات متأخرة.")}</section>
-    <section class="box"><h3>تستحق خلال 7 أيام <small>${soon.length}</small></h3>${queue(soon,"لا استحقاقات قريبة.")}</section>
-   </div>`;
+   <section class="fchero"><div class="fcm"><span class="fci">${ico("focus")}</span><div><small>PRIORITIES · ${greet}${first?"، "+esc(first):""}</small><h1>مهامي والأولويات</h1><p>كل ما يحتاج تدخلك الآن، مرتبًا حسب الأولوية ثم موعد الاستحقاق.</p>
+     <button class="fcbtn" data-focusmode>${ico("focus")} ${document.body.classList.contains("focus")?"إنهاء وضع التركيز":"وضع التركيز"}</button></div></div>
+    <div class="fcring" title="نسبة المعاملات المفتوحة التي تحتاج تدخلًا"><svg viewBox="0 0 100 100"><path d="${star8(50,50,49,.84)}" fill="rgba(0,0,0,.18)" stroke="rgba(255,255,255,.15)"/><circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="7"/><circle cx="50" cy="50" r="44" fill="none" stroke="${ringC}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C*load/100} ${C}" transform="rotate(-90 50 50)"/></svg><span><b>${NF.format(load)}٪</b><small>تحتاج تدخلًا</small></span></div>
+    <div class="fcs">${[["المفتوحة",A.length,"#fff","flow"],["موجّهة إليك",mine.length,"#9ec5ff","user"],["مصعّدة",esc2.length,"#ffb0a8","alert"],["متأخرة",late.length,"#ffcf7a","hourglass"],["خلال 7 أيام",soon.length,"#9de8c6","cal"]].map(([l,n,c,ic])=>`<a href="#fl-${{"موجّهة إليك":"mine","مصعّدة":"esc","متأخرة":"late","خلال 7 أيام":"soon"}[l]||"mine"}" style="--sc:${c}">${ico(ic)}<b>${NF.format(n)}</b><small>${l}</small></a>`).join("")}</div></section>
+   <section class="fweek box"><h3>${ico("cal")} الأيام السبعة القادمة <small>ما يستحق في كل يوم</small></h3><div class="fwd">${days.map((x,i)=>`<div class="${i===0?"today":""} ${x.L.length?"has":""}" style="--h:${Math.round(x.L.length/mx*100)}%"><small>${i===0?"اليوم":i===1?"غدًا":DN[x.d.getUTCDay()]}</small><b>${NF.format(x.d.getUTCDate())}</b><span class="fwb"><i></i></span><em>${x.L.length?NF.format(x.L.length)+" "+(x.L.length===1?"معاملة":"معاملات"):"—"}</em>${x.L.slice(0,2).map(r=>`<button data-open="${esc(r.id)}" title="${esc(r.title)}">${esc(r.title)}</button>`).join("")}</div>`).join("")}</div></section>
+   <div class="flanes">
+    ${S.me?lane("mine","موجّهة إليك","أُسندت إليك بالاسم","user","#2f6fd8",mine,"لا معاملات موجّهة إليك"):""}
+    ${lane("esc","مصعّدة","رُفعت أولويتها إلى عاجلة أو حرجة","alert","#c2334d",esc2,"لا معاملات مصعّدة")}
+    ${lane("late","متأخرة","تجاوزت تاريخ استحقاقها","hourglass","#d9822b",late,"لا معاملات متأخرة")}
+    ${lane("soon","تستحق خلال 7 أيام","استعد لها مبكرًا","cal","#1f8f86",soon,"لا استحقاقات قريبة")}
+   </div>
+   <section class="box fmx"><h3>${ico("grid")} مصفوفة الأولويات <small>الأهمية (التصعيد) × الاستعجال (الاستحقاق)</small></h3>
+    <div class="fmxg"><span class="ax y">${ico("chev")} أهم</span><span class="ax x">أعجل ${ico("chev")}</span>${q.map(([L,t,sub,c,ic])=>`<div class="fmc" style="--mc:${c}"><header>${ico(ic)}<b>${t}</b><strong>${NF.format(L.length)}</strong></header><small>${sub}</small>${L.slice(0,3).map(r=>`<button data-open="${esc(r.id)}">${esc(r.title)}</button>`).join("")}${L.length>3?`<em>و${NF.format(L.length-3)} أخرى</em>`:""}</div>`).join("")}</div></section>`;
 }
+
 function viewFlow(){
   const A=active();const tot=A.length;const open=A.filter(isOpen).length;const late=A.filter(isLate).length;const done=A.filter(r=>eff(r)==="مكتمل").length;
   const TC={info:"#2461a6",warn:"#c27a0e",pend:"#6a4cb0",good:"#1d7548",bad:"#b0291f"};
@@ -3492,16 +3613,30 @@ function viewReport(){
    <section class="box"><h3>المعاملات المشمولة</h3>${recordsBlock(recs,{showMod:true,g:gs.length===1?gs[0]:null,board:false})}</section>`;
 }
 function viewInbox(){
-  const recs=active().filter(r=>eff(r)==="بانتظار الاعتماد").sort((a,b)=>pri(b)-pri(a)||a.date.localeCompare(b.date));
-  const mine=recs.filter(r=>!perm(r,"مكتمل"));
+  const all=active().filter(r=>eff(r)==="بانتظار الاعتماد").sort((a,b)=>pri(b)-pri(a)||a.date.localeCompare(b.date));
+  const T=thr();const can=r=>!perm(r,"مكتمل");
+  const f=ui.inf||"";const recs=all.filter(r=>!f||(f==="can"?can(r):f==="over"?(T>0&&recSum(r)>=T):(T<=0||recSum(r)<T)));
+  const total=all.reduce((a,r)=>a+recSum(r),0);const waitD=r=>Math.max(0,-daysTo(r.updated?String(r.updated).slice(0,10):r.date));
+  const oldest=all.length?Math.max(...all.map(waitD)):0;
+  const decs=Object.entries(S.dec||{}).map(([id,d])=>({d,r:S.recs.find(x=>x.id===id)})).filter(x=>x.r&&x.d&&x.d.at).sort((a,b)=>String(b.d.at).localeCompare(String(a.d.at))).slice(0,6);
+  const card=r=>{const v=recSum(r),why=perm(r,"مكتمل"),gc=G[r.g]?.col||"#6a4cb0",over=T>0&&v>=T,w=waitD(r),p=pri(r);
+    return `<article class="ibc p${p} ${why?"ro":""}" style="--gc:${gc}" data-open="${esc(r.id)}" tabindex="0"><span class="ibs"></span>
+     <div class="ibm"><div class="ibt"><b>${esc(r.title)}</b>${r.no?`<code>${esc(r.no)}</code>`:""}${p?`<em class="fpri p${p}">${ico("alert")} ${esc(PRI[p]?.n||"")}</em>`:""}</div>
+      <small><i style="background:${gc}"></i>${esc(G[r.g]?.n||"")} · ${esc(modName(r.g,r.m))}</small>
+      <div class="ibmeta"><span>${ico("user")} ${esc(nameOf(r.createdBy))}</span><span>${ico("cal")} ${dFmt(r.date)}</span><span class="${w>=3?"bad":""}">${ico("hourglass")} ${w?`ينتظر ${NF.format(w)} ${w===1?"يوم":w===2?"يومين":"أيام"}`:"وصل اليوم"}</span></div></div>
+     <div class="ibv">${v?`<b>${money(v)}</b>${T>0?`<span class="ibbar ${over?"over":""}"><i style="width:${Math.min(100,v/T*100)}%"></i></span><small>${over?"يبلغ حد الاعتماد · لمسؤول النظام":`${Math.round(v/T*100)}٪ من حد الاعتماد`}</small>`:""}`:`<small>بلا قيمة مالية</small>`}</div>
+     <div class="iba">${why?`<span class="ibwhy">${ico("lock")} ${esc(why)}</span>`:`<button class="btn sm ok" data-quick="${esc(r.id)}" data-st="مكتمل">${ico("check")} اعتماد</button><button class="btn sm danger" data-quick="${esc(r.id)}" data-st="مرفوض">${ico("xcircle")} رفض</button>`}</div></article>`};
+  const C=2*Math.PI*40;const share=all.length?all.filter(can).length/all.length:0;
   return `${crumb([["صندوق الاعتمادات"]])}
-   <div class="head"><div><h1>صندوق الاعتمادات</h1><p>المعاملات التي تنتظر قرارًا. حد الاعتماد: ${money(thr())} — ما يبلغه يعتمده مسؤول النظام فقط.</p></div></div>
-   ${recs.length?`<div class="tw"><table><thead><tr><th>المعاملة</th><th>الوحدة</th><th>القيمة</th><th>التاريخ</th><th>مقدّمها</th><th>القرار</th></tr></thead><tbody>
-   ${recs.map(r=>{const why=perm(r,"مكتمل");return `<tr class="pri${pri(r)}" data-open="${esc(r.id)}" tabindex="0"><td class="t">${esc(r.title)}<span class="code">${esc(r.no||"")}</span></td><td><small>${esc(modName(r.g,r.m))}</small></td><td class="num">${recSum(r)?money(recSum(r)):"—"}${chips(r)}</td><td class="num">${dFmt(r.date)}</td><td>${esc(nameOf(r.createdBy))}</td>
-     <td>${why?`<small>${esc(why)}</small>`:`<span class="flow"><button class="btn sm ok" data-quick="${esc(r.id)}" data-st="مكتمل">اعتماد</button><button class="btn sm danger" data-quick="${esc(r.id)}" data-st="مرفوض">رفض</button></span>`}</td></tr>`}).join("")}
-   </tbody></table></div><p class="why">${NF.format(mine.length)} من ${NF.format(recs.length)} طلب يمكنك البت فيه.</p>`
-   :`<div class="tw"><div class="empty"><b>لا توجد طلبات معلقة</b>كل الطلبات حُسمت.</div></div>`}`;
+   <section class="ibhero"><div class="fcm"><span class="fci ib">${ico("stamp")}</span><div><small>APPROVALS · صندوق القرار</small><h1>صندوق الاعتمادات</h1><p>المعاملات التي تنتظر قرارًا. حد الاعتماد <mark>${money(T)}</mark>: ما يبلغه لا يعتمده إلا مسؤول النظام.</p></div></div>
+    <div class="fcring"><svg viewBox="0 0 100 100"><path d="${star8(50,50,49,.84)}" fill="rgba(0,0,0,.18)" stroke="rgba(255,255,255,.15)"/><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="7"/><circle cx="50" cy="50" r="40" fill="none" stroke="#c9b6ff" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C*share} ${C}" transform="rotate(-90 50 50)"/></svg><span><b>${NF.format(all.filter(can).length)}</b><small>بيدك القرار</small></span></div>
+    <div class="fcs ibs4">${[["بانتظار القرار",NF.format(all.length),"#e6dcff","inbox"],["إجمالي القيم",money(total),"#ffe1a6","coins"],["أقدم طلب",oldest?NF.format(oldest)+" "+(oldest===1?"يوم":oldest===2?"يومان":"أيام"):"—","#ffb0a8","hourglass"],["فوق حد الاعتماد",NF.format(T>0?all.filter(r=>recSum(r)>=T).length:0),"#9de8c6","shieldCheck"]].map(([l,n,c,ic])=>`<span style="--sc:${c}">${ico(ic)}<b>${n}</b><small>${l}</small></span>`).join("")}</div></section>
+   ${all.length?`<div class="thchips ibf"><span>عرض</span>${[["","الكل",all.length],["can","يمكنني البت",all.filter(can).length],["over","فوق الحد",T>0?all.filter(r=>recSum(r)>=T).length:0],["under","دون الحد",T>0?all.filter(r=>recSum(r)<T).length:all.length]].map(([k,l,n])=>`<button data-inf="${k}" class="${f===k?"on":""}">${l} <small>${NF.format(n)}</small></button>`).join("")}</div>
+    <div class="iblist">${recs.map(card).join("")||`<div class="empty-s">لا طلبات بهذه التصفية.</div>`}</div>`
+   :`<section class="ibempty box"><div class="flz" style="--lc:#6a4cb0"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="${star8(50,50,44,.8)}" fill="color-mix(in srgb,#6a4cb0 10%,transparent)" stroke="#6a4cb0" stroke-width="1.5" stroke-dasharray="3 3"/></svg><span>${ico("check")}</span><b>صندوقك فارغ، كل الطلبات حُسمت</b><small>ستظهر هنا كل معاملة تُرفع للاعتماد، مع قيمتها ومقدّمها ومدة انتظارها.</small></div></section>`}
+   ${decs.length?`<section class="box ibdec"><h3>${ico("audit")} آخر القرارات</h3><div>${decs.map(({d,r})=>`<button data-open="${esc(r.id)}" class="${d.s==="مرفوض"?"bad":"ok"}"><span>${ico(d.s==="مرفوض"?"xcircle":"check")}</span><b>${esc(r.title)}</b><small>${esc(d.s)} · ${esc(nameOf(d.by))} · ${tFmt(d.at)}${d.amt?" · "+money(d.amt):""}</small></button>`).join("")}</div></section>`:""}`;
 }
+
 function viewTrash(){
   const recs=S.recs.filter(r=>r.deleted).sort((a,b)=>(b.deletedAt||"").localeCompare(a.deletedAt||""));
   return `${crumb([["المحذوفات"]])}
@@ -3607,6 +3742,9 @@ function bindMain(){
   main.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{ui.view=b.dataset.view;try{localStorage.setItem("ds.view",ui.view)}catch(e){}render()});
   main.querySelectorAll("[data-pg]").forEach(b=>b.onclick=()=>{ui.page+=+b.dataset.pg;render();window.scrollTo(0,0)});
   main.querySelectorAll("[data-export]").forEach(b=>b.onclick=()=>exportCSV(filtered(curList),curCols));
+  main.querySelectorAll("[data-inf]").forEach(b=>b.onclick=()=>{ui.inf=b.dataset.inf;render()});
+  main.querySelectorAll("[data-flmore]").forEach(b=>b.onclick=e=>{e.stopPropagation();ui["fl"+b.dataset.flmore]=1;render()});
+  const fm=main.querySelector("[data-focusmode]");if(fm)fm.onclick=()=>{setFocus(!document.body.classList.contains("focus"));render()};
   main.querySelectorAll("[data-quick]").forEach(b=>b.onclick=e=>{e.stopPropagation();const r=S.recs.find(x=>x.id===b.dataset.quick);if(r)changeStatus(r,b.dataset.st)});
   main.querySelectorAll("[data-restore]").forEach(b=>b.onclick=()=>restore(b.dataset.restore));
   main.querySelectorAll("[data-purge]").forEach(b=>b.onclick=()=>{const r=S.recs.find(x=>x.id===b.dataset.purge);if(r)confirmBox("حذف نهائي",`ستُحذف «${r.title}» نهائيًا ولا يمكن استعادتها.`,"حذف نهائي",()=>purgeRec(r))});

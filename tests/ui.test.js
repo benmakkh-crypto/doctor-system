@@ -48,7 +48,7 @@ const OUT = __dirname + "/shots/"; fs.mkdirSync(OUT, { recursive: true });
   await p.screenshot({ path: OUT + "02-home.png", fullPage: false });
   await p.screenshot({ path: OUT + "02b-home-full.png", fullPage: true });
   // open a record drawer
-  await p.evaluate(() => location.hash = "focus"); await p.waitForTimeout(400); await p.click(".queue button >> nth=0"); await p.waitForTimeout(400);
+  await p.evaluate(() => location.hash = "focus"); await p.waitForTimeout(400); await p.click(".fq >> nth=0"); await p.waitForTimeout(400);
   await p.screenshot({ path: OUT + "03-drawer.png" });
   // approve from inbox
   await p.keyboard.press("Escape");
