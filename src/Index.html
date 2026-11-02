@@ -942,7 +942,7 @@ td.pc small{display:block;font-size:10.5px;color:var(--muted)}
 .form .sep svg,.dh h2 svg,.why svg,.badge svg,.flow svg{width:16px;height:16px;flex:none;vertical-align:-3px}
 .form .sep{display:flex;align-items:center;gap:8px}
 /* ---------- مراجعة التخطيط على كل المقاسات ---------- */
-.okgrid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))!important}
+.okgrid{grid-template-columns:repeat(8,minmax(0,1fr))!important}@media (max-width:1560px){.okgrid{grid-template-columns:repeat(4,minmax(0,1fr))!important}}@media (max-width:640px){.okgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 .wcell .dgrid.g5{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
 .wcell .dgrid.g4{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .kgrid{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
@@ -1080,6 +1080,52 @@ td.pc small{display:block;font-size:10.5px;color:var(--muted)}
 .qka svg{width:13px;height:13px}
 .side .nav a.qk:hover .qka{color:#fff;transform:rotate(90deg) translateY(3px)}
 @media (prefers-reduced-motion:reduce){.qkn.pulse{animation:none}.side .nav a.qk,.side .nav a.qhero,.qki,.qhi{transition:none!important}}
+
+/* ================= بطاقة النطاق ومسار الصفحة ================= */
+.scope{position:relative;display:grid;grid-template-columns:minmax(0,1.5fr) auto minmax(0,1.3fr) auto;gap:18px;align-items:center;margin:0 0 14px;padding:16px 18px;border-radius:20px;overflow:hidden;color:#fff;
+ background:radial-gradient(120% 140% at 100% 0%,#13705c 0%,#0c4a3d 45%,#08342b 100%);box-shadow:0 14px 34px rgba(8,52,43,.22),inset 0 0 0 1px rgba(255,255,255,.08)}
+.scope::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.03) 0 10px,transparent 10px 20px);pointer-events:none}
+.scope::after{content:"";position:absolute;inset-inline-start:-40px;bottom:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(222,178,78,.35),transparent 70%);pointer-events:none}
+.scope>*{position:relative;z-index:1}
+.scm{display:flex;gap:13px;align-items:center;min-width:0}
+.sci{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;flex:none;color:#3b2a06;background:linear-gradient(145deg,#f6dc98,#deb24e);box-shadow:0 6px 16px rgba(222,178,78,.4),inset 0 0 0 1px rgba(255,255,255,.4)}
+.sci svg{width:24px;height:24px}.sci.av{font-size:22px;font-weight:800}
+.sct{display:grid;gap:1px;min-width:0}
+.sct small{font-size:11px;color:#f3d58c;font-weight:600;letter-spacing:.2px}
+.sct b{font-size:17px;font-weight:800;line-height:1.3}
+.sct p{margin:0;font-size:12px;color:rgba(255,255,255,.72)}
+.sct code{background:rgba(255,255,255,.14);padding:0 6px;border-radius:6px;font-size:11px;color:#fff}
+.scs{display:flex;gap:6px}
+.scs span{display:grid;justify-items:center;min-width:62px;padding:7px 10px;border-radius:13px;background:rgba(0,0,0,.22);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);line-height:1.15}
+.scs b{font-size:19px;font-weight:800}.scs small{font-size:10.5px;color:rgba(255,255,255,.7)}
+.scs .ok b{color:#7fe0b9}.scs .bad b{color:#ff9f9f}
+.scq{display:grid;gap:5px;min-width:0}
+.scq>small{font-size:10.5px;color:rgba(255,255,255,.6)}
+.scq>div,.scope.in .scq{display:flex;gap:6px;flex-wrap:wrap}
+.scq button{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:4px 11px 4px 4px;font-size:12px;font-weight:600;color:#fff;background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);cursor:pointer;transition:background .2s,transform .2s}
+.scq button:hover{background:rgba(255,255,255,.2);transform:translateY(-1px)}
+.scq button i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:800;background:linear-gradient(145deg,#2fb38f,#0e7a5f);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.scq button svg{width:15px;height:15px}
+.scq button.all,.scq button.back{padding:6px 12px}
+.scq button.back{background:linear-gradient(145deg,#f6dc98,#deb24e);color:#3b2a06;box-shadow:0 4px 12px rgba(222,178,78,.35)}
+.scl{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:13px;font-weight:700;font-size:13px;color:#3b2a06!important;text-decoration:none!important;background:linear-gradient(145deg,#f6dc98,#deb24e);box-shadow:0 6px 16px rgba(222,178,78,.35);transition:transform .2s,box-shadow .2s}
+.scl svg{width:16px;height:16px}.scl svg:last-child{transform:rotate(90deg);width:13px;height:13px;transition:transform .2s}
+.scl:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(222,178,78,.45)}.scl:hover svg:last-child{transform:rotate(90deg) translateY(3px)}
+.scope.in{grid-template-columns:minmax(0,1fr) auto}
+@media (max-width:1180px){.scope{grid-template-columns:1fr auto}.scq{grid-column:1/-1;order:3}.scl{order:2}.scs{order:4;grid-column:1/-1}}
+@media (max-width:640px){.scope,.scope.in{grid-template-columns:1fr;padding:14px}.scl{justify-content:center}.scs span{flex:1;min-width:0}}
+/* مسار الصفحة */
+.crumb{display:flex!important;align-items:center;gap:8px;font-size:12.5px;margin-bottom:6px}
+.crumb .back{width:32px;height:32px;padding:0!important;border-radius:50%!important;display:grid;place-items:center;background:var(--surface)!important;border:1px solid var(--line)!important;color:var(--brand)!important;box-shadow:0 2px 6px rgba(0,0,0,.05);transition:transform .2s,background .2s,color .2s}
+.crumb .back svg{width:15px;height:15px;transform:rotate(-90deg)}
+.crumb .back:hover{background:var(--brand)!important;color:#fff!important;transform:translateX(3px)}
+.crumb ol{list-style:none;margin:0;padding:3px 5px;display:flex;align-items:center;flex-wrap:wrap;gap:2px;border-radius:999px;background:var(--surface);border:1px solid var(--line);box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.crumb li{display:flex;align-items:center;gap:2px}
+.crumb li a,.crumb li span{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;color:var(--muted);text-decoration:none;transition:background .2s,color .2s}
+.crumb li a svg{width:14px;height:14px}
+.crumb li a:hover{background:color-mix(in srgb,var(--brand) 10%,transparent);color:var(--brand)}
+.crumb li span[aria-current]{background:color-mix(in srgb,var(--brand) 12%,transparent);color:var(--brand);font-weight:700}
+.crs{display:grid;place-items:center;color:var(--muted);opacity:.5}.crs svg{width:11px;height:11px;transform:rotate(90deg)}
 </style>
 </head>
 <body class="auth">
@@ -2288,12 +2334,22 @@ function decorateHead(){
   h.classList.add("dhead","phead");h.style.setProperty("--dc",k[1]);
   t.outerHTML=`<div class="ttl"><span class="big">${ico(k[0])}</span><div><span class="en">${esc(k[2]||"")}</span>${t.innerHTML}</div></div>`;
 }
-function crumb(parts){return `<div class="crumb"><button class="back" data-back>→ رجوع</button><a href="#home">الرئيسية</a>${parts.map(p=>p[1]?` / <a href="${p[1]}">${esc(p[0])}</a>`:` / <span>${esc(p[0])}</span>`).join("")}</div>`}
+function crumb(parts){const sep=`<i class="crs">${ico("chev")}</i>`;return `<nav class="crumb" aria-label="مسار الصفحة"><button class="back" data-back aria-label="رجوع">${ico("chev")}</button><ol><li><a href="#home">${ico("home")}<span>الرئيسية</span></a></li>${parts.map((p,k)=>`<li>${sep}${p[1]&&k<parts.length-1?`<a href="${p[1]}">${esc(p[0])}</a>`:`<span aria-current="page">${esc(p[0])}</span>`}</li>`).join("")}</ol></nav>`}
 function banners(){
   let b="";
   if(S.err==="NET")b+=`<div class="banner bad">انقطع الاتصال بالخادم. ستُحدَّث البيانات تلقائيًا عند عودته.</div>`;
-  if(S.member&&S.scope==="*")b+=`<div class="banner orgban">${ico("building")} تعرض الآن بيانات <b>كل المؤسسات</b> (${NF.format((S.orgs||[]).length)})${S.platform?". للإضافة والتعديل اختر مؤسسة من أعلى الصفحة":" للاطلاع فقط"}. <button class="btn sm" data-ddb="org">اختيار مؤسسة</button> <a class="btn sm" href="#orgs">الكشاف</a></div>`;
-  else if(S.member&&S.scope)b+=`<div class="banner orgban">${ico("building")} تعمل داخل: <b>${esc(orgName(S.scope))}</b>${S.platform?"":" (اطلاع فقط)"} <button class="btn sm" data-setorg="*">العودة إلى كل المؤسسات</button></div>`;
+  if(S.member&&S.scope==="*"){const L=S.orgs||[];const act=L.filter(o=>o.status!=="suspended").length;
+    b+=`<section class="scope">
+      <div class="scm"><span class="sci">${ico("building")}</span><div class="sct"><small>نطاق العرض</small><b>كل مؤسسات منصة نافذ</b><p>${S.platform?"عرض مجمّع للاطلاع والتقارير. للإضافة والتعديل ادخل مؤسسة.":"عرض مجمّع للاطلاع فقط."}</p></div></div>
+      <div class="scs"><span><b>${NF.format(L.length)}</b><small>مؤسسة</small></span><span class="ok"><b>${NF.format(act)}</b><small>نشطة</small></span>${L.length-act?`<span class="bad"><b>${NF.format(L.length-act)}</b><small>موقوفة</small></span>`:""}</div>
+      <div class="scq"><small>دخول سريع</small><div>${L.filter(o=>o.status!=="suspended").slice(0,5).map(o=>`<button data-setorg="${esc(o.id)}" title="${esc(o.name)}"><i>${esc((o.name||"?").trim().replace(/^(جمعية|مؤسسة|الجمعية)\s+/,"").charAt(0))}</i><span>${esc(o.code||o.name)}</span></button>`).join("")}<button class="all" data-ddb="org">${ico("grid")}<span>الكل</span></button></div></div>
+      <a class="scl" href="#orgs">${ico("building")}<span>الكشاف</span>${ico("chev")}</a>
+    </section>`}
+  else if(S.member&&S.scope){const o=(S.orgs||[]).find(x=>x.id===S.scope)||{};
+    b+=`<section class="scope in">
+      <div class="scm"><span class="sci av">${esc((orgName(S.scope)||"?").trim().replace(/^(جمعية|مؤسسة|الجمعية)\s+/,"").charAt(0))}</span><div class="sct"><small>تعمل الآن داخل</small><b>${esc(orgName(S.scope))}</b><p>${o.code?`<code>${esc(o.code)}</code> · `:""}${o.status==="suspended"?"موقوفة":"نشطة"}${S.platform?" · صلاحية كاملة":" · اطلاع فقط"}</p></div></div>
+      <div class="scq"><button class="back" data-setorg="*">${ico("grid")}<span>العودة إلى كل المؤسسات</span></button><button class="all" data-ddb="org">${ico("building")}<span>مؤسسة أخرى</span></button></div>
+    </section>`}
   if(!S.canWrite)b+=`<div class="banner">صلاحيتك للعرض فقط، وأرقام الهوية والجوال مخفية جزئيًا. اطلب من مسؤول النظام صلاحية «مساهم» للإضافة والتعديل.</div>`;
   if(R.v==="home"&&S.meP&&!S.admin&&S.meP.depts&&S.meP.depts.length)b+=`<div class="banner">تظهر لك الإدارات المسموحة فقط: ${esc(S.meP.depts.map(i=>G[i]?.n).join("، "))}.</div>`;
   return b;
