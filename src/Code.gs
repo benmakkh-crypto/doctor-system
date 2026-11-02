@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '3.3.0';
+const APP_VERSION = '4.0.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -18,17 +18,31 @@ const SH = {
   settings: 'الإعدادات',
   audit: 'سجل_التدقيق',
   counters: 'العدادات',
-  files: 'المرفقات'
+  files: 'المرفقات',
+  orgs: 'المؤسسات'
 };
 const HEAD = {
-  users: ['username', 'name', 'email', 'role', 'depts', 'active', 'salt', 'hash', 'failed', 'lockedUntil', 'mustChange', 'lastLogin', 'created'],
+  users: ['username', 'name', 'email', 'role', 'depts', 'active', 'salt', 'hash', 'failed', 'lockedUntil', 'mustChange', 'lastLogin', 'created', 'org', 'prefs', 'phone'],
   records: ['id', 'no', 'g', 'm', 'status', 'deleted', 'updated', 'json'],
   decisions: ['id', 's', 'by', 'at', 'amt', 'note'],
   settings: ['key', 'value'],
-  audit: ['at', 'user', 'action', 'recordId', 'no', 'detail'],
+  audit: ['at', 'user', 'action', 'recordId', 'no', 'detail', 'org'],
   counters: ['key', 'value'],
-  files: ['id', 'recordId', 'name', 'mime', 'size', 'driveId', 'by', 'at']
+  files: ['id', 'recordId', 'name', 'mime', 'size', 'driveId', 'by', 'at'],
+  orgs: ['id', 'code', 'name', 'status', 'created', 'json']
 };
+/* ---------- تعدد المؤسسات ----------
+ * كل معاملة ومستخدم وسطر تدقيق يحمل معرّف مؤسسته. المؤسسة النشطة في الطلب الحالي في CUR_ORG:
+ * - لمستخدم المؤسسة: مؤسسته دائمًا.
+ * - للمشرف العام للمنصة (org = '*'): المؤسسة التي يختارها، أو '*' لعرض كل المؤسسات.
+ * الإعدادات نوعان: إعدادات المنصة (ورقة الإعدادات) وإعدادات المؤسسة (داخل ورقة المؤسسات)، والثانية تتقدم.
+ */
+let CUR_ORG = null;
+const MAIN_ORG = 'main';
+const ORG_KEYS = ['orgName', 'threshold', 'sod', 'notify', 'siteUrl', 'siteCity', 'sitePhone', 'siteEmail', 'siteAbout', 'publicStats', 'nav', 'layout'];
+const ORG_TYPES = ['جمعية خيرية', 'مؤسسة أهلية', 'جمعية تعاونية', 'جمعية مهنية', 'وقف', 'شركة غير ربحية', 'شركة', 'جهة حكومية', 'أخرى'];
+const ORG_SECTORS = ['القطاع غير الربحي', 'القطاع الخاص', 'القطاع الحكومي', 'القطاع الوقفي'];
+const ORG_AREAS = ['اجتماعي وأسري', 'إغاثي', 'صحي', 'تعليمي', 'ديني ودعوي', 'تحفيظ القرآن', 'تنموي وتمكين', 'إسكاني', 'بيئي', 'ثقافي', 'شبابي ورياضي', 'رعاية الأيتام', 'ذوي الإعاقة', 'كبار السن', 'المرأة والطفل', 'تقني', 'مهني', 'إعلامي'];
 const ROLES = { admin: 'مسؤول النظام', contributor: 'مساهم', viewer: 'مشاهد' };
 const FINAL = ['مكتمل', 'مرفوض'];
 const OPEN = ['جديد', 'قيد المتابعة', 'بانتظار الاعتماد'];
@@ -45,10 +59,10 @@ const HIST_MAX = 60;
  * نقطة الدخول
  * ===================================================================== */
 function doGet(e) {
-  if (e && e.parameter && e.parameter.api === 'public') return json_(publicData_());
+  if (e && e.parameter && e.parameter.api === 'public') return json_(sitePublic(e.parameter.org));
   if (e && e.parameter && e.parameter.page === 'site') {
     return HtmlService.createHtmlOutputFromFile('Site')
-      .setTitle(String((getSettingsSafe_().orgName) || 'الموقع الإلكتروني'))
+      .setTitle(String((function () { try { const o = siteOrg_(e.parameter.org); return o ? o.name : ''; } catch (x) { return ''; } })() || 'الموقع الإلكتروني'))
       .addMetaTag('viewport', 'width=device-width, initial-scale=1')
       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
@@ -63,7 +77,7 @@ function doGet(e) {
 function getPublicConfig() {
   const ready = !!PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
   let org = '';
-  if (ready) { try { org = getSettings_().orgName || ''; } catch (e) { org = ''; } }
+  if (ready) { try { migrate_(); const n = loadOrgs_().filter(function (o) { return o.status !== 'archived'; }); org = n.length === 1 ? n[0].name : (n.length > 1 ? 'منصة نافذ · ' + n.length + ' مؤسسة' : ''); } catch (e) { org = ''; } }
   let sup = FIRST_ADMIN.name;
   if (ready) { try { sup = getSettings_().supervisor || sup; } catch (e) { } }
   return { ready: ready, orgName: org, supervisor: sup, version: APP_VERSION };
@@ -125,9 +139,10 @@ function setup() {
   let msg = 'الجدول: ' + ss.getUrl();
   if (!users.rows.length) {
     const pw = tempPassword_();
-    addUser_({ username: FIRST_ADMIN.username, name: FIRST_ADMIN.name, email: FIRST_ADMIN.email, role: 'admin', depts: '', password: pw, mustChange: true });
+    addUser_({ username: FIRST_ADMIN.username, name: FIRST_ADMIN.name, email: FIRST_ADMIN.email, role: 'admin', depts: '', password: pw, mustChange: true, org: '*' });
     msg += '\nالمشرف العام: ' + FIRST_ADMIN.name + '\nاسم المستخدم: ' + FIRST_ADMIN.username + '\nكلمة المرور المؤقتة: ' + pw + '\n(سيُطلب تغييرها عند أول دخول)';
   }
+  CUR_ORG = null; migrate_();
   bumpRev_();
   Logger.log(msg);
   return msg;
@@ -178,14 +193,35 @@ function findRow_(k, id) {
 }
 
 /* ---------- الإعدادات ---------- */
-function getSettings_() {
+function platformSettings_() {
   const o = {};
   table_('settings').rows.forEach(function (r) {
     try { o[r.key] = JSON.parse(r.value); } catch (e) { o[r.key] = r.value; }
   });
   return o;
 }
+function getSettings_() {
+  const o = platformSettings_();
+  if (CUR_ORG && CUR_ORG !== '*') {
+    const org = getOrg_(CUR_ORG);
+    if (org) { const st = org.settings || {}; Object.keys(st).forEach(function (k) { o[k] = st[k]; }); o.orgName = org.name; o.orgCode = org.code; }
+  } else if (CUR_ORG === '*') o.orgName = 'جميع المؤسسات';
+  return o;
+}
 function putSetting_(key, val) {
+  if (CUR_ORG && CUR_ORG !== '*' && ORG_KEYS.indexOf(key) >= 0) {
+    const org = getOrg_(CUR_ORG);
+    if (org) {
+      org.settings = org.settings || {};
+      if (val === null) delete org.settings[key]; else org.settings[key] = val;
+      if (key === 'orgName' && val) org.name = String(val);
+      saveOrgRow_(org);
+      return;
+    }
+  }
+  putPlatformSetting_(key, val);
+}
+function putPlatformSetting_(key, val) {
   const row = findRow_('settings', key);
   const s = sheet_('settings');
   if (row) s.getRange(row, 2).setValue(JSON.stringify(val));
@@ -196,6 +232,58 @@ function bumpRev_() {
   p.setProperty('REV', String(Date.now()));
 }
 function rev_() { return PropertiesService.getScriptProperties().getProperty('REV') || '0'; }
+
+/* ---------- المؤسسات: التخزين ---------- */
+let ORGS_CACHE_ = null;
+function loadOrgs_() {
+  if (ORGS_CACHE_) return ORGS_CACHE_;
+  const s = sheet_('orgs');
+  if (!s) return (ORGS_CACHE_ = []);
+  ORGS_CACHE_ = table_('orgs').rows.map(function (r) {
+    let j = {}; try { j = JSON.parse(r.json || '{}'); } catch (e) { j = {}; }
+    j.id = String(r.id); j.code = String(r.code); j.name = String(r.name); j.status = String(r.status || 'active'); j.created = String(r.created || ''); j._row = r._row;
+    return j;
+  });
+  return ORGS_CACHE_;
+}
+function getOrg_(id) { return loadOrgs_().find(function (o) { return o.id === id; }) || null; }
+function orgByCode_(code) { code = String(code || '').toUpperCase(); return loadOrgs_().find(function (o) { return o.code === code; }) || null; }
+function saveOrgRow_(o) {
+  const c = JSON.parse(JSON.stringify(o)); delete c._row;
+  const line = [c.id, c.code, c.name, c.status || 'active', c.created || now_(), JSON.stringify(c)];
+  const row = findRow_('orgs', c.id);
+  if (row) sheet_('orgs').getRange(row, 1, 1, line.length).setValues([line]);
+  else sheet_('orgs').appendRow(line);
+  ORGS_CACHE_ = null;
+  try { CacheService.getScriptCache().remove('public_v1_' + c.id); } catch (e) { }
+}
+/** ترحيل لمرة واحدة إلى تعدد المؤسسات: ينشئ «المؤسسة الرئيسية» وينقل إليها الإعدادات والمستخدمين. آمن عند التكرار. */
+function migrate_() {
+  const props = PropertiesService.getScriptProperties();
+  if (props.getProperty('SCHEMA_V') === '2') return;
+  const ss = ss_();
+  let s = ss.getSheetByName(SH.orgs);
+  if (!s) s = ss.insertSheet(SH.orgs);
+  ['users', 'audit', 'orgs'].forEach(function (k) {
+    const sh = ss.getSheetByName(SH[k]);
+    sh.getRange(1, 1, 1, HEAD[k].length).setValues([HEAD[k]]).setFontWeight('bold').setBackground('#0b4639').setFontColor('#ffffff');
+    sh.setFrozenRows(1);
+  });
+  s.getRange(1, 1, s.getMaxRows(), s.getMaxColumns()).setNumberFormat('@');
+  ORGS_CACHE_ = null;
+  if (!getOrg_(MAIN_ORG)) {
+    const ps = platformSettings_(), st = {};
+    ORG_KEYS.forEach(function (k) { if (ps[k] !== undefined) st[k] = ps[k]; });
+    if (st.threshold === undefined) st.threshold = 5000;
+    if (st.notify === undefined) st.notify = true;
+    saveOrgRow_({ id: MAIN_ORG, code: 'MAIN', name: ps.orgName || 'المؤسسة الرئيسية', status: 'active', created: now_(), type: 'جمعية خيرية', settings: st });
+  }
+  table_('users').rows.forEach(function (u) {
+    if (String(u.org || '')) return;
+    setUserCells_(u._row, { org: normUser_(u.username) === FIRST_ADMIN.username ? '*' : MAIN_ORG });
+  });
+  props.setProperty('SCHEMA_V', '2');
+}
 
 /* =====================================================================
  * المستخدمون وكلمات المرور
@@ -248,13 +336,14 @@ function setPassword_(u, pw, mustChange) {
 }
 function addUser_(o) {
   const salt = 's' + Utilities.getUuid().replace(/-/g, '');
-  sheet_('users').appendRow([normUser_(o.username), o.name, o.email || '', o.role, o.depts || '', true, salt, hashPw_(salt, o.password), 0, '', !!o.mustChange, '', new Date().toISOString()]);
+  sheet_('users').appendRow([normUser_(o.username), o.name, o.email || '', o.role, o.depts || '', true, salt, hashPw_(salt, o.password), 0, '', !!o.mustChange, '', new Date().toISOString(), o.org || MAIN_ORG, '', o.phone || '']);
 }
 function publicUser_(u) {
   return {
     username: String(u.username), name: String(u.name), email: String(u.email || ''), role: String(u.role),
     roleName: ROLES[u.role] || u.role, depts: parseDepts_(u.depts), active: u.active === true || u.active === 'TRUE',
-    lastLogin: u.lastLogin ? String(u.lastLogin) : '', mustChange: u.mustChange === true || u.mustChange === 'TRUE'
+    lastLogin: u.lastLogin ? String(u.lastLogin) : '', mustChange: u.mustChange === true || u.mustChange === 'TRUE',
+    org: String(u.org || MAIN_ORG), phone: String(u.phone || '')
   };
 }
 function parseDepts_(d) {
@@ -283,6 +372,7 @@ function login(username, password, remember) {
       const u = findUser_(uname);
       if (!u) { hashPw_('x', String(password)); return generic; }
       if (!(u.active === true || u.active === 'TRUE')) return { ok: false, code: 'DISABLED', message: 'هذا الحساب موقوف. تواصل مع مسؤول النظام.' };
+      migrate_();
       if (u.lockedUntil && new Date(u.lockedUntil) > new Date()) {
         const min = Math.ceil((new Date(u.lockedUntil) - new Date()) / 60000);
         return { ok: false, code: 'LOCKED', message: 'الحساب مقفل مؤقتًا بعد محاولات خاطئة. أعد المحاولة بعد ' + min + ' دقيقة.' };
@@ -297,6 +387,8 @@ function login(username, password, remember) {
         setUserCells_(u._row, { failed: f });
         return generic;
       }
+      const uo = String(u.org || MAIN_ORG);
+      if (uo !== '*') { const o = getOrg_(uo); if (!o || o.status === 'suspended') return { ok: false, code: 'DISABLED', message: 'حساب مؤسستك موقوف مؤقتًا. تواصل مع المشرف العام لمنصة نافذ.' }; }
       setUserCells_(u._row, { failed: 0, lockedUntil: '', lastLogin: new Date().toISOString() });
       cache.remove('try_' + uname);
       const token = newToken_();
@@ -325,6 +417,7 @@ function session_(token) {
   if (!s.p) { s.exp = Math.max(s.exp, Date.now() + SESSION_SEC * 1000); }
   CacheService.getScriptCache().put(k, JSON.stringify(s), SESSION_SEC);
   const pu = publicUser_(u); pu._row = u._row;
+  if (pu.org !== '*') { const o = getOrg_(pu.org); if (!o || o.status === 'suspended') { endSession_(token); throw err_('AUTH', 'حساب مؤسستك موقوف مؤقتًا.'); } }
   return pu;
 }
 function endSession_(token) {
@@ -339,13 +432,16 @@ function logout(token) { try { endSession_(token); } catch (e) { } return { ok: 
  * ===================================================================== */
 function api(token, action, payload) {
   try {
+    migrate_();
     const me = session_(token);
     payload = payload || {};
+    CUR_ORG = scopeOrg_(me, payload);
     if (me.mustChange && action !== 'changePassword' && action !== 'me') throw err_('MUST_CHANGE', 'غيّر كلمة المرور المؤقتة أولًا.');
     const fn = ACTIONS[action];
     if (!fn) throw err_('VALIDATION', 'إجراء غير معروف.');
     const write = WRITE_ACTIONS.indexOf(action) >= 0;
-    if (write && me.role === 'viewer' && action !== 'changePassword') throw err_('FORBIDDEN', 'صلاحيتك للعرض فقط.');
+    if (write && me.role === 'viewer' && action !== 'changePassword' && action !== 'savePrefs') throw err_('FORBIDDEN', 'صلاحيتك للعرض فقط.');
+    if (write && CUR_ORG === '*' && ORG_REQUIRED.indexOf(action) >= 0) throw err_('VALIDATION', 'اختر مؤسسة من أعلى الصفحة أولًا، ثم نفّذ الإجراء داخلها.');
     let out;
     if (write) {
       const lock = LockService.getScriptLock();
@@ -355,7 +451,25 @@ function api(token, action, payload) {
     return { ok: true, data: out, rev: rev_() };
   } catch (e) { return fail_(e); }
 }
-const WRITE_ACTIONS = ['saveNav', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+/** إجراءات تحتاج مؤسسة محددة (لا تُنفذ في عرض «كل المؤسسات»). */
+const ORG_REQUIRED = ['create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash'];
+function isPlatform_(me) { return me.role === 'admin' && me.org === '*'; }
+/** عضو المنصة: حساب على مستوى نافذ (org = '*') بأي دور؛ المشاهد منهم يطّلع على كل المؤسسات دون أي تعديل. */
+function isPlatformMember_(me) { return me.org === '*'; }
+function needPlatform_(me) { if (!isPlatform_(me)) throw err_('FORBIDDEN', 'هذا الإجراء للمشرف العام لمنصة نافذ فقط.'); }
+function scopeOrg_(me, p) {
+  if (me.org !== '*') return me.org || MAIN_ORG;
+  const o = str_(p.__org, 40);
+  if (o && o !== '*' && getOrg_(o)) return o;
+  return '*';
+}
+/** هل المستخدم ضمن نطاق من يدير الحسابات؟ */
+function inUserScope_(me, u) {
+  const uo = String(u.org || MAIN_ORG);
+  if (isPlatform_(me)) return CUR_ORG === '*' || uo === CUR_ORG || uo === '*';
+  return uo === me.org;
+}
+const WRITE_ACTIONS = ['saveOrg', 'setOrgStatus', 'importOrgs', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -401,18 +515,61 @@ const ACTIONS = {
       putSetting_('siteEmail', str_(p.site.email, 120));
       putSetting_('siteAbout', str_(p.site.about, 1200));
       putSetting_('publicStats', p.site.stats !== false);
-      try { CacheService.getScriptCache().remove('public_v1'); } catch (e) { }
+      try { CacheService.getScriptCache().remove('public_v1_' + (CUR_ORG || MAIN_ORG)); } catch (e) { }
     }
     audit_(me.username, 'تعديل الإعدادات', '', '', 'حد الاعتماد ' + t + (p.sod ? ' · فصل المهام' : ''));
     return getSettings_();
   },
-  listUsers: function (me) { needAdmin_(me); return table_('users').rows.map(publicUser_); },
+  listUsers: function (me) { needAdmin_(me); return table_('users').rows.filter(function (u) { return inUserScope_(me, u); }).map(publicUser_); },
+  listOrgs: function (me) { if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'الكشاف لمنسوبي منصة نافذ فقط.'); return actListOrgs_(); },
+  saveOrg: function (me, p) { needPlatform_(me); return actSaveOrg_(me, p); },
+  setOrgStatus: function (me, p) {
+    needPlatform_(me);
+    const o = getOrg_(str_(p.id, 40)); if (!o) throw err_('NOTFOUND', 'المؤسسة غير موجودة.');
+    if (['active', 'suspended'].indexOf(p.status) < 0) throw err_('VALIDATION', 'حالة غير صحيحة.');
+    if (o.id === MAIN_ORG && p.status === 'suspended') throw err_('VALIDATION', 'لا يمكن إيقاف المؤسسة الرئيسية.');
+    o.status = p.status; saveOrgRow_(o);
+    audit_(me.username, p.status === 'active' ? 'تفعيل مؤسسة' : 'إيقاف مؤسسة', '', '', o.name);
+    return orgPublic_(o);
+  },
+  importOrgs: function (me, p) { needPlatform_(me); return actImportOrgs_(me, p); },
+  bulkResetPasswords: function (me, p) {
+    needAdmin_(me);
+    const list = (Array.isArray(p.usernames) ? p.usernames : []).slice(0, 300).map(normUser_);
+    const out = [];
+    list.forEach(function (un) {
+      const u = findUser_(un);
+      if (!u || !inUserScope_(me, u) || un === me.username) return;
+      const pw = tempPassword_();
+      setPassword_(u, pw, true); setUserCells_(u._row, { failed: 0, lockedUntil: '' });
+      const o = getOrg_(String(u.org || MAIN_ORG));
+      const em = p.sendEmail && u.email ? sendCredentials_(String(u.email), String(u.name), o, un, pw, true, 'reset') : false;
+      out.push({ username: un, name: String(u.name), org: o ? o.name : 'المنصة', code: o ? o.code : '', email: String(u.email || ''), phone: String(u.phone || ''), password: pw, emailed: em });
+    });
+    audit_(me.username, 'إصدار كلمات مرور جماعي', '', '', out.length + ' حساب');
+    return { items: out };
+  },
+  savePrefs: function (me, p) {
+    const j = JSON.stringify(p.prefs || {});
+    if (j.length > 40000) throw err_('VALIDATION', 'إعدادات العرض كبيرة جدًا.');
+    const u = findUser_(me.username); setUserCells_(u._row, { prefs: j });
+    return { ok: true };
+  },
+  saveLayout: function (me, p) {
+    needAdmin_(me);
+    if (CUR_ORG === '*') throw err_('VALIDATION', 'اختر مؤسسة لتعتمد لها التخطيط.');
+    const j = p.layout ? JSON.stringify(p.layout) : '';
+    if (j.length > 40000) throw err_('VALIDATION', 'التخطيط كبير جدًا.');
+    putSetting_('layout', p.layout || null);
+    audit_(me.username, p.layout ? 'اعتماد تخطيط افتراضي' : 'إلغاء التخطيط الافتراضي', '', '', '');
+    return { layout: p.layout || null };
+  },
   saveNav: actSaveNav_,
   saveUser: actSaveUser_,
   resetPassword: function (me, p) {
     needAdmin_(me);
     const u = findUser_(p.username);
-    if (!u) throw err_('NOTFOUND', 'المستخدم غير موجود.');
+    if (!u || !inUserScope_(me, u)) throw err_('NOTFOUND', 'المستخدم غير موجود.');
     // المسؤول يصدر كلمة مرور جديدة: يكتبها بنفسه أو تُولَّد تلقائيًا، ويختار هل يُلزم المستخدم بتغييرها.
     // كلمات المرور القديمة لا يمكن استرجاعها لأنها محفوظة مشفّرة باتجاه واحد.
     const manual = typeof p.password === 'string' && p.password !== '';
@@ -421,8 +578,9 @@ const ACTIONS = {
     const must = p.mustChange !== false;
     setPassword_(u, pw, must);
     setUserCells_(u._row, { failed: 0, lockedUntil: '' });
-    audit_(me.username, manual ? 'تعيين كلمة مرور من المسؤول' : 'إعادة تعيين كلمة مرور', '', '', String(u.username) + (must ? ' · تغيير إلزامي' : ' · دون تغيير إلزامي'));
-    return { password: pw, mustChange: must };
+    const emailed = p.sendEmail && u.email ? sendCredentials_(String(u.email), String(u.name), getOrg_(String(u.org || MAIN_ORG)), String(u.username), pw, must, 'reset') : false;
+    audit_(me.username, manual ? 'تعيين كلمة مرور من المسؤول' : 'إعادة تعيين كلمة مرور', '', '', String(u.username) + (must ? ' · تغيير إلزامي' : ' · دون تغيير إلزامي') + (emailed ? ' · أُرسلت بالبريد' : ''));
+    return { password: pw, mustChange: must, emailed: emailed, phone: String(u.phone || '') };
   },
   changePassword: function (me, p) {
     const u = findUser_(me.username);
@@ -438,7 +596,7 @@ const ACTIONS = {
   removeFile: actRemoveFile_,
   audit: function (me, p) {
     needAdmin_(me);
-    const t = table_('audit').rows;
+    const t = table_('audit').rows.filter(function (r) { return CUR_ORG === '*' || String(r.org || MAIN_ORG) === CUR_ORG; });
     const lim = Math.min(500, +p.limit || 200);
     return t.slice(-lim).reverse().map(function (r) { return { at: String(r.at), user: String(r.user), action: String(r.action), no: String(r.no), detail: String(r.detail) }; });
   },
@@ -462,15 +620,21 @@ const ACTIONS = {
  * تحميل البيانات
  * ===================================================================== */
 let REC_CACHE_ = null;
-function loadRecords_() {
+function loadAllRecords_() {
   if (REC_CACHE_) return REC_CACHE_;
   REC_CACHE_ = table_('records').rows.map(function (row) {
     let r = {};
     try { r = JSON.parse(row.json); } catch (e) { r = {}; }
-    r.id = String(row.id); r._row = row._row;
+    r.id = String(row.id); r._row = row._row; if (!r.org) r.org = MAIN_ORG;
     return r;
   });
   return REC_CACHE_;
+}
+/** معاملات المؤسسة النشطة فقط (أو كل المؤسسات للمشرف العام في عرض «الكل»). */
+function loadRecords_() {
+  const all = loadAllRecords_();
+  if (!CUR_ORG || CUR_ORG === '*') return all;
+  return all.filter(function (r) { return r.org === CUR_ORG; });
 }
 function loadDecisions_() {
   const o = {};
@@ -496,9 +660,13 @@ function bootstrap_(me) {
   recs.forEach(function (r) { ids[r.id] = 1; });
   const decAll = loadDecisions_(), dec = {};
   Object.keys(decAll).forEach(function (k) { if (ids[k]) dec[k] = decAll[k]; });
-  const people = table_('users').rows.filter(function (u) { return u.active === true || u.active === 'TRUE'; })
-    .map(function (u) { return { username: String(u.username), name: String(u.name), role: String(u.role), hasEmail: !!u.email }; });
-  return { me: clean_(me), settings: getSettings_(), records: recs, decisions: dec, people: people, schema: SCHEMA, version: APP_VERSION, now: now_(), appUrl: (function () { try { return ScriptApp.getService().getUrl(); } catch (e) { return ''; } })() };
+  const people = table_('users').rows.filter(function (u) { return (u.active === true || u.active === 'TRUE') && (CUR_ORG === '*' || String(u.org || MAIN_ORG) === CUR_ORG || String(u.org) === '*'); })
+    .map(function (u) { return { username: String(u.username), name: String(u.name), role: String(u.role), hasEmail: !!u.email, org: String(u.org || MAIN_ORG) }; });
+  const urow = findUser_(me.username);
+  let prefs = null; try { prefs = urow && urow.prefs ? JSON.parse(urow.prefs) : null; } catch (e) { prefs = null; }
+  const orgs = isPlatformMember_(me) ? loadOrgs_().map(orgPublic_) : (getOrg_(me.org) ? [orgPublic_(getOrg_(me.org))] : []);
+  const meOut = clean_(me); meOut.platform = isPlatform_(me); meOut.member = isPlatformMember_(me);
+  return { me: meOut, scope: CUR_ORG, orgs: orgs, prefs: prefs, settings: getSettings_(), records: recs, decisions: dec, people: people, schema: SCHEMA, version: APP_VERSION, now: now_(), appUrl: (function () { try { return ScriptApp.getService().getUrl(); } catch (e) { return ''; } })() };
 }
 
 /* =====================================================================
@@ -563,14 +731,16 @@ function validate_(input, me, existingId) {
 function nextNo_(g) {
   const year = new Date().getFullYear();
   const key = SCHEMA.G[g].c + '-' + year;
-  const row = findRow_('counters', key);
+  const ckey = (CUR_ORG && CUR_ORG !== '*' && CUR_ORG !== MAIN_ORG ? CUR_ORG + '|' : '') + key;
+  const row = findRow_('counters', ckey);
   const s = sheet_('counters');
   let n = 1;
   if (row) { n = (+s.getRange(row, 2).getValue() || 0) + 1; s.getRange(row, 2).setValue(n); }
-  else s.appendRow([key, 1]);
+  else s.appendRow([ckey, 1]);
   return key + '-' + ('00000' + n).slice(-5);
 }
 function writeRec_(r) {
+  if (!r.org) r.org = (CUR_ORG && CUR_ORG !== '*') ? CUR_ORG : MAIN_ORG;
   const c = clean_(r);
   const line = [c.id, c.no || '', c.g, c.m, c.status, !!c.deleted, c.updated, JSON.stringify(c)];
   if (line[7].length > 45000) throw err_('VALIDATION', 'المعاملة كبيرة جدًا. اختصر الملاحظات.');
@@ -594,7 +764,9 @@ function getRec_(me, id, opts) {
   const row = findRow_('records', id);
   if (!row) throw err_('NOTFOUND', 'المعاملة غير موجودة. ربما حذفها مستخدم آخر نهائيًا.');
   const v = sheet_('records').getRange(row, 1, 1, HEAD.records.length).getValues()[0];
-  const r = JSON.parse(v[7]); r.id = String(v[0]); r._row = row;
+  const r = JSON.parse(v[7]); r.id = String(v[0]); r._row = row; if (!r.org) r.org = MAIN_ORG;
+  if (CUR_ORG && CUR_ORG !== '*' && r.org !== CUR_ORG) throw err_('NOTFOUND', 'المعاملة غير موجودة.');
+  if (CUR_ORG === '*') CUR_ORG = r.org; // المشرف العام يعمل على المعاملة في سياق مؤسستها
   if (!canSeeDept_(me, r.g)) throw err_('FORBIDDEN', 'ليست لديك صلاحية على هذه الإدارة.');
   if (r.deleted && !(opts && opts.allowDeleted)) throw err_('VALIDATION', 'المعاملة في المحذوفات. استعدها أولًا.');
   return r;
@@ -807,15 +979,27 @@ function actSaveUser_(me, p) {
   const email = str_(p.email, 120);
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw err_('VALIDATION', 'صيغة البريد غير صحيحة.', 'email');
   if (!ROLES[p.role]) throw err_('VALIDATION', 'اختر الدور.', 'role');
+  const phone = str_(p.phone, 24).replace(/[\s-]/g, '').replace(/^\+?966/, '0');
+  if (phone && !/^05\d{8}$/.test(phone)) throw err_('VALIDATION', 'رقم الجوال يبدأ بـ 05 ويتكون من 10 أرقام.', 'phone');
   const depts = (Array.isArray(p.depts) ? p.depts : []).map(Number).filter(function (n) { return n > 0 && n < SCHEMA.G.length; }).join(',');
   const u = findUser_(uname);
+  if (u && !inUserScope_(me, u)) throw err_('VALIDATION', 'اسم المستخدم مستخدم في مؤسسة أخرى. اختر اسمًا مختلفًا.', 'username');
+  // مؤسسة الحساب: مستخدم المؤسسة لا ينشئ إلا داخل مؤسسته، والمشرف العام يحدد المؤسسة أو يضيف مشرفًا للمنصة
+  let org = me.org;
+  if (isPlatform_(me)) {
+    org = str_(p.org, 40) || (CUR_ORG !== '*' ? CUR_ORG : MAIN_ORG);
+    if (org !== '*' && !getOrg_(org)) throw err_('VALIDATION', 'اختر مؤسسة الحساب.', 'org');
+    if (org === '*' && p.role === 'contributor') throw err_('VALIDATION', 'حسابات المنصة: مسؤول للمنصة، أو «عضو منصة نافذ» للاطلاع فقط.', 'role');
+  }
   if (u) {
     if (uname === me.username && (p.role !== 'admin' || p.active === false)) throw err_('VALIDATION', 'لا يمكنك إزالة صلاحية المسؤول عن نفسك أو إيقاف حسابك.');
     if (u.role === 'admin' && p.role !== 'admin') {
-      const admins = table_('users').rows.filter(function (x) { return x.role === 'admin' && (x.active === true || x.active === 'TRUE'); });
+      const admins = table_('users').rows.filter(function (x) { return x.role === 'admin' && (x.active === true || x.active === 'TRUE') && String(x.org || MAIN_ORG) === String(u.org || MAIN_ORG); });
       if (admins.length <= 1) throw err_('VALIDATION', 'يجب أن يبقى مسؤول نظام واحد على الأقل.');
     }
-    setUserCells_(u._row, { name: name, email: email, role: p.role, depts: depts, active: p.active !== false });
+    const cells = { name: name, email: email, role: p.role, depts: depts, active: p.active !== false, phone: phone };
+    if (isPlatform_(me) && str_(p.org, 40) && uname !== me.username) cells.org = org;
+    setUserCells_(u._row, cells);
     audit_(me.username, 'تعديل مستخدم', '', '', uname + ' · ' + ROLES[p.role] + (p.active === false ? ' · موقوف' : ''));
     return { username: uname };
   }
@@ -823,9 +1007,140 @@ function actSaveUser_(me, p) {
   const pw = manual ? p.password : tempPassword_();
   if (manual) { try { checkPolicy_(pw); } catch (e) { e.field = 'password'; throw e; } }
   const must = p.mustChange !== false;
-  addUser_({ username: uname, name: name, email: email, role: p.role, depts: depts, password: pw, mustChange: must });
+  addUser_({ username: uname, name: name, email: email, role: p.role, depts: depts, password: pw, mustChange: must, org: org, phone: phone });
+  const emailed = p.sendEmail && email ? sendCredentials_(email, name, getOrg_(org), uname, pw, must, 'welcome') : false;
   audit_(me.username, 'إضافة مستخدم', '', '', uname + ' · ' + ROLES[p.role] + (manual ? ' · كلمة مرور من المسؤول' : ''));
-  return { username: uname, password: pw, mustChange: must };
+  return { username: uname, password: pw, mustChange: must, emailed: emailed, phone: phone };
+}
+/** يرسل بيانات الدخول (الرابط واسم المستخدم وكلمة المرور) إلى بريد صاحب الحساب. */
+function sendCredentials_(to, name, org, username, pw, must, kind) {
+  try {
+    if (MailApp.getRemainingDailyQuota() < 2) return false;
+    const url = (function () { try { return ScriptApp.getService().getUrl() || ''; } catch (e) { return ''; } })();
+    const e = function (x) { return String(x || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+    const orgName = org ? org.name : 'منصة نافذ';
+    const title = kind === 'reset' ? 'كلمة مرور جديدة لحسابك في نافذ' : 'مرحبًا بكم في منصة نافذ';
+    const html = '<div dir="rtl" style="font-family:Tahoma,Arial;font-size:15px;color:#13211d;max-width:560px">' +
+      '<div style="background:#0e4d3f;color:#fff;padding:18px 22px;border-radius:12px 12px 0 0;border-bottom:3px solid #deb24e"><b style="font-size:20px">نافذ</b><br><span style="opacity:.85">منصة الإدارة المؤسسية للجمعيات</span></div>' +
+      '<div style="border:1px solid #dfe7e3;border-top:0;padding:20px 22px;border-radius:0 0 12px 12px">' +
+      '<p style="margin:0 0 10px">السلام عليكم ' + e(name) + '،</p>' +
+      '<p style="margin:0 0 14px">' + (kind === 'reset' ? 'أُصدرت كلمة مرور جديدة لحسابك' : 'أُنشئ حساب ' + e(orgName) + ' في منصة نافذ') + '. بيانات الدخول:</p>' +
+      '<table style="border-collapse:collapse;width:100%;margin:0 0 14px"><tr><td style="padding:8px;background:#f2f6f4;width:40%">الجهة</td><td style="padding:8px;border-bottom:1px solid #eee"><b>' + e(orgName) + (org ? ' (' + e(org.code) + ')' : '') + '</b></td></tr>' +
+      '<tr><td style="padding:8px;background:#f2f6f4">اسم المستخدم</td><td style="padding:8px;border-bottom:1px solid #eee;direction:ltr;text-align:right"><b style="font-family:Consolas,monospace;font-size:16px">' + e(username) + '</b></td></tr>' +
+      '<tr><td style="padding:8px;background:#f2f6f4">كلمة المرور' + (must ? ' المؤقتة' : '') + '</td><td style="padding:8px;direction:ltr;text-align:right"><b style="font-family:Consolas,monospace;font-size:16px">' + e(pw) + '</b></td></tr></table>' +
+      (url ? '<p style="margin:0 0 16px"><a href="' + url + '" style="background:#0e4d3f;color:#fff;padding:10px 22px;border-radius:8px;text-decoration:none;display:inline-block">الدخول إلى نافذ</a></p><p style="margin:0 0 12px;font-size:12px;color:#5b6b66;direction:ltr;text-align:right">' + e(url) + '</p>' : '') +
+      (must ? '<p style="margin:0 0 8px;color:#9a6f00">سيُطلب منك اختيار كلمة مرور خاصة بك عند أول دخول.</p>' : '') +
+      '<p style="margin:0;font-size:12px;color:#888">لا تشارك هذه البيانات مع أحد. إن لم تطلب هذا الحساب فتجاهل الرسالة وأبلغ المشرف العام.</p></div></div>';
+    MailApp.sendEmail({ to: to, subject: 'نافذ: ' + title + ' — ' + orgName, htmlBody: html, name: 'منصة نافذ' });
+    return true;
+  } catch (err) { console.error(err); return false; }
+}
+
+
+/* ---------- المؤسسات: الكشاف والإضافة والاستيراد (للمشرف العام) ---------- */
+const ORG_FIELDS = [
+  ['name', 'اسم المؤسسة', 120, true], ['code', 'الرمز المختصر', 12, true], ['type', 'نوع الكيان', 40], ['license', 'رقم الترخيص', 40],
+  ['licenseExpiry', 'انتهاء الترخيص', 10], ['founded', 'تاريخ التأسيس', 10], ['region', 'المنطقة', 60], ['city', 'المدينة', 60],
+  ['address', 'العنوان', 200], ['phone', 'الهاتف', 20], ['email', 'البريد', 120], ['website', 'الموقع', 200],
+  ['manager', 'المدير التنفيذي', 80], ['managerPhone', 'جوال المدير', 20], ['managerEmail', 'بريد المدير', 120],
+  ['chair', 'رئيس مجلس الإدارة', 80], ['bank', 'البنك', 60], ['iban', 'الآيبان', 34], ['employees', 'عدد الموظفين', 6],
+  ['beneficiaries', 'عدد المستفيدين', 8], ['notes', 'ملاحظات', 1000],
+  ['sector', 'القطاع', 40], ['vision', 'الرؤية', 600], ['mission', 'الرسالة', 800], ['goals', 'الأهداف', 2000],
+  ['areas', 'مجالات العمل', 600], ['branches', 'الفروع والمواقع', 1500], ['mapUrl', 'رابط الموقع على الخريطة', 400], ['district', 'الحي', 80], ['postal', 'الرمز البريدي', 10]
+];
+function orgPublic_(o) {
+  const c = JSON.parse(JSON.stringify(o)); delete c._row; delete c.settings; return c;
+}
+function cleanOrg_(p, existing) {
+  const o = existing ? JSON.parse(JSON.stringify(existing)) : {};
+  ORG_FIELDS.forEach(function (f) {
+    if (p[f[0]] === undefined) return;
+    let v = p[f[0]]; if (typeof v === 'number') v = String(v);
+    o[f[0]] = str_(v, f[2]);
+  });
+  o.code = String(o.code || '').toUpperCase();
+  if (!o.name) throw err_('VALIDATION', 'اكتب اسم المؤسسة.', 'name');
+  if (!/^[A-Z][A-Z0-9]{1,11}$/.test(o.code)) throw err_('VALIDATION', 'الرمز المختصر حروف إنجليزية كبيرة وأرقام (2–12)، ويبدأ بحرف.', 'code');
+  const dup = orgByCode_(o.code); if (dup && (!existing || dup.id !== existing.id)) throw err_('VALIDATION', 'الرمز «' + o.code + '» مستخدم لمؤسسة أخرى.', 'code');
+  if (o.type && ORG_TYPES.indexOf(o.type) < 0) o.type = 'أخرى';
+  if (o.sector && ORG_SECTORS.indexOf(o.sector) < 0) o.sector = '';
+  if (o.areas) o.areas = o.areas.split(/[،,;|\n]+/).map(function (x) { return x.trim(); }).filter(function (x, i, a) { return x && ORG_AREAS.indexOf(x) >= 0 && a.indexOf(x) === i; }).join('، ');
+  if (o.mapUrl && !/^https?:\/\//.test(o.mapUrl)) throw err_('VALIDATION', 'رابط الخريطة يبدأ بـ https://', 'mapUrl');
+  if (o.postal && !/^\d{5}$/.test(o.postal)) throw err_('VALIDATION', 'الرمز البريدي 5 أرقام.', 'postal');
+  if (o.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(o.email)) throw err_('VALIDATION', 'صيغة بريد المؤسسة غير صحيحة.', 'email');
+  if (o.managerEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(o.managerEmail)) throw err_('VALIDATION', 'صيغة بريد المدير غير صحيحة.', 'managerEmail');
+  ['phone', 'managerPhone'].forEach(function (k) { if (o[k] && !/^0\d{8,11}$|^\+?\d{9,15}$/.test(o[k].replace(/[\s-]/g, ''))) throw err_('VALIDATION', 'رقم هاتف غير صحيح في «' + (k === 'phone' ? 'الهاتف' : 'جوال المدير') + '».', k); });
+  ['licenseExpiry', 'founded'].forEach(function (k) { if (o[k] && !date_(o[k])) throw err_('VALIDATION', 'التاريخ بصيغة YYYY-MM-DD.', k); });
+  ['employees', 'beneficiaries'].forEach(function (k) { if (o[k] && !/^\d+$/.test(o[k])) throw err_('VALIDATION', 'أدخل رقمًا صحيحًا.', k); });
+  if (o.iban) { o.iban = o.iban.replace(/\s/g, '').toUpperCase(); if (!/^SA\d{22}$/.test(o.iban)) throw err_('VALIDATION', 'الآيبان السعودي يبدأ بـ SA ويتكون من 24 خانة.', 'iban'); }
+  return o;
+}
+/** ينشئ مؤسسة جديدة ومسؤولها الأول بكلمة مرور تلقائية. */
+function createOrg_(me, p) {
+  const o = cleanOrg_(p, null);
+  o.id = 'o' + Utilities.getUuid().replace(/-/g, '').slice(0, 10);
+  o.status = 'active'; o.created = now_();
+  o.settings = { threshold: 5000, sod: false, notify: true, publicStats: true };
+  let un = normUser_(p.adminUsername || (o.code.toLowerCase() + '.admin'));
+  if (!/^[a-z0-9._-]{3,30}$/.test(un)) throw err_('VALIDATION', 'اسم مستخدم المسؤول غير صالح.', 'adminUsername');
+  if (findUser_(un)) throw err_('VALIDATION', 'اسم المستخدم «' + un + '» موجود. اختر اسمًا آخر للمسؤول.', 'adminUsername');
+  // كلمة المرور: يكتبها المشرف العام أو تُولَّد تلقائيًا
+  const manual = typeof p.adminPassword === 'string' && p.adminPassword !== '';
+  const pw = manual ? p.adminPassword : tempPassword_();
+  if (manual) { try { checkPolicy_(pw); } catch (e) { e.field = 'adminPassword'; throw e; } }
+  const must = p.adminMustChange !== false;
+  const aEmail = str_(p.adminEmail, 120) || o.managerEmail || o.email || '';
+  if (aEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(aEmail)) throw err_('VALIDATION', 'صيغة بريد المسؤول غير صحيحة.', 'adminEmail');
+  const aName = str_(p.adminName, 80) || o.manager || ('مسؤول ' + o.name);
+  saveOrgRow_(o);
+  const aPhone = str_(p.adminPhone, 24).replace(/[\s-]/g, '').replace(/^\+?966/, '0') || (/^05\d{8}$/.test(String(o.managerPhone || '')) ? o.managerPhone : '');
+  if (aPhone && !/^05\d{8}$/.test(aPhone)) throw err_('VALIDATION', 'جوال المسؤول يبدأ بـ 05 ويتكون من 10 أرقام.', 'adminPhone');
+  addUser_({ username: un, name: aName, email: aEmail, role: 'admin', depts: '', password: pw, mustChange: must, org: o.id, phone: aPhone });
+  const emailed = p.sendEmail !== false && aEmail ? sendCredentials_(aEmail, aName, o, un, pw, must, 'welcome') : false;
+  audit_(me.username, 'إضافة مؤسسة', '', '', o.code + ' · ' + o.name + (emailed ? ' · أُرسلت بيانات الدخول إلى ' + aEmail : ''));
+  return { org: orgPublic_(o), admin: { username: un, name: aName, email: aEmail, phone: aPhone, password: pw, mustChange: must, emailed: emailed } };
+}
+function actSaveOrg_(me, p) {
+  if (!p.id) return createOrg_(me, p);
+  const ex = getOrg_(str_(p.id, 40)); if (!ex) throw err_('NOTFOUND', 'المؤسسة غير موجودة.');
+  const o = cleanOrg_(p, ex);
+  saveOrgRow_(o);
+  audit_(me.username, 'تعديل مؤسسة', '', '', o.code + ' · ' + o.name);
+  return { org: orgPublic_(o) };
+}
+function actImportOrgs_(me, p) {
+  const rows = Array.isArray(p.rows) ? p.rows.slice(0, 500) : [];
+  const done = [], errors = [];
+  rows.forEach(function (r, i) {
+    try { const x = createOrg_(me, Object.assign({}, r || {}, { sendEmail: p.sendEmail !== false })); done.push({ row: i + 2, name: x.org.name, code: x.org.code, username: x.admin.username, password: x.admin.password, email: x.admin.email, phone: x.admin.phone, emailed: x.admin.emailed }); }
+    catch (e) { errors.push({ row: i + 2, name: str_(r && r.name, 120), message: e.message }); }
+  });
+  audit_(me.username, 'استيراد مؤسسات', '', '', done.length + ' مضافة · ' + errors.length + ' مرفوضة');
+  return { done: done, errors: errors };
+}
+function actListOrgs_() {
+  const all = loadAllRecords_(), users = table_('users').rows;
+  const thisYear = String(new Date().getFullYear());
+  const today = now_().slice(0, 10);
+  return loadOrgs_().map(function (o) {
+    const R = all.filter(function (r) { return r.org === o.id && !r.deleted; });
+    const open = R.filter(function (r) { return OPEN.indexOf(r.status) >= 0; });
+    const U = users.filter(function (u) { return String(u.org || MAIN_ORG) === o.id; });
+    const last = R.reduce(function (a, r) { return r.updated > a ? r.updated : a; }, '');
+    const x = orgPublic_(o);
+    x.stats = {
+      users: U.length, activeUsers: U.filter(function (u) { return u.active === true || u.active === 'TRUE'; }).length,
+      admins: U.filter(function (u) { return u.role === 'admin'; }).map(function (u) { return String(u.username); }),
+      records: R.length, open: open.length, pending: R.filter(function (r) { return r.status === 'بانتظار الاعتماد'; }).length,
+      late: open.filter(function (r) { return r.due && r.due < today; }).length,
+      done: R.filter(function (r) { return r.status === 'مكتمل'; }).length,
+      donations: R.filter(function (r) { return r.g === 6 && r.status === 'مكتمل' && String(r.date).indexOf(thisYear) === 0; }).reduce(function (a, r) { return a + recSum_(r); }, 0),
+      expenses: R.filter(function (r) { return r.g === 7 && r.status === 'مكتمل' && String(r.date).indexOf(thisYear) === 0; }).reduce(function (a, r) { return a + recSum_(r); }, 0),
+      beneficiaries: R.filter(function (r) { return r.g === 10; }).length,
+      lastActivity: last
+    };
+    return x;
+  });
 }
 
 /* ---------- المرفقات ---------- */
@@ -894,7 +1209,7 @@ function actImport_(me, p) {
  * التدقيق والإشعارات والنسخ الاحتياطي
  * ===================================================================== */
 function audit_(user, action, id, no, detail) {
-  try { sheet_('audit').appendRow([now_(), user || '', action, id || '', no || '', String(detail || '').slice(0, 500)]); } catch (e) { }
+  try { sheet_('audit').appendRow([now_(), user || '', action, id || '', no || '', String(detail || '').slice(0, 500), CUR_ORG || '']); } catch (e) { }
 }
 function needAdmin_(me) { if (me.role !== 'admin') throw err_('FORBIDDEN', 'هذا الإجراء لمسؤولي النظام فقط.'); }
 
@@ -909,7 +1224,7 @@ function notifyUser_(username, r, subject, note) {
 function notifyAdmins_(r, subject) {
   try {
     if (!getSettings_().notify) return;
-    table_('users').rows.filter(function (u) { return u.role === 'admin' && u.email && (u.active === true || u.active === 'TRUE'); })
+    table_('users').rows.filter(function (u) { return u.role === 'admin' && u.email && (u.active === true || u.active === 'TRUE') && String(u.org || MAIN_ORG) === (r.org || MAIN_ORG); })
       .forEach(function (u) { sendMail_(String(u.email), subject, r, ''); });
   } catch (e) { }
 }
@@ -956,15 +1271,17 @@ function dailyBackup() {
  * ===================================================================== */
 const WEBSITE_ME = { username: 'website', name: 'الموقع الإلكتروني', role: 'contributor', depts: [] };
 /** مستدعاة من صفحة الموقع العامة عبر google.script.run (بلا جلسة). */
-function sitePublic() { const d = publicData_(); try { d.appUrl = ScriptApp.getService().getUrl(); } catch (e) { } return d; }
-function siteSubmit(p) { return publicSubmit_(p || {}); }
+function siteOrg_(code) { migrate_(); const o = code ? orgByCode_(code) : getOrg_(MAIN_ORG); if (!o || o.status !== 'active') return null; CUR_ORG = o.id; return o; }
+function sitePublic(code) { const o = siteOrg_(code); if (!o) return { ok: false, reason: 'no-org' }; const d = publicData_(); try { d.appUrl = ScriptApp.getService().getUrl(); } catch (e) { } d.code = o.code; return d; }
+function siteSubmit(p) { p = p || {}; if (!siteOrg_(p.org)) return { ok: false, message: 'الجمعية غير متاحة.' }; return publicSubmit_(p); }
 function getSettingsSafe_() { try { return PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID') ? getSettings_() : {}; } catch (e) { return {}; } }
 function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
 function publicData_() {
   try {
     if (!PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID')) return { ok: false, reason: 'not-ready' };
     const cache = CacheService.getScriptCache();
-    const hit = cache.get('public_v1');
+    const ck = 'public_v1_' + (CUR_ORG || MAIN_ORG);
+    const hit = cache.get(ck);
     if (hit) return JSON.parse(hit);
     const cfg = getSettings_();
     const R = loadRecords_().filter(function (r) { return !r.deleted; });
@@ -988,14 +1305,14 @@ function publicData_() {
       };
     }
     const out = { ok: true, org: cfg.orgName || '', city: cfg.siteCity || '', phone: cfg.sitePhone || '', email: cfg.siteEmail || '', about: cfg.siteAbout || '', news: news, programs: programs, partners: partners, stats: stats, at: now_() };
-    cache.put('public_v1', JSON.stringify(out), 300);
+    cache.put(ck, JSON.stringify(out), 300);
     return out;
   } catch (e) { console.error(e); return { ok: false, reason: 'error' }; }
 }
 function doPost(e) {
   let p = {};
   try { p = JSON.parse((e && e.postData && e.postData.contents) || '{}'); } catch (x) { return json_({ ok: false, message: 'طلب غير صالح.' }); }
-  return json_(publicSubmit_(p));
+  return json_(siteSubmit(p));
 }
 function publicSubmit_(p) {
   try {

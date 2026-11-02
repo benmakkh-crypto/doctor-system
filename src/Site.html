@@ -374,9 +374,13 @@ var dH=function(d){try{return new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqu
 var GAS=!!(window.google&&google.script&&google.script.run);
 function call(fn,arg){
   if(GAS)return new Promise(function(res,rej){var r=google.script.run.withSuccessHandler(res).withFailureHandler(rej);arg===undefined?r[fn]():r[fn](arg)});
-  if(fn==="sitePublic")return fetch(ENDPOINT+"?api=public").then(function(r){return r.json()});
+  if(fn==="sitePublic")return fetch(ENDPOINT+"?api=public"+(arg?"&org="+encodeURIComponent(arg):"")).then(function(r){return r.json()});
   return fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(arg)}).then(function(r){return r.json()});
 }
+var ORG="";
+// رمز المؤسسة من الرابط: ?org=CODE (داخل Apps Script عبر google.script.url)
+function getOrgCode(cb){try{if(GAS&&google.script.url&&google.script.url.getLocation){google.script.url.getLocation(function(l){cb((l&&l.parameter&&l.parameter.org)||"")});return}}catch(e){}
+  var m=/[?&]org=([A-Za-z0-9]+)/.exec(location.search);cb(m?m[1]:"")}
 var DATA={programs:[],news:[]};var COLORS=["#c2334d","#0f766e","#5b4bc4","#b98a14","#3157b8","#0e4d3f"];var PICONS=["i-box","i-leaf","i-heart","i-users","i-book","i-hand"];
 
 /* ---------- عرض المحتوى ---------- */
@@ -450,7 +454,7 @@ function submit(e){
   if(curTab==="aid"&&!p.kind)return setErr(f,"kind","اختر نوع الإعانة.");
   if(curTab==="contact"&&p.message.length<5)return setErr(f,"message","اكتب رسالتك.");
   var b=$("button[type=submit]",f);b.disabled=true;b.lastChild.textContent="جارٍ الإرسال…";
-  call("siteSubmit",p).then(function(r){
+  p.org=ORG;call("siteSubmit",p).then(function(r){
     if(r&&r.ok){f.innerHTML='<div class="done"><span class="ok"><svg><use href="#i-check"/></svg></span><h3>وصل طلبك، جزاك الله خيرًا</h3><p style="margin:0;color:var(--muted)">احتفظ بالرقم المرجعي لمتابعة طلبك. سيتواصل معك فريق الجمعية قريبًا.</p>'+(r.no?'<span class="ref">'+esc(r.no)+'</span>':"")+'<button class="btn sm line" type="button" id="again">إرسال طلب آخر</button></div>';$("#again").onclick=function(){openTab(curTab)};return}
     b.disabled=false;b.lastChild.textContent="إرسال";
     if(r&&r.field&&setErr(f,r.field,r.message))return;
@@ -474,7 +478,7 @@ $("#yr").textContent=new Date().getFullYear();
 function staffLink(url){["#staff","#staff2"].forEach(function(s){var a=$(s);a.href=url;a.target="_top"})}
 staffLink(window.__DEMO__?"../":ENDPOINT);
 openTab("donate");observe();
-call("sitePublic").then(function(d){if(d&&d.ok){paint(d);if(d.appUrl&&!window.__DEMO__)staffLink(d.appUrl)}else paint(null)}).catch(function(){paint(null)});
+getOrgCode(function(code){ORG=code;call("sitePublic",code||undefined).then(function(d){if(d&&d.ok){paint(d);if(d.appUrl&&!window.__DEMO__)staffLink(d.appUrl)}else paint(null)}).catch(function(){paint(null)})});
 })();
 </script>
 </body>

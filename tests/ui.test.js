@@ -8,8 +8,8 @@ const OUT = __dirname + "/shots/"; fs.mkdirSync(OUT, { recursive: true });
   // seed: change admin pw + samples so the app opens in a working state
   let T = A.login("zubair", pw, false).data.token;
   A.api(T, "changePassword", { current: pw, next: "Admin2026pass" });
-  A.api(T, "addSamples");
-  A.api(T, "saveSettings", { orgName: "جمعية البر الخيرية (تجربة)", threshold: 5000, sod: false, notify: true });
+  A.api(T, "addSamples", { __org: "main" });
+  A.api(T, "saveSettings", { __org: "main", orgName: "جمعية البر الخيرية (تجربة)", threshold: 5000, sod: false, notify: true });
   const sara = A.api(T, "saveUser", { username: "sara", name: "سارة القحطاني", role: "contributor", depts: [6, 10] }).data.password;
 
   const html = fs.readFileSync(require("path").join(__dirname, "../src/Index.html"), "utf8");
@@ -21,7 +21,7 @@ const OUT = __dirname + "/shots/"; fs.mkdirSync(OUT, { recursive: true });
     p.on("pageerror", e => errors.push("pageerror: " + e.message));
     p.on("console", m => { if (m.type() === "error" && !/fonts|ERR_|net::/.test(m.text())) errors.push("console: " + m.text()) });
     await p.exposeFunction("__gas", (fn, args) => JSON.stringify(A[fn](...JSON.parse(args)) ?? null));
-    await p.addInitScript(() => {
+    await p.addInitScript(() => { try { localStorage.setItem("ds.org", "main"); } catch (e) { }
       const mk = h => new Proxy({}, { get(_, k) {
         if (k === "withSuccessHandler") return f => mk({ ...h, s: f });
         if (k === "withFailureHandler") return f => mk({ ...h, f });
