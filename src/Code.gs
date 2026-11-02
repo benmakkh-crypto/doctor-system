@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.0.0';
+const APP_VERSION = '4.1.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -22,7 +22,7 @@ const SH = {
   orgs: 'المؤسسات'
 };
 const HEAD = {
-  users: ['username', 'name', 'email', 'role', 'depts', 'active', 'salt', 'hash', 'failed', 'lockedUntil', 'mustChange', 'lastLogin', 'created', 'org', 'prefs', 'phone'],
+  users: ['username', 'name', 'email', 'role', 'depts', 'active', 'salt', 'hash', 'failed', 'lockedUntil', 'mustChange', 'lastLogin', 'created', 'org', 'prefs', 'phone', 'caps'],
   records: ['id', 'no', 'g', 'm', 'status', 'deleted', 'updated', 'json'],
   decisions: ['id', 's', 'by', 'at', 'amt', 'note'],
   settings: ['key', 'value'],
@@ -39,7 +39,7 @@ const HEAD = {
  */
 let CUR_ORG = null;
 const MAIN_ORG = 'main';
-const ORG_KEYS = ['orgName', 'threshold', 'sod', 'notify', 'siteUrl', 'siteCity', 'sitePhone', 'siteEmail', 'siteAbout', 'publicStats', 'nav', 'layout'];
+const ORG_KEYS = ['orgName', 'threshold', 'sod', 'notify', 'siteUrl', 'siteCity', 'sitePhone', 'siteEmail', 'siteAbout', 'publicStats', 'nav', 'layout', 'siteTheme', 'siteDraft', 'sysTheme'];
 const ORG_TYPES = ['جمعية خيرية', 'مؤسسة أهلية', 'جمعية تعاونية', 'جمعية مهنية', 'وقف', 'شركة غير ربحية', 'شركة', 'جهة حكومية', 'أخرى'];
 const ORG_SECTORS = ['القطاع غير الربحي', 'القطاع الخاص', 'القطاع الحكومي', 'القطاع الوقفي'];
 const ORG_AREAS = ['اجتماعي وأسري', 'إغاثي', 'صحي', 'تعليمي', 'ديني ودعوي', 'تحفيظ القرآن', 'تنموي وتمكين', 'إسكاني', 'بيئي', 'ثقافي', 'شبابي ورياضي', 'رعاية الأيتام', 'ذوي الإعاقة', 'كبار السن', 'المرأة والطفل', 'تقني', 'مهني', 'إعلامي'];
@@ -261,8 +261,14 @@ function saveOrgRow_(o) {
 /** ترحيل لمرة واحدة إلى تعدد المؤسسات: ينشئ «المؤسسة الرئيسية» وينقل إليها الإعدادات والمستخدمين. آمن عند التكرار. */
 function migrate_() {
   const props = PropertiesService.getScriptProperties();
-  if (props.getProperty('SCHEMA_V') === '2') return;
+  if (props.getProperty('SCHEMA_V') === '3') return;
   const ss = ss_();
+  if (props.getProperty('SCHEMA_V') === '2') {
+    const us = ss.getSheetByName(SH.users);
+    us.getRange(1, 1, 1, HEAD.users.length).setValues([HEAD.users]).setFontWeight('bold').setBackground('#0b4639').setFontColor('#ffffff');
+    props.setProperty('SCHEMA_V', '3');
+    return;
+  }
   let s = ss.getSheetByName(SH.orgs);
   if (!s) s = ss.insertSheet(SH.orgs);
   ['users', 'audit', 'orgs'].forEach(function (k) {
@@ -283,7 +289,7 @@ function migrate_() {
     if (String(u.org || '')) return;
     setUserCells_(u._row, { org: normUser_(u.username) === FIRST_ADMIN.username ? '*' : MAIN_ORG });
   });
-  props.setProperty('SCHEMA_V', '2');
+  props.setProperty('SCHEMA_V', '3');
 }
 
 /* =====================================================================
@@ -344,7 +350,7 @@ function publicUser_(u) {
     username: String(u.username), name: String(u.name), email: String(u.email || ''), role: String(u.role),
     roleName: ROLES[u.role] || u.role, depts: parseDepts_(u.depts), active: u.active === true || u.active === 'TRUE',
     lastLogin: u.lastLogin ? String(u.lastLogin) : '', mustChange: u.mustChange === true || u.mustChange === 'TRUE',
-    org: String(u.org || MAIN_ORG), phone: String(u.phone || '')
+    org: String(u.org || MAIN_ORG), phone: String(u.phone || ''), caps: parseCaps_(u.caps)
   };
 }
 function parseDepts_(d) {
@@ -453,7 +459,7 @@ function api(token, action, payload) {
   } catch (e) { return fail_(e); }
 }
 /** إجراءات تحتاج مؤسسة محددة (لا تُنفذ في عرض «كل المؤسسات»). */
-const ORG_REQUIRED = ['create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash'];
+const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash'];
 function isPlatform_(me) { return me.role === 'admin' && me.org === '*'; }
 /** عضو المنصة: حساب على مستوى نافذ (org = '*') بأي دور؛ المشاهد منهم يطّلع على كل المؤسسات دون أي تعديل. */
 function isPlatformMember_(me) { return me.org === '*'; }
@@ -470,7 +476,7 @@ function inUserScope_(me, u) {
   if (isPlatform_(me)) return CUR_ORG === '*' || uo === CUR_ORG || uo === '*';
   return uo === me.org;
 }
-const WRITE_ACTIONS = ['saveOrg', 'setOrgStatus', 'importOrgs', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+const WRITE_ACTIONS = ['saveOrg', 'setOrgStatus', 'importOrgs', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -555,6 +561,30 @@ const ACTIONS = {
     if (j.length > 40000) throw err_('VALIDATION', 'إعدادات العرض كبيرة جدًا.');
     const u = findUser_(me.username); setUserCells_(u._row, { prefs: j });
     return { ok: true };
+  },
+  /** قالب الموقع (مسودة أو نشر) ومظهر النظام للمؤسسة */
+  saveTheme: function (me, p) {
+    const kind = p.kind === 'sys' ? 'sys' : 'site';
+    if (kind === 'sys') {
+      if (capLevel_(me, 'sys.theme') < 2) throw err_('FORBIDDEN', 'ليست لديك صلاحية تغيير مظهر النظام.');
+      const t = p.theme ? { tpl: str_(p.theme.tpl, 30) } : null;
+      if (t && !/^[a-z0-9-]{1,30}$/.test(t.tpl)) throw err_('VALIDATION', 'مظهر غير صحيح.');
+      putSetting_('sysTheme', t);
+      audit_(me.username, 'تغيير مظهر النظام', '', '', t ? t.tpl : 'الافتراضي');
+      return { sysTheme: t };
+    }
+    const lv = capLevel_(me, 'site.tpl');
+    if (lv < 2) throw err_('FORBIDDEN', 'ليست لديك صلاحية تعديل قالب الموقع.');
+    if (p.publish && lv < 3) throw err_('FORBIDDEN', 'ليست لديك صلاحية نشر قالب الموقع. احفظه مسودةً ليعتمده المسؤول.');
+    const t = p.theme === null ? null : cleanTheme_(p.theme);
+    if (t && JSON.stringify(t).length > 6000) throw err_('VALIDATION', 'إعدادات القالب كبيرة جدًا.');
+    putSetting_('siteDraft', t ? Object.assign({ by: me.username, at: now_() }, t) : null);
+    if (p.publish) {
+      putSetting_('siteTheme', t);
+      try { CacheService.getScriptCache().remove('public_v1_' + (CUR_ORG || MAIN_ORG)); } catch (e) { }
+    }
+    audit_(me.username, p.publish ? 'نشر قالب الموقع' : 'حفظ مسودة قالب الموقع', '', '', t ? t.tpl : 'القالب الافتراضي');
+    return { siteDraft: t, siteTheme: p.publish ? t : undefined };
   },
   saveLayout: function (me, p) {
     needAdmin_(me);
@@ -642,6 +672,66 @@ function loadDecisions_() {
   table_('decisions').rows.forEach(function (r) { o[String(r.id)] = { s: String(r.s), by: String(r.by), at: String(r.at), amt: Number(r.amt), note: String(r.note || '') }; });
   return o;
 }
+
+/* ---------- صلاحيات الأجزاء: الموقع الإلكتروني والقوالب ومظهر النظام ----------
+ * المستويات: 0 لا يرى، 1 اطلاع، 2 تعديل، 3 تعديل ونشر.
+ * المسؤول يملك كل شيء. للمساهم والمشاهد قيم افتراضية، ويغيّرها المسؤول لكل مستخدم. */
+const WEB_DEPT = 3;
+const PARTS = {
+  'site.tpl': { n: 'قوالب الموقع وهويته', max: 3, def: { contributor: 1, viewer: 1 } },
+  'site.content': { n: 'محتوى الموقع', max: 2, mods: [0, 1, 4, 5, 7, 8, 9, 10], def: { contributor: 2, viewer: 1 } },
+  'site.forms': { n: 'النماذج والخدمات الإلكترونية', max: 2, mods: [2, 3, 6, 15], def: { contributor: 2, viewer: 1 } },
+  'site.design': { n: 'تصميم الموقع وظهوره', max: 2, mods: [11, 12, 13, 14], def: { contributor: 1, viewer: 1 } },
+  'sys.theme': { n: 'مظهر النظام', max: 2, def: { contributor: 0, viewer: 0 } }
+};
+function parseCaps_(v) {
+  let o = {}; try { o = v ? (typeof v === 'string' ? JSON.parse(v) : v) : {}; } catch (e) { o = {}; }
+  const out = {};
+  Object.keys(PARTS).forEach(function (k) { const n = Number(o && o[k]); if (isFinite(n) && n >= 0 && n <= PARTS[k].max && o[k] !== '' && o[k] != null) out[k] = n; });
+  return out;
+}
+function capLevel_(me, part) {
+  const P = PARTS[part]; if (!P) return 0;
+  if (me.role === 'admin') return P.max;
+  if (me.username === WEBSITE_ME.username) return 2;
+  if (String(part).indexOf('site.') === 0 && !canSeeDept_(me, WEB_DEPT)) return 0;
+  const c = me.caps || {};
+  const lv = c[part] != null ? c[part] : (P.def[me.role] || 0);
+  return me.role === 'viewer' ? Math.min(lv, 1) : lv;
+}
+function partOfMod_(m) {
+  const ks = Object.keys(PARTS);
+  for (let i = 0; i < ks.length; i++) { const P = PARTS[ks[i]]; if (P.mods && P.mods.indexOf(+m) >= 0) return ks[i]; }
+  return null;
+}
+/** هل يرى المستخدم هذه المعاملة؟ الإدارة أولًا، ثم جزء الموقع إن كانت من الموقع. */
+function canSeeRec_(me, r) {
+  if (!canSeeDept_(me, r.g)) return false;
+  if (+r.g === WEB_DEPT) { const pt = partOfMod_(r.m); if (pt && capLevel_(me, pt) < 1) return false; }
+  return true;
+}
+function needPartEdit_(me, g, m) {
+  if (+g !== WEB_DEPT) return;
+  const pt = partOfMod_(m);
+  if (pt && capLevel_(me, pt) < 2) throw err_('FORBIDDEN', 'ليست لديك صلاحية تعديل «' + PARTS[pt].n + '».');
+}
+function capsOut_(me) { const o = {}; Object.keys(PARTS).forEach(function (k) { o[k] = capLevel_(me, k); }); return o; }
+const THEME_KEYS = ['tpl', 'g', 'g2', 'g3', 'gold', 'gold2', 'bg', 'hero', 'card', 'font', 'pat', 'radius', 'head', 'order', 'hide', 'heroTitle', 'heroLead'];
+function cleanTheme_(t) {
+  if (!t || typeof t !== 'object') return null;
+  const o = {};
+  THEME_KEYS.forEach(function (k) {
+    const v = t[k]; if (v == null || v === '') return;
+    if (k === 'order' || k === 'hide') { if (Array.isArray(v)) o[k] = v.slice(0, 12).map(function (x) { return str_(x, 20); }); return; }
+    if (k === 'radius') { const n = Number(v); if (isFinite(n) && n >= 0 && n <= 32) o[k] = n; return; }
+    if (['g', 'g2', 'g3', 'gold', 'gold2', 'bg'].indexOf(k) >= 0) { if (/^#[0-9a-fA-F]{6}$/.test(String(v))) o[k] = String(v); return; }
+    if (k === 'heroTitle') { o[k] = str_(v, 120); return; }
+    if (k === 'heroLead') { o[k] = str_(v, 400); return; }
+    if (/^[a-z0-9-]{1,30}$/.test(String(v))) o[k] = String(v);
+  });
+  if (!o.tpl) throw err_('VALIDATION', 'اختر قالبًا.');
+  return o;
+}
 function canSeeDept_(me, g) { return me.role === 'admin' || !me.depts.length || me.depts.indexOf(+g) >= 0; }
 function maskRec_(r) {
   const c = JSON.parse(JSON.stringify(r));
@@ -656,7 +746,7 @@ function maskRec_(r) {
 }
 function clean_(r) { const c = JSON.parse(JSON.stringify(r)); delete c._row; return c; }
 function bootstrap_(me) {
-  const recs = loadRecords_().filter(function (r) { return canSeeDept_(me, r.g); }).map(function (r) { return clean_(me.role === 'viewer' ? maskRec_(r) : r); });
+  const recs = loadRecords_().filter(function (r) { return canSeeRec_(me, r); }).map(function (r) { return clean_(me.role === 'viewer' ? maskRec_(r) : r); });
   const ids = {};
   recs.forEach(function (r) { ids[r.id] = 1; });
   const decAll = loadDecisions_(), dec = {};
@@ -666,7 +756,7 @@ function bootstrap_(me) {
   const urow = findUser_(me.username);
   let prefs = null; try { prefs = urow && urow.prefs ? JSON.parse(urow.prefs) : null; } catch (e) { prefs = null; }
   const orgs = isPlatformMember_(me) ? loadOrgs_().map(orgPublic_) : (getOrg_(me.org) ? [orgPublic_(getOrg_(me.org))] : []);
-  const meOut = clean_(me); meOut.platform = isPlatform_(me); meOut.member = isPlatformMember_(me);
+  const meOut = clean_(me); meOut.platform = isPlatform_(me); meOut.member = isPlatformMember_(me); meOut.parts = capsOut_(me);
   return { me: meOut, scope: CUR_ORG, orgs: orgs, prefs: prefs, settings: getSettings_(), records: recs, decisions: dec, people: people, schema: SCHEMA, version: APP_VERSION, now: now_(), appUrl: (function () { try { return ScriptApp.getService().getUrl(); } catch (e) { return ''; } })() };
 }
 
@@ -684,6 +774,7 @@ function validate_(input, me, existingId) {
   const g = +input.g, m = +input.m;
   if (!(g > 0) || !SCHEMA.G[g] || SCHEMA.G[g].items[m] == null) throw err_('VALIDATION', 'اختر إدارة ووحدة صحيحتين.', 'g');
   if (!canSeeDept_(me, g)) throw err_('FORBIDDEN', 'ليست لديك صلاحية على إدارة ' + SCHEMA.G[g].n + '.');
+  needPartEdit_(me, g, m);
   const out = { g: g, m: m };
   out.title = str_(input.title, L.title);
   if (!out.title) throw err_('VALIDATION', 'اكتب عنوانًا للمعاملة.', 'title');
@@ -768,7 +859,7 @@ function getRec_(me, id, opts) {
   const r = JSON.parse(v[7]); r.id = String(v[0]); r._row = row; if (!r.org) r.org = MAIN_ORG;
   if (CUR_ORG && CUR_ORG !== '*' && r.org !== CUR_ORG) throw err_('NOTFOUND', 'المعاملة غير موجودة.');
   if (CUR_ORG === '*') CUR_ORG = r.org; // المشرف العام يعمل على المعاملة في سياق مؤسستها
-  if (!canSeeDept_(me, r.g)) throw err_('FORBIDDEN', 'ليست لديك صلاحية على هذه الإدارة.');
+  if (!canSeeRec_(me, r)) throw err_('FORBIDDEN', 'ليست لديك صلاحية على هذه المعاملة.');
   if (r.deleted && !(opts && opts.allowDeleted)) throw err_('VALIDATION', 'المعاملة في المحذوفات. استعدها أولًا.');
   return r;
 }
@@ -999,6 +1090,7 @@ function actSaveUser_(me, p) {
       if (admins.length <= 1) throw err_('VALIDATION', 'يجب أن يبقى مسؤول نظام واحد على الأقل.');
     }
     const cells = { name: name, email: email, role: p.role, depts: depts, active: p.active !== false, phone: phone };
+    if (p.caps !== undefined) cells.caps = JSON.stringify(parseCaps_(p.caps));
     if (isPlatform_(me) && str_(p.org, 40) && uname !== me.username) cells.org = org;
     setUserCells_(u._row, cells);
     audit_(me.username, 'تعديل مستخدم', '', '', uname + ' · ' + ROLES[p.role] + (p.active === false ? ' · موقوف' : ''));
@@ -1305,7 +1397,7 @@ function publicData_() {
         projects: R.filter(function (r) { return r.g === 4; }).length
       };
     }
-    const out = { ok: true, org: cfg.orgName || '', city: cfg.siteCity || '', phone: cfg.sitePhone || '', email: cfg.siteEmail || '', about: cfg.siteAbout || '', news: news, programs: programs, partners: partners, stats: stats, at: now_() };
+    const out = { ok: true, org: cfg.orgName || '', city: cfg.siteCity || '', phone: cfg.sitePhone || '', email: cfg.siteEmail || '', about: cfg.siteAbout || '', news: news, programs: programs, partners: partners, stats: stats, theme: cfg.siteTheme || null, at: now_() };
     cache.put(ck, JSON.stringify(out), 300);
     return out;
   } catch (e) { console.error(e); return { ok: false, reason: 'error' }; }

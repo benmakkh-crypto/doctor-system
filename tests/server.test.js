@@ -219,6 +219,26 @@ ok(rs.ok && rs.data.mustChange === true && A.login("pw.manual", "NewOne2026").da
 ok(AM(T, "resetPassword", { username: "pw.manual", password: "abc" }).code === "VALIDATION", "reset enforces password policy");
 const ra = AM(T, "resetPassword", { username: "pw.manual" });
 ok(ra.ok && ra.data.password.length >= 12 && A.login("pw.manual", ra.data.password).ok, "auto-generated reset still works");
+// --- part permissions: website parts, templates and system theme
+ok(AM(T, "saveUser", { username: "webby", name: "محرر الموقع", role: "contributor", depts: [3], password: "Webby2026pass", mustChange: false }).ok, "web contributor created");
+const WT = A.login("webby", "Webby2026pass").data.token; const WM = (a, p) => A.api(WT, a, Object.assign({ __org: "main" }, p || {}));
+let wb = WM("bootstrap").data;
+ok(wb.me.parts["site.tpl"] === 1 && wb.me.parts["site.content"] === 2 && wb.me.parts["sys.theme"] === 0, "contributor default part levels");
+ok(WM("saveTheme", { kind: "site", theme: { tpl: "oasis-arch" } }).code === "FORBIDDEN", "view-only template level cannot save");
+ok(WM("saveTheme", { kind: "sys", theme: { tpl: "royal" } }).code === "FORBIDDEN", "system theme needs its own part");
+ok(AM(T, "saveUser", { username: "webby", name: "محرر الموقع", role: "contributor", depts: [3], caps: { "site.tpl": 2, "site.content": 0, "bogus": 3 } }).ok, "admin sets part levels");
+wb = WM("bootstrap").data;
+ok(wb.me.parts["site.tpl"] === 2 && wb.me.parts["site.content"] === 0, "part levels applied (" + JSON.stringify(wb.me.parts) + ")");
+ok(!wb.records.some(x => x.g === 3 && [0, 1, 4, 5, 7, 8, 9, 10].includes(x.m)), "hidden part's records are not sent");
+ok(WM("create", { g: 3, m: 5, title: "خبر", date: today }).code === "FORBIDDEN", "cannot create in a hidden part");
+const tdr = WM("saveTheme", { kind: "site", theme: { tpl: "andalus-banner", g: "#123456", gold: "red", radius: 99, order: ["news", "about"] } });
+ok(tdr.ok && tdr.data.siteDraft.g === "#123456" && !tdr.data.siteDraft.gold && tdr.data.siteDraft.radius === undefined, "draft saved and sanitised");
+ok(WM("saveTheme", { kind: "site", theme: { tpl: "andalus-banner" }, publish: true }).code === "FORBIDDEN", "publishing needs the publish level");
+ok(AM(T, "saveTheme", { kind: "site", theme: { tpl: "lazuli-center", hero: "arch" }, publish: true }).ok, "admin publishes template");
+ok(A.sitePublic("MAIN").theme.tpl === "lazuli-center", "public site receives published template");
+ok(A.api(T, "saveTheme", { __org: "*", kind: "site", theme: { tpl: "x" } }).code === "VALIDATION", "template needs an organisation");
+ok(AM(T, "saveTheme", { kind: "sys", theme: { tpl: "royal" } }).ok && AM(T, "bootstrap").data.settings.sysTheme.tpl === "royal", "admin sets system theme for org");
+ok(AM(T, "saveTheme", { kind: "site", theme: null, publish: true }).ok && !A.sitePublic("MAIN").theme, "back to original template");
 A.logout(ST);
 ok(A.api(ST, "bootstrap").code === "AUTH", "logout ends session");
 ok(A.api("forged-token", "bootstrap").code === "AUTH", "forged token rejected");
