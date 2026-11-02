@@ -63,7 +63,7 @@ const OUT = __dirname + "/shots/"; fs.mkdirSync(OUT, { recursive: true });
   await p.click("[data-close] >> nth=-1");
   // create a donation through the form (with validation error first)
   await p.evaluate(() => location.hash = "m6-6"); await p.waitForTimeout(400);
-  await p.click(".head [data-add]"); await p.waitForTimeout(300);
+  await p.click(".dhead [data-add], .head [data-add]"); await p.waitForTimeout(300);
   await p.fill("#f_title", "تبرع تجريبي من الواجهة"); await p.fill("#f_donor", "عبدالله"); await p.fill("#f_amount", "750"); await p.fill("#f_phone", "123");
   await p.click("#saveBtn"); await p.waitForTimeout(300);
   console.log("phone error:", await p.textContent("label[data-f='phone'] .msg"));
