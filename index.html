@@ -954,6 +954,71 @@ td.pc small{display:block;font-size:10.5px;color:var(--muted)}
  .bdg{min-width:18px;padding:0 4px;font-size:10.5px}#addBtn{padding:6px 9px}.usr{padding:2px!important}.uav{width:30px;height:30px}
  .brand small{display:none}.brand b{font-size:15px}.okgrid,.kgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media (max-width:420px){.brand span{display:none}#backBtn{display:none}}
+
+/* ================= القائمة الجانبية: تصميم جديد ================= */
+.side{scrollbar-width:thin;scrollbar-color:rgba(222,178,78,.45) transparent;padding-inline:10px!important}
+.side::-webkit-scrollbar{width:7px}.side::-webkit-scrollbar-thumb{background:rgba(222,178,78,.4);border-radius:9px}
+.side .nav{gap:3px}
+.side .nav a{border-radius:12px;padding:8px 10px;transition:background .2s,transform .2s,box-shadow .2s}
+.side .nav a:hover{background:rgba(255,255,255,.08)}
+.side .nav .gi{width:34px!important;height:34px!important;border-radius:11px!important;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+.side .nav .gi svg{width:18px!important;height:18px!important}
+.side .nav a.on{background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.15))!important;box-shadow:inset -4px 0 0 #deb24e,0 6px 18px rgba(0,0,0,.18)!important}
+.side .nav .cnt:not(:empty){min-width:24px;height:20px;display:inline-grid;place-items:center;border-radius:999px;padding:0 7px!important;font-size:11px;font-weight:700}
+/* البحث */
+.navsrch{position:relative;margin:2px 2px 6px}
+.navsrch>span{position:absolute;inset-block:0;inset-inline-start:12px;display:grid;place-items:center;color:rgba(255,255,255,.5)}.navsrch>span svg{width:16px;height:16px}
+.navsrch input{width:100%;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.18);color:#fff;border-radius:12px;padding:9px 36px;font-size:13px;outline:0;transition:border-color .2s,background .2s,box-shadow .2s}
+.navsrch input::placeholder{color:rgba(255,255,255,.45)}
+.navsrch input:focus{border-color:rgba(222,178,78,.7);background:rgba(0,0,0,.28);box-shadow:0 0 0 3px rgba(222,178,78,.18)}
+.navsrch input::-webkit-search-cancel-button{display:none}
+.navsrch button{position:absolute;inset-block:6px;inset-inline-end:6px;width:26px;border:0;border-radius:8px;background:rgba(255,255,255,.1);color:#fff;font-size:11px}
+.side mark{background:rgba(222,178,78,.35);color:#fff;border-radius:3px;padding:0 1px}
+.navtools{display:flex;gap:4px;align-items:center;padding:0 4px 8px!important}
+.navtools button{display:inline-flex;gap:4px;align-items:center;border:1px solid rgba(255,255,255,.12)!important;border-radius:999px!important;padding:3px 10px!important;font-size:11px!important}
+.navtools button svg{width:12px;height:12px}.navtools button[data-navall="0"] svg{transform:rotate(180deg)}
+.navtools span{margin-inline-start:auto;font-size:11px;color:#deb24e}
+.navnone{display:grid;justify-items:center;gap:2px;padding:20px 8px;color:rgba(255,255,255,.6);text-align:center}.navnone svg{width:26px;height:26px;opacity:.6}.navnone b{color:#fff}
+/* مجموعة الإدارة */
+.side .ng{border-radius:16px;transition:background .3s,box-shadow .3s;margin-bottom:1px}
+.side .ng.open{background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.1));box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.side .ng.cur{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--dc) 55%,rgba(255,255,255,.2))}
+.side .ngh{gap:4px;padding-inline-end:4px}
+.side .ngh a.dl{padding:8px 8px 8px 6px}
+.side .ng .gi{background:linear-gradient(145deg,color-mix(in srgb,var(--dc),#fff 22%),var(--dc))!important;color:#fff!important;box-shadow:0 4px 12px color-mix(in srgb,var(--dc) 40%,transparent),inset 0 0 0 1px rgba(255,255,255,.22)!important}
+.side .ng a.on .gi{box-shadow:0 0 0 2px #deb24e,0 4px 14px color-mix(in srgb,var(--dc) 50%,transparent)!important}
+.dn{display:grid;min-width:0;line-height:1.3;flex:1}
+.dn b{font-size:13.5px;font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dn small{font-size:10.5px;color:rgba(255,255,255,.5);font-weight:400}
+.side .ngh .tg{width:28px!important;height:28px!important;border-radius:50%!important;background:rgba(255,255,255,.06)!important;transition:background .2s,transform .3s!important}
+.side .ngh .tg:hover{background:rgba(255,255,255,.14)!important;color:#fff!important}
+.side .ng.open .ngh .tg{background:color-mix(in srgb,var(--dc) 55%,transparent)!important;color:#fff!important}
+/* الفتح الانسيابي */
+.ngb{display:grid!important;grid-template-rows:0fr;transition:grid-template-rows .32s cubic-bezier(.4,0,.2,1);margin:0!important;padding:0!important}
+.ngb::before{display:none!important}
+.ng.open .ngb{grid-template-rows:1fr}
+.ngi{overflow:hidden;min-height:0;padding:0 8px}
+.ng.open .ngi{padding-bottom:10px}
+/* العنوان الفرعي */
+.nsg{margin-top:8px}
+.nsec{display:flex!important;align-items:center;gap:7px;padding:4px 6px 4px 8px!important;margin:0 2px 2px;border-radius:9px;background:color-mix(in srgb,var(--dc) 22%,transparent);color:color-mix(in srgb,var(--dc),#fff 72%)!important;font-size:11.5px!important;font-weight:700;opacity:1!important}
+.nsi{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;background:color-mix(in srgb,var(--dc) 55%,transparent);color:#fff;flex:none}.nsi svg{width:13px!important;height:13px!important}
+.nst{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nsec em{font-style:normal;font-size:10px;font-weight:700;min-width:20px;height:18px;display:grid;place-items:center;border-radius:999px;background:rgba(0,0,0,.2);color:rgba(255,255,255,.75)}
+/* الوحدات بخطوط الشجرة */
+.nmods{position:relative;margin-inline-start:18px;padding-inline-start:10px;border-inline-start:1.5px solid color-mix(in srgb,var(--dc) 45%,rgba(255,255,255,.12))}
+.side .nav .nmods a.sub{position:relative;margin:1px 0;padding:5px 8px!important;gap:8px;border-radius:9px;font-size:12.5px;color:rgba(255,255,255,.78)!important;font-weight:500!important}
+.side .nav .nmods a.sub::before{content:"";position:absolute;inset-inline-start:-11px;top:50%;width:9px;height:1.5px;background:color-mix(in srgb,var(--dc) 45%,rgba(255,255,255,.12))}
+.side .nav .nmods a.sub:hover{background:rgba(255,255,255,.08)!important;color:#fff!important;transform:translateX(-3px)}
+.side .nmods .si{width:24px;height:24px;border-radius:7px;background:color-mix(in srgb,var(--dc) 28%,transparent);color:color-mix(in srgb,var(--dc),#fff 70%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.side .nmods .si svg{width:14px;height:14px}
+.sn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.side .nav .nmods a.sub.on{background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--dc) 50%,transparent))!important;color:#fff!important;font-weight:700!important;box-shadow:inset -3px 0 0 #deb24e!important}
+.side .nav .nmods a.sub.on::before{background:#deb24e;height:2px}
+.side .nmods a.sub.on .si{background:var(--dc);color:#fff;box-shadow:0 3px 10px color-mix(in srgb,var(--dc) 50%,transparent)}
+.side .nmods .cnt{min-width:20px!important;height:18px!important;font-size:10px!important;background:rgba(222,178,78,.22)!important;color:#f3d58c!important}
+.side .cap{margin-top:6px}
+@media (prefers-reduced-motion:reduce){.ngb{transition:none}}
 </style>
 <!-- نسخة تجريبية مستقلة: تُبنى آليًا من src/ بالأمر node tools/build-demo.js. لا تعدّلها يدويًا. -->
 <script>/*
@@ -2359,10 +2424,22 @@ function renderNav(){
    <a href="#flow" class="${R.v==="flow"?"on":""}"><span class="gi">${ico("flow")}</span>مسار المعاملات</a>
    ${S.member?`<a href="#orgs" class="${R.v==="orgs"?"on":""}"><span class="gi">${ico("building")}</span>الكشاف<span class="cnt">${(S.orgs||[]).length||""}</span></a>`:""}`;
   const inG=(R.v==="grp"||R.v==="mod")?R.g:-1;
-  $("#nav").innerHTML=`<div class="navtools"><button data-navall="1">فتح الكل</button><button data-navall="0">طي الكل</button></div>`+ORDER.map(i=>{const g=G[i];if(!shownDept(i))return "";
-    const c=i?A.filter(r=>r.g===i).length:0;const open=navOpen.has(i);
-    const body=secsOf(i).map(([t,ids,sic])=>`<div class="nsec">${ico(secIco(t,sic))}${esc(t)}</div>`+ids.map(m=>{const k=i?A.filter(r=>r.g===i&&r.m===m).length:0;return `<a href="#m${i}-${m}" class="sub ${R.v==="mod"&&R.g===i&&R.m===m?"on":""}" title="${esc(idesc(i,m))}"><span class="si">${ico(modIco(i,m))}</span>${esc(g.items[m])}<span class="cnt">${k||""}</span></a>`}).join("")).join("");
-    return `<div class="ng ${open?"open":""}" style="${dc(i)}"><div class="ngh"><a href="#g${i}" class="${inG===i&&R.v==="grp"?"on":""}"><span class="gi">${ico(g.ic||g.c)}</span>${esc(g.n)}<span class="cnt">${c||""}</span></a><button class="tg" data-tg="${i}" aria-expanded="${open}" aria-label="العناوين الفرعية: ${esc(g.n)}">${ico("chev")}</button></div><div class="ngb">${body}</div></div>`}).join("");
+  const nq=(ui.navq||"").trim();const hl=t=>{const e=esc(t);if(!nq)return e;const q=esc(nq).replace(/[.*+?^${}()|[\]\\]/g,"\\$&");return e.replace(new RegExp(q,"g"),m=>`<mark>${m}</mark>`)};
+  const hit=t=>!nq||String(t).includes(nq);
+  let shown=0;
+  const groups=ORDER.map(i=>{const g=G[i];if(!shownDept(i))return "";
+    const c=i?A.filter(r=>r.g===i).length:0;const secs=secsOf(i);
+    const dHit=hit(g.n);
+    const body=secs.map(([t,ids,sic])=>{const mm=ids.filter(m=>dHit||hit(t)||hit(g.items[m]));if(!mm.length)return "";
+      return `<div class="nsg"><div class="nsec"><span class="nsi">${ico(secIco(t,sic))}</span><span class="nst">${hl(t)}</span><em>${mm.length}</em></div><div class="nmods">${mm.map(m=>{const k=i?A.filter(r=>r.g===i&&r.m===m).length:0;const on=R.v==="mod"&&R.g===i&&R.m===m;
+        return `<a href="#m${i}-${m}" class="sub ${on?"on":""}" title="${esc(idesc(i,m))}"${on?' aria-current="page"':""}><span class="si">${ico(modIco(i,m))}</span><span class="sn">${hl(g.items[m])}</span>${k?`<span class="cnt">${k}</span>`:""}</a>`}).join("")}</div></div>`}).join("");
+    if(nq&&!dHit&&!body)return "";shown++;
+    const open=nq?true:navOpen.has(i);const nMods=secs.reduce((a,x)=>a+x[1].length,0);
+    return `<div class="ng ${open?"open":""} ${inG===i?"cur":""}" style="${dc(i)}"><div class="ngh"><a href="#g${i}" class="dl ${inG===i&&R.v==="grp"?"on":""}"><span class="gi">${ico(g.ic||g.c)}</span><span class="dn"><b>${hl(g.n)}</b><small>${secs.length} ${secs.length>2&&secs.length<11?"عناوين":"عنوان"} · ${nMods} ${nMods>2&&nMods<11?"وحدات":"وحدة"}</small></span>${c?`<span class="cnt">${c}</span>`:""}</a><button class="tg" data-tg="${i}" aria-expanded="${open}" aria-label="${open?"طي":"فتح"} ${esc(g.n)}">${ico("chev")}</button></div><div class="ngb"><div class="ngi">${body}</div></div></div>`}).join("");
+  const navEl=$("#nav");const hadFocus=document.activeElement&&document.activeElement.id==="navq";const pos=hadFocus?document.activeElement.selectionStart:0;
+  navEl.innerHTML=`<div class="navsrch"><span>${ico("search")}</span><input id="navq" type="search" placeholder="ابحث في الإدارات والوحدات…" value="${esc(nq)}" aria-label="بحث في القائمة" autocomplete="off">${nq?`<button data-navq aria-label="مسح البحث">✕</button>`:""}</div>
+   <div class="navtools"><button data-navall="1">${ico("chev")} فتح الكل</button><button data-navall="0">${ico("chev")} طي الكل</button>${nq?`<span>${shown} نتيجة</span>`:""}</div>`+(groups||`<div class="navnone">${ico("search")}<b>لا نتائج</b><small>جرّب كلمة أخرى</small></div>`);
+  if(hadFocus){const n=$("#navq");n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}
   $("#navSys").innerHTML=`<a href="#trash" class="${R.v==="trash"?"on":""}"><span class="gi">${ico("trash")}</span>المحذوفات<span class="cnt">${trash||""}</span></a>
    <a href="#org" class="${R.v==="org"?"on":""}"><span class="gi">${ico("org")}</span>الإعدادات والبيانات</a>
    <a href="#perms" class="${R.v==="perms"?"on":""}"><span class="gi">${ico("shieldCheck")}</span>الموظفون والصلاحيات</a>
@@ -3311,7 +3388,10 @@ function importFile(e){
 /* ================= Shell ================= */
 $("#addBtn").onclick=()=>openForm(null,(R.v==="grp"||R.v==="mod")&&R.g>0?R.g:null,R.v==="mod"&&R.g>0?R.m:null);
 $("#menuBtn").onclick=()=>$("#side").classList.toggle("open");
+$("#nav").addEventListener("input",e=>{if(e.target.id==="navq"){ui.navq=e.target.value;renderNav()}});
+$("#nav").addEventListener("keydown",e=>{if(e.target.id==="navq"&&e.key==="Enter"){const a=$("#nav .ngb a.sub, #nav .ngh a");if(a){location.hash=a.getAttribute("href").slice(1);ui.navq="";renderNav()}}if(e.target.id==="navq"&&e.key==="Escape"){ui.navq="";renderNav()}});
 $("#nav").addEventListener("click",e=>{
+  if(e.target.closest("[data-navq]")){ui.navq="";renderNav();$("#navq").focus();return}
   const t=e.target.closest("[data-tg]");if(t){e.preventDefault();const i=+t.dataset.tg;const ng=t.closest(".ng");const open=!ng.classList.contains("open");ng.classList.toggle("open",open);t.setAttribute("aria-expanded",open);open?navOpen.add(i):navOpen.delete(i);saveNavOpen();return}
   const a=e.target.closest("[data-navall]");if(a){navOpen.clear();if(a.dataset.navall==="1")G.forEach((_,i)=>navOpen.add(i));saveNavOpen();renderNav()}
 });
