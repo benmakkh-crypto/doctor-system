@@ -158,25 +158,7 @@
   }
   window.google = { script: { get run() { return runner({}); } } };
 
-  /* ---------- لافتة النسخة التجريبية في بوابة الدخول ---------- */
+  /* ---------- أدوات النسخة التجريبية (من وحدة التحكم فقط: __DEMO__.reset()) ---------- */
   window.__DEMO__ = { accounts: DEMO, reset: function () { try { localStorage.removeItem(KEY); sessionStorage.clear(); localStorage.removeItem("ds.t"); } catch (e) { } location.reload(); } };
-  document.addEventListener("DOMContentLoaded", function () {
-    var card = document.getElementById("lgCard"); if (!card) return;
-    var box = document.createElement("div");
-    box.className = "demo-box";
-    box.innerHTML = '<b>نسخة تجريبية تعمل داخل متصفحك</b><span>البيانات محفوظة في هذا المتصفح فقط. اضغط حسابًا لتعبئته:</span><div class="demo-acc"></div><button type="button" class="btn sm" id="demoReset">إعادة ضبط البيانات التجريبية</button>';
-    var acc = box.querySelector(".demo-acc");
-    DEMO.forEach(function (d) {
-      var b = document.createElement("button"); b.type = "button"; b.className = "btn sm";
-      b.innerHTML = '<span class="code"></span><small></small>';
-      b.querySelector(".code").textContent = d.u + " / " + d.p; b.querySelector("small").textContent = d.role;
-      b.onclick = function () { document.getElementById("lgUser").value = d.u; document.getElementById("lgPass").value = d.p; document.getElementById("lgPass").focus(); };
-      acc.appendChild(b);
-    });
-    card.insertBefore(box, document.getElementById("lgForm"));
-    document.getElementById("demoReset").onclick = window.__DEMO__.reset;
-    var st2 = document.createElement("style");
-    st2.textContent = ".demo-box{display:flex;flex-direction:column;gap:6px;border:1px dashed var(--accent);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--muted);background:color-mix(in srgb,var(--accent) 6%,var(--surface))}.demo-box b{color:var(--ink);font-size:13px}.demo-acc{display:flex;flex-direction:column;gap:6px}.demo-acc .btn{display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:start}.demo-acc .code{color:var(--ink);font-size:12.5px}#demoReset{align-self:flex-start;color:var(--muted)}";
-    document.head.appendChild(st2);
-  });
+  // لوحة الحسابات التجريبية في بوابة الدخول مخفية بطلب المشرف العام؛ الحسابات تعمل كما هي.
 })();
