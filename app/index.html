@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>نافذ — تطبيق الجوال</title>
+<meta name="description" content="ثبّت نظام نافذ على جوالك: المعاملات والاعتمادات والتقارير والكشاف في تطبيق واحد.">
+<meta name="theme-color" content="#0b3f33">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="نافذ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Noto+Kufi+Arabic:wght@700;800&family=Amiri&display=swap">
+<style>
+:root{--g:#0b3f33;--g2:#05211b;--gold:#deb24e;--gold2:#c9a227;--ink:#14231f}
+*{box-sizing:border-box}
+html{background:var(--g2)}html,body{margin:0;min-height:100%;color:#fff;font-family:"IBM Plex Sans Arabic",Tahoma,sans-serif}
+body{min-height:100dvh;background:radial-gradient(120% 90% at 80% 0%,#1a7a62 0%,var(--g) 45%,var(--g2) 100%) no-repeat;background-color:var(--g2)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cg fill='none' stroke='%23deb24e' stroke-width='1.2'%3E%3Crect x='18' y='18' width='36' height='36'/%3E%3Crect x='18' y='18' width='36' height='36' transform='rotate(45 36 36)'/%3E%3Ccircle cx='36' cy='36' r='8'/%3E%3C/g%3E%3C/svg%3E");animation:drift 60s linear infinite}
+@keyframes drift{to{background-position:72px 144px}}
+h1,h2{font-family:"Noto Kufi Arabic",sans-serif;margin:0}
+.wrap{position:relative;max-width:560px;margin:0 auto;padding:max(28px,env(safe-area-inset-top)) 20px max(28px,env(safe-area-inset-bottom));display:grid;gap:18px;justify-items:center;text-align:center}
+.logo{position:relative;width:148px;height:148px;margin-top:8px}
+.logo img{width:100%;height:100%;border-radius:34px;box-shadow:0 18px 40px rgba(0,0,0,.35),0 0 0 1px rgba(222,178,78,.35)}
+.logo::after{content:"";position:absolute;inset:-22px;border-radius:50%;border:1.5px dashed rgba(222,178,78,.45);animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bsm{font-family:Amiri,serif;color:var(--gold);font-size:18px}
+h1{font-size:30px;font-weight:800}
+.lead{margin:0;color:#d7e6e0;line-height:1.8;font-size:15px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:16px;padding:15px 18px;font:inherit;font-weight:700;font-size:16.5px;cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.btn:active{transform:scale(.98)}
+.btn.gold{background:linear-gradient(135deg,#f6dc98,var(--gold2));color:#2b1f05;box-shadow:0 10px 24px rgba(201,162,39,.35)}
+.btn.ghost{background:rgba(255,255,255,.08);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.btn svg{width:22px;height:22px}
+.acts{display:grid;gap:10px;width:100%}
+.card{width:100%;text-align:start;border-radius:20px;padding:16px 16px 6px;background:rgba(5,33,27,.55);box-shadow:inset 0 0 0 1px rgba(222,178,78,.3)}
+.card h2{font-size:16px;color:var(--gold);display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.card h2 svg{width:20px;height:20px}
+.card ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.card li{counter-increment:s;display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:14.5px;line-height:1.7;color:#e3eeea}
+.card li::before{content:counter(s);flex:none;width:26px;height:26px;display:grid;place-items:center;font-weight:800;font-size:13px;color:#2b1f05;background:var(--gold);clip-path:polygon(50% 0,64.7% 14.5%,85.4% 14.6%,85.5% 35.3%,100% 50%,85.5% 64.7%,85.4% 85.4%,64.7% 85.5%,50% 100%,35.3% 85.5%,14.6% 85.4%,14.5% 64.7%,0 50%,14.5% 35.3%,14.6% 14.6%,35.3% 14.5%)}
+.card b{color:#fff}
+.kbd{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:rgba(255,255,255,.12);vertical-align:middle}
+.kbd svg{width:15px;height:15px}
+.tabs{display:flex;gap:6px;justify-content:center;margin-bottom:6px}
+.tabs button{border:0;border-radius:999px;padding:6px 14px;font:inherit;font-size:13.5px;color:#fff;background:rgba(255,255,255,.08);cursor:pointer}
+.tabs button.on{background:var(--gold);color:#2b1f05;font-weight:700}
+.feat{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%}
+.feat span{display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.06);font-size:13.5px;text-align:start}
+.feat span i{font-style:normal;width:28px;height:28px;flex:none;display:grid;place-items:center;border-radius:9px;background:rgba(222,178,78,.18);color:var(--gold)}
+small.ft{color:#9fbab0;font-size:12px}
+.ok{display:none;align-items:center;gap:8px;color:#9de8c6;font-weight:700}
+/* وضع التطبيق: النظام بملء الشاشة */
+#app{position:fixed;inset:0;display:none;background:var(--g)}
+#app iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background:#0b3f33}
+#splash{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:16px;background:radial-gradient(120% 90% at 80% 0%,#1a7a62 0%,var(--g) 45%,var(--g2) 100%);transition:opacity .5s}
+#splash img{width:112px;height:112px;border-radius:28px;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.06);box-shadow:0 0 0 14px rgba(222,178,78,.12)}}
+#splash b{font-family:"Noto Kufi Arabic";font-size:20px}#splash small{color:#cfe0da}
+#offline{position:absolute;inset:auto 16px max(16px,env(safe-area-inset-bottom));display:none;padding:12px 14px;border-radius:14px;background:#5a1a10;color:#fff;font-size:14px;text-align:center;box-shadow:0 10px 24px rgba(0,0,0,.3)}
+body.run #land{display:none}body.run #app{display:block}
+@media (prefers-reduced-motion:reduce){body::before,.logo::after,#splash img{animation:none}}
+</style>
+</head>
+<body>
+<main id="land" class="wrap">
+  <div class="logo"><img src="icons/icon-512.png" alt="شعار نافذ"></div>
+  <div class="bsm">بسم الله الرحمن الرحيم</div>
+  <h1>نافذ على جوالك</h1>
+  <p class="lead">ثبّت نظام نافذ على شاشتك الرئيسية، وافتحه بلمسة واحدة بملء الشاشة كأي تطبيق: المعاملات، والاعتمادات، والكشاف، والتقارير.</p>
+  <div class="acts">
+    <button class="btn gold" id="install" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>ثبّت تطبيق نافذ</button>
+    <span class="ok" id="installed"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5L20 7"/></svg>التطبيق مثبّت على جهازك</span>
+    <button class="btn ghost" id="open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M10 14L21 3M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>افتح نافذ الآن</button>
+  </div>
+  <section class="card">
+    <div class="tabs" role="tablist"><button data-os="android" class="on">أندرويد</button><button data-os="ios">آيفون وآيباد</button><button data-os="pc">الحاسب</button></div>
+    <div data-p="android"><h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>التثبيت على أندرويد</h2>
+      <ol><li><span>افتح هذه الصفحة في <b>Chrome</b>.</span></li><li><span>اضغط زر <b>«ثبّت تطبيق نافذ»</b> أعلاه، أو القائمة <span class="kbd">⋮</span> ثم <b>«تثبيت التطبيق»</b>.</span></li><li><span>وافق على <b>«تثبيت»</b>، فتظهر أيقونة نافذ على شاشتك الرئيسية.</span></li></ol></div>
+    <div data-p="ios" hidden><h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>التثبيت على آيفون وآيباد</h2>
+      <ol><li><span>افتح هذه الصفحة في <b>Safari</b>.</span></li><li><span>اضغط زر المشاركة <span class="kbd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></span> أسفل الشاشة.</span></li><li><span>اختر <b>«إضافة إلى الشاشة الرئيسية»</b> ثم <b>«إضافة»</b>.</span></li></ol></div>
+    <div data-p="pc" hidden><h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>التثبيت على الحاسب</h2>
+      <ol><li><span>افتح هذه الصفحة في <b>Chrome</b> أو <b>Edge</b>.</span></li><li><span>اضغط زر <b>«ثبّت تطبيق نافذ»</b>، أو أيقونة التثبيت في شريط العنوان.</span></li><li><span>يُفتح نافذ في نافذة مستقلة، ويظهر في قائمة البرامج.</span></li></ol></div>
+  </section>
+  <div class="feat"><span><i>◈</i>بملء الشاشة بلا شريط متصفح</span><span><i>◈</i>يفتح فورًا من الأيقونة</span><span><i>◈</i>بياناتك محمية بالدخول</span><span><i>◈</i>يتحدث تلقائيًا مع النظام</span></div>
+  <small class="ft">نافذ · منصة الإدارة المؤسسية للجمعيات والمؤسسات · <a href="../" style="color:#deb24e">جرّب النسخة التجريبية</a></small>
+</main>
+<div id="app" aria-live="polite">
+  <div id="splash"><img src="icons/icon-512.png" alt=""><b>نافذ</b><small>جارٍ فتح النظام…</small></div>
+  <div id="offline">لا يوجد اتصال بالإنترنت. سيُفتح النظام تلقائيًا عند عودة الاتصال.</div>
+</div>
+<script>
+// رابط النظام الفعلي على Google Apps Script
+var SYSTEM_URL="https://script.google.com/macros/s/AKfycbyOlWoG2qxREQoahc9sTmXgelljI3C15_j6NAaNEb3CkXp6uEEelcSxfqEX0kcsWYQqUw/exec";
+var standalone=window.matchMedia("(display-mode: standalone)").matches||window.matchMedia("(display-mode: minimal-ui)").matches||navigator.standalone===true;
+var deferred=null;
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});
+function run(){document.body.classList.add("run");var app=document.getElementById("app");if(app.querySelector("iframe"))return;
+  if(!navigator.onLine){document.getElementById("offline").style.display="block";window.addEventListener("online",function(){location.reload()},{once:true});return}
+  var f=document.createElement("iframe");f.title="نظام نافذ";f.allow="clipboard-read; clipboard-write; fullscreen";f.referrerPolicy="no-referrer-when-downgrade";
+  var q=new URLSearchParams(location.search);f.src=SYSTEM_URL+(q.get("page")?"?page="+encodeURIComponent(q.get("page"))+(q.get("org")?"&org="+encodeURIComponent(q.get("org")):""):"");
+  f.onload=function(){var s=document.getElementById("splash");s.style.opacity=0;setTimeout(function(){s.remove()},500)};app.appendChild(f)}
+if(standalone)run();
+document.getElementById("open").onclick=run;
+window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();deferred=e;document.getElementById("install").hidden=false});
+document.getElementById("install").onclick=function(){if(!deferred)return;deferred.prompt();deferred.userChoice.then(function(c){if(c.outcome==="accepted"){document.getElementById("install").hidden=true;document.getElementById("installed").style.display="flex"}deferred=null})};
+window.addEventListener("appinstalled",function(){document.getElementById("install").hidden=true;document.getElementById("installed").style.display="flex"});
+var ua=navigator.userAgent;var os=/iphone|ipad|ipod/i.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1)?"ios":/android/i.test(ua)?"android":"pc";
+function tab(o){document.querySelectorAll("[data-os]").forEach(function(b){b.classList.toggle("on",b.dataset.os===o)});document.querySelectorAll("[data-p]").forEach(function(p){p.hidden=p.dataset.p!==o})}
+document.querySelectorAll("[data-os]").forEach(function(b){b.onclick=function(){tab(b.dataset.os)}});tab(os);
+</script>
+</body>
+</html>
