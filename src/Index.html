@@ -1019,6 +1019,26 @@ td.pc small{display:block;font-size:10.5px;color:var(--muted)}
 .side .nmods .cnt{min-width:20px!important;height:18px!important;font-size:10px!important;background:rgba(222,178,78,.22)!important;color:#f3d58c!important}
 .side .cap{margin-top:6px}
 @media (prefers-reduced-motion:reduce){.ngb{transition:none}}
+
+/* ================= قسم النظام: بلاطات ================= */
+#navSys{display:block!important}
+.sysg{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:2px 2px 4px}
+.side .nav a.st{position:relative;display:flex!important;flex-direction:column;align-items:flex-start;gap:7px;padding:10px 10px 9px!important;min-height:86px;border-radius:14px;overflow:hidden;
+ background:linear-gradient(160deg,color-mix(in srgb,var(--sc) 26%,transparent),rgba(0,0,0,.14) 75%)!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sc) 35%,rgba(255,255,255,.08))!important;transition:transform .22s,box-shadow .22s,background .22s!important}
+.side .nav a.st::after{content:"";position:absolute;inset-inline-end:-18px;bottom:-18px;width:62px;height:62px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--sc) 45%,transparent),transparent 70%);opacity:.55;transition:transform .35s,opacity .35s}
+.side .nav a.st:hover{transform:translateY(-2px)!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sc) 70%,transparent),0 8px 20px rgba(0,0,0,.28)!important}
+.side .nav a.st:hover::after{transform:scale(1.5);opacity:.9}
+.sti{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,color-mix(in srgb,var(--sc),#fff 25%),var(--sc));box-shadow:0 4px 12px color-mix(in srgb,var(--sc) 45%,transparent),inset 0 0 0 1px rgba(255,255,255,.25);transition:transform .25s}
+.sti svg{width:17px;height:17px}
+.side .nav a.st:hover .sti{transform:scale(1.1) rotate(-6deg)}
+.stt{display:grid;line-height:1.25;min-width:0;width:100%}
+.stt b{font-size:12.5px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stt small{font-size:10px;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stn{position:absolute;top:8px;inset-inline-end:8px;min-width:20px;height:20px;padding:0 6px;border-radius:999px;display:grid;place-items:center;font-size:10.5px;font-weight:700;background:var(--sc);color:#fff;box-shadow:0 0 0 2px rgba(0,0,0,.25)}
+.side .nav a.st.on{background:linear-gradient(160deg,color-mix(in srgb,var(--sc) 55%,transparent),color-mix(in srgb,var(--sc) 18%,transparent))!important;box-shadow:inset 0 0 0 1.5px #deb24e,0 8px 22px rgba(0,0,0,.3)!important}
+.side .nav a.st.on .stt small{color:rgba(255,255,255,.8)}
+.sysg a.st:last-child:nth-child(odd){grid-column:span 2;flex-direction:row;align-items:center;min-height:0}
+@media (prefers-reduced-motion:reduce){.side .nav a.st,.sti,.side .nav a.st::after{transition:none!important}}
 </style>
 </head>
 <body class="auth">
@@ -2264,10 +2284,11 @@ function renderNav(){
   navEl.innerHTML=`<div class="navsrch"><span>${ico("search")}</span><input id="navq" type="search" placeholder="ابحث في الإدارات والوحدات…" value="${esc(nq)}" aria-label="بحث في القائمة" autocomplete="off">${nq?`<button data-navq aria-label="مسح البحث">✕</button>`:""}</div>
    <div class="navtools"><button data-navall="1">${ico("chev")} فتح الكل</button><button data-navall="0">${ico("chev")} طي الكل</button>${nq?`<span>${shown} نتيجة</span>`:""}</div>`+(groups||`<div class="navnone">${ico("search")}<b>لا نتائج</b><small>جرّب كلمة أخرى</small></div>`);
   if(hadFocus){const n=$("#navq");n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}
-  $("#navSys").innerHTML=`<a href="#trash" class="${R.v==="trash"?"on":""}"><span class="gi">${ico("trash")}</span>المحذوفات<span class="cnt">${trash||""}</span></a>
-   <a href="#org" class="${R.v==="org"?"on":""}"><span class="gi">${ico("org")}</span>الإعدادات والبيانات</a>
-   <a href="#perms" class="${R.v==="perms"?"on":""}"><span class="gi">${ico("shieldCheck")}</span>الموظفون والصلاحيات</a>
-   ${S.admin?`<a href="#menus" class="${R.v==="menus"?"on":""}"><span class="gi">${ico("menu")}</span>تخصيص القوائم</a><a href="#users" class="${R.v==="users"?"on":""}"><span class="gi">${ico("users")}</span>المستخدمون</a><a href="#audit" class="${R.v==="audit"?"on":""}"><span class="gi">${ico("audit")}</span>سجل التدقيق</a>`:""}`;
+  const sysT=(h,ic,t,sub,col,n)=>`<a href="#${h}" class="st ${R.v===h?"on":""}" style="--sc:${col}" title="${esc(t)} — ${esc(sub)}"${R.v===h?' aria-current="page"':""}><span class="sti">${ico(ic)}</span><span class="stt"><b>${t}</b><small>${sub}</small></span>${n?`<span class="stn">${n}</span>`:""}</a>`;
+  $("#navSys").innerHTML=`<div class="sysg">`+sysT("org","org","الإعدادات","الجهة والبيانات","#0e9f8e")
+   +sysT("perms","shieldCheck","الصلاحيات","الموظفون والأدوار","#6d5bd0")
+   +(S.admin?sysT("users","users","المستخدمون","الحسابات والدخول","#2f7fd8")+sysT("menus","menu","القوائم","الترتيب والأيقونات","#d9822b")+sysT("audit","audit","سجل التدقيق","كل العمليات","#4a6a8a"):"")
+   +sysT("trash","trash","المحذوفات","الاسترجاع","#d64545",trash)+`</div>`;
   const role=S.platform?"مدير النظام · المشرف العام":S.member?"عضو منصة نافذ (اطلاع)":S.admin?"مسؤول النظام":S.canWrite?"مساهم":"مشاهد";
   const box=$("#meBox");box.innerHTML="";
   const av=document.createElement("span");av.className="av";av.textContent=((S.meP&&S.meP.name)||"?").trim().charAt(0);box.append(av);
