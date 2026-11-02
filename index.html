@@ -1467,6 +1467,31 @@ td.pc small{display:block;font-size:10.5px;color:var(--muted)}
 .qxa svg{width:12px;height:12px;transform:rotate(90deg)}.qxc:hover .qxa{opacity:1;transform:none}
 @media (max-width:640px){.qxg{grid-template-columns:repeat(2,minmax(0,1fr))}.qxs{width:64px;height:64px}.qxs>span{inset:14px}}
 @media (prefers-reduced-motion:reduce){.qxc{animation:none}}
+
+/* ================= شريط الوصول السريع بجانب مسار الصفحة: رصيف نجمي ================= */
+.crow{display:flex;gap:10px;align-items:center;margin-bottom:14px}.crow .crumb{margin:0;flex:none}
+.qrib{position:relative;flex:1;min-width:0;display:flex;align-items:center;gap:8px;padding:6px 8px 6px 6px;border-radius:20px;
+ background:linear-gradient(180deg,color-mix(in srgb,var(--sb2,#0a3a30) 92%,#000),var(--sb3,#072c24));box-shadow:0 10px 26px color-mix(in srgb,var(--sb3,#072c24) 35%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--gold,#deb24e) 35%,transparent)}
+.qrib::before{content:"";position:absolute;inset:0;border-radius:inherit;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cg fill='none' stroke='%23deb24e' stroke-opacity='.14'%3E%3Crect x='10' y='10' width='20' height='20'/%3E%3Crect x='10' y='10' width='20' height='20' transform='rotate(45 20 20)'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.qrib>*{position:relative}
+.qrl{display:inline-flex;gap:6px;align-items:center;flex:none;padding:7px 12px 7px 8px;border-radius:14px;font-size:12px;font-weight:800;color:#3b2a06;background:linear-gradient(145deg,#f6dc98,var(--gold,#deb24e));box-shadow:0 4px 12px rgba(222,178,78,.35)}
+.qrl svg{width:15px;height:15px}
+.qrt{flex:1;min-width:0;display:flex;align-items:flex-end;justify-content:space-around;gap:2px;padding:4px 4px 2px;overflow:visible}
+.qr{position:relative;flex:none;display:grid;place-items:center;width:40px;height:40px;text-decoration:none!important;transform-origin:50% 100%;transition:transform .25s cubic-bezier(.3,.7,.3,1.4)}
+.qrs{position:relative;width:38px;height:38px;display:grid;place-items:center;color:#fff}
+.qrs svg:first-child{position:absolute;inset:0;width:100%;height:100%;fill:var(--qc);stroke:color-mix(in srgb,var(--qc),#fff 45%);stroke-width:2;filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));transition:transform .6s cubic-bezier(.3,.7,.3,1)}
+.qrs>svg:last-child{position:relative;width:16px;height:16px}
+.qr:hover{transform:scale(1.42) translateY(-4px);z-index:3}
+.qr:hover .qrs svg:first-child{transform:rotate(45deg)}
+.qr:has(+ .qr:hover),.qr:hover + .qr{transform:scale(1.18) translateY(-2px);z-index:2}
+.qr b{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%) scale(.7);transform-origin:top center;white-space:nowrap;font-size:12px;font-weight:700;color:#fff;background:var(--qc);padding:4px 10px;border-radius:9px;box-shadow:0 8px 18px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.qr b::before{content:"";position:absolute;top:-4px;left:50%;width:8px;height:8px;background:inherit;transform:translateX(-50%) rotate(45deg)}
+.qr:hover b,.qr:focus-visible b{opacity:1;transform:translateX(-50%) scale(.72)}
+.qr em{position:absolute;top:-3px;inset-inline-end:-4px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;display:grid;place-items:center;font-style:normal;font-size:9.5px;font-weight:800;color:#3b2a06;background:var(--gold,#deb24e);box-shadow:0 0 0 2px var(--sb3,#072c24)}
+.qrn{display:none}
+.qr.on .qrs::after{content:"";position:absolute;bottom:-7px;width:5px;height:5px;border-radius:50%;background:var(--gold,#deb24e)}
+@media (max-width:1250px){.qrl span{display:none}}
+@media (max-width:900px){.crow{flex-direction:column;align-items:stretch}.qrt{overflow-x:auto;justify-content:flex-start;scrollbar-width:none;padding-bottom:6px}.qrt::-webkit-scrollbar{display:none}.qr:hover,.qr:has(+ .qr:hover),.qr:hover + .qr{transform:none}}
 </style>
 <!-- نسخة تجريبية مستقلة: تُبنى آليًا من src/ بالأمر node tools/build-demo.js. لا تعدّلها يدويًا. -->
 <script>/*
@@ -2947,7 +2972,7 @@ function viewOrgs(){
       <div class="seg"><button data-oview="cards" class="${view==="cards"?"on":""}">بطاقات</button><button data-oview="table" class="${view==="table"?"on":""}">جدول</button></div></div>
      ${sel.size&&!ro?`<div class="banner">${NF.format(sel.size)} مؤسسة محددة <button class="btn sm warn" data-obulkpw>${ico("key")} إصدار كلمات مرور لمسؤوليها</button><button class="btn sm" data-oselclear>إلغاء التحديد</button></div>`:""}
      ${L.length?(view==="table"?table:`<div class="ogrid">${L.map(card).join("")}</div>`):`<div class="tw"><div class="empty"><b>لا مؤسسات مطابقة</b></div></div>`}</section>`}];
-  return `${crumb([["الكشاف"]])}
+  return `<div class="crow">${crumb([["الكشاف"]])}${qRibbon()}</div>
    <div class="head"><div><h1>الكشاف: دليل المؤسسات</h1><p>كل مؤسسة تعمل في نافذ بحساباتها وبياناتها المنفصلة، وأنت تراها جميعًا من هنا.</p></div>
     <div class="actions">${ro?`<span class="badge tone-info">اطلاع فقط</span>`:`<button class="btn pri" data-onew>${ico("building")} مؤسسة جديدة</button><button class="btn" data-oimport>${ico("down")} استيراد من Excel</button><button class="btn" data-otpl>نموذج الاستيراد</button>`}${repBtn("orgs")}</div></div>
    ${layoutPage("orgs",W)}`;
@@ -3410,6 +3435,11 @@ function homeReport(A){
     {type:"table",title:"المعاملات حسب الحالة",head:["الحالة","العدد","النسبة"],rows:STATUSES.map(s=>{const c=A.filter(r=>eff(r)===s.n).length;return[s.n,c,(A.length?Math.round(c/A.length*100):0)+"%"]})},
     {type:"table",title:"المعاملات المتأخرة",head:["الرقم","المعاملة","الإدارة","الاستحقاق","المسؤول"],rows:late.map(r=>[r.no||"",r.title,G[r.g]?.n||"",r.due||"",whoFor(r)])}]};
 }
+/** شريط وصول سريع أفقي لكل الإدارات (في «كل المؤسسات» يجمع معاملات جميع المؤسسات) */
+function qRibbon(){const A=active();const all=S.scope==="*";
+  const items=ORDER.filter(i=>i>0&&shownDept(i)).map(i=>{const g=G[i];const n=A.filter(r=>r.g===i&&isOpen(r)).length;
+    return `<a class="qr" href="#g${i}" style="--qc:${g.col||"#0e7a5f"}" title="${esc(g.n)}${all?" — في كل المؤسسات":""}"><span class="qrs"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="${star8(50,50,47,.8)}"/></svg>${ico(g.ic||g.c)}</span><b>${esc(g.n)}</b>${n?`<em>${NF.format(n)}</em>`:""}</a>`}).join("");
+  return `<div class="qrib" role="navigation" aria-label="الوصول السريع للإدارات"><span class="qrl">${ico("grid")}<span>${all?"الإدارات في كل المؤسسات":"الوصول السريع"}</span></span><button class="qrn" data-qrs="1" aria-label="السابق">${ico("chev")}</button><div class="qrt">${items}</div><button class="qrn" data-qrs="-1" aria-label="التالي">${ico("chev")}</button></div>`}
 /** شبكة وصول سريع زخرفية: عناصر {href|qx, icon, title, sub, color, n, tags} */
 function qxGrid(title,sub,items,id){const q=(ui["qx"+id]||"").trim();const L=items.filter(x=>!q||(x.title+" "+(x.sub||"")+" "+(x.tags||[]).join(" ")).includes(q));
   return `<section class="qx"><header><span class="qxh">${ico("grid")}</span><div><h3>${title}</h3><small>${sub}</small></div>${items.length>8?`<label class="opq">${ico("search")}<input data-qxq="${id}" id="qxq-${id}" type="search" placeholder="ابحث…" value="${esc(q)}" autocomplete="off"></label>`:""}</header>
@@ -3797,6 +3827,7 @@ function bindMain(){
   main.querySelectorAll("[data-inf]").forEach(b=>b.onclick=()=>{ui.inf=b.dataset.inf;render()});
   main.querySelectorAll("[data-qx]").forEach(b=>b.onclick=()=>{const t=main.querySelector(b.dataset.qx);if(!t){toast("هذا الإجراء غير متاح هنا.");return}if(t.tagName==="INPUT"){t.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>t.focus(),300)}else t.click()});
   main.querySelectorAll("[data-qxq]").forEach(i=>i.oninput=()=>{ui["qx"+i.dataset.qxq]=i.value;render()});
+  main.querySelectorAll("[data-qrs]").forEach(b=>b.onclick=()=>{const t=b.parentNode.querySelector(".qrt");t.scrollBy({left:(+b.dataset.qrs)*t.clientWidth*.7,behavior:"smooth"})});
   main.querySelectorAll("[data-flmore]").forEach(b=>b.onclick=e=>{e.stopPropagation();ui["fl"+b.dataset.flmore]=1;render()});
   const fm=main.querySelector("[data-focusmode]");if(fm)fm.onclick=()=>{setFocus(!document.body.classList.contains("focus"));render()};
   main.querySelectorAll("[data-quick]").forEach(b=>b.onclick=e=>{e.stopPropagation();const r=S.recs.find(x=>x.id===b.dataset.quick);if(r)changeStatus(r,b.dataset.st)});
