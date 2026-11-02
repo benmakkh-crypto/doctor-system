@@ -1287,7 +1287,7 @@ function viewPerms(){
   const tabs=`<div class="seg ptabs" role="tablist"><button data-ptab="matrix" class="${tab==="matrix"?"on":""}">${ico("shieldCheck")} مصفوفة الصلاحيات</button><button data-ptab="staff" class="${tab==="staff"?"on":""}">${ico("people")} الموظفون والإدارات</button></div>`;
   const head=`${crumb([["الموظفون والصلاحيات"]])}<div class="head"><div><h1>الموظفون والصلاحيات</h1><p>ما يستطيع كل دور فعله، ومن يصل إلى أي إدارة. كل ذلك يُفرض على الخادم ولا يمكن تجاوزه من المتصفح.</p></div>${S.admin?`<div class="actions"><a class="btn" href="#users">${ico("users")} إدارة الحسابات</a></div>`:""}</div>${tabs}`;
   if(tab==="matrix"){
-    const R3=[["admin","مسؤول النظام","#6d3fc0","المشرف العام ومن في حكمه"],["contributor","مساهم","#3157b8","موظف يعمل في إداراته"],["viewer","مشاهد","#4B5563","عضو مجلس أو مراجع"]];
+    const R3=[["admin","مسؤول النظام","#6d3fc0","مسؤول المؤسسة؛ ومدير النظام (المشرف العام) على كل المؤسسات"],["contributor","مساهم","#3157b8","موظف يعمل في إداراته"],["viewer","مشاهد","#4B5563","عضو مجلس أو مراجع"]];
     return head+`<section class="box"><h3>مصفوفة الصلاحيات حسب الدور <small>${CAPS.length} صلاحية · 3 أدوار</small></h3>
      <div class="tw pm"><table><thead><tr><th>الصلاحية</th>${R3.map(r=>`<th class="rh" style="--k:${r[2]}"><b>${r[1]}</b><small>${r[3]}</small></th>`).join("")}</tr></thead>
      <tbody>${CAPS.map(c=>`<tr><td class="t">${esc(c[0])}</td>${permCell(c[1])}${permCell(c[2])}${permCell(c[3])}</tr>`).join("")}</tbody></table></div>
@@ -2083,7 +2083,7 @@ function renderTop(){
   const hot=A.filter(r=>isOpen(r)&&(pri(r)>0||isLate(r))&&!mine.includes(r)).sort(sortP);
   const tasks=[...mine,...hot].slice(0,8),tCount=mine.length+hot.length;
   const al=computeAlerts(A),aCount=al.reduce((a,x)=>a+x.n,0);
-  const name=(S.meP&&S.meP.name)||"";const role=S.platform?"المشرف العام لمنصة نافذ":S.member?"عضو منصة نافذ (اطلاع)":S.admin?"مسؤول النظام":S.canWrite?"مساهم":"مشاهد";
+  const name=(S.meP&&S.meP.name)||"";const role=S.platform?"مدير النظام · المشرف العام":S.member?"عضو منصة نافذ (اطلاع)":S.admin?"مسؤول النظام":S.canWrite?"مساهم":"مشاهد";
   const dark=document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
   const links=[["home","الرئيسية","#home"],["focus","مهامي والأولويات","#focus"],["inbox","صندوق الاعتمادات","#inbox"],["flow","مسار المعاملات","#flow"],["RPT","التقارير","#g0"],["WEB","إدارة الموقع","#g3"],["org","الإعدادات والبيانات","#org"],["trash","المحذوفات","#trash"]]
    .concat([["shieldCheck","الصلاحيات","#perms"]]).concat(S.admin?[["users","المستخدمون","#users"],["menu","تخصيص القوائم","#menus"],["audit","سجل التدقيق","#audit"]]:[]);
@@ -2178,7 +2178,7 @@ function renderNav(){
    <a href="#org" class="${R.v==="org"?"on":""}"><span class="gi">${ico("org")}</span>الإعدادات والبيانات</a>
    <a href="#perms" class="${R.v==="perms"?"on":""}"><span class="gi">${ico("shieldCheck")}</span>الموظفون والصلاحيات</a>
    ${S.admin?`<a href="#menus" class="${R.v==="menus"?"on":""}"><span class="gi">${ico("menu")}</span>تخصيص القوائم</a><a href="#users" class="${R.v==="users"?"on":""}"><span class="gi">${ico("users")}</span>المستخدمون</a><a href="#audit" class="${R.v==="audit"?"on":""}"><span class="gi">${ico("audit")}</span>سجل التدقيق</a>`:""}`;
-  const role=S.platform?"المشرف العام لمنصة نافذ":S.member?"عضو منصة نافذ (اطلاع)":S.admin?"مسؤول النظام":S.canWrite?"مساهم":"مشاهد";
+  const role=S.platform?"مدير النظام · المشرف العام":S.member?"عضو منصة نافذ (اطلاع)":S.admin?"مسؤول النظام":S.canWrite?"مساهم":"مشاهد";
   const box=$("#meBox");box.innerHTML="";
   const av=document.createElement("span");av.className="av";av.textContent=((S.meP&&S.meP.name)||"?").trim().charAt(0);box.append(av);
   const t=document.createElement("div");t.style.minWidth="0";const b=document.createElement("b");b.textContent=(S.meP&&S.meP.name)||"";const sm=document.createElement("small");sm.textContent=role+(S.me?" · "+S.me:"");t.append(b,sm);box.append(t);
@@ -2371,7 +2371,7 @@ function quickAccess(){
 function viewHome(){
   const A=active().filter(r=>canDept(r.g));const open=A.filter(isOpen);
   const pend=A.filter(r=>eff(r)==="بانتظار الاعتماد"),late=A.filter(isLate);
-  const name=(S.meP&&S.meP.name)||"";const role=S.platform?"المشرف العام لمنصة نافذ":S.member?"عضو منصة نافذ (اطلاع)":S.admin?"مسؤول النظام":S.canWrite?"مساهم":"مشاهد";
+  const name=(S.meP&&S.meP.name)||"";const role=S.platform?"مدير النظام · المشرف العام":S.member?"عضو منصة نافذ (اطلاع)":S.admin?"مسؤول النظام":S.canWrite?"مساهم":"مشاهد";
   const now=new Date();const dayName=new Intl.DateTimeFormat("ar-SA-u-ca-gregory-nu-latn",{weekday:"long",day:"2-digit",month:"long",year:"numeric"}).format(now);
   const hasSample=A.some(r=>r.sample);
   const staff=new Set(A.filter(r=>(r.g===9||r.g===11)&&r.f?.name).map(r=>r.f.name.trim())).size;
@@ -2637,7 +2637,7 @@ function viewUsers(){
    <div class="tw"><table><thead><tr><th>الاسم</th><th>اسم المستخدم</th>${S.platform?"<th>الجهة</th>":""}<th>الجوال</th><th>الدور</th><th>الإدارات</th><th>آخر دخول</th><th>الحالة</th><th></th></tr></thead><tbody>
    ${U.map(u=>`<tr data-user="${esc(u.username)}"><td class="t">${esc(u.name)}${u.email?`<span class="code">${esc(u.email)}</span>`:""}</td><td class="code" style="font-size:13px;color:var(--ink)">${esc(u.username)}</td>
      ${S.platform?`<td><small>${u.org==="*"?"<b>منصة نافذ</b>":esc(orgName(u.org))}</small></td>`:""}<td class="code" dir="ltr">${esc(u.phone||"—")}</td>
-     <td><span class="badge tone-${roleTone[u.role]||"mute"}">${u.org==="*"&&u.role==="viewer"?"عضو منصة نافذ":esc(u.roleName)}</span></td>
+     <td><span class="badge tone-${u.org==="*"&&u.role==="admin"?"good":roleTone[u.role]||"mute"}">${u.org==="*"&&u.role==="viewer"?"عضو منصة نافذ":u.org==="*"&&u.role==="admin"?"مدير النظام · المشرف العام":esc(u.roleName)}</span></td>
      <td><small>${u.role==="admin"||!u.depts.length?"كل الإدارات":esc(u.depts.map(i=>G[i]?.n).join("، "))}</small></td>
      <td class="num">${u.lastLogin?tFmt(u.lastLogin):"لم يدخل بعد"}</td>
      <td>${u.active?(u.mustChange?`<span class="chip appr">بانتظار أول دخول</span>`:`<span class="badge tone-good">نشط</span>`):`<span class="badge tone-bad">موقوف</span>`}</td>
@@ -2802,7 +2802,7 @@ function userDialog(u){
     <label data-f="email">البريد (للإشعارات وبيانات الدخول)<input id="u_em" type="email" dir="ltr" value="${esc(u.email)}"><span class="msg" hidden></span></label>
     <label data-f="phone">رقم الجوال<input id="u_ph" dir="ltr" inputmode="tel" maxlength="16" placeholder="05XXXXXXXX" value="${esc(u.phone||"")}"><span class="hint">لإرسال بيانات الدخول عبر واتساب مباشرة</span><span class="msg" hidden></span></label>
     ${S.platform?`<label data-f="org">الجهة<select id="u_org">${(S.orgs||[]).map(o=>`<option value="${esc(o.id)}" ${(u.org||(S.scope!=="*"?S.scope:"main"))===o.id?"selected":""}>${esc(o.name)}</option>`).join("")}<option value="*" ${u.org==="*"?"selected":""}>منصة نافذ (كل المؤسسات)</option></select><span class="hint">«منصة نافذ» مع دور «مشاهد» = عضو منصة نافذ للاطلاع فقط</span><span class="msg" hidden></span></label>`:""}
-    <label data-f="role">الدور<select id="u_rl">${[["admin","مسؤول النظام"],["contributor","مساهم"],["viewer","مشاهد (اطلاع فقط)"]].map(([k,v])=>`<option value="${k}" ${u.role===k?"selected":""}>${v}</option>`).join("")}${S.platform?`<option value="member" ${u.org==="*"&&u.role==="viewer"?"selected":""}>عضو منصة نافذ (اطلاع على كل المؤسسات دون تعديل)</option>`:""}</select><span class="msg" hidden></span></label>
+    <label data-f="role">الدور<select id="u_rl">${[["admin","مسؤول النظام"],["contributor","مساهم"],["viewer","مشاهد (اطلاع فقط)"]].map(([k,v])=>`<option value="${k}" ${u.role===k?"selected":""}>${v}</option>`).join("")}${S.platform?`<option value="super" ${u.org==="*"&&u.role==="admin"?"selected":""}>مدير النظام · المشرف العام (كل الصلاحيات على كل المؤسسات)</option><option value="member" ${u.org==="*"&&u.role==="viewer"?"selected":""}>عضو منصة نافذ (اطلاع على كل المؤسسات دون تعديل)</option>`:""}</select><span class="msg" hidden></span></label>
     <fieldset class="w depts-pick"><legend>الإدارات المسموحة <span class="hint">— اترك الكل فارغًا ليرى كل الإدارات. لا تنطبق على المسؤول.</span></legend>
      ${G.map((g,i)=>i?`<label class="check"><input type="checkbox" value="${i}" ${u.depts.includes(i)?"checked":""}>${esc(g.n)}</label>`:"").join("")}</fieldset>
     ${isNew?pwBlock()+`<label class="check w"><input id="u_mail" type="checkbox" checked>إرسال رابط النظام واسم المستخدم وكلمة المرور إلى البريد تلقائيًا (إن وُجد)</label>`:`<label class="check w"><input id="u_ac" type="checkbox" ${u.active?"checked":""}>الحساب نشط</label>`}
@@ -2813,7 +2813,7 @@ function userDialog(u){
     document.querySelectorAll("#usF label[data-f]").forEach(l=>{l.classList.remove("err");l.querySelector(".msg").hidden=true});
     const p={username:isNew?$("#u_un").value.trim().toLowerCase():u.username,name:$("#u_nm").value.trim(),email:$("#u_em").value.trim(),role:$("#u_rl").value,
       depts:[...document.querySelectorAll(".depts-pick input:checked")].map(x=>+x.value),active:isNew?true:$("#u_ac").checked,phone:$("#u_ph").value.trim(),...(getPw?getPw():{})};
-    if($("#u_org"))p.org=$("#u_org").value;if(p.role==="member"){p.role="viewer";p.org="*"}if(isNew&&$("#u_mail"))p.sendEmail=$("#u_mail").checked;
+    if($("#u_org"))p.org=$("#u_org").value;if(p.role==="member"){p.role="viewer";p.org="*"}if(p.role==="super"){p.role="admin";p.org="*"}if(isNew&&$("#u_mail"))p.sendEmail=$("#u_mail").checked;
     $("#usBtn").disabled=true;
     try{const d=await call("saveUser",p);closeModal();await loadUsers();
       if(d.password)showSecret("أُنشئ حساب "+p.name,p.username,d.password,d.mustChange,{phone:d.phone,emailed:d.emailed,email:p.email});else toast("حُفظت بيانات "+p.name)}

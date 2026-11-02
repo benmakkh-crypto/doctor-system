@@ -202,6 +202,12 @@ const ph = A.api(T, "saveUser", { __org: "main", username: "with.phone", name: "
 ok(ph.ok && ph.data.phone === "0551234567" && A.api(T, "listUsers").data.find(x => x.username === "with.phone").phone === "0551234567", "user mobile stored and normalised");
 ok(A.api(T, "saveUser", { username: "bad.phone", name: "x", role: "viewer", phone: "123" }).field === "phone", "mobile validated");
 ok(A.api(T, "saveOrg", { name: "جمعية الجوال", code: "PHONE", managerPhone: "0559876543" }).data.admin.phone === "0559876543", "org admin gets the manager mobile");
+// --- second system manager (= general supervisor) with full platform powers
+const sm = A.api(T, "saveUser", { username: "nafeth.manager", name: "مدير نظام ثانٍ", role: "admin", org: "*" });
+const SMT = A.login("nafeth.manager", sm.data.password).data.token; A.api(SMT, "changePassword", { current: sm.data.password, next: "Manager2026ok" });
+const smb = A.api(SMT, "bootstrap").data;
+ok(smb.me.platform && smb.me.member && smb.scope === "*", "system manager is a full general supervisor");
+ok(A.api(SMT, "saveOrg", { name: "جمعية من المدير الثاني", code: "SECOND" }).ok && A.api(SMT, "listOrgs").ok, "system manager adds orgs and reads directory");
 // --- admin-issued passwords (manual / auto, optional forced change)
 const mk = AM(T, "saveUser", { username: "pw.manual", name: "اختبار كلمة يدوية", role: "viewer", password: "Manual2026x", mustChange: false });
 ok(mk.ok && mk.data.password === "Manual2026x" && mk.data.mustChange === false, "admin sets a chosen password on create");

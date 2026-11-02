@@ -44,6 +44,7 @@ const ORG_TYPES = ['جمعية خيرية', 'مؤسسة أهلية', 'جمعية
 const ORG_SECTORS = ['القطاع غير الربحي', 'القطاع الخاص', 'القطاع الحكومي', 'القطاع الوقفي'];
 const ORG_AREAS = ['اجتماعي وأسري', 'إغاثي', 'صحي', 'تعليمي', 'ديني ودعوي', 'تحفيظ القرآن', 'تنموي وتمكين', 'إسكاني', 'بيئي', 'ثقافي', 'شبابي ورياضي', 'رعاية الأيتام', 'ذوي الإعاقة', 'كبار السن', 'المرأة والطفل', 'تقني', 'مهني', 'إعلامي'];
 const ROLES = { admin: 'مسؤول النظام', contributor: 'مساهم', viewer: 'مشاهد' };
+// مدير النظام = المشرف العام: حساب منصة (org = '*') بدور admin، له كل الصلاحيات على كل المؤسسات.
 const FINAL = ['مكتمل', 'مرفوض'];
 const OPEN = ['جديد', 'قيد المتابعة', 'بانتظار الاعتماد'];
 const SESSION_SEC = 6 * 3600;          // جلسة عادية: 6 ساعات
@@ -388,7 +389,7 @@ function login(username, password, remember) {
         return generic;
       }
       const uo = String(u.org || MAIN_ORG);
-      if (uo !== '*') { const o = getOrg_(uo); if (!o || o.status === 'suspended') return { ok: false, code: 'DISABLED', message: 'حساب مؤسستك موقوف مؤقتًا. تواصل مع المشرف العام لمنصة نافذ.' }; }
+      if (uo !== '*') { const o = getOrg_(uo); if (!o || o.status === 'suspended') return { ok: false, code: 'DISABLED', message: 'حساب مؤسستك موقوف مؤقتًا. تواصل مع مدير النظام (المشرف العام) لمنصة نافذ.' }; }
       setUserCells_(u._row, { failed: 0, lockedUntil: '', lastLogin: new Date().toISOString() });
       cache.remove('try_' + uname);
       const token = newToken_();
@@ -456,7 +457,7 @@ const ORG_REQUIRED = ['create', 'importData', 'addSamples', 'clearSamples', 'emp
 function isPlatform_(me) { return me.role === 'admin' && me.org === '*'; }
 /** عضو المنصة: حساب على مستوى نافذ (org = '*') بأي دور؛ المشاهد منهم يطّلع على كل المؤسسات دون أي تعديل. */
 function isPlatformMember_(me) { return me.org === '*'; }
-function needPlatform_(me) { if (!isPlatform_(me)) throw err_('FORBIDDEN', 'هذا الإجراء للمشرف العام لمنصة نافذ فقط.'); }
+function needPlatform_(me) { if (!isPlatform_(me)) throw err_('FORBIDDEN', 'هذا الإجراء لمدير النظام (المشرف العام) لمنصة نافذ فقط.'); }
 function scopeOrg_(me, p) {
   if (me.org !== '*') return me.org || MAIN_ORG;
   const o = str_(p.__org, 40);
