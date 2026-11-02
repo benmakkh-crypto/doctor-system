@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '3.1.0';
+const APP_VERSION = '3.2.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -396,11 +396,16 @@ const ACTIONS = {
     needAdmin_(me);
     const u = findUser_(p.username);
     if (!u) throw err_('NOTFOUND', 'المستخدم غير موجود.');
-    const pw = tempPassword_();
-    setPassword_(u, pw, true);
+    // المسؤول يصدر كلمة مرور جديدة: يكتبها بنفسه أو تُولَّد تلقائيًا، ويختار هل يُلزم المستخدم بتغييرها.
+    // كلمات المرور القديمة لا يمكن استرجاعها لأنها محفوظة مشفّرة باتجاه واحد.
+    const manual = typeof p.password === 'string' && p.password !== '';
+    const pw = manual ? p.password : tempPassword_();
+    if (manual) checkPolicy_(pw);
+    const must = p.mustChange !== false;
+    setPassword_(u, pw, must);
     setUserCells_(u._row, { failed: 0, lockedUntil: '' });
-    audit_(me.username, 'إعادة تعيين كلمة مرور', '', '', String(u.username));
-    return { password: pw };
+    audit_(me.username, manual ? 'تعيين كلمة مرور من المسؤول' : 'إعادة تعيين كلمة مرور', '', '', String(u.username) + (must ? ' · تغيير إلزامي' : ' · دون تغيير إلزامي'));
+    return { password: pw, mustChange: must };
   },
   changePassword: function (me, p) {
     const u = findUser_(me.username);
@@ -746,10 +751,13 @@ function actSaveUser_(me, p) {
     audit_(me.username, 'تعديل مستخدم', '', '', uname + ' · ' + ROLES[p.role] + (p.active === false ? ' · موقوف' : ''));
     return { username: uname };
   }
-  const pw = tempPassword_();
-  addUser_({ username: uname, name: name, email: email, role: p.role, depts: depts, password: pw, mustChange: true });
-  audit_(me.username, 'إضافة مستخدم', '', '', uname + ' · ' + ROLES[p.role]);
-  return { username: uname, password: pw };
+  const manual = typeof p.password === 'string' && p.password !== '';
+  const pw = manual ? p.password : tempPassword_();
+  if (manual) { try { checkPolicy_(pw); } catch (e) { e.field = 'password'; throw e; } }
+  const must = p.mustChange !== false;
+  addUser_({ username: uname, name: name, email: email, role: p.role, depts: depts, password: pw, mustChange: must });
+  audit_(me.username, 'إضافة مستخدم', '', '', uname + ' · ' + ROLES[p.role] + (manual ? ' · كلمة مرور من المسؤول' : ''));
+  return { username: uname, password: pw, mustChange: must };
 }
 
 /* ---------- المرفقات ---------- */
@@ -885,10 +893,51 @@ function seedSamples_(me) {
     [8, 4, 'حليب أطفال قارب انتهاء صلاحيته', 'قيد المتابعة', 5, { item: 'حليب أطفال', qty: 36, unit: 'حبة', expiry: d(-20), warehouse: 'المستودع الرئيسي' }, 2],
     [10, 14, 'طلب إعانة سكن', 'بانتظار الاعتماد', 7, { name: 'مستفيد (مثال)', family: 6, monthly: 1500 }, 0],
     [11, 1, 'تطوع في توزيع السلال', 'جديد', 1, { name: 'متطوعة (مثال)', opportunity: 'توزيع السلال', hours: 12 }, 0],
-    [12, 2, 'اجتماع مجلس الإدارة', 'جديد', 0, { ref: 'مثال', responsible: 'أمين المجلس' }, 0]
+    [12, 2, 'اجتماع مجلس الإدارة', 'جديد', 0, { ref: 'مثال', responsible: 'أمين المجلس' }, 0],
+    // سجل سنة تقريبًا حتى تمتلئ لوحة القيادة ومخططاتها
+    [6, 6, 'تبرع عام نقدي', 'مكتمل', 0, { donor: 'فاعل خير', amount: 1500, method: 'نقدي', allocation: 'عام' }, 0],
+    [6, 9, 'دفعة كفالة أسرة', 'مكتمل', 1, { donor: 'أبو محمد (مثال)', amount: 900, method: 'تحويل بنكي', allocation: 'كفالة' }, 0],
+    [6, 7, 'تبرع لمشروع كسوة الشتاء', 'مكتمل', 20, { donor: 'شركة البر التجارية (مثال)', amount: 25000, method: 'تحويل بنكي', allocation: 'كسوة الشتاء' }, 0],
+    [6, 9, 'دفعة كفالة يتيم', 'مكتمل', 33, { donor: 'أبو محمد (مثال)', amount: 900, method: 'تحويل بنكي', allocation: 'كفالة' }, 0],
+    [6, 8, 'تبرع لأسرة متعففة', 'مكتمل', 45, { donor: 'أبو محمد (مثال)', amount: 4200, method: 'شبكة (مدى)', allocation: 'أسرة متعففة' }, 0],
+    [6, 10, 'تبرع لبرنامج تحفيظ القرآن', 'مكتمل', 75, { donor: 'مؤسسة الخير الأهلية (مثال)', amount: 18000, method: 'تحويل بنكي', allocation: 'برنامج التحفيظ' }, 0],
+    [6, 6, 'تبرع عبر المتجر الإلكتروني', 'مكتمل', 110, { donor: 'فاعل خير', amount: 6000, method: 'رابط دفع', allocation: 'عام' }, 0],
+    [6, 7, 'تبرع لمشروع السقيا', 'مكتمل', 150, { donor: 'شركة البر التجارية (مثال)', amount: 15000, method: 'تحويل بنكي', allocation: 'السقيا' }, 0],
+    [6, 7, 'تبرع لمشروع السلال الغذائية', 'مكتمل', 200, { donor: 'مؤسسة الخير الأهلية (مثال)', amount: 22000, method: 'تحويل بنكي', allocation: 'مشروع السلال' }, 0],
+    [6, 6, 'تبرع زكاة المال', 'مكتمل', 240, { donor: 'فاعل خير', amount: 9500, method: 'تحويل بنكي', allocation: 'عام' }, 0],
+    [7, 1, 'رواتب شهر أكتوبر', 'مكتمل', 30, { amount: 42000, account: 'الرواتب والأجور', costCenter: 'الإدارة العامة', method: 'تحويل بنكي' }, 0],
+    [7, 0, 'شراء مستلزمات مكتبية', 'مكتمل', 52, { amount: 2350, account: 'مصروفات تشغيلية', costCenter: 'الإدارة العامة', method: 'نقدي' }, 0],
+    [7, 1, 'رواتب شهر سبتمبر', 'مكتمل', 61, { amount: 41500, account: 'الرواتب والأجور', costCenter: 'الإدارة العامة', method: 'تحويل بنكي' }, 0],
+    [7, 2, 'سند صرف إعانة سكن', 'مكتمل', 80, { amount: 7500, account: 'مساعدات', costCenter: 'الكفالات', method: 'تحويل بنكي' }, 0],
+    [7, 2, 'سند صرف مشروع السقيا', 'مكتمل', 145, { amount: 13200, account: 'مشاريع', costCenter: 'السقيا', method: 'شيك' }, 0],
+    [7, 2, 'سند صرف مشروع السلال', 'بانتظار الاعتماد', 4, { amount: 9600, account: 'مشاريع', costCenter: 'مشروع السلال', method: 'شيك' }, 1],
+    [9, 1, 'تعيين باحثة اجتماعية', 'مكتمل', 90, { name: 'نورة (مثال)', job: 'باحثة اجتماعية', dept: 'الكفالات' }, 0],
+    [9, 5, 'إجازة اعتيادية', 'بانتظار الاعتماد', 3, { name: 'خالد (مثال)', job: 'محاسب', dept: 'المالية' }, 0],
+    [9, 9, 'تقييم الأداء السنوي', 'قيد المتابعة', 15, { name: 'سعد (مثال)', job: 'مدير مشروع', dept: 'المشاريع' }, 0],
+    [9, 12, 'إعلان وظيفة أمين مستودع', 'جديد', 6, { job: 'أمين مستودع', dept: 'المستودعات' }, 0],
+    [10, 6, 'صرف كفالة شهر نوفمبر', 'مكتمل', 2, { name: 'أسرة (مثال)', family: 5, monthly: 900, sponsor: 'أبو محمد (مثال)' }, 0],
+    [10, 3, 'تعيين كافل لأسرة أيتام', 'مكتمل', 40, { name: 'أسرة أيتام (مثال)', family: 4, monthly: 1200, sponsor: 'مؤسسة الخير الأهلية (مثال)' }, 0],
+    [10, 5, 'كفالة متأخرة التحصيل', 'قيد المتابعة', 25, { name: 'أسرة (مثال)', family: 3, monthly: 700 }, 1],
+    [10, 13, 'طلب إعانة علاج', 'مرفوض', 35, { name: 'مستفيد (مثال)', family: 2 }, 0],
+    [10, 17, 'طلب إعانة ترميم منزل', 'قيد المتابعة', 9, { name: 'أسرة (مثال)', family: 7 }, 0],
+    [4, 1, 'مشروع كسوة الشتاء', 'مكتمل', 120, { manager: 'أ. فهد (مثال)', budget: 60000, progress: 100 }, 0],
+    [4, 4, 'تجهيز مستودع التوزيع', 'قيد المتابعة', 18, { manager: 'م. سعد الغامدي', progress: 70 }, 0],
+    [5, 1, 'برنامج تحفيظ القرآن الكريم', 'قيد المتابعة', 95, { beneficiaries: 120, budget: 45000, location: 'مقر الجمعية' }, 0],
+    [5, 9, 'ملتقى الأسر المنتجة', 'مكتمل', 28, { beneficiaries: 60, location: 'قاعة الجمعية' }, 0],
+    [2, 6, 'مخاطبة المالية بشأن الميزانية', 'قيد المتابعة', 5, { recipient: 'إدارة المالية', channel: 'معاملة ورقية' }, 0],
+    [2, 7, 'خطاب وارد من جهة حكومية', 'جديد', 2, { recipient: 'الجهة المشرفة (مثال)', channel: 'بريد إلكتروني', ref: 'مثال' }, 0],
+    [2, 10, 'طلب عهدة نقدية', 'بانتظار الاعتماد', 3, { recipient: 'المدير التنفيذي', channel: 'معاملة ورقية' }, 0],
+    [2, 4, 'تنبيه موعد توزيع السلال', 'مكتمل', 7, { recipient: 'فريق التوزيع', channel: 'تنبيه لحظي' }, 0],
+    [11, 3, 'ساعات تطوع حملة الشتاء', 'مكتمل', 22, { name: 'متطوع (مثال)', opportunity: 'كسوة الشتاء', hours: 24 }, 0],
+    [11, 11, 'تسليم سيارة التوزيع', 'مكتمل', 9, { name: 'سائق (مثال)' }, 0],
+    [8, 5, 'استلام تبرع عيني: بطانيات', 'مكتمل', 26, { item: 'بطانيات', qty: 200, unit: 'حبة', warehouse: 'المستودع الرئيسي' }, 0],
+    [8, 9, 'أمر صرف سلال لأسر الحي', 'بانتظار الاعتماد', 2, { item: 'سلة غذائية', qty: 80, unit: 'كرتون', warehouse: 'المستودع الرئيسي' }, 0],
+    [12, 10, 'تسجيل إجابات معايير الحوكمة', 'قيد المتابعة', 14, { responsible: 'لجنة الحوكمة' }, 0],
+    [13, 10, 'إصدار قسيمة شراء لأسرة', 'مكتمل', 12, { beneficiary: 'أسرة (مثال)', amount: 800, decision: 'مثال' }, 0],
+    [1, 0, 'إضافة حساب محاسب', 'مكتمل', 100, { username: 'khaled', role: 'محاسب' }, 0]
   ];
   list.forEach(function (x) {
-    const r = { id: Utilities.getUuid(), no: nextNo_(x[0]), g: x[0], m: x[1], title: x[2], status: x[3], pri: x[6], esc: x[6] ? 1 : 0, date: d(x[4]), due: x[4] > 10 ? d(x[4] - 14) : '', owner: '', notes: '', f: x[5], sample: true, created: now_(), updated: now_(), createdBy: me.username, updatedBy: me.username, hist: [], files: [] };
+    const r = { id: Utilities.getUuid(), no: nextNo_(x[0]), g: x[0], m: x[1], title: x[2], status: x[3], pri: x[6], esc: x[6] ? 1 : 0, date: d(x[4]), due: x[4] > 10 ? d(x[4] - 14) : '', owner: '', notes: '', f: x[5], sample: true, created: now_(), updated: (x[3] === 'مكتمل' || x[3] === 'مرفوض') ? d(Math.max(0, x[4] - 2)) + 'T10:00:00.000Z' : now_(), createdBy: me.username, updatedBy: me.username, hist: [], files: [] };
     hist_(r, me, 'إنشاء (مثال)', '');
     writeRec_(r);
   });

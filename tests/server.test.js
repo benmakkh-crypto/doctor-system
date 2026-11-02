@@ -26,7 +26,7 @@ ok(A.api(T, "saveUser", { username: "Bad Name", name: "x", role: "viewer" }).cod
 ok(A.api(T, "saveUser", { username: "zubair", name: "x", role: "viewer" }).code === "VALIDATION", "cannot demote self");
 
 // --- samples & numbering
-ok(A.api(T, "addSamples").data.count === 9, "samples added");
+ok(A.api(T, "addSamples").data.count === 49, "samples added");
 const nos = A.api(T, "bootstrap").data.records.map(x => x.no);
 ok(nos.every(n => /^[A-Z]{3}-\d{4}-\d{5}$/.test(n)), "sequential numbers " + nos[0]);
 
@@ -98,6 +98,17 @@ const au = A.api(T, "audit", { limit: 500 }).data;
 ok(au.length > 20 && au.some(a => a.action === "قفل الحساب"), "audit trail written (" + au.length + " rows)");
 const imp = A.api(T, "importData", { records: [{ g: 6, m: 6, title: "مستورد", date: today, status: "مكتمل", f: { donor: "x", amount: 100 } }, { g: 99, title: "bad" }] });
 ok(imp.data.added === 1 && imp.data.skipped === 1, "import validates each row");
+// --- admin-issued passwords (manual / auto, optional forced change)
+const mk = A.api(T, "saveUser", { username: "pw.manual", name: "اختبار كلمة يدوية", role: "viewer", password: "Manual2026x", mustChange: false });
+ok(mk.ok && mk.data.password === "Manual2026x" && mk.data.mustChange === false, "admin sets a chosen password on create");
+const lm = A.login("pw.manual", "Manual2026x");
+ok(lm.ok && lm.data.mustChange === false, "chosen password works without forced change");
+ok(A.api(T, "saveUser", { username: "pw.weak", name: "ضعيفة", role: "viewer", password: "123" }).field === "password", "weak chosen password rejected on its field");
+const rs = A.api(T, "resetPassword", { username: "pw.manual", password: "NewOne2026", mustChange: true });
+ok(rs.ok && rs.data.mustChange === true && A.login("pw.manual", "NewOne2026").data.mustChange === true, "admin resets to a chosen password with forced change");
+ok(A.api(T, "resetPassword", { username: "pw.manual", password: "abc" }).code === "VALIDATION", "reset enforces password policy");
+const ra = A.api(T, "resetPassword", { username: "pw.manual" });
+ok(ra.ok && ra.data.password.length >= 12 && A.login("pw.manual", ra.data.password).ok, "auto-generated reset still works");
 A.logout(ST);
 ok(A.api(ST, "bootstrap").code === "AUTH", "logout ends session");
 ok(A.api("forged-token", "bootstrap").code === "AUTH", "forged token rejected");
