@@ -1039,6 +1039,47 @@ td.pc small{display:block;font-size:10.5px;color:var(--muted)}
 .side .nav a.st.on .stt small{color:rgba(255,255,255,.8)}
 .sysg a.st:last-child:nth-child(odd){grid-column:span 2;flex-direction:row;align-items:center;min-height:0}
 @media (prefers-reduced-motion:reduce){.side .nav a.st,.sti,.side .nav a.st::after{transition:none!important}}
+
+/* ================= القائمة العلوية: بطاقة رئيسية + روابط سريعة ================= */
+#navTop{display:grid!important;gap:5px;margin-bottom:4px}
+.side .nav a.qhero{position:relative;display:flex!important;align-items:center;gap:10px;padding:12px!important;border-radius:16px;overflow:hidden;margin-bottom:3px;
+ background:linear-gradient(135deg,rgba(222,178,78,.32),rgba(222,178,78,.08) 60%,rgba(0,0,0,.12))!important;box-shadow:inset 0 0 0 1px rgba(222,178,78,.4)!important;transition:transform .22s,box-shadow .22s!important}
+.side .nav a.qhero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 8px,transparent 8px 16px);pointer-events:none}
+.side .nav a.qhero::after{content:"";position:absolute;inset-inline-end:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(243,213,140,.45),transparent 70%);transition:transform .4s}
+.side .nav a.qhero:hover{transform:translateY(-2px)!important;box-shadow:inset 0 0 0 1px rgba(222,178,78,.75),0 10px 24px rgba(0,0,0,.3)!important}
+.side .nav a.qhero:hover::after{transform:scale(1.4)}
+.side .nav a.qhero.on{background:linear-gradient(135deg,#deb24e,#b98a2c 70%)!important;box-shadow:0 10px 26px rgba(185,138,44,.45)!important}
+.qhi{position:relative;z-index:1;width:42px;height:42px;border-radius:13px;display:grid;place-items:center;flex:none;color:#3b2a06;background:linear-gradient(145deg,#f6dc98,#deb24e);box-shadow:0 5px 14px rgba(222,178,78,.45),inset 0 0 0 1px rgba(255,255,255,.4);transition:transform .25s}
+.qhi svg{width:21px;height:21px}
+.side .nav a.qhero:hover .qhi{transform:scale(1.08) rotate(-6deg)}
+.side .nav a.qhero.on .qhi{background:#fff;color:#a77a20}
+.qht{position:relative;z-index:1;display:grid;line-height:1.2;flex:1;min-width:0}
+.qht small{font-size:10.5px;color:rgba(255,240,205,.75)}
+.qht b{font-size:15.5px;font-weight:800;color:#fff}
+.qhs{position:relative;z-index:1;display:grid;justify-items:center;line-height:1.05;padding:5px 9px;border-radius:11px;background:rgba(0,0,0,.22);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.qhs b{font-size:16px;font-weight:800;color:#f6dc98}.qhs small{font-size:9.5px;color:rgba(255,255,255,.7)}
+.side .nav a.qhero.on .qhs b{color:#fff}
+.side .nav a.qk{position:relative;display:flex!important;align-items:center;gap:10px;padding:8px 10px 8px 8px!important;border-radius:13px;
+ background:linear-gradient(90deg,rgba(0,0,0,.1),color-mix(in srgb,var(--qc) 14%,transparent))!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)!important;transition:transform .2s,background .2s,box-shadow .2s!important}
+.side .nav a.qk::before{content:"";position:absolute;inset-inline-start:0;top:22%;bottom:22%;width:3px;border-radius:3px;background:var(--qc);opacity:.0;transition:opacity .2s,top .2s,bottom .2s}
+.side .nav a.qk:hover{transform:translateX(-3px)!important;background:linear-gradient(90deg,rgba(0,0,0,.08),color-mix(in srgb,var(--qc) 30%,transparent))!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--qc) 50%,transparent)!important}
+.side .nav a.qk:hover::before{opacity:1}
+.side .nav a.qk.on{background:linear-gradient(90deg,color-mix(in srgb,var(--qc) 25%,transparent),color-mix(in srgb,var(--qc) 55%,transparent))!important;box-shadow:inset 0 0 0 1.5px #deb24e,0 6px 18px rgba(0,0,0,.25)!important}
+.side .nav a.qk.on::before{opacity:1;top:12%;bottom:12%;background:#deb24e}
+.qki{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;flex:none;color:#fff;background:linear-gradient(145deg,color-mix(in srgb,var(--qc),#fff 25%),var(--qc));box-shadow:0 4px 12px color-mix(in srgb,var(--qc) 45%,transparent),inset 0 0 0 1px rgba(255,255,255,.25);transition:transform .25s}
+.qki svg{width:17px;height:17px}
+.side .nav a.qk:hover .qki{transform:scale(1.1) rotate(-6deg)}
+.qkt{display:grid;line-height:1.25;flex:1;min-width:0}
+.qkt b{font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qkt small{font-size:10.5px;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.side .nav a.qk.on .qkt small{color:rgba(255,255,255,.85)}
+.qkn{min-width:24px;height:22px;padding:0 7px;border-radius:999px;display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff;background:var(--qc);box-shadow:0 0 0 2px rgba(0,0,0,.22)}
+.qkn.pulse{animation:qkp 2s infinite}
+@keyframes qkp{0%{box-shadow:0 0 0 2px rgba(0,0,0,.22),0 0 0 0 color-mix(in srgb,var(--qc) 70%,transparent)}70%{box-shadow:0 0 0 2px rgba(0,0,0,.22),0 0 0 9px transparent}100%{box-shadow:0 0 0 2px rgba(0,0,0,.22),0 0 0 0 transparent}}
+.qka{width:22px;height:22px;display:grid;place-items:center;color:rgba(255,255,255,.35);transform:rotate(90deg);transition:transform .2s,color .2s}
+.qka svg{width:13px;height:13px}
+.side .nav a.qk:hover .qka{color:#fff;transform:rotate(90deg) translateY(3px)}
+@media (prefers-reduced-motion:reduce){.qkn.pulse{animation:none}.side .nav a.qk,.side .nav a.qhero,.qki,.qhi{transition:none!important}}
 </style>
 <!-- نسخة تجريبية مستقلة: تُبنى آليًا من src/ بالأمر node tools/build-demo.js. لا تعدّلها يدويًا. -->
 <script>/*
@@ -2438,11 +2479,13 @@ function renderNav(){
   const pend=A.filter(r=>eff(r)==="بانتظار الاعتماد").length;
   const hot=A.filter(r=>isOpen(r)&&(pri(r)===2||isLate(r)||isMine(r))).length;
   const trash=S.recs.filter(r=>r.deleted).length;
-  $("#navTop").innerHTML=`<a href="#home" class="${R.v==="home"?"on":""}"><span class="gi">${ico("home")}</span>الرئيسية</a>
-   <a href="#focus" class="${R.v==="focus"?"on":""}"><span class="gi">${ico("focus")}</span>مهامي والأولويات<span class="cnt ${hot?"fire":""}">${hot||""}</span></a>
-   <a href="#inbox" class="${R.v==="inbox"?"on":""}"><span class="gi">${ico("inbox")}</span>صندوق الاعتمادات<span class="cnt ${pend?"hot":""}">${pend||""}</span></a>
-   <a href="#flow" class="${R.v==="flow"?"on":""}"><span class="gi">${ico("flow")}</span>مسار المعاملات</a>
-   ${S.member?`<a href="#orgs" class="${R.v==="orgs"?"on":""}"><span class="gi">${ico("building")}</span>الكشاف<span class="cnt">${(S.orgs||[]).length||""}</span></a>`:""}`;
+  const openN=A.filter(r=>isOpen(r)).length;const nOrgs=(S.orgs||[]).length;
+  const qk=(h,ic,t,sub,col,n,hotN)=>`<a href="#${h}" class="qk ${R.v===h?"on":""}" style="--qc:${col}"${R.v===h?' aria-current="page"':""}><span class="qki">${ico(ic)}</span><span class="qkt"><b>${t}</b><small>${sub}</small></span>${n?`<span class="qkn ${hotN?"pulse":""}">${n}</span>`:`<span class="qka">${ico("chev")}</span>`}</a>`;
+  $("#navTop").innerHTML=`<a href="#home" class="qhero ${R.v==="home"?"on":""}"${R.v==="home"?' aria-current="page"':""}><span class="qhi">${ico("home")}</span><span class="qht"><small>لوحة القيادة</small><b>الرئيسية</b></span><span class="qhs"><b>${openN}</b><small>مفتوحة</small></span></a>`
+   +qk("focus","focus","مهامي والأولويات",hot?`${hot} تحتاج متابعتك`:"لا شيء عاجل","#e0573a",hot,hot>0)
+   +qk("inbox","inbox","صندوق الاعتمادات",pend?`${pend} بانتظار الاعتماد`:"لا شيء معلّق","#7b5ce0",pend,false)
+   +qk("flow","flow","مسار المعاملات","تتبّع المراحل","#13a597",0)
+   +(S.member?qk("orgs","building","الكشاف",`${nOrgs} ${nOrgs>2&&nOrgs<11?"مؤسسات":"مؤسسة"} في المنصة`,"#2f86d8",nOrgs,false):"");
   const inG=(R.v==="grp"||R.v==="mod")?R.g:-1;
   const nq=(ui.navq||"").trim();const hl=t=>{const e=esc(t);if(!nq)return e;const q=esc(nq).replace(/[.*+?^${}()|[\]\\]/g,"\\$&");return e.replace(new RegExp(q,"g"),m=>`<mark>${m}</mark>`)};
   const hit=t=>!nq||String(t).includes(nq);
