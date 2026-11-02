@@ -1,5 +1,5 @@
 /**
- * نظام الدكتور — الخادم (Google Apps Script)
+ * نظام نافذ — الخادم (Google Apps Script)
  *
  * كل قراءة وكتابة تمر من هنا. الواجهة لا تلمس الجدول مباشرة، لذلك تُفرض
  * الصلاحيات وحد الاعتماد وفصل المهام والترقيم ومنع التكرار وسجل التدقيق
@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '3.2.0';
+const APP_VERSION = '3.3.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -44,9 +44,16 @@ const HIST_MAX = 60;
 /* =====================================================================
  * نقطة الدخول
  * ===================================================================== */
-function doGet() {
+function doGet(e) {
+  if (e && e.parameter && e.parameter.api === 'public') return json_(publicData_());
+  if (e && e.parameter && e.parameter.page === 'site') {
+    return HtmlService.createHtmlOutputFromFile('Site')
+      .setTitle(String((getSettingsSafe_().orgName) || 'الموقع الإلكتروني'))
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  }
   return HtmlService.createHtmlOutputFromFile('Index')
-    .setTitle('نظام الدكتور')
+    .setTitle('نافذ — منصة الإدارة المؤسسية')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     // يسمح بفتح النظام داخل إطار (لوحة المتصفح المدمجة في التطبيقات، أو Google Sites)؛ بدونه تظهر صفحة بيضاء.
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
@@ -75,7 +82,7 @@ function setup() {
   const existing = props.getProperty('SPREADSHEET_ID');
   if (existing) ss = SpreadsheetApp.openById(existing);
   else {
-    ss = SpreadsheetApp.create('قاعدة بيانات نظام الدكتور');
+    ss = SpreadsheetApp.create('قاعدة بيانات نظام نافذ');
     props.setProperty('SPREADSHEET_ID', ss.getId());
   }
   Object.keys(SH).forEach(function (k) {
@@ -94,7 +101,7 @@ function setup() {
   try { ss.setSpreadsheetLocale('ar_SA'); } catch (e) { }
 
   if (!props.getProperty('FOLDER_ID')) {
-    const root = DriveApp.createFolder('نظام الدكتور');
+    const root = DriveApp.createFolder('نظام نافذ');
     props.setProperty('FOLDER_ID', root.getId());
     props.setProperty('FILES_FOLDER_ID', root.createFolder('المرفقات').getId());
     props.setProperty('BACKUP_FOLDER_ID', root.createFolder('النسخ الاحتياطية').getId());
@@ -348,7 +355,7 @@ function api(token, action, payload) {
     return { ok: true, data: out, rev: rev_() };
   } catch (e) { return fail_(e); }
 }
-const WRITE_ACTIONS = ['create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+const WRITE_ACTIONS = ['saveNav', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -387,10 +394,20 @@ const ACTIONS = {
     putSetting_('threshold', t);
     putSetting_('sod', !!p.sod);
     putSetting_('notify', !!p.notify);
+    if (p.site) {
+      putSetting_('siteUrl', str_(p.site.url, 300));
+      putSetting_('siteCity', str_(p.site.city, 80));
+      putSetting_('sitePhone', str_(p.site.phone, 30));
+      putSetting_('siteEmail', str_(p.site.email, 120));
+      putSetting_('siteAbout', str_(p.site.about, 1200));
+      putSetting_('publicStats', p.site.stats !== false);
+      try { CacheService.getScriptCache().remove('public_v1'); } catch (e) { }
+    }
     audit_(me.username, 'تعديل الإعدادات', '', '', 'حد الاعتماد ' + t + (p.sod ? ' · فصل المهام' : ''));
     return getSettings_();
   },
   listUsers: function (me) { needAdmin_(me); return table_('users').rows.map(publicUser_); },
+  saveNav: actSaveNav_,
   saveUser: actSaveUser_,
   resetPassword: function (me, p) {
     needAdmin_(me);
@@ -428,7 +445,7 @@ const ACTIONS = {
   exportData: function (me) {
     needAdmin_(me);
     audit_(me.username, 'تصدير نسخة احتياطية', '', '', '');
-    return { system: 'نظام الدكتور', version: APP_VERSION, exportedAt: now_(), settings: getSettings_(), records: loadRecords_().map(clean_), decisions: loadDecisions_() };
+    return { system: 'نظام نافذ', version: APP_VERSION, exportedAt: now_(), settings: getSettings_(), records: loadRecords_().map(clean_), decisions: loadDecisions_() };
   },
   importData: actImport_,
   clearSamples: function (me) {
@@ -481,7 +498,7 @@ function bootstrap_(me) {
   Object.keys(decAll).forEach(function (k) { if (ids[k]) dec[k] = decAll[k]; });
   const people = table_('users').rows.filter(function (u) { return u.active === true || u.active === 'TRUE'; })
     .map(function (u) { return { username: String(u.username), name: String(u.name), role: String(u.role), hasEmail: !!u.email }; });
-  return { me: clean_(me), settings: getSettings_(), records: recs, decisions: dec, people: people, schema: SCHEMA, version: APP_VERSION, now: now_() };
+  return { me: clean_(me), settings: getSettings_(), records: recs, decisions: dec, people: people, schema: SCHEMA, version: APP_VERSION, now: now_(), appUrl: (function () { try { return ScriptApp.getService().getUrl(); } catch (e) { return ''; } })() };
 }
 
 /* =====================================================================
@@ -729,6 +746,57 @@ function actEscalate_(me, p) {
   return res;
 }
 
+
+/* ---------- تخصيص القوائم والعناوين (للمسؤول والمشرف العام) ----------
+ * يغيّر طريقة العرض فقط: أسماء الإدارات والعناوين الفرعية والوحدات وترتيبها وأيقوناتها وألوانها وإخفاءها.
+ * أرقام الإدارات والوحدات لا تتغير، فتبقى المعاملات المحفوظة مرتبطة بوحداتها.
+ */
+function actSaveNav_(me, p) {
+  needAdmin_(me);
+  if (p && p.reset) { putSetting_('nav', null); audit_(me.username, 'استعادة القوائم الافتراضية', '', '', ''); return { nav: null }; }
+  const G = SCHEMA.G, out = { order: [], d: {}, sec: {}, mod: {} };
+  const icon = function (v) { v = str_(v, 20); return /^[A-Za-z]{1,20}$/.test(v) ? v : ''; };
+  const color = function (v) { v = str_(v, 7); return /^#[0-9a-fA-F]{6}$/.test(v) ? v : ''; };
+  const order = Array.isArray(p.order) ? p.order.map(Number) : [];
+  const seen = {};
+  order.forEach(function (g) { if (g >= 0 && g < G.length && !seen[g]) { seen[g] = 1; out.order.push(g); } });
+  G.forEach(function (_, g) { if (!seen[g]) out.order.push(g); });
+  const d = p.d || {}, sec = p.sec || {}, mod = p.mod || {};
+  G.forEach(function (grp, g) {
+    const x = d[g] || {};
+    const o = {};
+    const n = str_(x.n, 60); if (n) o.n = n;
+    const i = icon(x.i); if (i) o.i = i;
+    const c = color(x.c); if (c) o.c = c;
+    if (x.h === true && g !== 0) o.h = true;
+    if (Object.keys(o).length) out.d[g] = o;
+    if (Array.isArray(sec[g])) {
+      const used = {}, list = [];
+      sec[g].slice(0, 20).forEach(function (s) {
+        if (!Array.isArray(s)) return;
+        const t = str_(s[0], 50) || 'عنوان فرعي';
+        const ms = (Array.isArray(s[2]) ? s[2] : []).map(Number).filter(function (m) { return m >= 0 && m < grp.items.length && !used[m] && (used[m] = 1); });
+        list.push([t, icon(s[1]), ms]);
+      });
+      const rest = grp.items.map(function (_, m) { return m; }).filter(function (m) { return !used[m]; });
+      if (rest.length) list.push(['وحدات أخرى', '', rest]);
+      out.sec[g] = list.filter(function (s) { return s[2].length; });
+    }
+  });
+  Object.keys(mod).slice(0, 400).forEach(function (k) {
+    const mm = /^(\d+)-(\d+)$/.exec(k); if (!mm) return;
+    const g = +mm[1], m = +mm[2]; if (!G[g] || G[g].items[m] == null) return;
+    const x = mod[k] || {}, o = {};
+    const n = str_(x.n, 70); if (n) o.n = n;
+    const i = icon(x.i); if (i) o.i = i;
+    if (x.h === true) o.h = true;
+    if (Object.keys(o).length) out.mod[k] = o;
+  });
+  putSetting_('nav', out);
+  audit_(me.username, 'تخصيص القوائم والعناوين', '', '', Object.keys(out.d).length + ' إدارة · ' + Object.keys(out.mod).length + ' وحدة');
+  return { nav: out };
+}
+
 /* ---------- المستخدمون (للمسؤول) ---------- */
 function actSaveUser_(me, p) {
   needAdmin_(me);
@@ -855,15 +923,15 @@ function sendMail_(to, subject, r, note) {
     '<p style="margin:0 0 4px;color:#56675f">' + e(r.no) + ' · ' + e(SCHEMA.G[r.g].items[r.m]) + ' · ' + e(r.status) + '</p>' +
     (note ? '<p style="background:#ebf0ee;padding:8px 12px;border-radius:6px">' + e(note) + '</p>' : '') +
     (url ? '<p><a href="' + url + '" style="background:#0f5a4b;color:#fff;padding:8px 16px;border-radius:6px;text-decoration:none">فتح النظام</a></p>' : '') +
-    '<p style="color:#888;font-size:12px">رسالة آلية من نظام الدكتور.</p></div>';
-  MailApp.sendEmail({ to: to, subject: 'نظام الدكتور: ' + subject + ' — ' + r.no, htmlBody: html, name: 'نظام الدكتور' });
+    '<p style="color:#888;font-size:12px">رسالة آلية من نظام نافذ.</p></div>';
+  MailApp.sendEmail({ to: to, subject: 'نظام نافذ: ' + subject + ' — ' + r.no, htmlBody: html, name: 'نظام نافذ' });
 }
 
 /** نسخة احتياطية يومية (مُشغَّل زمني) تحتفظ بآخر 14 نسخة. */
 function dailyBackup() {
   const props = PropertiesService.getScriptProperties();
   const folder = DriveApp.getFolderById(props.getProperty('BACKUP_FOLDER_ID'));
-  const name = 'نسخة نظام الدكتور ' + Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd HH-mm');
+  const name = 'نسخة نظام نافذ ' + Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd HH-mm');
   DriveApp.getFileById(props.getProperty('SPREADSHEET_ID')).makeCopy(name, folder);
   const files = [];
   const it = folder.getFiles();
@@ -877,6 +945,92 @@ function dailyBackup() {
     try { if (JSON.parse(all[k]).exp < Date.now()) props.deleteProperty(k); } catch (e) { props.deleteProperty(k); }
   });
   return name;
+}
+
+
+/* =====================================================================
+ * الواجهة العامة للموقع الإلكتروني (بلا تسجيل دخول)
+ * - GET  ?api=public  ← المحتوى المنشور فقط: الأخبار والبرامج والشركاء وإحصاءات عددية مجمّعة
+ * - POST {type,...}    ← طلبات الزوار تُنشأ معاملات «جديد» في الإدارة المختصة
+ * لا تُرجع أي بيانات شخصية، ولا تقبل إلا أنواعًا وحقولًا محددة، مع حد للطلبات في الدقيقة.
+ * ===================================================================== */
+const WEBSITE_ME = { username: 'website', name: 'الموقع الإلكتروني', role: 'contributor', depts: [] };
+/** مستدعاة من صفحة الموقع العامة عبر google.script.run (بلا جلسة). */
+function sitePublic() { const d = publicData_(); try { d.appUrl = ScriptApp.getService().getUrl(); } catch (e) { } return d; }
+function siteSubmit(p) { return publicSubmit_(p || {}); }
+function getSettingsSafe_() { try { return PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID') ? getSettings_() : {}; } catch (e) { return {}; } }
+function json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
+function publicData_() {
+  try {
+    if (!PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID')) return { ok: false, reason: 'not-ready' };
+    const cache = CacheService.getScriptCache();
+    const hit = cache.get('public_v1');
+    if (hit) return JSON.parse(hit);
+    const cfg = getSettings_();
+    const R = loadRecords_().filter(function (r) { return !r.deleted; });
+    const pub = function (r) { return r.f && r.f.visibility === 'منشور'; };
+    const news = R.filter(function (r) { return r.g === 3 && r.m === 5 && pub(r); }).sort(function (a, b) { return b.date.localeCompare(a.date); }).slice(0, 12)
+      .map(function (r) { return { title: r.title, body: str_(r.notes, 1500), date: r.date }; });
+    const partners = R.filter(function (r) { return r.g === 3 && r.m === 9 && pub(r); }).slice(0, 24).map(function (r) { return { name: r.title }; });
+    const programs = R.filter(function (r) { return r.g === 5 && (r.m === 0 || r.m === 1) && r.status !== 'مرفوض'; }).slice(0, 12)
+      .map(function (r) { return { title: r.title, stage: r.m === 0 ? 'يبحث عن داعم' : 'قيد التنفيذ', budget: +r.f.budget || 0, beneficiaries: +r.f.beneficiaries || 0, location: r.f.location || '', about: str_(r.notes, 300) }; });
+    let stats = null;
+    if (cfg.publicStats !== false) {
+      const names = {};
+      R.forEach(function (r) { if (r.g === 10 && r.f && r.f.name) names[r.f.name] = 1; });
+      const vol = {}; let hours = 0;
+      R.forEach(function (r) { if (r.g === 11 && r.f) { if (r.f.name) vol[r.f.name] = 1; hours += +r.f.hours || 0; } });
+      stats = {
+        programs: R.filter(function (r) { return r.g === 5; }).length,
+        beneficiaries: Object.keys(names).length + R.filter(function (r) { return r.g === 5; }).reduce(function (a, r) { return a + (+r.f.beneficiaries || 0); }, 0),
+        volunteers: Object.keys(vol).length, hours: hours,
+        projects: R.filter(function (r) { return r.g === 4; }).length
+      };
+    }
+    const out = { ok: true, org: cfg.orgName || '', city: cfg.siteCity || '', phone: cfg.sitePhone || '', email: cfg.siteEmail || '', about: cfg.siteAbout || '', news: news, programs: programs, partners: partners, stats: stats, at: now_() };
+    cache.put('public_v1', JSON.stringify(out), 300);
+    return out;
+  } catch (e) { console.error(e); return { ok: false, reason: 'error' }; }
+}
+function doPost(e) {
+  let p = {};
+  try { p = JSON.parse((e && e.postData && e.postData.contents) || '{}'); } catch (x) { return json_({ ok: false, message: 'طلب غير صالح.' }); }
+  return json_(publicSubmit_(p));
+}
+function publicSubmit_(p) {
+  try {
+    if (!PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID')) throw err_('NOT_READY', 'الخدمة غير متاحة الآن.');
+    if (str_(p.website, 50)) return { ok: true, no: '' }; // حقل فخ للبرامج الآلية
+    const cache = CacheService.getScriptCache();
+    const k = 'pub_rate_' + Math.floor(Date.now() / 60000);
+    const n = +(cache.get(k) || 0);
+    if (n >= 30) throw err_('BUSY', 'طلبات كثيرة الآن، أعد المحاولة بعد دقيقة.');
+    cache.put(k, String(n + 1), 120);
+    const name = str_(p.name, 80), phone = str_(p.phone, 20), msg = str_(p.message, 1500);
+    if (name.length < 3) throw err_('VALIDATION', 'اكتب الاسم الكامل.', 'name');
+    if (!/^05\d{8}$/.test(phone)) throw err_('VALIDATION', 'رقم الجوال يبدأ بـ 05 ويتكون من 10 أرقام.', 'phone');
+    const today = String(Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd')).slice(0, 10);
+    const contact = 'الاسم: ' + name + '\nالجوال: ' + phone + (str_(p.email, 120) ? '\nالبريد: ' + str_(p.email, 120) : '');
+    let rec;
+    if (p.type === 'aid') {
+      rec = { g: 10, m: 14, title: 'طلب إعانة من الموقع: ' + name, f: { name: name, nid: str_(p.nid, 10), family: str_(String(p.family || ''), 3) }, notes: 'نوع الإعانة: ' + str_(p.kind, 60) + '\n' + contact + (msg ? '\n\n' + msg : '') };
+    } else if (p.type === 'volunteer') {
+      rec = { g: 11, m: 1, title: 'طلب تطوع من الموقع: ' + name, f: { name: name, phone: phone, opportunity: str_(p.field, 120) }, notes: contact + (msg ? '\n\n' + msg : '') };
+    } else if (p.type === 'donate') {
+      const amt = Number(p.amount);
+      if (!(amt > 0 && amt < 1e8)) throw err_('VALIDATION', 'اكتب مبلغ التبرع.', 'amount');
+      rec = { g: 6, m: 6, title: 'رغبة تبرع من الموقع: ' + name, f: { donor: name, phone: phone, amount: amt, allocation: str_(p.allocation, 120) || 'عام' }, notes: 'تعهد عبر الموقع ولم يُستلم المبلغ بعد. تواصل مع المتبرع لإتمام التحويل ثم اعتمد المعاملة.\n' + contact + (msg ? '\n\n' + msg : '') };
+    } else if (p.type === 'contact') {
+      if (msg.length < 5) throw err_('VALIDATION', 'اكتب رسالتك.', 'message');
+      rec = { g: 3, m: 6, title: 'رسالة من زائر: ' + (str_(p.subject, 80) || name), f: {}, notes: contact + '\n\n' + msg };
+    } else throw err_('VALIDATION', 'نوع الطلب غير معروف.');
+    rec.date = today; rec.status = 'جديد';
+    const lock = LockService.getScriptLock();
+    if (!lock.tryLock(20000)) throw err_('BUSY', 'الخدمة مشغولة، أعد المحاولة بعد لحظات.');
+    let out;
+    try { out = actCreate_(WEBSITE_ME, rec); bumpRev_(); } finally { lock.releaseLock(); }
+    return { ok: true, no: out.record.no };
+  } catch (e) { const f = fail_(e); return { ok: false, message: f.message, field: f.field || '' }; }
 }
 
 /* =====================================================================
@@ -934,10 +1088,18 @@ function seedSamples_(me) {
     [8, 9, 'أمر صرف سلال لأسر الحي', 'بانتظار الاعتماد', 2, { item: 'سلة غذائية', qty: 80, unit: 'كرتون', warehouse: 'المستودع الرئيسي' }, 0],
     [12, 10, 'تسجيل إجابات معايير الحوكمة', 'قيد المتابعة', 14, { responsible: 'لجنة الحوكمة' }, 0],
     [13, 10, 'إصدار قسيمة شراء لأسرة', 'مكتمل', 12, { beneficiary: 'أسرة (مثال)', amount: 800, decision: 'مثال' }, 0],
-    [1, 0, 'إضافة حساب محاسب', 'مكتمل', 100, { username: 'khaled', role: 'محاسب' }, 0]
+    [1, 0, 'إضافة حساب محاسب', 'مكتمل', 100, { username: 'khaled', role: 'محاسب' }, 0],
+    // محتوى الموقع الإلكتروني العام: ما يُنشر هنا يظهر للزوار
+    [3, 5, 'إطلاق حملة كسوة الشتاء لهذا العام', 'مكتمل', 6, { visibility: 'منشور' }, 0, 'بدأت الجمعية توزيع كسوة الشتاء على الأسر المستفيدة في الأحياء الأشد حاجة، بمشاركة أكثر من 40 متطوعًا. يمكنكم الإسهام في الحملة من صفحة التبرع.'],
+    [3, 5, 'توقيع شراكة مع مؤسسة الخير الأهلية', 'مكتمل', 24, { visibility: 'منشور' }, 0, 'وقّعت الجمعية اتفاقية شراكة لدعم برنامج تحفيظ القرآن الكريم وتوسيع حلقاته لتشمل 120 طالبًا وطالبة.'],
+    [3, 5, 'ختام ملتقى الأسر المنتجة', 'مكتمل', 27, { visibility: 'منشور' }, 0, 'اختُتم ملتقى الأسر المنتجة بعرض منتجات 60 أسرة، ضمن برامج التمكين الاقتصادي التي تنفذها الجمعية.'],
+    [3, 9, 'مؤسسة الخير الأهلية (مثال)', 'مكتمل', 40, { visibility: 'منشور' }, 0],
+    [3, 9, 'شركة البر التجارية (مثال)', 'مكتمل', 40, { visibility: 'منشور' }, 0],
+    [5, 0, 'برنامج السلة الغذائية الشهرية', 'جديد', 10, { beneficiaries: 250, budget: 150000, location: 'أحياء المدينة' }, 0, 'سلة غذائية شهرية للأسر المسجلة لدى الجمعية طوال العام.'],
+    [5, 0, 'برنامج الحقيبة المدرسية', 'جديد', 8, { beneficiaries: 400, budget: 60000, location: 'مدارس الحي' }, 0, 'تجهيز طلاب الأسر المستفيدة بالحقائب والمستلزمات قبل بداية العام الدراسي.']
   ];
   list.forEach(function (x) {
-    const r = { id: Utilities.getUuid(), no: nextNo_(x[0]), g: x[0], m: x[1], title: x[2], status: x[3], pri: x[6], esc: x[6] ? 1 : 0, date: d(x[4]), due: x[4] > 10 ? d(x[4] - 14) : '', owner: '', notes: '', f: x[5], sample: true, created: now_(), updated: (x[3] === 'مكتمل' || x[3] === 'مرفوض') ? d(Math.max(0, x[4] - 2)) + 'T10:00:00.000Z' : now_(), createdBy: me.username, updatedBy: me.username, hist: [], files: [] };
+    const r = { id: Utilities.getUuid(), no: nextNo_(x[0]), g: x[0], m: x[1], title: x[2], status: x[3], pri: x[6], esc: x[6] ? 1 : 0, date: d(x[4]), due: x[4] > 10 ? d(x[4] - 14) : '', owner: '', notes: x[7] || '', f: x[5], sample: true, created: now_(), updated: (x[3] === 'مكتمل' || x[3] === 'مرفوض') ? d(Math.max(0, x[4] - 2)) + 'T10:00:00.000Z' : now_(), createdBy: me.username, updatedBy: me.username, hist: [], files: [] };
     hist_(r, me, 'إنشاء (مثال)', '');
     writeRec_(r);
   });

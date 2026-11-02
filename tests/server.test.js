@@ -26,7 +26,7 @@ ok(A.api(T, "saveUser", { username: "Bad Name", name: "x", role: "viewer" }).cod
 ok(A.api(T, "saveUser", { username: "zubair", name: "x", role: "viewer" }).code === "VALIDATION", "cannot demote self");
 
 // --- samples & numbering
-ok(A.api(T, "addSamples").data.count === 49, "samples added");
+ok(A.api(T, "addSamples").data.count === 56, "samples added");
 const nos = A.api(T, "bootstrap").data.records.map(x => x.no);
 ok(nos.every(n => /^[A-Z]{3}-\d{4}-\d{5}$/.test(n)), "sequential numbers " + nos[0]);
 
@@ -98,6 +98,34 @@ const au = A.api(T, "audit", { limit: 500 }).data;
 ok(au.length > 20 && au.some(a => a.action === "قفل الحساب"), "audit trail written (" + au.length + " rows)");
 const imp = A.api(T, "importData", { records: [{ g: 6, m: 6, title: "مستورد", date: today, status: "مكتمل", f: { donor: "x", amount: 100 } }, { g: 99, title: "bad" }] });
 ok(imp.data.added === 1 && imp.data.skipped === 1, "import validates each row");
+// --- menu customisation (admin only)
+ok(A.api(ST, "saveNav", { order: [5, 4] }).code === "FORBIDDEN", "non-admin cannot customise menus");
+const nv = A.api(T, "saveNav", { order: [6, 10, 6, 99], d: { 6: { n: "التبرعات والداعمون", i: "coins", c: "#123456" }, 0: { h: true } }, sec: { 6: [["قسم جديد", "star", [6, 7, 6, 999]]] }, mod: { "6-6": { n: "تبرع عام", i: "heart", h: false }, "99-1": { n: "x" }, "6-1": { i: "<script>" } } }).data.nav;
+ok(nv.order[0] === 6 && nv.order[1] === 10 && nv.order.length === 14, "order cleaned and completed");
+ok(nv.d[6].n === "التبرعات والداعمون" && nv.d[6].c === "#123456" && !(nv.d[0] && nv.d[0].h), "dept override saved; dashboard cannot be hidden");
+ok(nv.sec[6][0][2].join() === "6,7" && nv.sec[6][1][2].length === 13, "sections dedupe and keep every module");
+ok(nv.mod["6-6"].i === "heart" && !nv.mod["99-1"] && !nv.mod["6-1"], "module overrides validated");
+ok(A.api(T, "bootstrap").data.settings.nav.order[0] === 6, "nav returned to clients");
+ok(A.api(T, "saveNav", { reset: true }).ok && !A.api(T, "bootstrap").data.settings.nav, "reset to defaults");
+// --- public website API
+const pubd = A.sitePublic();
+ok(pubd.ok && pubd.news.length === 3 && pubd.partners.length === 2 && pubd.programs.length >= 2, "public data returns only published news/partners and marketed programs");
+ok(!JSON.stringify(pubd).match(/05\d{8}|[12]\d{9}/), "public data leaks no phone or ID numbers");
+ok(pubd.stats && pubd.stats.programs > 0, "public aggregate stats present");
+const before = A.api(T, "bootstrap").data.records.length;
+const sa = A.siteSubmit({ type: "aid", name: "أم خالد", phone: "0551234567", family: 5, kind: "سكن", message: "نحتاج مساعدة" });
+ok(sa.ok && /^SPN-/.test(sa.no), "website aid request becomes a SPN record " + sa.no);
+const recs2 = A.api(T, "bootstrap").data.records;
+const nr = recs2.find(r => r.no === sa.no);
+ok(recs2.length === before + 1 && nr.status === "جديد" && nr.createdBy === "website" && nr.m === 14, "record created as new by website in the right module");
+ok(A.siteSubmit({ type: "volunteer", name: "متطوع", phone: "123" }).field === "phone", "website validates phone");
+ok(A.siteSubmit({ type: "donate", name: "متبرع كريم", phone: "0551234567", amount: 0 }).field === "amount", "website validates donation amount");
+ok(A.siteSubmit({ type: "hack", name: "xxx", phone: "0551234567" }).ok === false, "unknown request type rejected");
+const hp = A.siteSubmit({ type: "contact", name: "روبوت", phone: "0551234567", message: "spam", website: "http://x" });
+ok(hp.ok && A.api(T, "bootstrap").data.records.length === before + 1, "honeypot silently drops bots");
+const sd = A.siteSubmit({ type: "donate", name: "متبرع كريم", phone: "0551234567", amount: 500, allocation: "برنامج الحقيبة المدرسية" });
+const dr = A.api(T, "bootstrap").data.records.find(r => r.no === sd.no);
+ok(sd.ok && dr.g === 6 && dr.status === "جديد" && dr.f.amount === 500, "donation pledge recorded as new (not counted until approved)");
 // --- admin-issued passwords (manual / auto, optional forced change)
 const mk = A.api(T, "saveUser", { username: "pw.manual", name: "اختبار كلمة يدوية", role: "viewer", password: "Manual2026x", mustChange: false });
 ok(mk.ok && mk.data.password === "Manual2026x" && mk.data.mustChange === false, "admin sets a chosen password on create");

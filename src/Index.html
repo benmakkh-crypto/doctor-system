@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<title>نظام الدكتور</title>
+<title>نافذ — منصة الإدارة المؤسسية</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@600;700&display=swap">
@@ -765,6 +765,63 @@ td.t{font-weight:600}
 .secret>div{display:grid;grid-template-columns:1fr auto;grid-template-areas:"l c" "v c";align-items:center;gap:2px 10px;padding:12px 14px;border-radius:12px;border:1px dashed color-mix(in srgb,var(--good) 45%,var(--line));background:color-mix(in srgb,var(--good) 6%,var(--surface))}
 .secret small{grid-area:l;color:var(--muted);font-size:12px}.secret b{grid-area:v;font-size:18px;color:var(--ink);letter-spacing:.5px}.secret .btn{grid-area:c}
 .form label>.lt{display:block}
+/* ---------- تخصيص القوائم ---------- */
+.menued{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:16px;align-items:start}
+.mlist{display:grid;gap:6px}
+.mrow{display:grid;grid-template-columns:auto auto 1fr auto auto auto;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:12px;border-inline-start:4px solid var(--dc);background:var(--surface)}
+.mrow.sel{background:color-mix(in srgb,var(--dc) 8%,var(--surface));box-shadow:0 0 0 2px color-mix(in srgb,var(--dc) 35%,transparent)}
+.mrow.off,.mmod.off{opacity:.55}
+.mrow input.nm,.msh input.nm,.mmod input.nm{border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--bg);min-width:0;width:100%}
+.mrow input[type=color]{width:34px;height:30px;border:1px solid var(--line);border-radius:8px;padding:2px;background:var(--surface)}
+.mv{display:grid;gap:2px}.mv button{border:1px solid var(--line);background:var(--surface);border-radius:5px;font-size:9px;line-height:1;padding:3px 5px;color:var(--muted)}
+.mv button:disabled{opacity:.3}
+.icb{width:34px;height:34px;border-radius:9px;border:1px dashed color-mix(in srgb,var(--dc,var(--brand)) 50%,var(--line));background:color-mix(in srgb,var(--dc,var(--brand)) 10%,transparent);color:var(--dcv,var(--brand));display:grid;place-items:center}
+.icb svg{width:18px;height:18px}
+.tg{display:inline-flex;gap:4px;align-items:center;font-size:12px;color:var(--muted);white-space:nowrap}
+.msecs{display:grid;gap:12px;margin-bottom:12px}
+.msec{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.msh{display:grid;grid-template-columns:auto auto 1fr auto auto;gap:8px;align-items:center;padding:8px 10px;background:color-mix(in srgb,var(--dc) 9%,var(--surface));border-bottom:1px solid var(--line)}
+.msh input.nm{font-weight:700;color:var(--dcv)}
+.msh small{color:var(--muted);font-size:11.5px;white-space:nowrap}
+.mmod{display:grid;grid-template-columns:auto auto 1fr minmax(110px,auto) auto;gap:8px;align-items:center;padding:6px 10px;border-bottom:1px dashed var(--line)}
+.mmod:last-child{border-bottom:0}
+.mmod select{border:1px solid var(--line);border-radius:8px;padding:5px 8px;background:var(--surface);font-size:12px;max-width:160px}
+.icgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:8px}
+.icgrid button{aspect-ratio:1;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);display:grid;place-items:center}
+.icgrid button:hover,.icgrid button.on{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 10%,transparent);color:var(--brand)}
+.icgrid svg{width:22px;height:22px}
+/* ---------- الموظفون والصلاحيات ---------- */
+.ptabs{margin:4px 0}.ptabs button{display:inline-flex;gap:6px;align-items:center;padding:8px 16px}.ptabs svg{width:16px;height:16px}
+.pm th.rh{text-align:center;border-top:4px solid var(--k)}
+.pm th.rh b{display:block;color:var(--k);font-size:13.5px}.pm th.rh small{display:block;font-weight:400;color:var(--muted);font-size:11px}
+td.pc{text-align:center}
+td.pc span{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;font-weight:800}
+td.pc small{display:block;font-size:10.5px;color:var(--muted)}
+.pc.ok span,.plg .ok{background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--good)}
+.pc.part span,.plg .part{background:color-mix(in srgb,#d9a521 18%,transparent);color:#9a6f00}
+.pc.no span,.plg .no{background:color-mix(in srgb,var(--bad) 12%,transparent);color:var(--bad)}
+.plg{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.plg span{border-radius:999px;padding:3px 12px;font-size:12px;font-weight:600}
+.pmx th.dh2{text-align:center;vertical-align:bottom;min-width:62px;padding:8px 4px}
+.pmx th.dh2 .si{margin:0 auto 4px;width:30px;height:30px;border-radius:9px;background:color-mix(in srgb,var(--dc) 15%,transparent);color:var(--dcv)}
+.pmx th.dh2 small{display:block;font-weight:600;font-size:10.5px;line-height:1.35;white-space:normal;color:var(--ink)}
+.pmx td.pd{text-align:center;background:color-mix(in srgb,var(--dc) 4%,transparent)}
+.pmx td.pd input{width:18px;height:18px;accent-color:var(--dc)}
+.pmx td.pd.imp input{opacity:.55}
+.pmx td.t{display:flex;gap:8px;align-items:center}.pmx td.t b{display:block;font-size:13px}.pmx td.t small{font-size:11px}
+.pmx tr.chg td{background:color-mix(in srgb,var(--accent) 10%,transparent)!important}
+.pmx tr.off{opacity:.55}
+.pmx tfoot td{font-weight:700;background:var(--surface-2);text-align:center}.pmx tfoot td:first-child{text-align:start}
+.pmx select{border:1px solid var(--line);border-radius:8px;padding:5px 8px;background:var(--surface)}
+.uav.sm{width:30px;height:30px;font-size:13px;box-shadow:none;background:var(--brand-2);color:#fff}
+@media (max-width:1100px){.menued{grid-template-columns:1fr}}
+@media (max-width:640px){.mrow{grid-template-columns:auto auto 1fr auto;}.mrow .btn,.mrow .tg{grid-column:span 2}.mmod{grid-template-columns:auto auto 1fr}.mmod select,.mmod .tg{grid-column:2/-1}}
+
+/* ---------- حركة الأيقونات عند المرور: تتقدم نحو المستخدم ---------- */
+@keyframes icoPop{0%{transform:none}35%{transform:translateY(-5px) scale(1.2) rotate(-7deg)}65%{transform:translateY(-2px) scale(1.1) rotate(4deg)}100%{transform:translateY(-3px) scale(1.14)}}
+.gi,.si,.ki,.qi,.dci,.shi,.dic,.aw,.cgi,.fi,.hr,.icb,.mod2 .n,.dhead .big,.dhi,.ari,.uav,.tn>svg:first-child,.ddg a svg,.ddi>svg:first-child,.icgrid svg,.btn svg{transition:transform .25s cubic-bezier(.3,1.6,.5,1),box-shadow .25s,filter .25s;will-change:transform}
+.nav a:hover .gi,.nav a:hover .si,.ngh:hover .gi,.kt:hover .ki,.qg a:hover .qi,.dc:hover .dci,.sec:hover .shi,.ddi:hover .dic,.ddi:hover .aw,.comg a:hover .cgi,.fin:hover .fi,.hbars a:hover .hr,.icb:hover,.mod2:hover .n,.dhead:hover .big,.drawer .dh:hover .dhi,.artb:hover .ari,.usr:hover .uav,.tn:hover>svg:first-child,.ddg a:hover svg,.ddi:hover>svg:first-child,.icgrid button:hover svg,.btn:hover svg,.dept:hover .gi,.arow:hover .ai{animation:icoPop .55s ease-out forwards;box-shadow:0 10px 20px color-mix(in srgb,var(--dc,var(--t,var(--brand))) 35%,transparent);filter:saturate(1.25);position:relative;z-index:2}
+.arow .ai{transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+@media (prefers-reduced-motion:reduce){.nav a:hover .gi,.kt:hover .ki,.qg a:hover .qi,.mod2:hover .n,.btn:hover svg{animation:none;transform:scale(1.08)}}
 </style>
 </head>
 <body class="auth">
@@ -781,8 +838,8 @@ td.t{font-weight:600}
   <div class="login-side">
     <div class="login-card" id="lgCard">
       <div class="lg-head">
-        <svg viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="var(--accent)" stroke-width="1.5"><rect x="8" y="8" width="24" height="24" rx="1"/><rect x="8" y="8" width="24" height="24" rx="1" transform="rotate(45 20 20)"/></g><circle cx="20" cy="20" r="9.5" fill="var(--brand)"/><text x="20" y="24.5" text-anchor="middle" font-family="Noto Kufi Arabic,Tahoma" font-size="12" font-weight="700" fill="#fff">د</text></svg>
-        <div><h1>نظام الدكتور</h1><p id="lgOrg">منصة الإدارة المؤسسية للجمعيات</p></div>
+        <svg viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="var(--accent)" stroke-width="1.5"><rect x="8" y="8" width="24" height="24" rx="1"/><rect x="8" y="8" width="24" height="24" rx="1" transform="rotate(45 20 20)"/></g><circle cx="20" cy="20" r="9.5" fill="var(--brand)"/><text x="20" y="24.5" text-anchor="middle" font-family="Noto Kufi Arabic,Tahoma" font-size="12" font-weight="700" fill="#fff">ن</text></svg>
+        <div><h1>نظام نافذ</h1><p id="lgOrg">منصة الإدارة المؤسسية للجمعيات</p></div>
       </div>
       <div class="lg-greet"><b id="lgGreet">أهلًا بك</b><span id="lgDate"></span></div>
       <form id="lgForm" novalidate autocomplete="on">
@@ -808,8 +865,8 @@ td.t{font-weight:600}
   <button class="tbtn menu-btn" id="menuBtn" aria-label="فتح القائمة">☰</button>
   <button class="tbtn" id="backBtn" aria-label="رجوع" title="رجوع">→</button>
   <a class="brand" href="#home">
-    <svg class="seal" viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="var(--accent)" stroke-width="1.6"><rect x="8" y="8" width="24" height="24" rx="1"/><rect x="8" y="8" width="24" height="24" rx="1" transform="rotate(45 20 20)"/></g><text x="20" y="25" text-anchor="middle" font-family="Noto Kufi Arabic,Tahoma" font-size="13" font-weight="700" fill="#fff">د</text></svg>
-    <span><b>نظام الدكتور</b><small id="orgName">منصة الإدارة المؤسسية للجمعيات</small></span></a>
+    <svg class="seal" viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="var(--accent)" stroke-width="1.6"><rect x="8" y="8" width="24" height="24" rx="1"/><rect x="8" y="8" width="24" height="24" rx="1" transform="rotate(45 20 20)"/></g><text x="20" y="25" text-anchor="middle" font-family="Noto Kufi Arabic,Tahoma" font-size="13" font-weight="700" fill="#fff">ن</text></svg>
+    <span><b>نظام نافذ</b><small id="orgName">منصة الإدارة المؤسسية للجمعيات</small></span></a>
   <div class="search">
     <input id="q" type="search" placeholder="ابحث برقم المعاملة أو الاسم أو الوحدة…" autocomplete="off" aria-label="بحث شامل">
     <kbd>/</kbd>
@@ -859,7 +916,7 @@ td.t{font-weight:600}
 let G=[],REPORT_MAP=[],STATUSES=[],F={},PRI=[{n:"عادية",c:""}],QUICK=[],MONEY_KEYS=["amount","budget","monthly"],LIMITS={title:200,text:300,notes:4000,note:1000};
 const FINAL=new Set(["مكتمل","مرفوض"]);
 const toneOf=s=>(STATUSES.find(x=>x.n===s)||{t:"info"}).t;
-function applySchema(sc){G=sc.G;REPORT_MAP=sc.REPORT_MAP;STATUSES=sc.STATUSES;F=sc.F;PRI=sc.PRI;QUICK=sc.QUICK;MONEY_KEYS=sc.MONEY_KEYS;LIMITS=sc.LIMITS}
+function applySchema(sc){BASE_G=JSON.parse(JSON.stringify(sc.G));G=sc.G;REPORT_MAP=sc.REPORT_MAP;STATUSES=sc.STATUSES;F=sc.F;PRI=sc.PRI;QUICK=sc.QUICK;MONEY_KEYS=sc.MONEY_KEYS;LIMITS=sc.LIMITS}
 
 /* ================= State ================= */
 const S={recs:[],dec:{},cfg:{orgName:"",threshold:5000,sod:false,notify:true},me:null,meP:null,role:"viewer",admin:false,canWrite:false,people:{},peopleList:[],loaded:false,rev:"",err:null};
@@ -1008,9 +1065,152 @@ const MOD_RULES=[
 ];
 const SEC_ICO={"الإحصائيات":"pie","التقارير التشغيلية":"fileChart","المستخدمون والصلاحيات":"key","الأمان والسجلات":"shieldCheck","الهيكل والتهيئة":"tree","القنوات والتنبيهات":"bell","المراسلات الإدارية":"COM","المستندات والمكتب":"folder","المحتوى":"layout","النماذج والخدمات":"form","التصميم والظهور":"palette","إدارة المشاريع":"PRJ","متابعة الحالات":"visit","لوحات ومؤشرات":"gauge","دورة حياة البرنامج":"repeat","التشغيل والمستفيدون":"userHeart","الفعاليات":"calStar","القياس والتقارير":"poll","الداعمون والمانحون":"handshake","التحصيل":"coins","السندات والإيرادات":"receipt","الصرف والرواتب":"FIN","المراجعة والترحيل":"review","المحاسبة العامة":"calc","التقارير المالية":"fileChart","الأصناف والأرصدة":"box","الإدخال":"boxIn","الصرف والتسليم":"truck","الجرد":"clipCheck","شؤون الموظفين":"briefcase","الإجازات والحضور":"calCheck","الأداء والمهام":"star","التوظيف":"userPlus","المتطوعون والسلامة":"shieldCheck","الكفالات":"heart","الكافلون":"userHeart","المستفيدون والأوصياء":"guardian","طلبات الإعانة":"hand","التطوع":"DON","العلاقات العامة":"VOL","السيارات والصيانة":"car","التأسيس والعضوية":"building","الاجتماعات":"meeting","الحوكمة":"GOV","التخطيط الاستراتيجي":"compass","المشاريع التأهيلية":"REH","لجنة المساعدات":"people","القسائم الشرائية":"ticket","تحديث البيانات":"refresh"};
 const _mi={};
-function modIco(g,m){const k=g+"-"+m;if(_mi[k])return _mi[k];let n=G[g]?.items[m]||"";if(g===0)n=n.replace(/^(ال)?(إحصائيات|تقارير)\s*/,"");const r=MOD_RULES.find(([re])=>re.test(n));return _mi[k]=r?r[1]:"folder"}
-const secIco=t=>SEC_ICO[t]||"folder";
-const secsOf=g=>G[g]?.sec&&G[g].sec.length?G[g].sec:[["الوحدات",(G[g]?.items||[]).map((_,i)=>i)]];
+function modIco(g,m){const k=g+"-"+m;if(_mi[k])return _mi[k];if(G[g]?.mi?.[m])return _mi[k]=G[g].mi[m];let n=G[g]?.items[m]||"";if(g===0)n=n.replace(/^(ال)?(إحصائيات|تقارير)\s*/,"");const r=MOD_RULES.find(([re])=>re.test(n));return _mi[k]=r?r[1]:"folder"}
+const secIco=(t,ic)=>ic||SEC_ICO[t]||"folder";
+/* ================= تخصيص القوائم والعناوين ================= */
+let BASE_G=[],ORDER=[];
+function applyNav(){
+  if(!BASE_G.length)return;
+  const nav=S.cfg&&S.cfg.nav;G=JSON.parse(JSON.stringify(BASE_G));
+  G.forEach(g=>{g.ic=g.c;g.mi={};g.mh={};g.sec=(g.sec||[]).map(s=>[s[0],s[1],""])});
+  if(nav){
+    Object.keys(nav.d||{}).forEach(k=>{const g=G[k],x=nav.d[k];if(!g)return;if(x.n)g.n=x.n;if(x.i)g.ic=x.i;if(x.c)g.col=x.c;if(x.h)g.hid=true});
+    Object.keys(nav.sec||{}).forEach(k=>{if(G[k])G[k].sec=nav.sec[k].map(s=>[s[0],s[2],s[1]||""])});
+    Object.keys(nav.mod||{}).forEach(k=>{const [g,m]=k.split("-").map(Number),x=nav.mod[k];if(!G[g]||G[g].items[m]==null)return;if(x.n)G[g].items[m]=x.n;if(x.i)G[g].mi[m]=x.i;if(x.h)G[g].mh[m]=true});
+  }
+  ORDER=nav&&Array.isArray(nav.order)&&nav.order.length===G.length?nav.order.slice():G.map((_,i)=>i);
+  Object.keys(_mi).forEach(k=>delete _mi[k]);
+}
+const shownDept=i=>canDept(i)&&!G[i]?.hid;
+let navDraft=null,navSel=1;
+function draftFromG(){
+  return {order:ORDER.slice(),
+    d:Object.fromEntries(G.map((g,i)=>[i,{n:g.n,i:g.ic,c:g.col,h:!!g.hid}])),
+    sec:Object.fromEntries(G.map((g,i)=>[i,(g.sec&&g.sec.length?g.sec:[["الوحدات",g.items.map((_,m)=>m),""]]).map(s=>[s[0],s[2]||"",s[1].slice()])])),
+    mod:Object.fromEntries(G.flatMap((g,i)=>g.items.map((n,m)=>[i+"-"+m,{n,i:modIco(i,m),h:!!g.mh[m]}])))};
+}
+function viewMenus(){
+  if(!S.admin)return `${crumb([["تخصيص القوائم"]])}<div class="tw"><div class="empty"><b>هذه الصفحة لمسؤول النظام والمشرف العام</b></div></div>`;
+  if(!navDraft)navDraft=draftFromG();
+  const D=navDraft,g=navSel,dd=D.d[g];
+  const ib=(kind,key,cur)=>`<button type="button" class="icb" data-pick="${kind}" data-key="${esc(key)}" title="تغيير الأيقونة">${ico(cur)}</button>`;
+  const deptRows=D.order.map((i,pos)=>{const x=D.d[i];return `<div class="mrow ${i===g?"sel":""} ${x.h?"off":""}" style="--dc:${esc(x.c||"#0B6E4F")}">
+     <span class="mv"><button type="button" data-dmv="${pos}" data-dir="-1" ${pos?"":"disabled"} aria-label="أعلى">▲</button><button type="button" data-dmv="${pos}" data-dir="1" ${pos<D.order.length-1?"":"disabled"} aria-label="أسفل">▼</button></span>
+     ${ib("d",i,x.i)}<input class="nm" data-dn="${i}" value="${esc(x.n)}" maxlength="60" aria-label="اسم الإدارة">
+     <input type="color" data-dc="${i}" value="${esc(x.c||"#0B6E4F")}" aria-label="لون الإدارة">
+     ${i?`<label class="tg" title="إخفاء من القوائم"><input type="checkbox" data-dh="${i}" ${x.h?"":"checked"}>ظاهر</label>`:`<span class="tg muted">ثابت</span>`}
+     <button type="button" class="btn sm ${i===g?"pri":""}" data-dsel="${i}">العناوين والوحدات ‹</button></div>`}).join("");
+  const S2=D.sec[g];
+  const secs=S2.map((s,si)=>`<div class="msec">
+     <div class="msh"><span class="mv"><button type="button" data-smv="${si}" data-dir="-1" ${si?"":"disabled"}>▲</button><button type="button" data-smv="${si}" data-dir="1" ${si<S2.length-1?"":"disabled"}>▼</button></span>
+      ${ib("s",si,s[1]||secIco(s[0]))}<input class="nm" data-sn="${si}" value="${esc(s[0])}" maxlength="50" aria-label="العنوان الفرعي"><small>${s[2].length} وحدة</small>
+      ${s[2].length?"":`<button type="button" class="btn sm danger" data-sdel="${si}">حذف</button>`}</div>
+     ${s[2].map((m,mi)=>{const k=g+"-"+m,x=D.mod[k];return `<div class="mmod ${x.h?"off":""}">
+       <span class="mv"><button type="button" data-mmv="${si}:${mi}" data-dir="-1" ${mi?"":"disabled"}>▲</button><button type="button" data-mmv="${si}:${mi}" data-dir="1" ${mi<s[2].length-1?"":"disabled"}>▼</button></span>
+       ${ib("m",k,x.i)}<input class="nm" data-mn="${k}" value="${esc(x.n)}" maxlength="70" placeholder="${esc(BASE_G[g].items[m])}" aria-label="اسم الوحدة">
+       <select data-mto="${si}:${mi}" aria-label="نقل إلى عنوان فرعي">${S2.map((t,ti)=>`<option value="${ti}" ${ti===si?"selected":""}>${esc(t[0])}</option>`).join("")}</select>
+       <label class="tg"><input type="checkbox" data-mh="${k}" ${x.h?"":"checked"}>ظاهرة</label></div>`}).join("")}
+    </div>`).join("");
+  return `${crumb([["تخصيص القوائم والعناوين"]])}
+   <div class="head"><div><h1>تخصيص القوائم والعناوين</h1><p>رتّب الإدارات والعناوين الفرعية والوحدات كما تريد، وغيّر أسماءها وأيقوناتها وألوانها. التغيير يظهر لكل المستخدمين بعد الحفظ، ولا يمس المعاملات المحفوظة.</p></div>
+    <div class="actions"><button class="btn pri" data-navsave>${ico("check")} حفظ التغييرات</button><button class="btn" data-navundo>تراجع عن التعديلات</button><button class="btn danger" data-navreset>استعادة الافتراضي</button></div></div>
+   <div class="menued">
+    <section class="box"><h3>الإدارات وترتيبها <small>${D.order.length} إدارة</small></h3><div class="mlist">${deptRows}</div></section>
+    <section class="box" style="--dc:${esc(dd.c||"#0B6E4F")}"><h3><span class="shi">${ico(dd.i)}</span> ${esc(dd.n)} <small>العناوين الفرعية والوحدات</small></h3>
+     <div class="msecs">${secs}</div><button type="button" class="btn" data-sadd>＋ عنوان فرعي جديد</button>
+     <p class="why" style="margin:10px 0 0">انقل الوحدة بين العناوين من القائمة المنسدلة. الوحدة المخفية تختفي من القوائم فقط، وتبقى معاملاتها محفوظة وتظهر في صفحة الإدارة.</p></section>
+   </div>`;
+}
+function navPayload(){const D=navDraft;return{order:D.order,d:D.d,sec:Object.fromEntries(Object.entries(D.sec).map(([g,L])=>[g,L.map(s=>[s[0],s[1],s[2]])])),
+  mod:Object.fromEntries(Object.entries(D.mod).map(([k,x])=>{const [g,m]=k.split("-").map(Number);const o={};if(x.n&&x.n!==BASE_G[g].items[m])o.n=x.n;if(x.i)o.i=x.i;if(x.h)o.h=true;return[k,o]}).filter(([k,o])=>Object.keys(o).length))}}
+function iconPicker(cur,done){
+  const keys=Object.keys(IP).filter(k=>k!=="chev");
+  modal(`<div class="dh"><h2>${ico("grid")} اختر أيقونة</h2><button class="x" data-close aria-label="إغلاق">✕</button></div>
+   <div class="db"><div class="icgrid">${keys.map(k=>`<button type="button" class="${k===cur?"on":""}" data-ic="${k}" title="${k}">${ico(k)}</button>`).join("")}</div></div>`,"");
+  document.querySelectorAll("[data-ic]").forEach(b=>b.onclick=()=>{closeModal();done(b.dataset.ic)});
+}
+function bindMenus(main){
+  if(R.v!=="menus"||!navDraft)return;const D=navDraft;
+  const swap=(a,i,j)=>{if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]]};
+  main.querySelectorAll("[data-dn]").forEach(e=>e.oninput=()=>{D.d[e.dataset.dn].n=e.value});
+  main.querySelectorAll("[data-dc]").forEach(e=>e.oninput=()=>{D.d[e.dataset.dc].c=e.value;e.closest(".mrow").style.setProperty("--dc",e.value)});
+  main.querySelectorAll("[data-dh]").forEach(e=>e.onchange=()=>{D.d[e.dataset.dh].h=!e.checked;render()});
+  main.querySelectorAll("[data-dsel]").forEach(e=>e.onclick=()=>{navSel=+e.dataset.dsel;render()});
+  main.querySelectorAll("[data-dmv]").forEach(e=>e.onclick=()=>{const p=+e.dataset.dmv;swap(D.order,p,p+ +e.dataset.dir);render()});
+  main.querySelectorAll("[data-sn]").forEach(e=>e.oninput=()=>{D.sec[navSel][e.dataset.sn][0]=e.value});
+  main.querySelectorAll("[data-smv]").forEach(e=>e.onclick=()=>{const p=+e.dataset.smv;swap(D.sec[navSel],p,p+ +e.dataset.dir);render()});
+  main.querySelectorAll("[data-sdel]").forEach(e=>e.onclick=()=>{D.sec[navSel].splice(+e.dataset.sdel,1);render()});
+  const sa=main.querySelector("[data-sadd]");if(sa)sa.onclick=()=>{D.sec[navSel].push(["عنوان فرعي جديد","",[]]);render()};
+  main.querySelectorAll("[data-mn]").forEach(e=>e.oninput=()=>{D.mod[e.dataset.mn].n=e.value});
+  main.querySelectorAll("[data-mh]").forEach(e=>e.onchange=()=>{D.mod[e.dataset.mh].h=!e.checked;render()});
+  main.querySelectorAll("[data-mmv]").forEach(e=>e.onclick=()=>{const [s,i]=e.dataset.mmv.split(":").map(Number);swap(D.sec[navSel][s][2],i,i+ +e.dataset.dir);render()});
+  main.querySelectorAll("[data-mto]").forEach(e=>e.onchange=()=>{const [s,i]=e.dataset.mto.split(":").map(Number);const m=D.sec[navSel][s][2].splice(i,1)[0];D.sec[navSel][+e.value][2].push(m);render()});
+  main.querySelectorAll("[data-pick]").forEach(e=>e.onclick=()=>{const k=e.dataset.key,t=e.dataset.pick;
+    const cur=t==="d"?D.d[k].i:t==="s"?(D.sec[navSel][k][1]||secIco(D.sec[navSel][k][0])):D.mod[k].i;
+    iconPicker(cur,ic=>{if(t==="d")D.d[k].i=ic;else if(t==="s")D.sec[navSel][k][1]=ic;else D.mod[k].i=ic;render()})});
+  const sv=main.querySelector("[data-navsave]");if(sv)sv.onclick=async()=>{const d=await act("saveNav",navPayload(),"حُفظت القوائم وظهرت لكل المستخدمين");if(d){S.cfg.nav=d.nav;applyNav();navDraft=draftFromG();render()}};
+  const un=main.querySelector("[data-navundo]");if(un)un.onclick=()=>{navDraft=draftFromG();render()};
+  const rs=main.querySelector("[data-navreset]");if(rs)rs.onclick=()=>confirmBox("استعادة القوائم الافتراضية","ستعود أسماء الإدارات والعناوين والوحدات وترتيبها وأيقوناتها إلى الوضع الافتراضي للنظام.","استعادة",async()=>{const d=await act("saveNav",{reset:true},"استُعيدت القوائم الافتراضية");if(d){S.cfg.nav=null;applyNav();navDraft=draftFromG();render()}});
+}
+
+/* ================= الموظفون والصلاحيات ================= */
+const CAPS=[
+ ["عرض المعاملات ولوحات المتابعة","y","d","d"],["رؤية رقم الهوية والجوال كاملين","y","d","n:مخفية جزئيًا"],["إضافة معاملة وتعديلها","y","d","n"],
+ ["التوجيه والتصعيد والملاحظات","y","d","n"],["رفع المعاملة للاعتماد","y","d","n"],["إكمال واعتماد ما دون حد الاعتماد","y","d:مع فصل المهام إن فُعّل","n"],
+ ["اعتماد أو رفض ما يبلغ حد الاعتماد","y","n","n"],["رفع المرفقات وفتحها","y","d","n"],["الحذف إلى المحذوفات والاستعادة","y","d","n"],
+ ["الحذف النهائي وإفراغ المحذوفات","y","n","n"],["تصدير المعاملات الظاهرة (Excel)","y","d","d:بيانات مخفية جزئيًا"],
+ ["النسخ الاحتياطي والاستيراد والبيانات التجريبية","y","n","n"],["إدارة المستخدمين وإصدار كلمات المرور","y","n","n"],
+ ["الإعدادات وتخصيص القوائم والعناوين","y","n","n"],["سجل التدقيق","y","n","n"],["تغيير كلمة المرور الشخصية","y","y","y"]];
+let permDraft=null;
+function permCell(v){const [k,note]=v.split(":");const t=k==="y"?["ok","✓","مسموح"]:k==="d"?["part","✓","في إداراته المسموحة"]:["no","✕","غير مسموح"];return `<td class="pc ${t[0]}"><span title="${t[2]}">${t[1]}</span>${note?`<small>${esc(note)}</small>`:k==="d"?`<small>إداراته فقط</small>`:""}</td>`}
+function viewPerms(){
+  const tab=ui.ptab||"matrix";
+  const tabs=`<div class="seg ptabs" role="tablist"><button data-ptab="matrix" class="${tab==="matrix"?"on":""}">${ico("shieldCheck")} مصفوفة الصلاحيات</button><button data-ptab="staff" class="${tab==="staff"?"on":""}">${ico("people")} الموظفون والإدارات</button></div>`;
+  const head=`${crumb([["الموظفون والصلاحيات"]])}<div class="head"><div><h1>الموظفون والصلاحيات</h1><p>ما يستطيع كل دور فعله، ومن يصل إلى أي إدارة. كل ذلك يُفرض على الخادم ولا يمكن تجاوزه من المتصفح.</p></div>${S.admin?`<div class="actions"><a class="btn" href="#users">${ico("users")} إدارة الحسابات</a></div>`:""}</div>${tabs}`;
+  if(tab==="matrix"){
+    const R3=[["admin","مسؤول النظام","#6d3fc0","المشرف العام ومن في حكمه"],["contributor","مساهم","#3157b8","موظف يعمل في إداراته"],["viewer","مشاهد","#4B5563","عضو مجلس أو مراجع"]];
+    return head+`<section class="box"><h3>مصفوفة الصلاحيات حسب الدور <small>${CAPS.length} صلاحية · 3 أدوار</small></h3>
+     <div class="tw pm"><table><thead><tr><th>الصلاحية</th>${R3.map(r=>`<th class="rh" style="--k:${r[2]}"><b>${r[1]}</b><small>${r[3]}</small></th>`).join("")}</tr></thead>
+     <tbody>${CAPS.map(c=>`<tr><td class="t">${esc(c[0])}</td>${permCell(c[1])}${permCell(c[2])}${permCell(c[3])}</tr>`).join("")}</tbody></table></div>
+     <div class="plg"><span class="pc ok">✓ مسموح</span><span class="pc part">✓ في إداراته المسموحة فقط</span><span class="pc no">✕ غير مسموح</span></div>
+     <p class="why" style="margin-bottom:0">حد الاعتماد الحالي ${money(thr())}${S.cfg.sod?"، وفصل المهام مفعّل: منشئ الطلب لا يعتمده.":"."} المساهم أو المشاهد الذي لم تُحدَّد له إدارات يصل إلى كل الإدارات.</p></section>`;
+  }
+  if(!S.admin)return head+`<div class="tw"><div class="empty"><b>مصفوفة الموظفين والإدارات لمسؤول النظام</b></div></div>`;
+  if(!usersCache){loadUsers();return head+`<div class="skel" style="height:260px"></div>`}
+  if(!permDraft)permDraft=Object.fromEntries(usersCache.map(u=>[u.username,{role:u.role,depts:u.depts.slice()}]));
+  const cols=ORDER.filter(i=>i>0);
+  const changed=usersCache.filter(u=>{const d=permDraft[u.username];return d&&(d.role!==u.role||d.depts.slice().sort().join()!==u.depts.slice().sort().join())});
+  const rows=usersCache.map(u=>{const d=permDraft[u.username]||{role:u.role,depts:u.depts};const all=d.role==="admin"||!d.depts.length;const self=u.username===S.me;
+    return `<tr class="${changed.includes(u)?"chg":""} ${u.active?"":"off"}"><td class="t"><span class="uav sm">${esc(u.name.trim().charAt(0))}</span><span><b>${esc(u.name)}</b><small class="code">${esc(u.username)}</small></span></td>
+     <td><select data-prole="${esc(u.username)}" ${self?"disabled":""}>${[["admin","مسؤول النظام"],["contributor","مساهم"],["viewer","مشاهد"]].map(([k,v])=>`<option value="${k}" ${d.role===k?"selected":""}>${v}</option>`).join("")}</select></td>
+     <td class="pall"><label class="check"><input type="checkbox" data-pall="${esc(u.username)}" ${all?"checked":""} ${d.role==="admin"?"disabled":""}>كل الإدارات</label></td>
+     ${cols.map(i=>`<td class="pd ${all?"imp":""}" style="${dc(i)}"><input type="checkbox" data-pd="${esc(u.username)}:${i}" ${all||d.depts.includes(i)?"checked":""} ${d.role==="admin"?"disabled":""} aria-label="${esc(G[i].n)} — ${esc(u.name)}"></td>`).join("")}</tr>`}).join("");
+  const counts=cols.map(i=>usersCache.filter(u=>{const d=permDraft[u.username];return d&&(d.role==="admin"||!d.depts.length||d.depts.includes(i))}).length);
+  return head+`<section class="box"><h3>مصفوفة الموظفين والإدارات <small>${usersCache.length} حساب · ${cols.length} إدارة</small></h3>
+   <div class="tw pmx"><table><thead><tr><th>الموظف</th><th>الدور</th><th>النطاق</th>${cols.map(i=>`<th class="dh2" style="${dc(i)}" title="${esc(G[i].n)}"><span class="si">${ico(G[i].ic||G[i].c)}</span><small>${esc(G[i].n)}</small></th>`).join("")}</tr></thead>
+   <tbody>${rows}</tbody><tfoot><tr><td colspan="3">عدد من يصل إلى الإدارة</td>${counts.map(c=>`<td class="num">${c}</td>`).join("")}</tr></tfoot></table></div>
+   <div class="flow" style="margin-top:12px"><button class="btn pri" data-permsave ${changed.length?"":"disabled"}>${ico("check")} حفظ التغييرات${changed.length?` (${changed.length})`:""}</button><button class="btn" data-permundo ${changed.length?"":"disabled"}>تراجع</button></div>
+   <p class="why" style="margin-bottom:0">«كل الإدارات» تعني أن المستخدم يرى كل الإدارات الحالية والمستقبلية. أزل علامة إدارة لتقييده بالباقي. مسؤول النظام يصل إلى كل شيء دائمًا.</p></section>`;
+}
+function bindPerms(main){
+  if(R.v!=="perms")return;
+  main.querySelectorAll("[data-ptab]").forEach(b=>b.onclick=()=>{ui.ptab=b.dataset.ptab;render()});
+  if(!permDraft)return;
+  const cols=ORDER.filter(i=>i>0);
+  main.querySelectorAll("[data-prole]").forEach(e=>e.onchange=()=>{permDraft[e.dataset.prole].role=e.value;render()});
+  main.querySelectorAll("[data-pall]").forEach(e=>e.onchange=()=>{const d=permDraft[e.dataset.pall];d.depts=e.checked?[]:cols.slice(0,1);render()});
+  main.querySelectorAll("[data-pd]").forEach(e=>e.onchange=()=>{const [u,i]=e.dataset.pd.split(":");const d=permDraft[u];let L=d.depts.length?d.depts.slice():cols.slice();
+    L=e.checked?[...new Set([...L,+i])]:L.filter(x=>x!==+i);if(!L.length){toast("اختر إدارة واحدة على الأقل، أو «كل الإدارات».");render();return}
+    d.depts=cols.every(c=>L.includes(c))?[]:L;render()});
+  const un=main.querySelector("[data-permundo]");if(un)un.onclick=()=>{permDraft=null;render()};
+  const sv=main.querySelector("[data-permsave]");if(sv)sv.onclick=async()=>{
+    const ch=usersCache.filter(u=>{const d=permDraft[u.username];return d.role!==u.role||d.depts.slice().sort().join()!==u.depts.slice().sort().join()});
+    sv.disabled=true;let okN=0;
+    for(const u of ch){const d=permDraft[u.username];try{await call("saveUser",{username:u.username,name:u.name,email:u.email,role:d.role,depts:d.depts,active:u.active});okN++}catch(e){if(e.code==="AUTH")return;toast(u.name+": "+e.message)}}
+    toast(`حُفظت صلاحيات ${okN} موظف`);permDraft=null;usersCache=null;await loadUsers()};
+}
+
+const secsOf=g=>{const G0=G[g];if(!G0)return[];const L=G0.sec&&G0.sec.length?G0.sec:[["الوحدات",G0.items.map((_,i)=>i),""]];return L.map(s=>[s[0],s[1].filter(m=>!(G0.mh&&G0.mh[m])),s[2]||""]).filter(s=>s[1].length)};
 const secOf=(g,m)=>secsOf(g).find(s=>s[1].includes(m))||["",[]];
 const idesc=(g,m)=>G[g]?.idesc?.[m]||"";
 const navOpen=new Set();try{JSON.parse(localStorage.getItem("ds.navOpen")||"[]").forEach(i=>navOpen.add(+i))}catch(e){}
@@ -1022,7 +1222,7 @@ const uid=()=>{try{return crypto.randomUUID()}catch(e){return "r"+Date.now().toS
 const recSum=r=>MONEY_KEYS.reduce((a,k)=>a+(+r.f?.[k]||0),0);
 const clone=o=>JSON.parse(JSON.stringify(o));
 const active=()=>S.recs.filter(r=>!r.deleted);
-const nameOf=id=>!id?"النظام":id===S.me?((S.meP&&S.meP.name)||"أنت"):(S.people[id]?.name||String(id));
+const nameOf=id=>!id?"النظام":id==="website"?"الموقع الإلكتروني":id===S.me?((S.meP&&S.meP.name)||"أنت"):(S.people[id]?.name||String(id));
 const canDept=i=>S.admin||!S.meP||!S.meP.depts||!S.meP.depts.length||i===0||S.meP.depts.includes(i);
 const whoFor=r=>r.to?nameOf(r.to):(r.owner||"—");
 function serial(g){const d=todayISO().replace(/-/g,"").slice(2);return `${G[g].c}-${d}-${String(Math.floor(Math.random()*9000)+1000)}`}
@@ -1099,7 +1299,7 @@ async function loadAll(){
   const d=await call("bootstrap");
   applySchema(d.schema);
   S.me=d.me.username;S.meP=d.me;S.role=d.me.role;S.admin=d.me.role==="admin";S.canWrite=d.me.role!=="viewer";
-  S.cfg={...S.cfg,...d.settings};S.recs=d.records;S.dec=d.decisions||{};
+  S.cfg={...S.cfg,...d.settings};S.appUrl=d.appUrl||"";applyNav();S.recs=d.records;S.dec=d.decisions||{};
   S.peopleList=d.people;S.people={};d.people.forEach(p=>S.people[p.username]=p);
   S.rev=lastRev;S.loaded=true;S.err=null;
   $("#orgName").textContent=S.cfg.orgName||"منصة الإدارة المؤسسية للجمعيات";
@@ -1235,11 +1435,11 @@ function route(){
   const h=(location.hash||"#home").slice(1);let m;
   if((m=h.match(/^m(\d+)-(\d+)$/))&&G[+m[1]]?.items[+m[2]]!=null)return{v:"mod",g:+m[1],m:+m[2]};
   if((m=h.match(/^g(\d+)$/))&&G[+m[1]])return{v:"grp",g:+m[1]};
-  if(["inbox","trash","org","focus","flow","users","audit"].includes(h))return{v:h};
+  if(["inbox","trash","org","focus","flow","users","audit","menus","perms"].includes(h))return{v:h};
   return{v:"home"};
 }
 let R=route();let navDepth=0;if(R.v==="grp"||R.v==="mod")navOpen.add(R.g);
-window.addEventListener("hashchange",()=>{R=route();if((R.v==="grp"||R.v==="mod")&&!navOpen.has(R.g)){navOpen.add(R.g);saveNavOpen()}if(R.v==="users")usersCache=null;if(R.v==="audit")auditCache=null;navDepth++;Object.assign(ui,{q:"",st:"",page:0,sort:{k:"date",d:-1}});closeSide();closeDrawer();render();window.scrollTo(0,0)});
+window.addEventListener("hashchange",()=>{R=route();if((R.v==="grp"||R.v==="mod")&&!navOpen.has(R.g)){navOpen.add(R.g);saveNavOpen()}if(R.v==="users"||R.v==="perms"){usersCache=null;permDraft=null}if(R.v==="menus")navDraft=null;if(R.v==="audit")auditCache=null;navDepth++;Object.assign(ui,{q:"",st:"",page:0,sort:{k:"date",d:-1}});closeSide();closeDrawer();render();window.scrollTo(0,0)});
 
 /* ================= Charts (SVG, theme tokens) ================= */
 function niceMax(v){if(v<=4)return 4;const p=Math.pow(10,Math.floor(Math.log10(v)));const n=v/p;return (n<=1?1:n<=2?2:n<=5?5:10)*p}
@@ -1279,6 +1479,7 @@ function moneyChart(recs){
 
 /* ================= الشريط العلوي: المهام والتنبيهات والروابط والحساب ================= */
 let ddOpen=null;
+const siteHref=()=>S.cfg.siteUrl||(window.__DEMO__?"site/":S.appUrl?S.appUrl+"?page=site":"site/");
 try{const t=localStorage.getItem("ds.theme");if(t)document.documentElement.dataset.theme=t}catch(e){}
 const ALERT_DEFS=[
  [10,[13,14,15,17,18],"طلب إعانة بحاجة للمراجعة","hand"],[10,[5],"كفالة بحاجة للتحصيل","heart"],[10,[6],"طلب صرف كفالة بحاجة للصرف","receipt"],
@@ -1306,8 +1507,8 @@ function renderTop(){
   const al=computeAlerts(A),aCount=al.reduce((a,x)=>a+x.n,0);
   const name=(S.meP&&S.meP.name)||"";const role=S.admin?"مسؤول النظام":S.canWrite?"مساهم":"مشاهد";
   const dark=document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
-  const links=[["home","الرئيسية","#home"],["focus","مهامي والأولويات","#focus"],["inbox","صندوق الاعتمادات","#inbox"],["flow","مسار المعاملات","#flow"],["RPT","التقارير","#g0"],["WEB","الموقع الإلكتروني","#g3"],["org","الإعدادات والبيانات","#org"],["trash","المحذوفات","#trash"]]
-   .concat(S.admin?[["users","المستخدمون","#users"],["audit","سجل التدقيق","#audit"]]:[]);
+  const links=[["home","الرئيسية","#home"],["focus","مهامي والأولويات","#focus"],["inbox","صندوق الاعتمادات","#inbox"],["flow","مسار المعاملات","#flow"],["RPT","التقارير","#g0"],["WEB","إدارة الموقع","#g3"],["org","الإعدادات والبيانات","#org"],["trash","المحذوفات","#trash"]]
+   .concat([["shieldCheck","الصلاحيات","#perms"]]).concat(S.admin?[["users","المستخدمون","#users"],["menu","تخصيص القوائم","#menus"],["audit","سجل التدقيق","#audit"]]:[]);
   const dd=(id,btn,body,extra="")=>`<div class="dd ${ddOpen===id?"open":""} ${extra}" data-dd="${id}">${btn}<div class="ddp" role="menu">${body}</div></div>`;
   $("#tnav").innerHTML=
    dd("tasks",`<button class="tn" data-ddb="tasks" aria-haspopup="true" aria-expanded="${ddOpen==="tasks"}">${ico("list")}<span class="lbl">المهام</span>${tCount?`<span class="bdg">${tCount>99?"99+":tCount}</span>`:""}${ico("chev")}</button>`,
@@ -1318,7 +1519,7 @@ function renderTop(){
     `<div class="ddh"><b>روابط سريعة</b><small>أهم صفحات النظام</small></div><div class="ddg">${links.map(([i,l,h])=>`<a href="${h}">${ico(i)}<span>${l}</span></a>`).join("")}</div>
      <div class="ddsep">مراجع</div><a class="ddi" href="https://github.com/benmakkh-crypto/doctor-system/blob/main/docs/06-%D8%AF%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D8%AE%D8%AF%D9%85.md" target="_blank" rel="noopener">${ico("book")}<span class="dtx"><b>دليل المستخدم</b><small>كيف يعمل الموظف والمسؤول يوميًا</small></span>${ico("ext")}</a>
      <a class="ddi" href="https://github.com/benmakkh-crypto/doctor-system" target="_blank" rel="noopener">${ico("doc")}<span class="dtx"><b>الدراسات والوثائق</b><small>الدراسة الشاملة والمتطلبات والأمان</small></span>${ico("ext")}</a>`)+
-   `<a class="tn site" href="#g3" title="إدارة الموقع الإلكتروني">${ico("WEB")}<span class="lbl">الموقع الإلكتروني</span></a>`;
+   `<a class="tn site" href="${esc(siteHref())}" target="_blank" rel="noopener" title="فتح الموقع الإلكتروني العام للجمعية">${ico("WEB")}<span class="lbl">الموقع الإلكتروني</span></a>`;
   $("#userDD").outerHTML=dd("user",`<button class="tn usr" id="userBtn" data-ddb="user" aria-haspopup="true" aria-expanded="${ddOpen==="user"}"><span class="uav">${esc(name.trim().charAt(0)||"؟")}</span><span class="lbl ut"><b>${esc(name)}</b><small>${role}</small></span>${ico("chev")}</button>`,
     `<div class="ddu"><span class="uav big">${esc(name.trim().charAt(0)||"؟")}</span><div><b>${esc(name)}</b><small>${role}${S.me?` · ${esc(S.me)}`:""}</small>${S.meP&&S.meP.email?`<small>${esc(S.meP.email)}</small>`:""}</div></div>
      <button class="ddi" data-uact="pw">${ico("key")}<span class="dtx"><b>تغيير كلمة المرور</b></span></button>
@@ -1351,14 +1552,14 @@ function render(){
   $("#backBtn").hidden=R.v==="home";
   let v;
   if(!S.loaded)v=`<div class="skel" style="height:120px"></div><div class="kpis"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></div><div class="skel" style="height:240px"></div>`;
-  else v=banners()+({mod:()=>R.g===0?viewReport():viewModule(),grp:viewGroup,inbox:viewInbox,trash:viewTrash,org:viewOrg,focus:viewFocus,flow:viewFlow,users:viewUsers,audit:viewAudit}[R.v]||viewHome)();
+  else v=banners()+({mod:()=>R.g===0?viewReport():viewModule(),grp:viewGroup,inbox:viewInbox,trash:viewTrash,org:viewOrg,focus:viewFocus,flow:viewFlow,users:viewUsers,audit:viewAudit,menus:viewMenus,perms:viewPerms}[R.v]||viewHome)();
   $("#main").innerHTML=`<div class="wrap">${v}</div>`;
   decorateHead();
   bindMain();
   if(aid){const n=document.getElementById(aid);if(n){n.focus();if(sel)try{n.setSelectionRange(sel[0],sel[1])}catch(e){}}}
   if(drawerId)paintDrawer();
 }
-const PH={focus:["focus","#d9702a","Priorities"],inbox:["inbox","#6d3fc0","Approvals"],flow:["flow","#3157b8","Workflow"],trash:["trash","#cf3f3f","Trash"],org:["org","#4B5563","Settings & Data"],users:["users","#0F766E","Users & Access"],audit:["audit","#243B6B","Audit Log"]};
+const PH={focus:["focus","#d9702a","Priorities"],inbox:["inbox","#6d3fc0","Approvals"],flow:["flow","#3157b8","Workflow"],trash:["trash","#cf3f3f","Trash"],org:["org","#4B5563","Settings & Data"],users:["users","#0F766E","Users & Access"],audit:["audit","#243B6B","Audit Log"],menus:["menu","#B03A8C","Menus & Headings"],perms:["shieldCheck","#0B6E4F","Permissions Matrix"]};
 function decorateHead(){
   const h=$("#main .wrap>.head");if(!h)return;
   let k=null;if(PH[R.v])k=PH[R.v];else if(R.v==="mod"&&R.g===0)k=[modIco(0,R.m),G[0].col,G[0].en];
@@ -1384,13 +1585,14 @@ function renderNav(){
    <a href="#inbox" class="${R.v==="inbox"?"on":""}"><span class="gi">${ico("inbox")}</span>صندوق الاعتمادات<span class="cnt ${pend?"hot":""}">${pend||""}</span></a>
    <a href="#flow" class="${R.v==="flow"?"on":""}"><span class="gi">${ico("flow")}</span>مسار المعاملات</a>`;
   const inG=(R.v==="grp"||R.v==="mod")?R.g:-1;
-  $("#nav").innerHTML=`<div class="navtools"><button data-navall="1">فتح الكل</button><button data-navall="0">طي الكل</button></div>`+G.map((g,i)=>{if(!canDept(i))return "";
+  $("#nav").innerHTML=`<div class="navtools"><button data-navall="1">فتح الكل</button><button data-navall="0">طي الكل</button></div>`+ORDER.map(i=>{const g=G[i];if(!shownDept(i))return "";
     const c=i?A.filter(r=>r.g===i).length:0;const open=navOpen.has(i);
-    const body=secsOf(i).map(([t,ids])=>`<div class="nsec">${ico(secIco(t))}${esc(t)}</div>`+ids.map(m=>{const k=i?A.filter(r=>r.g===i&&r.m===m).length:0;return `<a href="#m${i}-${m}" class="sub ${R.v==="mod"&&R.g===i&&R.m===m?"on":""}" title="${esc(idesc(i,m))}"><span class="si">${ico(modIco(i,m))}</span>${esc(g.items[m])}<span class="cnt">${k||""}</span></a>`}).join("")).join("");
-    return `<div class="ng ${open?"open":""}" style="${dc(i)}"><div class="ngh"><a href="#g${i}" class="${inG===i&&R.v==="grp"?"on":""}"><span class="gi">${ico(g.c)}</span>${esc(g.n)}<span class="cnt">${c||""}</span></a><button class="tg" data-tg="${i}" aria-expanded="${open}" aria-label="العناوين الفرعية: ${esc(g.n)}">${ico("chev")}</button></div><div class="ngb">${body}</div></div>`}).join("");
+    const body=secsOf(i).map(([t,ids,sic])=>`<div class="nsec">${ico(secIco(t,sic))}${esc(t)}</div>`+ids.map(m=>{const k=i?A.filter(r=>r.g===i&&r.m===m).length:0;return `<a href="#m${i}-${m}" class="sub ${R.v==="mod"&&R.g===i&&R.m===m?"on":""}" title="${esc(idesc(i,m))}"><span class="si">${ico(modIco(i,m))}</span>${esc(g.items[m])}<span class="cnt">${k||""}</span></a>`}).join("")).join("");
+    return `<div class="ng ${open?"open":""}" style="${dc(i)}"><div class="ngh"><a href="#g${i}" class="${inG===i&&R.v==="grp"?"on":""}"><span class="gi">${ico(g.ic||g.c)}</span>${esc(g.n)}<span class="cnt">${c||""}</span></a><button class="tg" data-tg="${i}" aria-expanded="${open}" aria-label="العناوين الفرعية: ${esc(g.n)}">${ico("chev")}</button></div><div class="ngb">${body}</div></div>`}).join("");
   $("#navSys").innerHTML=`<a href="#trash" class="${R.v==="trash"?"on":""}"><span class="gi">${ico("trash")}</span>المحذوفات<span class="cnt">${trash||""}</span></a>
    <a href="#org" class="${R.v==="org"?"on":""}"><span class="gi">${ico("org")}</span>الإعدادات والبيانات</a>
-   ${S.admin?`<a href="#users" class="${R.v==="users"?"on":""}"><span class="gi">${ico("users")}</span>المستخدمون</a><a href="#audit" class="${R.v==="audit"?"on":""}"><span class="gi">${ico("audit")}</span>سجل التدقيق</a>`:""}`;
+   <a href="#perms" class="${R.v==="perms"?"on":""}"><span class="gi">${ico("shieldCheck")}</span>الموظفون والصلاحيات</a>
+   ${S.admin?`<a href="#menus" class="${R.v==="menus"?"on":""}"><span class="gi">${ico("menu")}</span>تخصيص القوائم</a><a href="#users" class="${R.v==="users"?"on":""}"><span class="gi">${ico("users")}</span>المستخدمون</a><a href="#audit" class="${R.v==="audit"?"on":""}"><span class="gi">${ico("audit")}</span>سجل التدقيق</a>`:""}`;
   const role=S.admin?"مسؤول النظام":S.canWrite?"مساهم":"مشاهد";
   const box=$("#meBox");box.innerHTML="";
   const av=document.createElement("span");av.className="av";av.textContent=((S.meP&&S.meP.name)||"?").trim().charAt(0);box.append(av);
@@ -1574,7 +1776,7 @@ function yearFlow(A){
     <div class="legend"><span class="tone-good"><i></i>الإيرادات (التبرعات المعتمدة)</span><span class="tone-bad"><i></i>المصروفات المعتمدة</span></div></div>`,{link:"#m7-16",linkL:"التقارير المالية",cls:"span3"});
 }
 function quickAccess(){
-  return `<section class="qacc"><h3>قائمة الوصول السريع</h3><div class="qg">${G.map((g,i)=>!canDept(i)?"":`<a href="#g${i}" style="${dc(i)}"><span class="qi">${ico(g.c)}<i></i></span><b>${esc(g.n)}</b><small>${nMod(g.items.length)}</small></a>`).join("")}</div></section>`;
+  return `<section class="qacc"><h3>قائمة الوصول السريع</h3><div class="qg">${ORDER.map(i=>{const g=G[i];return !shownDept(i)?"":`<a href="#g${i}" style="${dc(i)}"><span class="qi">${ico(g.ic||g.c)}<i></i></span><b>${esc(g.n)}</b><small>${nMod(g.items.length)}</small></a>`}).join("")}</div></section>`;
 }
 function viewHome(){
   const A=active().filter(r=>canDept(r.g));const open=A.filter(isOpen);
@@ -1639,7 +1841,7 @@ function viewHome(){
   <div class="dgrid g2">
    ${dCard("المعاملات حسب الحالة","جديدة وجارية وبانتظار الاعتماد ومنجزة","RPT","blue",vbars(STATUSES.map(s=>({l:s.n,v:A.filter(r=>eff(r)===s.n).length,c:`var(--${s.t==="info"?"info":s.t==="warn"?"warn":s.t==="pend"?"pend":s.t==="good"?"good":"bad"})`})).concat([{l:"متعثرة",v:late.length,c:"#cf3f3f",h:"#focus"}]),{label:"المعاملات حسب الحالة"}),{link:"#flow",linkL:"مسار المعاملات"})}
    ${dCard("المعاملات حسب الإدارة","ترتيب الإدارات حسب عدد المعاملات","tree","violet",(()=>{const rows=G.map((g,i)=>({i,l:g.n,v:i&&canDept(i)?A.filter(r=>r.g===i).length:0,o:i?A.filter(r=>r.g===i&&isOpen(r)).length:0})).filter(r=>r.v).sort((a,b)=>b.v-a.v).slice(0,8);const mx=Math.max(1,...rows.map(r=>r.v));
-     return rows.length?`<div class="hbars dept">${rows.map((r,k)=>`<a href="#g${r.i}" style="${dc(r.i)}"><span class="hr">${ico(G[r.i].c)}</span><span class="hl">${esc(r.l)}</span><span class="hb"><em style="width:${r.v/mx*100}%"></em></span><b>${NF.format(r.v)} <small>${NF.format(r.o)} مفتوحة</small></b></a>`).join("")}</div>`:emptyDash()})(),{link:"#g0",linkL:"التقارير"})}
+     return rows.length?`<div class="hbars dept">${rows.map((r,k)=>`<a href="#g${r.i}" style="${dc(r.i)}"><span class="hr">${ico(G[r.i].ic||G[r.i].c)}</span><span class="hl">${esc(r.l)}</span><span class="hb"><em style="width:${r.v/mx*100}%"></em></span><b>${NF.format(r.v)} <small>${NF.format(r.o)} مفتوحة</small></b></a>`).join("")}</div>`:emptyDash()})(),{link:"#g0",linkL:"التقارير"})}
   </div>
   <div class="dgrid g2">
    ${dCard("المعاملات الداخلية حسب الحالة","متابعة سير المعاملات بين الإدارات","swap","blue",`<div class="mix sm">${ring(STATUSES.map(s=>({l:s.n,v:A.filter(r=>r.g===2&&eff(r)===s.n).length,c:`var(--${s.t==="info"?"info":s.t})`})),NF.format(A.filter(r=>r.g===2).length),"إجمالي",140,18)}${statusBars(A.filter(r=>r.g===2))}</div>`,{link:"#g2",linkL:"المعاملات الداخلية"})}
@@ -1720,9 +1922,9 @@ function recordsBlock(recs,{showMod=false,g=null,addG=null,addM=null,board=true}
    <div class="pager"><span>${NF.format(list.length)} معاملة${list.length!==recs.length?` من ${NF.format(recs.length)}`:""}</span>${pages>1?`<span class="flow"><button class="btn sm" data-pg="-1" ${ui.page?"":"disabled"}>السابق</button><span class="num">${ui.page+1} / ${pages}</span><button class="btn sm" data-pg="1" ${ui.page<pages-1?"":"disabled"}>التالي</button></span>`:""}</div>`
    :`<div class="tw"><div class="empty"><b>لا توجد معاملات مطابقة</b>غيّر كلمة البحث أو الحالة.</div></div>`);
 }
-function deptHead(g,side){const grp=G[g];return `<section class="dhead" style="${dc(g)}"><div class="ttl"><span class="big">${ico(grp.c)}</span><div><span class="en">${esc(grp.en||"")}</span><h1>${esc(grp.n)}</h1><p>${esc(grp.d)}</p></div></div>${side||""}</section>`}
+function deptHead(g,side){const grp=G[g];return `<section class="dhead" style="${dc(g)}"><div class="ttl"><span class="big">${ico(grp.ic||grp.c)}</span><div><span class="en">${esc(grp.en||"")}</span><h1>${esc(grp.n)}</h1><p>${esc(grp.d)}</p></div></div>${side||""}</section>`}
 function modsTree(g,recs){
-  return `<div class="secs">${secsOf(g).map(([t,ids])=>`<div class="sec"><h4><span class="shi">${ico(secIco(t))}</span>${esc(t)} <small>${nMod(ids.length)}</small><span class="ln"></span></h4><div class="mods2">${ids.map(m=>{const c=recs?recs.filter(r=>r.m===m).length:null;return `<a class="mod2" href="#m${g}-${m}"><span class="n">${ico(modIco(g,m))}</span><span style="min-width:0"><b>${esc(G[g].items[m])}</b><small>${esc(idesc(g,m))}</small></span>${c==null?`<span class="c">←</span>`:`<span class="c ${c?"has":""}">${c}</span>`}</a>`}).join("")}</div></div>`).join("")}</div>`;
+  return `<div class="secs">${secsOf(g).map(([t,ids,sic])=>`<div class="sec"><h4><span class="shi">${ico(secIco(t,sic))}</span>${esc(t)} <small>${nMod(ids.length)}</small><span class="ln"></span></h4><div class="mods2">${ids.map(m=>{const c=recs?recs.filter(r=>r.m===m).length:null;return `<a class="mod2" href="#m${g}-${m}"><span class="n">${ico(modIco(g,m))}</span><span style="min-width:0"><b>${esc(G[g].items[m])}</b><small>${esc(idesc(g,m))}</small></span>${c==null?`<span class="c">←</span>`:`<span class="c ${c?"has":""}">${c}</span>`}</a>`}).join("")}</div></div>`).join("")}</div>`;
 }
 function viewGroup(){
   const g=R.g,grp=G[g];
@@ -1803,6 +2005,17 @@ function viewOrg(){
      </div>
      ${ro?"":`<div class="w"><button class="btn pri" type="submit">حفظ الإعدادات</button></div>`}
     </form></section>
+   <section class="box" style="--dc:${G[3]?.col||"#0369A1"}"><h3>الموقع الإلكتروني العام <a href="${esc(siteHref())}" target="_blank" rel="noopener">فتح الموقع ‹</a></h3>
+    <form id="siteForm" class="form" novalidate>
+     <label class="w">رابط الموقع<input id="s_url" dir="ltr" maxlength="300" value="${esc(S.cfg.siteUrl||"")}" placeholder="${esc(siteHref())}" ${ro?"disabled":""}><span class="hint">اتركه فارغًا لاستخدام الموقع المدمج في النظام.</span></label>
+     <label>المدينة<input id="s_city" maxlength="80" value="${esc(S.cfg.siteCity||"")}" ${ro?"disabled":""}></label>
+     <label>الهاتف<input id="s_phone" dir="ltr" maxlength="30" value="${esc(S.cfg.sitePhone||"")}" ${ro?"disabled":""}></label>
+     <label class="w">البريد العام<input id="s_email" dir="ltr" type="email" maxlength="120" value="${esc(S.cfg.siteEmail||"")}" ${ro?"disabled":""}></label>
+     <label class="w">نبذة عن الجمعية<textarea id="s_about" maxlength="1200" ${ro?"disabled":""}>${esc(S.cfg.siteAbout||"")}</textarea></label>
+     <label class="check w"><input id="s_stats" type="checkbox" ${S.cfg.publicStats===false?"":"checked"} ${ro?"disabled":""}>عرض أرقام الأثر (أعداد فقط، بلا مبالغ أو بيانات شخصية)</label>
+     <p class="why w" style="margin:0">يعرض الموقع ما تنشره إدارة «الموقع الإلكتروني»: الأخبار والشركاء بحالة «منشور»، والبرامج «قيد التسويق». وتصل طلبات الزوار (إعانة، تطوع، تبرع، تواصل) معاملاتٍ جديدة في إداراتها.</p>
+     ${ro?"":`<div class="w"><button class="btn pri" type="submit">حفظ إعدادات الموقع</button></div>`}
+    </form></section>
    <section class="box"><h3>الأدوار والصلاحيات</h3>
     <dl class="kv">
      <dt>مسؤول النظام</dt><dd>يعتمد ويرفض فوق الحد، ويدير المستخدمين والإعدادات، ويحذف نهائيًا، ويطّلع على سجل التدقيق.</dd>
@@ -1863,7 +2076,7 @@ function bindMain(){
   main.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(null,b.dataset.g!=null?+b.dataset.g:null,b.dataset.m!=null?+b.dataset.m:null));
   main.querySelectorAll("[data-back]").forEach(b=>b.onclick=goBack);
   main.querySelectorAll("[data-stage]").forEach(a=>a.onclick=e=>{e.preventDefault();openStage(a.dataset.stage)});
-  bindDash(main);
+  bindDash(main);bindMenus(main);bindPerms(main);
   const fq=$("#fq"),fs=$("#fs");
   if(fq)fq.oninput=()=>{ui.q=fq.value;ui.page=0;render()};
   if(fs)fs.onchange=()=>{ui.st=fs.value;ui.page=0;render()};
@@ -1883,6 +2096,8 @@ function bindMain(){
   });
   const cf=$("#cfgForm");if(cf)cf.onsubmit=async e=>{e.preventDefault();if(!S.admin)return;const t=+$("#c_thr").value;if(!isFinite(t)||t<0){toast("حد الاعتماد يجب أن يكون رقمًا موجبًا.");return}
     const d=await act("saveSettings",{orgName:$("#c_org").value.trim(),threshold:t,sod:$("#c_sod").checked,notify:$("#c_ntf").checked},"حُفظت الإعدادات");if(d){S.cfg={...S.cfg,...d};render()}};
+  const sf=$("#siteForm");if(sf&&S.admin)sf.onsubmit=async e=>{e.preventDefault();
+    const d=await act("saveSettings",{orgName:S.cfg.orgName||"",threshold:thr(),sod:!!S.cfg.sod,notify:!!S.cfg.notify,site:{url:$("#s_url").value.trim(),city:$("#s_city").value.trim(),phone:$("#s_phone").value.trim(),email:$("#s_email").value.trim(),about:$("#s_about").value.trim(),stats:$("#s_stats").checked}},"حُفظت إعدادات الموقع");if(d){S.cfg={...S.cfg,...d};render()}};
   const q=s=>main.querySelector(s);
   if(q("[data-exportall]"))q("[data-exportall]").onclick=()=>exportCSV(active(),null);
   if(q("[data-backup]"))q("[data-backup]").onclick=backup;
@@ -2014,7 +2229,7 @@ function userDialog(u){
   };
 }
 function showSecret(title,username,pw,must=true){
-  const txt=`بيانات الدخول إلى ${S.cfg.orgName||"نظام الدكتور"}\nاسم المستخدم: ${username}\nكلمة المرور${must?" المؤقتة":""}: ${pw}${must?"\nسيُطلب منك تغييرها عند أول دخول.":""}`;
+  const txt=`بيانات الدخول إلى ${S.cfg.orgName||"نظام نافذ"}\nاسم المستخدم: ${username}\nكلمة المرور${must?" المؤقتة":""}: ${pw}${must?"\nسيُطلب منك تغييرها عند أول دخول.":""}`;
   modal(`<div class="dh ok"><h2>${ico("check")} ${esc(title)}</h2><button class="x" data-close aria-label="إغلاق">✕</button></div>
    <div class="db" style="display:flex;flex-direction:column;gap:12px">
     <div class="secret"><div><small>اسم المستخدم</small><b class="code" dir="ltr">${esc(username)}</b><button class="btn sm" data-cp="${esc(username)}">نسخ</button></div>
@@ -2284,7 +2499,7 @@ function exportCSV(list,g){
   const defs=g!=null&&F[g]?F[g]:[];
   const head=["الرقم","العنوان","الإدارة","الوحدة","الحالة","الأولوية","التاريخ","الاستحقاق","المسؤول","القيمة",...defs.map(d=>d.l),"ملاحظات","أنشأها","آخر تحديث"];
   const rows=list.map(r=>[r.no,r.title,G[r.g].n,modName(r.g,r.m),eff(r),PRI[pri(r)].n,r.date,r.due,whoFor(r),recSum(r)||"",...defs.map(d=>r.f?.[d.k]??""),r.notes,nameOf(r.createdBy),r.updated]);
-  saveFile(`نظام-الدكتور-${todayISO()}.csv`,"﻿"+[head,...rows].map(r=>r.map(csvCell).join(",")).join("\r\n"),"ملف Excel (CSV)");
+  saveFile(`نافذ-${todayISO()}.csv`,"﻿"+[head,...rows].map(r=>r.map(csvCell).join(",")).join("\r\n"),"ملف Excel (CSV)");
 }
 async function backup(){
   try{const d=await call("exportData");saveFile(`نسخة-احتياطية-${todayISO()}.json`,JSON.stringify(d,null,2),"النسخة الاحتياطية")}

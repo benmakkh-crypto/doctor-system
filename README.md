@@ -1,4 +1,4 @@
-# نظام الدكتور
+# نافذ
 
 نظام إدارة معاملات للجمعيات الخيرية يعمل على **Google Apps Script** وتُحفظ بياناته في **Google Sheets**. يغطي 14 إدارة و209 وحدات، من استلام التبرع إلى اعتماد سند الصرف.
 
@@ -10,6 +10,8 @@
 | --- | --- |
 | النظام (تطبيق الويب) | https://script.google.com/macros/s/AKfycbyOlWoG2qxREQoahc9sTmXgelljI3C15_j6NAaNEb3CkXp6uEEelcSxfqEX0kcsWYQqUw/exec |
 | النسخة HTML (GitHub Pages) | https://benmakkh-crypto.github.io/doctor-system/ |
+| الموقع الإلكتروني العام | رابط النظام مع `?page=site` |
+| الموقع العام (نسخة تجريبية) | https://benmakkh-crypto.github.io/doctor-system/site/ |
 | مشروع Apps Script | https://script.google.com/home/projects/1r6FuCZ7UOKhRxDBWlEwxnmwbTfi4JjUV4MnFuc1Rx2DYGhgDRueBKlPb/edit |
 
 ## النسخة HTML المستقلة
@@ -42,6 +44,7 @@ src/                الشيفرة التي تُرفع إلى Apps Script
   Code.gs           الخادم: المصادقة والصلاحيات وكل العمليات
   Schema.gs         الإدارات والوحدات والحقول والحالات
   Index.html        بوابة الدخول والواجهة
+  Site.html         الموقع الإلكتروني العام للجمعية
   appsscript.json   إعدادات المشروع والنشر
 docs/               الدراسات والوثائق
 tests/              اختبارات الخادم والواجهة (Node + Playwright)
@@ -50,7 +53,7 @@ tests/              اختبارات الخادم والواجهة (Node + Playw
 
 ## التثبيت السريع
 
-1. افتح مشروع Apps Script، وأنشئ الملفات الأربعة في `src/` بالأسماء نفسها والصق محتواها، أو استخدم `clasp push`.
+1. افتح مشروع Apps Script، وأنشئ الملفات الخمسة في `src/` بالأسماء نفسها والصق محتواها، أو استخدم `clasp push`.
 2. اختر الدالة `setup` واضغط **تشغيل**، ووافق على الصلاحيات. ستجد في **سجل التنفيذ** اسم المستخدم `zubair` وكلمة مرور مؤقتة.
 3. اضغط **نشر ← نشر جديد ← تطبيق ويب**. التنفيذ باسم: **أنا**، والوصول: **أي شخص**.
 4. افتح رابط التطبيق، وادخل بـ `zubair` وكلمة المرور المؤقتة، ثم اختر كلمة مرورك.

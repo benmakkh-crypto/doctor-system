@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الموقع الإلكتروني للجمعية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@600;700;800&display=swap">
+<style>
+/* الموقع العام للجمعية — يعمل مع نظام نافذ: المحتوى المنشور يأتي من النظام، والطلبات تذهب إليه */
+:root{
+  --g:#0e4d3f;--g2:#0a3a30;--g3:#062520;--gold:#deb24e;--gold2:#b8862a;--ink:#14231f;--muted:#5b6b66;--line:#e3e9e6;--bg:#f6f8f7;--card:#fff;
+  --rose:#c2334d;--red:#cf3f3f;--amber:#b98a14;--indigo:#5b4bc4;--teal:#0f766e;--blue:#3157b8;
+  --r:18px;--f-d:"Noto Kufi Arabic",Tahoma,sans-serif;--f-b:"IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;
+  --tile:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.2'%3E%3Crect x='20' y='20' width='40' height='40'/%3E%3Crect x='20' y='20' width='40' height='40' transform='rotate(45 40 40)'/%3E%3Ccircle cx='40' cy='40' r='9'/%3E%3Cpath d='M0 40h12M68 40h12M40 0v12M40 68v12'/%3E%3C/g%3E%3C/svg%3E");
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;font-family:var(--f-b);color:var(--ink);background:var(--bg);line-height:1.75;font-size:15.5px}
+h1,h2,h3,h4{font-family:var(--f-d);line-height:1.45;margin:0}
+a{color:inherit}
+img,svg{display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+[hidden]{display:none!important}
+.wrap{width:min(1180px,100% - 32px);margin-inline:auto}
+.ic{width:24px;height:24px;flex:none}
+/* ---------- الرأس ---------- */
+.hd{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--g2) 92%,transparent);backdrop-filter:blur(10px);color:#fff;border-bottom:2px solid var(--gold)}
+.hd .wrap{display:flex;align-items:center;gap:18px;min-height:72px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+.logo svg{width:44px;height:44px;flex:none}
+.logo b{display:block;font-family:var(--f-d);font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px}
+.logo small{display:block;font-size:11.5px;opacity:.75;margin-top:-4px}
+.nav{display:flex;gap:2px;margin-inline-start:auto}
+.nav a{text-decoration:none;padding:8px 12px;border-radius:10px;font-size:14.5px;opacity:.9}
+.nav a:hover{background:rgba(255,255,255,.12);opacity:1}
+.hd .cta{display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:11px 20px;font-weight:700;text-decoration:none;cursor:pointer;white-space:nowrap;transition:transform .15s,box-shadow .15s,background .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn svg{width:19px;height:19px}
+.btn.gold{background:linear-gradient(135deg,#f0c968,var(--gold2));color:#1b1405;box-shadow:0 8px 20px rgba(184,134,42,.35)}
+.btn.green{background:linear-gradient(135deg,#17785f,var(--g2));color:#fff;box-shadow:0 8px 20px rgba(14,77,63,.3)}
+.btn.ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.35)}
+.btn.line{background:#fff;color:var(--g);border:1.5px solid color-mix(in srgb,var(--g) 30%,#fff)}
+.btn.sm{padding:7px 14px;font-size:13.5px;border-radius:10px}
+.menu{display:none;background:none;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:10px;padding:8px 10px}
+/* ---------- البطل ---------- */
+.hero{position:relative;color:#fff;overflow:hidden;background:radial-gradient(110% 120% at 85% 10%,#1d6b55 0%,var(--g2) 45%,var(--g3) 100%)}
+.hero::before{content:"";position:absolute;inset:0;background:rgba(222,178,78,.13);-webkit-mask-image:var(--tile);mask-image:var(--tile);-webkit-mask-size:96px;mask-size:96px}
+.hero::after{content:"";position:absolute;inset-inline:0;bottom:-1px;height:70px;background:var(--bg);clip-path:ellipse(70% 100% at 50% 100%)}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.25fr 1fr;gap:40px;align-items:center;padding:70px 0 120px}
+.bsm{font-family:var(--f-d);color:var(--gold);font-size:17px;margin-bottom:8px}
+.hero h1{font-size:clamp(32px,4.4vw,54px);font-weight:800;letter-spacing:-.5px}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p.lead{font-size:18px;opacity:.88;max-width:560px;margin:16px 0 26px}
+.hero .acts{display:flex;gap:12px;flex-wrap:wrap}
+.verse{margin-top:30px;display:flex;gap:12px;align-items:center;opacity:.92}
+.verse span{font-family:var(--f-d);font-size:16px}
+.verse small{display:block;color:var(--gold);font-size:12px}
+.verse i{width:46px;height:2px;background:var(--gold);flex:none}
+.art{position:relative;aspect-ratio:1;max-width:440px;justify-self:center;width:100%}
+.art svg{width:100%;height:100%}
+.art .spin{transform-origin:50% 50%;animation:spin 120s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.art .badge{position:absolute;background:#fff;color:var(--ink);border-radius:16px;padding:12px 16px;box-shadow:0 18px 40px rgba(0,0,0,.25);display:flex;gap:10px;align-items:center;font-size:13px;animation:float 6s ease-in-out infinite}
+.art .badge b{display:block;font-family:var(--f-d);font-size:20px;color:var(--g)}
+.art .badge .bi{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:#fff}
+.art .b1{top:12%;inset-inline-start:-6%}.art .b2{bottom:10%;inset-inline-end:-4%;animation-delay:-3s}
+@keyframes float{50%{transform:translateY(-10px)}}
+/* ---------- الأقسام ---------- */
+section{padding:72px 0}
+.sh{text-align:center;max-width:680px;margin:0 auto 38px}
+.sh .k{display:inline-flex;gap:8px;align-items:center;color:var(--gold2);font-weight:700;font-size:13.5px;letter-spacing:.3px;margin-bottom:6px}
+.sh .k::before,.sh .k::after{content:"";width:22px;height:2px;background:var(--gold)}
+.sh h2{font-size:clamp(25px,3vw,34px);color:var(--g)}
+.sh p{color:var(--muted);margin:10px 0 0}
+.grid{display:grid;gap:20px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:0 4px 18px rgba(16,40,34,.05);transition:transform .2s,box-shadow .2s,border-color .2s}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(16,40,34,.1)}
+/* من نحن */
+.about{display:grid;grid-template-columns:1fr 1.1fr;gap:34px;align-items:center}
+.about .txt h2{font-size:30px;color:var(--g);margin-bottom:10px}
+.about .txt p{color:var(--muted);margin:0 0 14px}
+.vm{display:grid;gap:14px}
+.vm .card{display:flex;gap:16px;align-items:flex-start;padding:20px;border-inline-start:5px solid var(--c)}
+.vm .vi{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--c) 13%,#fff);color:var(--c)}
+.vm h3{font-size:17px;color:var(--c)}.vm p{margin:4px 0 0;color:var(--muted);font-size:14.5px}
+.values{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.values span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 16px;font-weight:600;font-size:13.5px;display:inline-flex;gap:6px;align-items:center}
+.values span::before{content:"";width:8px;height:8px;border-radius:2px;transform:rotate(45deg);background:var(--gold)}
+/* الخدمات */
+.svc{position:relative;overflow:hidden;border-top:4px solid var(--c);display:flex;flex-direction:column;gap:10px}
+.svc::after{content:"";position:absolute;inset-inline-end:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:color-mix(in srgb,var(--c) 9%,transparent)}
+.svc .si{width:60px;height:60px;border-radius:16px;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,color-mix(in srgb,var(--c),#fff 20%),var(--c));box-shadow:0 10px 22px color-mix(in srgb,var(--c) 35%,transparent)}
+.svc .si svg{width:30px;height:30px}
+.svc h3{font-size:18px}.svc p{margin:0;color:var(--muted);font-size:14.5px;flex:1}
+.svc a{color:var(--c);font-weight:700;text-decoration:none;font-size:14px}
+/* الإحصاءات */
+.impact{position:relative;color:#fff;background:linear-gradient(120deg,var(--g),var(--g3));overflow:hidden}
+.impact::before{content:"";position:absolute;inset:0;background:rgba(222,178,78,.1);-webkit-mask-image:var(--tile);mask-image:var(--tile);-webkit-mask-size:80px;mask-size:80px}
+.impact .wrap{position:relative}
+.impact .sh h2{color:#fff}.impact .sh p{color:rgba(255,255,255,.75)}
+.st{text-align:center;padding:24px 10px;border-radius:var(--r);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15)}
+.st .sti{width:56px;height:56px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:rgba(222,178,78,.18);color:var(--gold)}
+.st b{display:block;font-family:var(--f-d);font-size:38px;color:var(--gold);line-height:1.2;font-variant-numeric:tabular-nums}
+.st span{opacity:.85;font-size:14px}
+/* البرامج */
+.prg{display:flex;flex-direction:column;gap:12px;padding:0;overflow:hidden}
+.prg .top{position:relative;height:120px;background:linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 60%,#000));display:grid;place-items:center;color:rgba(255,255,255,.9)}
+.prg .top::before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.12);-webkit-mask-image:var(--tile);mask-image:var(--tile);-webkit-mask-size:60px;mask-size:60px}
+.prg .top svg{width:46px;height:46px;position:relative}
+.prg .chip{position:absolute;top:12px;inset-inline-start:12px;background:#fff;color:var(--c);font-size:12px;font-weight:700;border-radius:999px;padding:2px 12px}
+.prg .bd{padding:0 22px 22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.prg h3{font-size:17.5px}.prg p{margin:0;color:var(--muted);font-size:14px;flex:1}
+.facts{display:flex;flex-wrap:wrap;gap:8px}
+.facts span{display:inline-flex;gap:5px;align-items:center;font-size:12.5px;background:var(--bg);border-radius:8px;padding:3px 10px;color:var(--ink)}
+.facts svg{width:15px;height:15px;color:var(--gold2)}
+/* الأخبار */
+.nw{display:flex;flex-direction:column;gap:10px;cursor:pointer;text-align:start;font:inherit;color:inherit}
+.nw .dt{display:inline-flex;gap:6px;align-items:center;color:var(--gold2);font-size:12.5px;font-weight:700}
+.nw h3{font-size:17px;color:var(--g)}.nw p{margin:0;color:var(--muted);font-size:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.nw .more{color:var(--g);font-weight:700;font-size:13.5px;margin-top:auto}
+.empty{text-align:center;color:var(--muted);padding:30px;border:1.5px dashed var(--line);border-radius:var(--r);background:#fff}
+/* الخدمات الإلكترونية */
+.eserv{background:linear-gradient(180deg,#fff,var(--bg))}
+.tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:22px}
+.tabs button{display:inline-flex;gap:8px;align-items:center;border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:11px 20px;font-weight:700;cursor:pointer;color:var(--ink)}
+.tabs button svg{color:var(--c)}
+.tabs button.on{background:var(--c);border-color:var(--c);color:#fff;box-shadow:0 10px 22px color-mix(in srgb,var(--c) 30%,transparent)}
+.tabs button.on svg{color:#fff}
+.fbox{display:grid;grid-template-columns:1fr 1.5fr;gap:0;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 18px 50px rgba(16,40,34,.08)}
+.fside{position:relative;color:#fff;padding:30px;background:linear-gradient(160deg,var(--c),color-mix(in srgb,var(--c) 55%,#000));display:flex;flex-direction:column;gap:14px}
+.fside::before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.1);-webkit-mask-image:var(--tile);mask-image:var(--tile);-webkit-mask-size:70px;mask-size:70px}
+.fside>*{position:relative}
+.fside .fi{width:62px;height:62px;border-radius:16px;background:rgba(255,255,255,.18);display:grid;place-items:center}.fside .fi svg{width:32px;height:32px}
+.fside h3{font-size:22px}.fside p{margin:0;opacity:.88;font-size:14.5px}
+.fside ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:14px}
+.fside li{display:flex;gap:8px;align-items:flex-start}.fside li::before{content:"✓";color:var(--gold);font-weight:800}
+form.f{padding:30px;display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;align-content:start}
+.f .w{grid-column:1/-1}
+.f label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:13.5px}
+.f label .rq{color:var(--red)}
+.f input,.f select,.f textarea{border:1.5px solid var(--line);border-radius:12px;padding:11px 14px;background:var(--bg);outline:0;transition:border-color .15s,box-shadow .15s,background .15s;min-width:0;width:100%}
+.f textarea{min-height:110px;resize:vertical}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--c);background:#fff;box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 15%,transparent)}
+.f .err input,.f .err select,.f .err textarea{border-color:var(--red)}
+.f .msg{color:var(--red);font-size:12.5px;font-weight:500}
+.f .hint{color:var(--muted);font-size:12.5px;font-weight:400}
+.amts{display:flex;flex-wrap:wrap;gap:8px}
+.amts button{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:9px 16px;font-weight:700;cursor:pointer;font-variant-numeric:tabular-nums}
+.amts button.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 10%,#fff);color:var(--c)}
+form.f{position:relative}
+.hp{position:absolute;inset-inline-start:0;top:0;width:1px;height:1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);opacity:0;pointer-events:none}
+.fnote{grid-column:1/-1;font-size:12.5px;color:var(--muted);background:var(--bg);border-radius:10px;padding:10px 12px;margin:0}
+.fsub{grid-column:1/-1;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.fsub .btn{background:linear-gradient(135deg,color-mix(in srgb,var(--c),#fff 12%),color-mix(in srgb,var(--c) 75%,#000));color:#fff;box-shadow:0 10px 22px color-mix(in srgb,var(--c) 30%,transparent)}
+.fsub .btn:disabled{opacity:.6;cursor:progress;transform:none}
+.done{grid-column:1/-1;text-align:center;padding:30px 10px;display:grid;gap:10px;justify-items:center}
+.done .ok{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,#1f8a4c 14%,#fff);color:#1f8a4c}.done .ok svg{width:40px;height:40px}
+.done h3{font-size:22px;color:var(--g)}
+.done .ref{font-family:ui-monospace,Consolas,monospace;font-size:20px;background:var(--bg);border:1.5px dashed var(--gold);border-radius:12px;padding:6px 18px;direction:ltr}
+.ferr{grid-column:1/-1;background:color-mix(in srgb,var(--red) 8%,#fff);border:1px solid color-mix(in srgb,var(--red) 35%,#fff);border-radius:12px;padding:10px 14px;font-size:14px;margin:0}
+/* الشركاء */
+.partners{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.partners span{display:inline-flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 22px;font-weight:700;color:var(--g)}
+.partners svg{color:var(--gold2)}
+/* الحوكمة */
+.gov{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.gov .card{display:flex;gap:14px;align-items:flex-start;padding:20px}
+.gov .gi{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--g) 10%,#fff);color:var(--g);flex:none}
+.gov h3{font-size:16px}.gov p{margin:4px 0 0;color:var(--muted);font-size:13.5px}
+/* التذييل */
+.ft{background:var(--g3);color:rgba(255,255,255,.85);padding:56px 0 20px;position:relative;overflow:hidden}
+.ft::before{content:"";position:absolute;inset:0;background:rgba(222,178,78,.06);-webkit-mask-image:var(--tile);mask-image:var(--tile);-webkit-mask-size:90px;mask-size:90px}
+.ft .wrap{position:relative}
+.ftg{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:30px}
+.ft h4{color:#fff;font-size:16px;margin-bottom:12px}
+.ft a{text-decoration:none;opacity:.85;display:block;padding:3px 0}.ft a:hover{opacity:1;color:var(--gold)}
+.ft p{margin:0 0 8px;font-size:14px}
+.ft .ci{display:flex;gap:8px;align-items:center;font-size:14px;margin-bottom:8px}.ft .ci svg{width:18px;height:18px;color:var(--gold)}
+.ftb{border-top:1px solid rgba(255,255,255,.12);margin-top:34px;padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;opacity:.75}
+/* نافذة الخبر */
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(6,37,32,.6);display:grid;place-items:center;padding:16px;backdrop-filter:blur(3px)}
+.dlg{background:#fff;border-radius:22px;max-width:640px;width:100%;max-height:85vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.dlg header{position:sticky;top:0;background:linear-gradient(120deg,var(--g),var(--g2));color:#fff;padding:18px 22px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;border-bottom:2px solid var(--gold)}
+.dlg header h3{font-size:19px}.dlg header small{color:var(--gold)}
+.dlg header button{background:rgba(255,255,255,.15);border:0;color:#fff;border-radius:10px;width:36px;height:36px;cursor:pointer;flex:none}
+.dlg .db{padding:22px;white-space:pre-line}
+.toTop{position:fixed;bottom:18px;inset-inline-start:18px;z-index:30;width:46px;height:46px;border-radius:50%;border:0;background:var(--gold);color:#1b1405;box-shadow:0 10px 24px rgba(0,0,0,.2);cursor:pointer;display:grid;place-items:center}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s,transform .6s}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.art .spin,.art .badge{animation:none}html{scroll-behavior:auto}}
+@media (max-width:1080px){.nav{display:none}.menu{display:inline-flex;margin-inline-start:auto}.nav.open{display:flex;position:absolute;top:100%;inset-inline:0;flex-direction:column;background:var(--g2);padding:10px 16px 16px;border-bottom:2px solid var(--gold)}
+ .g4{grid-template-columns:repeat(2,minmax(0,1fr))}.ftg{grid-template-columns:1fr 1fr}}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr;padding:46px 0 100px}.art{max-width:300px}.about,.fbox{grid-template-columns:1fr}.g3,.gov{grid-template-columns:1fr}.hd .cta .btn.ghost{display:none}}
+@media (max-width:560px){.g4,.g2{grid-template-columns:1fr 1fr}form.f{grid-template-columns:1fr;padding:22px}.ftg{grid-template-columns:1fr}.hd .cta{display:none}section{padding:52px 0}.logo b{max-width:180px}.art .badge{display:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-heart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M12 20s-7.5-4.5-7.5-10A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.5 2.4c0 5.5-7.5 10-7.5 10z"/></symbol>
+ <symbol id="i-hand" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M12 7.8c-1-1.7-3.8-1.6-4.4.4-.6 1.9 1.6 3.7 4.4 5.6 2.8-1.9 5-3.7 4.4-5.6-.6-2-3.4-2.1-4.4-.4zM2 15h3l5 1.5h3.5a1.5 1.5 0 0 1 0 3H9M13.5 19.5l6-2.3a1.6 1.6 0 0 0-1.1-3L14 15.8M2 21h3"/></symbol>
+ <symbol id="i-box" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M3 7l9-4 9 4v10l-9 4-9-4zM3 7l9 4 9-4M12 11v10"/></symbol>
+ <symbol id="i-leaf" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8M12 13c0-4 3-6.5 7.5-6.5 0 4-3 6.5-7.5 6.5zM12 15.5c0-3.2-2.6-5.5-6.5-5.5 0 3.2 2.6 5.5 6.5 5.5z"/></symbol>
+ <symbol id="i-mega" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M3 10v4h3l7 4V6L6 10zM16 9a3 3 0 0 1 0 6M18.5 6.5a6.5 6.5 0 0 1 0 11"/></symbol>
+ <symbol id="i-shake" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M2 11l4-4 4 2 3-2 3 1 6 3M2 11l5.5 5.5c.8.8 2 .8 2.8 0M10.3 16.5l1.2 1.2c.8.8 2 .8 2.8 0l4.2-4.2M14.3 17.7c.8.8 2 .8 2.8 0l1.7-1.7M10 9.5l3 3"/></symbol>
+ <symbol id="i-eye" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"/></symbol>
+ <symbol id="i-flag" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+ <symbol id="i-users" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M9 11a3.5 3.5 0 1 0 0-7a3.5 3.5 0 1 0 0 7zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 4.5a3.5 3.5 0 0 1 0 6.5M18 14c1.9.8 3 2.7 3 6"/></symbol>
+ <symbol id="i-clock" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM12 7v5l3 2"/></symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></symbol>
+ <symbol id="i-cal" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16v14H4zM4 10h16M8 3v5M16 3v5"/></symbol>
+ <symbol id="i-pin" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21zM12 7a2.5 2.5 0 1 0 0 5a2.5 2.5 0 1 0 0-5z"/></symbol>
+ <symbol id="i-coin" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M3 6a5 2.5 0 1 0 10 0a5 2.5 0 1 0-10 0M3 6v4c0 1.4 2.2 2.5 5 2.5M3 10v4c0 1.4 2.2 2.5 5 2.5M11 12a5 2.5 0 1 0 10 0a5 2.5 0 1 0-10 0M11 12v5c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5v-5"/></symbol>
+ <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></symbol>
+ <symbol id="i-mail" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M3 6h18v12H3zM3 7l9 6 9-6"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM8 12l3 3 5-6"/></symbol>
+ <symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM8.5 12l2.5 2.5 4.5-4.5"/></symbol>
+ <symbol id="i-book" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M4 4h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v15h-6a2 2 0 0 0-2 2 2 2 0 0 0-2-2H4zM12 5v16"/></symbol>
+ <symbol id="i-chart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M7 16v2M11 11v7M15 7v11M19 13v5"/></symbol>
+ <symbol id="i-login" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M10 17l5-5-5-5M15 12H3M14 4h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-5"/></symbol>
+ <symbol id="i-up" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 15l6-6 6 6"/></symbol>
+</svg>
+
+<header class="hd">
+ <div class="wrap">
+  <a class="logo" href="#top"><svg viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="#deb24e" stroke-width="1.6"><rect x="8" y="8" width="24" height="24" rx="1"/><rect x="8" y="8" width="24" height="24" rx="1" transform="rotate(45 20 20)"/></g><circle cx="20" cy="20" r="9" fill="#0e4d3f"/><path d="M15.5 22.5c2.5 2 6.5 2 9 0M20 14v6" stroke="#deb24e" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+   <span><b data-org>الجمعية</b><small>نعمل بالعطاء… ونقيس بالأثر</small></span></a>
+  <nav class="nav" id="nav" aria-label="القائمة الرئيسية">
+   <a href="#about">من نحن</a><a href="#services">خدماتنا</a><a href="#programs">برامجنا</a><a href="#impact">أثرنا</a><a href="#news">الأخبار</a><a href="#eservices">الخدمات الإلكترونية</a><a href="#contact">تواصل معنا</a>
+  </nav>
+  <div class="cta"><a class="btn ghost sm" id="staff" href="#" title="دخول الموظفين إلى نظام نافذ"><svg class="ic"><use href="#i-login"/></svg>دخول الموظفين</a><a class="btn gold sm" href="#eservices" data-tab="donate"><svg class="ic"><use href="#i-heart"/></svg>تبرّع الآن</a></div>
+  <button class="menu" id="menu" aria-label="فتح القائمة" aria-expanded="false">☰</button>
+ </div>
+</header>
+
+<main id="top">
+ <div class="hero">
+  <div class="wrap">
+   <div>
+    <div class="bsm">بسم الله الرحمن الرحيم</div>
+    <h1>عطاءٌ منظّم… <em>وأثرٌ يدوم</em></h1>
+    <p class="lead" id="heroLead">نخدم الأسر المحتاجة والأيتام ببرامج الكفالة والإغاثة والتمكين، بعمل مؤسسي شفاف تُتابَع فيه كل ريال حتى يصل إلى مستحقه.</p>
+    <div class="acts">
+     <a class="btn gold" href="#eservices" data-tab="donate"><svg class="ic"><use href="#i-heart"/></svg>تبرّع الآن</a>
+     <a class="btn ghost" href="#eservices" data-tab="aid"><svg class="ic"><use href="#i-hand"/></svg>اطلب إعانة</a>
+     <a class="btn ghost" href="#eservices" data-tab="volunteer"><svg class="ic"><use href="#i-mega"/></svg>انضم متطوعًا</a>
+    </div>
+    <div class="verse"><i></i><div><span>﴿وَمَا تُقَدِّمُوا لِأَنفُسِكُم مِّنْ خَيْرٍ تَجِدُوهُ عِندَ اللَّهِ﴾</span><small>سورة البقرة · 110</small></div></div>
+   </div>
+   <div class="art" aria-hidden="true">
+    <svg viewBox="0 0 400 400"><g class="spin" fill="none" stroke="#deb24e" stroke-opacity=".55" stroke-width="1.4"><rect x="90" y="90" width="220" height="220"/><rect x="90" y="90" width="220" height="220" transform="rotate(45 200 200)"/><rect x="130" y="130" width="140" height="140"/><rect x="130" y="130" width="140" height="140" transform="rotate(45 200 200)"/><circle cx="200" cy="200" r="150"/><circle cx="200" cy="200" r="60"/></g>
+     <circle cx="200" cy="200" r="46" fill="#deb24e" fill-opacity=".12"/><path d="M178 214c12 10 32 10 44 0M200 176v28" stroke="#deb24e" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
+    <div class="badge b1"><span class="bi" style="background:var(--rose)"><svg class="ic"><use href="#i-heart"/></svg></span><span><b data-stat="beneficiaries">—</b>مستفيد من برامجنا</span></div>
+    <div class="badge b2"><span class="bi" style="background:var(--teal)"><svg class="ic"><use href="#i-users"/></svg></span><span><b data-stat="volunteers">—</b>متطوع معنا</span></div>
+   </div>
+  </div>
+ </div>
+
+ <section id="about">
+  <div class="wrap about">
+   <div class="txt reveal">
+    <div class="sh" style="text-align:start;margin:0 0 14px"><span class="k">من نحن</span></div>
+    <h2>جمعية خيرية تعمل بمنهجية مؤسسية</h2>
+    <p id="aboutTxt">نقدّم خدماتنا للأسر المستحقة والأيتام من خلال برامج الكفالة والإعانات والسلال الغذائية والتمكين الاقتصادي، ونعمل وفق معايير الحوكمة والشفافية المعتمدة للقطاع غير الربحي. كل طلب يُدرس، وكل تبرع يُوثّق، وكل برنامج يُقاس أثره.</p>
+    <div class="values"><span>الأمانة</span><span>الإحسان</span><span>الشفافية</span><span>التمكين</span><span>روح الفريق</span></div>
+   </div>
+   <div class="vm reveal">
+    <div class="card" style="--c:var(--g)"><span class="vi"><svg class="ic"><use href="#i-eye"/></svg></span><div><h3>رؤيتنا</h3><p>مجتمع متكافل لا يُترك فيه محتاج دون سند.</p></div></div>
+    <div class="card" style="--c:var(--gold2)"><span class="vi"><svg class="ic"><use href="#i-flag"/></svg></span><div><h3>رسالتنا</h3><p>تقديم خدمات اجتماعية وتنموية نوعية للأسر المستحقة، عبر شراكات فاعلة وعمل مؤسسي شفاف.</p></div></div>
+    <div class="card" style="--c:var(--blue)"><span class="vi"><svg class="ic"><use href="#i-shield"/></svg></span><div><h3>التزامنا</h3><p>حوكمة رشيدة، واعتماد مالي محمي، وسجل تدقيق لكل عملية، وتقارير دورية للداعمين.</p></div></div>
+   </div>
+  </div>
+ </section>
+
+ <section id="services" style="background:#fff">
+  <div class="wrap">
+   <div class="sh reveal"><span class="k">خدماتنا</span><h2>مجالات عملنا</h2><p>ستة مسارات نخدم بها المجتمع، ويمكنك الإسهام في أي منها أو طلب الخدمة مباشرة.</p></div>
+   <div class="grid g3">
+    <div class="card svc reveal" style="--c:var(--rose)"><span class="si"><svg><use href="#i-heart"/></svg></span><h3>كفالة الأيتام والأسر</h3><p>كفالات شهرية منتظمة تضمن للأيتام والأسر المحتاجة حياة كريمة، مع متابعة دورية للحالات.</p><a href="#eservices" data-tab="donate" data-alloc="كفالة">اكفل الآن ‹</a></div>
+    <div class="card svc reveal" style="--c:var(--red)"><span class="si"><svg><use href="#i-hand"/></svg></span><h3>الإعانات والمساعدات</h3><p>إعانات للسكن والعلاج والفواتير والحالات الطارئة، بعد دراسة الباحث الاجتماعي واعتماد اللجنة.</p><a href="#eservices" data-tab="aid">قدّم طلب إعانة ‹</a></div>
+    <div class="card svc reveal" style="--c:var(--amber)"><span class="si"><svg><use href="#i-box"/></svg></span><h3>السلال الغذائية</h3><p>سلال غذائية شهرية ورمضانية، وتوزيع التبرعات العينية من مستودعات الجمعية.</p><a href="#eservices" data-tab="donate" data-alloc="السلال الغذائية">ادعم السلال ‹</a></div>
+    <div class="card svc reveal" style="--c:var(--indigo)"><span class="si"><svg><use href="#i-leaf"/></svg></span><h3>التأهيل والتمكين</h3><p>مشاريع تأهيلية وأسر منتجة وقسائم شرائية تنقل الأسرة من الاحتياج إلى الإنتاج.</p><a href="#programs">تعرّف على البرامج ‹</a></div>
+    <div class="card svc reveal" style="--c:var(--teal)"><span class="si"><svg><use href="#i-mega"/></svg></span><h3>التطوع وخدمة المجتمع</h3><p>فرص تطوعية ميدانية وتعليمية وتقنية، بساعات موثّقة وشهادات مشاركة.</p><a href="#eservices" data-tab="volunteer">سجّل متطوعًا ‹</a></div>
+    <div class="card svc reveal" style="--c:var(--blue)"><span class="si"><svg><use href="#i-shake"/></svg></span><h3>الشراكات والمسؤولية الاجتماعية</h3><p>شراكات مع الشركات والمؤسسات المانحة لتمويل البرامج وقياس أثرها بتقارير دورية.</p><a href="#eservices" data-tab="contact" data-subject="شراكة">اطلب شراكة ‹</a></div>
+   </div>
+  </div>
+ </section>
+
+ <section id="programs">
+  <div class="wrap">
+   <div class="sh reveal"><span class="k">برامجنا</span><h2>برامج تبحث عن داعم</h2><p>برامج معتمدة في الجمعية، اختر ما تحب أن تدعمه، وسنوافيك بتقرير الأثر.</p></div>
+   <div class="grid g3" id="prgList"><div class="empty">جارٍ التحميل…</div></div>
+  </div>
+ </section>
+
+ <section class="impact" id="impact">
+  <div class="wrap">
+   <div class="sh reveal"><span class="k" style="color:var(--gold)">أثرنا</span><h2>أرقام من الميدان</h2><p>تُحدَّث تلقائيًا من نظام الجمعية.</p></div>
+   <div class="grid g4">
+    <div class="st reveal"><span class="sti"><svg class="ic"><use href="#i-heart"/></svg></span><b data-stat="beneficiaries">—</b><span>مستفيد</span></div>
+    <div class="st reveal"><span class="sti"><svg class="ic"><use href="#i-grid"/></svg></span><b data-stat="programs">—</b><span>برنامج</span></div>
+    <div class="st reveal"><span class="sti"><svg class="ic"><use href="#i-users"/></svg></span><b data-stat="volunteers">—</b><span>متطوع</span></div>
+    <div class="st reveal"><span class="sti"><svg class="ic"><use href="#i-clock"/></svg></span><b data-stat="hours">—</b><span>ساعة تطوعية</span></div>
+   </div>
+  </div>
+ </section>
+
+ <section id="news">
+  <div class="wrap">
+   <div class="sh reveal"><span class="k">المركز الإعلامي</span><h2>آخر الأخبار</h2><p>ما تنشره الجمعية من أخبار وإعلانات.</p></div>
+   <div class="grid g3" id="newsList"><div class="empty">جارٍ التحميل…</div></div>
+  </div>
+ </section>
+
+ <section class="eserv" id="eservices">
+  <div class="wrap">
+   <div class="sh reveal"><span class="k">الخدمات الإلكترونية</span><h2>كيف تريد أن تشاركنا؟</h2><p>يصل طلبك مباشرة إلى الإدارة المختصة في نظام الجمعية، وتحصل على رقم مرجعي للمتابعة.</p></div>
+   <div class="tabs" role="tablist">
+    <button role="tab" data-t="donate" style="--c:var(--gold2)"><svg class="ic"><use href="#i-heart"/></svg>تبرّع</button>
+    <button role="tab" data-t="aid" style="--c:var(--rose)"><svg class="ic"><use href="#i-hand"/></svg>طلب إعانة</button>
+    <button role="tab" data-t="volunteer" style="--c:var(--teal)"><svg class="ic"><use href="#i-mega"/></svg>تطوّع</button>
+    <button role="tab" data-t="contact" style="--c:var(--blue)"><svg class="ic"><use href="#i-mail"/></svg>تواصل معنا</button>
+   </div>
+   <div class="fbox reveal" id="fbox"></div>
+  </div>
+ </section>
+
+ <section id="partners" style="background:#fff" hidden>
+  <div class="wrap">
+   <div class="sh reveal"><span class="k">شركاء النجاح</span><h2>شركاؤنا</h2><p>نعتز بثقة الجهات الداعمة وشراكتها.</p></div>
+   <div class="partners" id="partnersList"></div>
+  </div>
+ </section>
+
+ <section id="gov">
+  <div class="wrap">
+   <div class="sh reveal"><span class="k">الحوكمة والشفافية</span><h2>نعمل بوضوح</h2><p>الشفافية جزء من رسالتنا.</p></div>
+   <div class="gov">
+    <div class="card reveal"><span class="gi"><svg class="ic"><use href="#i-shield"/></svg></span><div><h3>اعتماد مالي محمي</h3><p>كل صرف يتجاوز حدًا محددًا لا يُعتمد إلا من صاحب الصلاحية، ويُسجَّل القرار.</p></div></div>
+    <div class="card reveal"><span class="gi"><svg class="ic"><use href="#i-book"/></svg></span><div><h3>سجل تدقيق لكل عملية</h3><p>كل إجراء في نظام الجمعية مسجل باسم منفذه ووقته، ولا يُعدَّل.</p></div></div>
+    <div class="card reveal"><span class="gi"><svg class="ic"><use href="#i-chart"/></svg></span><div><h3>تقارير للداعمين</h3><p>نوافي الداعمين بتقارير أثر البرامج التي أسهموا فيها.</p></div></div>
+   </div>
+  </div>
+ </section>
+</main>
+
+<footer class="ft" id="contact">
+ <div class="wrap">
+  <div class="ftg">
+   <div><h4 data-org>الجمعية</h4><p id="ftAbout">جمعية خيرية تخدم الأسر المستحقة ببرامج الكفالة والإغاثة والتمكين.</p></div>
+   <div><h4>روابط</h4><a href="#about">من نحن</a><a href="#services">خدماتنا</a><a href="#programs">برامجنا</a><a href="#news">الأخبار</a></div>
+   <div><h4>خدمات</h4><a href="#eservices" data-tab="donate">تبرّع</a><a href="#eservices" data-tab="aid">طلب إعانة</a><a href="#eservices" data-tab="volunteer">تطوّع</a><a href="#" id="staff2">دخول الموظفين</a></div>
+   <div><h4>تواصل معنا</h4><div id="ftContact"><div class="ci"><svg><use href="#i-mail"/></svg><a href="#eservices" data-tab="contact">أرسل رسالتك من نموذج التواصل</a></div></div></div>
+  </div>
+  <div class="ftb"><span>© <span id="yr"></span> <span data-org>الجمعية</span>. جميع الحقوق محفوظة.</span><span>يعمل بنظام «نافذ» لإدارة الجمعيات</span></div>
+ </div>
+</footer>
+<button class="toTop" id="toTop" aria-label="إلى الأعلى" hidden><svg class="ic"><use href="#i-up"/></svg></button>
+<div id="dlgRoot"></div>
+
+<script>
+(function(){
+"use strict";
+// عنوان النظام الفعلي على Apps Script؛ يُستخدم فقط إن فُتحت الصفحة خارج Apps Script والنسخة التجريبية.
+var ENDPOINT="https://script.google.com/macros/s/AKfycbyOlWoG2qxREQoahc9sTmXgelljI3C15_j6NAaNEb3CkXp6uEEelcSxfqEX0kcsWYQqUw/exec";
+var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
+var NF=new Intl.NumberFormat("ar-SA-u-nu-latn");
+var dG=function(d){try{return new Intl.DateTimeFormat("ar-SA-u-ca-gregory-nu-latn",{day:"numeric",month:"long",year:"numeric"}).format(new Date(d+"T12:00:00"))}catch(e){return d}};
+var dH=function(d){try{return new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura-nu-latn",{day:"numeric",month:"long",year:"numeric"}).format(new Date(d+"T12:00:00"))}catch(e){return""}};
+var GAS=!!(window.google&&google.script&&google.script.run);
+function call(fn,arg){
+  if(GAS)return new Promise(function(res,rej){var r=google.script.run.withSuccessHandler(res).withFailureHandler(rej);arg===undefined?r[fn]():r[fn](arg)});
+  if(fn==="sitePublic")return fetch(ENDPOINT+"?api=public").then(function(r){return r.json()});
+  return fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(arg)}).then(function(r){return r.json()});
+}
+var DATA={programs:[],news:[]};var COLORS=["#c2334d","#0f766e","#5b4bc4","#b98a14","#3157b8","#0e4d3f"];var PICONS=["i-box","i-leaf","i-heart","i-users","i-book","i-hand"];
+
+/* ---------- عرض المحتوى ---------- */
+function paint(d){
+  DATA=d||DATA;
+  if(d&&d.org){$$("[data-org]").forEach(function(e){e.textContent=d.org});document.title=d.org+" — الموقع الرسمي"}
+  if(d&&d.about){$("#aboutTxt").textContent=d.about;$("#ftAbout").textContent=d.about.length>180?d.about.slice(0,180)+"…":d.about}
+  var c=[];
+  if(d&&d.phone)c.push('<div class="ci"><svg><use href="#i-phone"/></svg><a href="tel:'+esc(d.phone)+'" dir="ltr">'+esc(d.phone)+'</a></div>');
+  if(d&&d.email)c.push('<div class="ci"><svg><use href="#i-mail"/></svg><a href="mailto:'+esc(d.email)+'">'+esc(d.email)+'</a></div>');
+  if(d&&d.city)c.push('<div class="ci"><svg><use href="#i-pin"/></svg><span>'+esc(d.city)+'</span></div>');
+  if(c.length)$("#ftContact").innerHTML=c.join("")+'<div class="ci"><svg><use href="#i-mail"/></svg><a href="#eservices" data-tab="contact">نموذج التواصل</a></div>';
+  // البرامج
+  var P=(d&&d.programs)||[];
+  $("#prgList").innerHTML=P.length?P.map(function(p,i){var col=COLORS[i%COLORS.length];return '<article class="card prg reveal" style="--c:'+col+'"><div class="top"><span class="chip">'+esc(p.stage)+'</span><svg><use href="#'+PICONS[i%PICONS.length]+'"/></svg></div><div class="bd"><h3>'+esc(p.title)+'</h3><p>'+esc(p.about||"برنامج معتمد لدى الجمعية.")+'</p><div class="facts">'+(p.beneficiaries?'<span><svg><use href="#i-users"/></svg>'+NF.format(p.beneficiaries)+' مستفيد</span>':"")+(p.location?'<span><svg><use href="#i-pin"/></svg>'+esc(p.location)+'</span>':"")+(p.budget?'<span><svg><use href="#i-coin"/></svg>'+NF.format(p.budget)+' ر.س</span>':"")+'</div><a class="btn sm green" href="#eservices" data-tab="donate" data-alloc="'+esc(p.title)+'"><svg><use href="#i-heart"/></svg>ادعم هذا البرنامج</a></div></article>'}).join(""):'<div class="empty" style="grid-column:1/-1">لا توجد برامج معروضة حاليًا. تابعنا قريبًا.</div>';
+  // الأخبار
+  var N=(d&&d.news)||[];
+  $("#newsList").innerHTML=N.length?N.slice(0,6).map(function(n,i){return '<button class="card nw reveal" data-news="'+i+'"><span class="dt"><svg class="ic" style="width:16px;height:16px"><use href="#i-cal"/></svg>'+dH(n.date)+' · '+dG(n.date)+'</span><h3>'+esc(n.title)+'</h3><p>'+esc(n.body)+'</p><span class="more">اقرأ المزيد ‹</span></button>'}).join(""):'<div class="empty" style="grid-column:1/-1">لا توجد أخبار منشورة بعد.</div>';
+  // الشركاء
+  var R=(d&&d.partners)||[];$("#partners").hidden=!R.length;
+  $("#partnersList").innerHTML=R.map(function(p){return '<span><svg class="ic"><use href="#i-shake"/></svg>'+esc(p.name)+'</span>'}).join("");
+  // الإحصاءات
+  var S=d&&d.stats;$$("[data-stat]").forEach(function(e){var v=S?S[e.dataset.stat]:null;if(v==null){e.closest(".st,.badge")&&(e.textContent="—");return}e.dataset.to=v;e.textContent="0"});
+  if(!S)$("#impact").hidden=true;
+  fillAlloc();observe();countUp();
+}
+function countUp(){$$("[data-to]").forEach(function(e){if(e.dataset.done)return;var to=+e.dataset.to,t0=null;e.dataset.done=1;function step(t){t0=t0||t;var p=Math.min(1,(t-t0)/1400);e.textContent=NF.format(Math.round(to*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(step)}requestAnimationFrame(step)})}
+var io;function observe(){if(!("IntersectionObserver" in window)){$$(".reveal").forEach(function(e){e.classList.add("in")});return}io=io||new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}})},{threshold:.08,rootMargin:"0px 0px 10% 0px"});$$(".reveal:not(.in)").forEach(function(e){io.observe(e)})}
+
+/* ---------- النماذج ---------- */
+var FORMS={
+ donate:{c:"#b8862a",icon:"i-heart",h:"تبرّع لدعم برامجنا",p:"سجّل رغبتك في التبرع، وسيتواصل معك فريق الجمعية لإرسال بيانات التحويل البنكي أو رابط الدفع وإصدار سند قبض رسمي.",li:["سند قبض رسمي لكل تبرع","تقرير أثر للبرنامج الذي تدعمه","خصوصية تامة لبياناتك"],
+  body:'<label class="w">مبلغ التبرع (ر.س) <span class="rq">*</span><div class="amts">'+[100,300,500,1000,5000].map(function(a){return '<button type="button" data-amt="'+a+'">'+NF.format(a)+'</button>'}).join("")+'</div><input name="amount" inputmode="numeric" placeholder="أو اكتب مبلغًا آخر" dir="ltr"><span class="msg" hidden></span></label><label class="w">التبرع لـ<select name="allocation" id="allocSel"></select></label>'},
+ aid:{c:"#c2334d",icon:"i-hand",h:"طلب إعانة",p:"قدّم طلبك وسيتواصل معك الباحث الاجتماعي لاستكمال البيانات والمستندات. تقديم الطلب لا يعني الموافقة عليه؛ تدرسه لجنة الجمعية.",li:["دراسة سرية لكل حالة","رقم مرجعي لمتابعة الطلب","تواصل خلال أيام العمل"],
+  body:'<label>رقم الهوية / الإقامة<input name="nid" inputmode="numeric" dir="ltr" placeholder="10 أرقام (اختياري)"><span class="msg" hidden></span></label><label>عدد أفراد الأسرة<input name="family" type="number" min="1" max="30" inputmode="numeric"></label><label class="w">نوع الإعانة <span class="rq">*</span><select name="kind"><option value="">— اختر —</option><option>سكن وإيجار</option><option>علاج</option><option>غذاء</option><option>تعليم</option><option>فواتير وخدمات</option><option>حالة طارئة</option><option>أخرى</option></select><span class="msg" hidden></span></label>'},
+ volunteer:{c:"#0f766e",icon:"i-mega",h:"انضم إلى فريق المتطوعين",p:"شاركنا وقتك ومهارتك. تُوثَّق ساعاتك التطوعية وتحصل على شهادة مشاركة.",li:["فرص ميدانية وتعليمية وتقنية","ساعات تطوعية موثقة","شهادة مشاركة"],
+  body:'<label>البريد الإلكتروني<input name="email" type="email" dir="ltr" placeholder="اختياري"><span class="msg" hidden></span></label><label>مجال التطوع<select name="field"><option>توزيع ميداني</option><option>تعليم وتحفيظ</option><option>تصميم وإعلام</option><option>تقنية ودعم فني</option><option>أعمال إدارية</option><option>أخرى</option></select></label>'},
+ contact:{c:"#3157b8",icon:"i-mail",h:"تواصل معنا",p:"لأي استفسار أو اقتراح أو طلب شراكة، اكتب لنا وسنرد عليك في أقرب وقت.",li:["رد خلال أيام العمل","طلبات الشراكة والرعاية","الاقتراحات والملاحظات"],
+  body:'<label>البريد الإلكتروني<input name="email" type="email" dir="ltr" placeholder="اختياري"><span class="msg" hidden></span></label><label>الموضوع<input name="subject" maxlength="80" placeholder="مثال: شراكة، استفسار"></label>'}
+};
+var curTab="donate";
+function openTab(t,opts){
+  curTab=FORMS[t]?t:"donate";var F=FORMS[curTab];opts=opts||{};
+  $$(".tabs button").forEach(function(b){var on=b.dataset.t===curTab;b.classList.toggle("on",on);b.setAttribute("aria-selected",on)});
+  var box=$("#fbox");box.style.setProperty("--c",F.c);
+  box.innerHTML='<div class="fside"><span class="fi"><svg><use href="#'+F.icon+'"/></svg></span><h3>'+F.h+'</h3><p>'+F.p+'</p><ul>'+F.li.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ul></div>'+
+   '<form class="f" novalidate><input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">'+
+   '<label>الاسم الكامل <span class="rq">*</span><input name="name" autocomplete="name" maxlength="80"><span class="msg" hidden></span></label>'+
+   '<label>رقم الجوال <span class="rq">*</span><input name="phone" inputmode="tel" dir="ltr" placeholder="05XXXXXXXX" autocomplete="tel" maxlength="10"><span class="msg" hidden></span></label>'+F.body+
+   '<label class="w">'+(curTab==="contact"?'رسالتك <span class="rq">*</span>':"تفاصيل إضافية")+'<textarea name="message" maxlength="1500"></textarea><span class="msg" hidden></span></label>'+
+   '<p class="fnote">بإرسال النموذج توافق على استخدام بياناتك للتواصل معك بخصوص طلبك فقط، ولن نشاركها مع أي جهة.</p><p class="ferr" hidden></p>'+
+   '<div class="fsub"><button class="btn" type="submit"><svg><use href="#'+F.icon+'"/></svg>إرسال</button><span class="hint">يصل طلبك فورًا إلى الإدارة المختصة.</span></div></form>';
+  var f=$("form.f",box);
+  $$("label",f).forEach(function(l){var r=l.querySelector(":scope>.rq");if(!r)return;var w=document.createElement("span");var n=l.firstChild;while(n&&n!==r){var nx=n.nextSibling;w.appendChild(n);n=nx}w.appendChild(document.createTextNode(" "));w.appendChild(r);l.insertBefore(w,l.firstChild)});
+  if(curTab==="donate"){fillAlloc(opts.alloc);$$("[data-amt]",f).forEach(function(b){b.onclick=function(){$$("[data-amt]",f).forEach(function(x){x.classList.toggle("on",x===b)});f.amount.value=b.dataset.amt}});f.amount.oninput=function(){$$("[data-amt]",f).forEach(function(x){x.classList.toggle("on",x.dataset.amt===f.amount.value)})}}
+  if(curTab==="contact"&&opts.subject)f.subject.value=opts.subject;
+  f.onsubmit=submit;
+}
+function fillAlloc(sel){var s=$("#allocSel");if(!s)return;var cur=sel||s.value;var opts=["عام (حيث الحاجة أشد)","كفالة","السلال الغذائية"].concat((DATA.programs||[]).map(function(p){return p.title}));if(cur&&opts.indexOf(cur)<0)opts.push(cur);s.innerHTML=opts.map(function(o){return "<option"+(o===cur?" selected":"")+">"+esc(o)+"</option>"}).join("")}
+function setErr(f,name,msg){var i=f.elements[name];if(!i)return false;var l=i.closest("label");l.classList.add("err");var m=$(".msg",l);if(m){m.textContent=msg;m.hidden=false}i.focus();return true}
+function submit(e){
+  e.preventDefault();var f=e.target;$$(".err",f).forEach(function(l){l.classList.remove("err");var m=$(".msg",l);if(m)m.hidden=true});$(".ferr",f).hidden=true;
+  var v=function(n){return f.elements[n]?String(f.elements[n].value||"").trim():""};
+  var p={type:curTab,website:v("website"),name:v("name"),phone:v("phone").replace(/\s|-/g,""),message:v("message"),email:v("email"),nid:v("nid"),family:v("family"),kind:v("kind"),field:v("field"),subject:v("subject"),allocation:v("allocation"),amount:v("amount").replace(/[٠-٩]/g,function(d){return "٠١٢٣٤٥٦٧٨٩".indexOf(d)})};
+  p.phone=p.phone.replace(/[٠-٩]/g,function(d){return "٠١٢٣٤٥٦٧٨٩".indexOf(d)});
+  if(p.name.length<3)return setErr(f,"name","اكتب الاسم الكامل.");
+  if(!/^05\d{8}$/.test(p.phone))return setErr(f,"phone","رقم الجوال يبدأ بـ 05 ويتكون من 10 أرقام.");
+  if(p.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email))return setErr(f,"email","صيغة البريد غير صحيحة.");
+  if(curTab==="donate"&&!(+p.amount>0))return setErr(f,"amount","اختر مبلغًا أو اكتبه.");
+  if(curTab==="aid"&&p.nid&&!/^[12]\d{9}$/.test(p.nid))return setErr(f,"nid","رقم الهوية 10 أرقام ويبدأ بـ 1 أو 2.");
+  if(curTab==="aid"&&!p.kind)return setErr(f,"kind","اختر نوع الإعانة.");
+  if(curTab==="contact"&&p.message.length<5)return setErr(f,"message","اكتب رسالتك.");
+  var b=$("button[type=submit]",f);b.disabled=true;b.lastChild.textContent="جارٍ الإرسال…";
+  call("siteSubmit",p).then(function(r){
+    if(r&&r.ok){f.innerHTML='<div class="done"><span class="ok"><svg><use href="#i-check"/></svg></span><h3>وصل طلبك، جزاك الله خيرًا</h3><p style="margin:0;color:var(--muted)">احتفظ بالرقم المرجعي لمتابعة طلبك. سيتواصل معك فريق الجمعية قريبًا.</p>'+(r.no?'<span class="ref">'+esc(r.no)+'</span>':"")+'<button class="btn sm line" type="button" id="again">إرسال طلب آخر</button></div>';$("#again").onclick=function(){openTab(curTab)};return}
+    b.disabled=false;b.lastChild.textContent="إرسال";
+    if(r&&r.field&&setErr(f,r.field,r.message))return;
+    var x=$(".ferr",f);x.textContent=(r&&r.message)||"تعذّر الإرسال الآن، أعد المحاولة بعد قليل.";x.hidden=false;
+  }).catch(function(){b.disabled=false;b.lastChild.textContent="إرسال";var x=$(".ferr",f);x.textContent="تعذّر الاتصال بالخادم. تحقق من الإنترنت وأعد المحاولة.";x.hidden=false});
+}
+
+/* ---------- التفاعل ---------- */
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-tab]");if(t){openTab(t.dataset.tab,{alloc:t.dataset.alloc,subject:t.dataset.subject})}
+  var tb=e.target.closest(".tabs button");if(tb)openTab(tb.dataset.t);
+  var n=e.target.closest("[data-news]");if(n){var it=DATA.news[+n.dataset.news];$("#dlgRoot").innerHTML='<div class="scrim" id="scrim"><div class="dlg" role="dialog" aria-modal="true"><header><div><small>'+dH(it.date)+' · '+dG(it.date)+'</small><h3>'+esc(it.title)+'</h3></div><button aria-label="إغلاق" id="xDlg">✕</button></div></header><div class="db">'+esc(it.body)+'</div></div></div>';$("#xDlg").onclick=closeDlg;$("#scrim").onclick=function(ev){if(ev.target.id==="scrim")closeDlg()}}
+  if(e.target.closest(".nav a")){$("#nav").classList.remove("open");$("#menu").setAttribute("aria-expanded","false")}
+});
+function closeDlg(){$("#dlgRoot").innerHTML=""}
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeDlg()});
+$("#menu").onclick=function(){var o=$("#nav").classList.toggle("open");this.setAttribute("aria-expanded",o)};
+var tt=$("#toTop");window.addEventListener("scroll",function(){tt.hidden=scrollY<600},{passive:true});tt.onclick=function(){scrollTo({top:0,behavior:"smooth"})};
+$("#yr").textContent=new Date().getFullYear();
+
+function staffLink(url){["#staff","#staff2"].forEach(function(s){var a=$(s);a.href=url;a.target="_top"})}
+staffLink(window.__DEMO__?"../":ENDPOINT);
+openTab("donate");observe();
+call("sitePublic").then(function(d){if(d&&d.ok){paint(d);if(d.appUrl&&!window.__DEMO__)staffLink(d.appUrl)}else paint(null)}).catch(function(){paint(null)});
+})();
+</script>
+</body>
+</html>
