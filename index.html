@@ -1149,6 +1149,32 @@ td.pc small{display:block;font-size:10.5px;color:var(--muted)}
 .orp-frame,.orp-both{box-shadow:inset 0 0 0 2px color-mix(in srgb,#c9a227 60%,transparent)}
 .dc:has(.chbox) .dch,.dc:has(.chbox) h3{position:relative}
 @media (max-width:640px){.chbox.orn-frame,.chbox.orn-both{padding:12px 8px}.oc{width:22px;height:22px}}
+
+/* ================= شريط اختيار المؤسسة ================= */
+.opick{border-radius:20px;padding:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);position:relative;overflow:hidden}
+.opick::before{content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg,var(--gold,#deb24e),var(--brand),var(--gold,#deb24e))}
+.opick header{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.opi{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,color-mix(in srgb,var(--brand),#fff 20%),var(--brand));box-shadow:0 6px 16px color-mix(in srgb,var(--brand) 35%,transparent)}.opi svg{width:24px;height:24px}
+.opick header>div{flex:1;min-width:220px}.opick header small{color:var(--accent);font-weight:700;font-size:11.5px}
+.opick h2{margin:0;font-size:18px;font-family:var(--f-display);color:var(--ink)}.opick header p{margin:2px 0 0;color:var(--muted);font-size:12.5px}
+.opq{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:12px;padding:0 10px;background:var(--surface-2);min-width:min(320px,100%)}
+.opq svg{width:16px;height:16px;color:var(--muted)}.opq input{border:0!important;background:transparent!important;padding:9px 0!important;flex:1;outline:0;box-shadow:none!important}
+.opgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.opc{position:relative;display:grid;gap:10px;padding:14px;border-radius:16px;background:linear-gradient(160deg,color-mix(in srgb,var(--oc,var(--brand)) 9%,var(--surface)),var(--surface) 70%);border:1px solid color-mix(in srgb,var(--oc,var(--brand)) 22%,var(--line));transition:transform .2s,box-shadow .2s,border-color .2s;text-align:start}
+.opc:hover{transform:translateY(-3px);box-shadow:0 14px 30px color-mix(in srgb,var(--oc,var(--brand)) 18%,transparent);border-color:color-mix(in srgb,var(--oc,var(--brand)) 50%,transparent)}
+.opc.cur{box-shadow:0 0 0 2px var(--gold,#deb24e)}
+.opc.off{opacity:.7;filter:saturate(.6)}
+.opt{display:flex;gap:10px;align-items:center;min-width:0}.opt>div{min-width:0;flex:1}
+.opt b{display:block;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.opt small{color:var(--muted);font-size:11.5px}
+.opt code{font-size:11px;background:var(--surface-2);padding:0 5px;border-radius:5px}
+.oav{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;flex:none;font-weight:800;font-size:18px;color:#fff;background:linear-gradient(145deg,color-mix(in srgb,var(--oc,var(--brand)),#fff 22%),var(--oc,var(--brand)));box-shadow:0 5px 14px color-mix(in srgb,var(--oc,var(--brand)) 35%,transparent)}.oav svg{width:20px;height:20px}
+.obad{font-style:normal;font-size:10.5px;font-weight:700;color:#fff;background:#cf3f3f;border-radius:999px;padding:1px 8px}
+.ost{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ost span{display:grid;justify-items:center;padding:6px 4px;border-radius:10px;background:var(--surface);border:1px solid var(--line);line-height:1.2}
+.ost b{font-size:16px;color:var(--oc,var(--brand))}.ost small{font-size:10.5px;color:var(--muted)}
+.oac{display:flex;gap:6px}.oac .btn{flex:1;justify-content:center}
+.opc.opall{cursor:pointer;justify-items:center;align-content:center;text-align:center;border-style:dashed;--oc:#6b7c75;min-height:150px;font:inherit;color:var(--ink)}
+.opc.opall small{color:var(--muted);font-size:11.5px}
 </style>
 <!-- نسخة تجريبية مستقلة: تُبنى آليًا من src/ بالأمر node tools/build-demo.js. لا تعدّلها يدويًا. -->
 <script>/*
@@ -1841,6 +1867,7 @@ function showLogin(msg){
 }
 function enterApp(){
   document.body.classList.remove("auth");$("#login").hidden=true;stopStars();
+  if(S.member&&S.scope==="*"&&(!location.hash||location.hash==="#home"))history.replaceState(null,"","#orgs");
   R=route();render();startPoll();
   toast(`أهلًا ${S.meP.name.split(" ")[0]} — ${S.admin?"مسؤول النظام":S.canWrite?"مساهم":"مشاهد"}`);
 }
@@ -1864,7 +1891,8 @@ $("#lgForm").addEventListener("submit",e=>{
     TOKEN=r.data.token;saveToken(TOKEN,rem);$("#lgPass").value="";
     if(r.data.mustChange){b.disabled=false;b.textContent="دخول";forceChange();return}
     b.textContent="جارٍ تحميل البيانات…";
-    try{await loadAll();enterApp()}catch(err){b.disabled=false;b.textContent="دخول";m.hidden=false;m.textContent=err.message}
+    S.org="*";try{localStorage.setItem("ds.org","*")}catch(x){}
+    try{await loadAll();if(S.member&&S.scope==="*")history.replaceState(null,"","#orgs");else if(location.hash==="#orgs")history.replaceState(null,"","#home");enterApp()}catch(err){b.disabled=false;b.textContent="دخول";m.hidden=false;m.textContent=err.message}
   }).withFailureHandler(()=>{b.disabled=false;b.textContent="دخول";m.hidden=false;m.textContent="تعذّر الاتصال بالخادم. تحقق من الإنترنت."}).login(u,p,rem);
 });
 $("#lgEye").onclick=()=>{const i=$("#lgPass");const show=i.type==="password";i.type=show?"text":"password";$("#lgEye").textContent=show?"إخفاء":"إظهار";$("#lgEye").setAttribute("aria-pressed",show);i.focus()};
@@ -2294,8 +2322,20 @@ function orgSwitcherHTML(){
     <a class="ddf" href="#orgs">${ico("search")} فتح الكشاف ‹</a></div></div>`;
 }
 async function setOrg(id){S.org=id;try{localStorage.setItem("ds.org",id)}catch(e){}ddOpen=null;S.loaded=false;navDraft=null;permDraft=null;usersCache=null;orgsCache=null;render();
-  try{await loadAll();toast(id==="*"?"تعرض الآن كل المؤسسات":"تعمل الآن داخل: "+orgName(id));if(R.v!=="orgs")location.hash="home"}catch(e){}}
+  try{await loadAll();toast(id==="*"?"تعرض الآن كل المؤسسات":"تعمل الآن داخل: "+orgName(id));location.hash=id==="*"?"orgs":"home"}catch(e){}}
 /* ---------- الكشاف ---------- */
+/* شريط اختيار المؤسسة: أول ما يراه المشرف العام وعضو المنصة */
+function orgPickHTML(O){const q=(ui.opq||"").trim();const L=O.filter(o=>!q||[o.name,o.code,o.city,o.type].join(" ").includes(q));
+  const cols=["#0e7a5f","#1d4e89","#a4452c","#5b3a8c","#0b6e8f","#8a5a2b","#7b2d43","#3d6b35"];
+  const ini=n=>String(n||"?").trim().replace(/^(جمعية|مؤسسة|الجمعية|وقف)\s+/,"").charAt(0);
+  return `<section class="opick"><header><span class="opi">${ico("building")}</span><div><small>الخطوة الأولى</small><h2>اختر المؤسسة أو الجمعية التي تريد الاطلاع عليها</h2><p>${S.platform?"تدخلها بصلاحية كاملة، أو ابقَ على العرض المجمّع لكل المؤسسات.":"تطّلع عليها دون تعديل."}</p></div>
+    <label class="opq">${ico("search")}<input id="opq" type="search" placeholder="ابحث باسم المؤسسة أو رمزها أو مدينتها" value="${esc(ui.opq||"")}" autocomplete="off"></label></header>
+   <div class="opgrid">${L.map((o,k)=>{const c=cols[k%cols.length];const st=o.stats||{};const off=o.status==="suspended";
+     return `<article class="opc ${off?"off":""} ${S.scope===o.id?"cur":""}" style="--oc:${c}"><div class="opt"><span class="oav">${esc(ini(o.name))}</span><div><b title="${esc(o.name)}">${esc(o.name)}</b><small><code>${esc(o.code||"")}</code>${o.type?" · "+esc(o.type):""}${o.city?" · "+esc(o.city):""}</small></div>${off?`<em class="obad">موقوفة</em>`:""}</div>
+      <div class="ost"><span><b>${NF.format(st.users||0)}</b><small>مستخدم</small></span><span><b>${NF.format(st.records||0)}</b><small>معاملة</small></span><span><b>${NF.format(st.open||0)}</b><small>مفتوحة</small></span></div>
+      <div class="oac"><button class="btn sm pri" data-setorg="${esc(o.id)}">${ico("login")} ${S.platform?"دخول المؤسسة":"اطلاع"}</button><button class="btn sm" data-oprof="${esc(o.id)}">${ico("idCard")} الملف</button></div></article>`}).join("")||`<div class="empty"><b>لا نتائج</b></div>`}
+    <button class="opc opall ${S.scope==="*"?"cur":""}" data-setorg="*"><span class="oav">${ico("grid")}</span><b>كل المؤسسات</b><small>عرض مجمّع للاطلاع والتقارير</small></button></div></section>`}
+
 let orgsCache=null;
 async function loadOrgs(){try{orgsCache=await call("listOrgs");schedule()}catch(e){if(e.code!=="AUTH")toast(e.message)}}
 function orgFiltered(){const q=(ui.oq||"").trim(),st=ui.ost||"",ty=ui.oty||"",rg=ui.org2||"",ar=ui.oar||"",sc=ui.osc||"";
@@ -2325,6 +2365,7 @@ function viewOrgs(){
   const table=`<div class="tw"><table><thead><tr><th><input type="checkbox" data-oselall ${L.length&&L.every(o=>sel.has(o.id))?"checked":""} aria-label="تحديد الكل"></th><th>المؤسسة</th><th>النوع</th><th>المدينة</th><th>المدير</th><th>المستخدمون</th><th>المعاملات</th><th>المفتوحة</th><th>المتأخرة</th><th>التبرعات</th><th>آخر نشاط</th><th>الحالة</th><th></th></tr></thead><tbody>
    ${L.map(o=>`<tr><td><input type="checkbox" data-osel="${esc(o.id)}" ${sel.has(o.id)?"checked":""}></td><td class="t">${esc(o.name)}<span class="code">${esc(o.code)}</span></td><td>${esc(o.type||"—")}</td><td>${esc(o.city||"—")}</td><td>${esc(o.manager||"—")}</td><td class="num">${o.stats.users}</td><td class="num">${o.stats.records}</td><td class="num">${o.stats.open}</td><td class="num">${o.stats.late}</td><td class="num">${money(o.stats.donations)}</td><td class="num">${o.stats.lastActivity?ago(o.stats.lastActivity):"—"}</td><td><span class="badge tone-${o.status==="active"?"good":"bad"}">${o.status==="active"?"نشطة":"موقوفة"}</span></td><td><span class="flow"><button class="btn sm pri" data-setorg="${esc(o.id)}">${ro?"اطلاع":"دخول"}</button><button class="btn sm" data-oprof="${esc(o.id)}">الملف</button>${ro?"":`<button class="btn sm" data-oedit="${esc(o.id)}">تعديل</button>`}</span></td></tr>`).join("")}</tbody></table></div>`;
   const W=[
+   {id:"o-pick",title:"اختر مؤسسة للاطلاع",span:12,html:orgPickHTML(O)},
    {id:"o-kpis",title:"مؤشرات المنصة",span:12,html:`<div class="kgrid okgrid">${[["المؤسسات",O.length,"#0e7a5f","building"],["النشطة",O.filter(o=>o.status==="active").length,"#1f8a4c","check"],["الموقوفة",O.filter(o=>o.status!=="active").length,"#cf3f3f","xcircle"],["المستخدمون",sum("users"),"#3157b8","people"],["المعاملات",sum("records"),"#6d3fc0","list"],["المفتوحة",sum("open"),"#d9702a","spin"],["المتأخرة",sum("late"),"#cf3f3f","alert"],["التبرعات هذا العام",sum("donations"),"#b98a14","coins",1]].map(([l,v,c,i,m])=>`<div class="kt" style="--t:${c}"><span class="ki">${ico(i)}</span><small>${l}</small><b>${m?NFc.format(v):NF.format(v)}${m?" <i>ر.س</i>":""}</b></div>`).join("")}</div>`},
    {id:"o-region",title:"المؤسسات حسب المنطقة",span:6,html:chartCard("o-region","المؤسسات حسب المنطقة","توزيع جغرافي","visit","#0e7a5f",byCount("region",O),{type:"hbar",pal:"brand"})},
    {id:"o-type",title:"المؤسسات حسب النوع",span:6,html:chartCard("o-type","المؤسسات حسب نوع الكيان","","building","#6d3fc0",byCount("type",O),{type:"rosette",pal:"islamic"})},
@@ -2352,6 +2393,7 @@ function bindOrgs(main){
   if(R.v!=="orgs")return;
   const re=()=>{render()};
   const oq=$("#oq");if(oq)oq.oninput=()=>{ui.oq=oq.value;re()};
+  const opq=$("#opq");if(opq)opq.oninput=()=>{ui.opq=opq.value;const pos=opq.selectionStart;re();const n=$("#opq");if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}};
   [["#ost","ost"],["#oty","oty"],["#org2","org2"],["#oar","oar"],["#osc","osc"]].forEach(([s,k])=>{const e=$(s);if(e)e.onchange=()=>{ui[k]=e.value;re()}});
   main.querySelectorAll("[data-oview]").forEach(b=>b.onclick=()=>{ui.oview=b.dataset.oview;re()});
   main.querySelectorAll("[data-osel]").forEach(c=>c.onchange=()=>{c.checked?ui.osel.add(c.dataset.osel):ui.osel.delete(c.dataset.osel);re()});

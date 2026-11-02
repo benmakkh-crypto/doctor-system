@@ -42,6 +42,9 @@ const OUT = __dirname + "/shots/"; fs.mkdirSync(OUT, { recursive: true });
   console.log("wrong pw msg:", await p.textContent("#lgMsg"));
   await p.fill("#lgPass", "Admin2026pass"); await p.click("#lgBtn");
   await p.waitForSelector("body:not(.auth)", { timeout: 5000 }); await p.waitForTimeout(600);
+  console.log("platform lands on directory:", await p.evaluate(() => location.hash));
+  await p.screenshot({ path: OUT + "02a-directory.png", fullPage: false });
+  await p.evaluate(() => setOrg("main")); await p.waitForTimeout(800);
   await p.screenshot({ path: OUT + "02-home.png", fullPage: false });
   await p.screenshot({ path: OUT + "02b-home-full.png", fullPage: true });
   // open a record drawer
