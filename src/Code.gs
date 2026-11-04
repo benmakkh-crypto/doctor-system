@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.3.0';
+const APP_VERSION = '4.4.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -722,7 +722,7 @@ function cleanTheme_(t) {
   const o = {};
   THEME_KEYS.forEach(function (k) {
     const v = t[k]; if (v == null || v === '') return;
-    if (k === 'order' || k === 'hide') { if (Array.isArray(v)) o[k] = v.slice(0, 12).map(function (x) { return str_(x, 20); }); return; }
+    if (k === 'order' || k === 'hide') { if (Array.isArray(v)) o[k] = v.slice(0, 20).map(function (x) { return str_(x, 20); }); return; }
     if (k === 'radius') { const n = Number(v); if (isFinite(n) && n >= 0 && n <= 32) o[k] = n; return; }
     if (['g', 'g2', 'g3', 'gold', 'gold2', 'bg'].indexOf(k) >= 0) { if (/^#[0-9a-fA-F]{6}$/.test(String(v))) o[k] = String(v); return; }
     if (k === 'heroTitle') { o[k] = str_(v, 120); return; }
@@ -833,6 +833,7 @@ function nextNo_(g) {
 }
 function writeRec_(r) {
   if (!r.org) r.org = (CUR_ORG && CUR_ORG !== '*') ? CUR_ORG : MAIN_ORG;
+  if (+r.g === 3 || +r.g === 5) { try { CacheService.getScriptCache().remove('public_v1_' + r.org); } catch (e) { } } // محتوى الموقع العام يتحدث فورًا
   const c = clean_(r);
   const line = [c.id, c.no || '', c.g, c.m, c.status, !!c.deleted, c.updated, JSON.stringify(c)];
   if (line[7].length > 45000) throw err_('VALIDATION', 'المعاملة كبيرة جدًا. اختصر الملاحظات.');
@@ -1397,7 +1398,17 @@ function publicData_() {
         projects: R.filter(function (r) { return r.g === 4; }).length
       };
     }
-    const out = { ok: true, org: cfg.orgName || '', city: cfg.siteCity || '', phone: cfg.sitePhone || '', email: cfg.siteEmail || '', about: cfg.siteAbout || '', news: news, programs: programs, partners: partners, stats: stats, theme: cfg.siteTheme || null, at: now_() };
+    // محتوى الموقع الإلكتروني المنشور من وحدات إدارة الموقع (حالة النشر = منشور)
+    const W = function (m, lim) { return R.filter(function (r) { return r.g === 3 && r.m === m && pub(r); }).sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); }).slice(0, lim || 24); };
+    const safeUrl = function (u) { u = str_(u, 500); return /^https:\/\/[^\s"'<>]+$/i.test(u) ? u : ''; };
+    const it = function (r) { const f = r.f || {}; return { title: str_(r.title, 200), body: str_(r.notes, 1500), date: r.date, url: safeUrl(f.url), image: safeUrl(f.image), num: +f.num || 0, until: str_(f.until, 10) }; };
+    const today = now_().slice(0, 10);
+    const pop = W(28, 6).filter(function (r) { return !r.f.until || String(r.f.until) >= today; })[0];
+    const ab = W(23, 1)[0];
+    const web = { menu: W(0, 8).map(it), slides: W(1, 6).map(it), pages: W(4, 12).map(it), gallery: W(7, 24).map(it), videos: W(8, 12).map(it), policies: W(10, 24).map(it),
+      social: W(21, 10).map(it), counters: W(22, 8).map(it), about: ab ? it(ab) : null, reports: W(24, 12).map(it), initiatives: W(25, 12).map(it), testimonials: W(26, 12).map(it),
+      links: W(27, 16).map(it), popup: pop ? it(pop) : null, competitions: W(29, 8).filter(function (r) { return !r.f.until || String(r.f.until) >= today; }).map(it) };
+    const out = { ok: true, org: cfg.orgName || '', city: cfg.siteCity || '', phone: cfg.sitePhone || '', email: cfg.siteEmail || '', about: cfg.siteAbout || '', news: news, programs: programs, partners: partners, stats: stats, theme: cfg.siteTheme || null, web: web, at: now_() };
     cache.put(ck, JSON.stringify(out), 300);
     return out;
   } catch (e) { console.error(e); return { ok: false, reason: 'error' }; }

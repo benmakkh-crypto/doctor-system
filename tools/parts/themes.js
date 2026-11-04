@@ -37,7 +37,7 @@ var NT=(function(){
     ["almarai","المراعي","Almarai","Almarai","Almarai:wght@400;700;800"],
     ["reem","ريم الكوفي","Reem Kufi","Tajawal","Reem+Kufi:wght@500;600;700&family=Tajawal:wght@400;500;700"]];
   var PAT=[["girih","نجوم ومربعات"],["stars","نجمة ثمانية"],["circles","دوائر متداخلة"],["lattice","مشربية"],["none","بدون"]];
-  var SECS=[["about","من نحن"],["services","خدماتنا"],["programs","برامجنا"],["impact","أثرنا"],["news","الأخبار"],["eservices","الخدمات الإلكترونية"],["partners","الشركاء"],["gov","الحوكمة"]];
+  var SECS=[["about","من نحن"],["services","خدماتنا"],["programs","برامجنا"],["impact","أثرنا"],["news","الأخبار"],["eservices","الخدمات الإلكترونية"],["partners","الشركاء"],["gov","الحوكمة"],["initiatives","المبادرات"],["reports","التقارير السنوية"],["testimonials","التزكيات"],["media","الصور والفيديو"],["competitions","المسابقات"],["pages","صفحات"]];
   var ORD=[["about","services","programs","impact","news","eservices","partners","gov"],
     ["impact","services","programs","about","news","eservices","gov","partners"],
     ["services","eservices","about","programs","impact","news","partners","gov"],

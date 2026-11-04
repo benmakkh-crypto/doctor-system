@@ -1514,6 +1514,11 @@ body.ro-on .side{touch-action:none}
 .tkst button:hover{transform:translateY(-2px);box-shadow:0 6px 14px color-mix(in srgb,var(--tc) 22%,transparent)}
 .tkst span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--tc)}.tkst span svg{width:15px;height:15px}
 .tkst b{font-size:12px}.tkst em{font-style:normal;font-weight:800;font-size:14px;color:var(--tc)}
+
+.webshow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:14px 16px;margin-bottom:14px;border-radius:18px;background:linear-gradient(120deg,color-mix(in srgb,#0369a1 12%,var(--surface)),var(--surface) 70%);border:1px solid color-mix(in srgb,#0369a1 35%,var(--line));box-shadow:var(--shadow)}
+.webshow .wsi{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,#3a9bd8,#0369a1);flex:none}.webshow .wsi svg{width:22px;height:22px}
+.webshow>div{flex:1;min-width:240px}.webshow small{color:#0369a1;font-weight:700;font-size:11.5px}.webshow b{display:block;font-size:15.5px}.webshow p{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
+.webshow mark{background:color-mix(in srgb,#1d7548 15%,transparent);color:#1d7548;font-weight:700;border-radius:5px;padding:0 5px}
 </style>
 </head>
 <body class="auth">
@@ -1630,7 +1635,7 @@ var NT=(function(){
     ["almarai","المراعي","Almarai","Almarai","Almarai:wght@400;700;800"],
     ["reem","ريم الكوفي","Reem Kufi","Tajawal","Reem+Kufi:wght@500;600;700&family=Tajawal:wght@400;500;700"]];
   var PAT=[["girih","نجوم ومربعات"],["stars","نجمة ثمانية"],["circles","دوائر متداخلة"],["lattice","مشربية"],["none","بدون"]];
-  var SECS=[["about","من نحن"],["services","خدماتنا"],["programs","برامجنا"],["impact","أثرنا"],["news","الأخبار"],["eservices","الخدمات الإلكترونية"],["partners","الشركاء"],["gov","الحوكمة"]];
+  var SECS=[["about","من نحن"],["services","خدماتنا"],["programs","برامجنا"],["impact","أثرنا"],["news","الأخبار"],["eservices","الخدمات الإلكترونية"],["partners","الشركاء"],["gov","الحوكمة"],["initiatives","المبادرات"],["reports","التقارير السنوية"],["testimonials","التزكيات"],["media","الصور والفيديو"],["competitions","المسابقات"],["pages","صفحات"]];
   var ORD=[["about","services","programs","impact","news","eservices","partners","gov"],
     ["impact","services","programs","about","news","eservices","gov","partners"],
     ["services","eservices","about","programs","impact","news","partners","gov"],
@@ -3109,6 +3114,8 @@ function decorateHead(){
 }
 function crumb(parts){const sep=`<i class="crs">${ico("chev")}</i>`;return `<nav class="crumb" aria-label="مسار الصفحة"><button class="back" data-back aria-label="رجوع">${ico("chev")}</button><ol><li><a href="#home">${ico("home")}<span>الرئيسية</span></a></li>${parts.map((p,k)=>`<li>${sep}${p[1]&&k<parts.length-1?`<a href="${p[1]}">${esc(p[0])}</a>`:`<span aria-current="page">${esc(p[0])}</span>`}</li>`).join("")}</ol></nav>`}
 const WEB_G=3;
+/* أين يظهر محتوى كل وحدة من وحدات الموقع، وما الحقول المستخدمة */
+const WEB_SHOW={0:["روابط إضافية في القائمة الرئيسية","العنوان اسم الرابط، و«الرابط» عنوانه."],1:["شرائح الواجهة الرئيسية","العنوان والملاحظات نص الشريحة، و«رابط الصورة» خلفيتها، وتتبدّل تلقائيًا."],4:["قسم «صفحات الجمعية»","العنوان اسم الصفحة، والملاحظات نصها، ويفتحها الزائر في نافذة."],5:["الأخبار","العنوان عنوان الخبر، والملاحظات نصه."],7:["معرض الصور","العنوان وصف الصورة، و«رابط الصورة» عنوانها، ويكبّرها الزائر بضغطة."],8:["قسم الفيديو","العنوان اسم المقطع، و«الرابط» رابط يوتيوب أو غيره."],9:["الشركاء","العنوان اسم الشريك."],10:["اللوائح والسياسات في قسم الحوكمة","العنوان اسم اللائحة، و«الرابط» ملفها، أو الملاحظات نصها."],21:["أيقونات التواصل الاجتماعي في التذييل","العنوان اسم المنصة، و«الرابط» حسابكم."],22:["العدّادات في قسم «أثرنا»","العنوان اسم المؤشر، و«الرقم أو القيمة» رقمه، ويعدّ تصاعديًا."],23:["نص «من نحن»","الملاحظات نص النبذة."],24:["التقارير السنوية","العنوان اسم التقرير، و«الرقم» السنة، و«الرابط» ملف التقرير."],25:["المبادرات","العنوان والملاحظات وصفها، و«رابط الصورة» صورتها، و«الرابط» للمشاركة."],26:["التزكيات والشهادات","العنوان اسم صاحب الشهادة، والملاحظات نصها، و«رابط الصورة» صورته."],27:["الروابط المهمة في التذييل","العنوان اسم الرابط، و«الرابط» عنوانه."],28:["نافذة منبثقة عند فتح الموقع","العنوان والملاحظات نص الإعلان، و«يظهر حتى» آخر يوم لعرضه."],29:["المسابقات","العنوان والملاحظات وصفها، و«يظهر حتى» آخر موعد للمشاركة."]};
 function banners(){
   let b="";
   if(S.err==="NET")b+=`<div class="banner bad">انقطع الاتصال بالخادم. ستُحدَّث البيانات تلقائيًا عند عودته.</div>`;
@@ -3126,6 +3133,8 @@ function banners(){
     </section>`}
   if(!S.canWrite)b+=`<div class="banner">صلاحيتك للعرض فقط، وأرقام الهوية والجوال مخفية جزئيًا. اطلب من مسؤول النظام صلاحية «مساهم» للإضافة والتعديل.</div>`;
   if(R.v==="home"&&S.meP&&!S.admin&&S.meP.depts&&S.meP.depts.length)b+=`<div class="banner">تظهر لك الإدارات المسموحة فقط: ${esc(S.meP.depts.map(i=>G[i]?.n).join("، "))}.</div>`;
+  if(R.v==="mod"&&R.g===WEB_G&&WEB_SHOW[R.m]){const w=WEB_SHOW[R.m];
+    b+=`<section class="webshow"><span class="wsi">${ico("WEB")}</span><div><small>يظهر في الموقع الإلكتروني العام</small><b>${w[0]}</b><p>${w[1]} اجعل «حالة النشر» = <mark>منشور</mark> ليظهر للزوار فورًا، و«مسودة» لإخفائه.</p></div><a class="btn sm" href="${esc(siteHref())}" target="_blank" rel="noopener">${ico("ext")} افتح الموقع</a></section>`}
   if((R.v==="grp"||R.v==="mod")&&R.g===WEB_G&&partLv("site.tpl")&&S.scope!=="*"){const ps=S.cfg.siteTheme?NT.siteSpec(S.cfg.siteTheme):null;
     b+=`<a class="thcta" href="#themes">${ps?tplMini(ps):tplMini(NT.SITE[0])}<span><small>مكتبة القوالب</small><b>${NF.format(NT.SITE.length)} قالبًا جاهزًا لموقع مؤسستك</b><em>القالب الحالي: ${ps?esc(NT.SITE.find(x=>x.id===ps.tpl)?.n||""):"الأصلي"} · خصّص الألوان والخطوط والواجهة والأقسام ثم انشر</em></span><i>${ico("chev")}</i></a>`}
   return b;
