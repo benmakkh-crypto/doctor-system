@@ -48,7 +48,7 @@ function makeGas() {
   vm.createContext(g);
   const dir = require("path").join(__dirname, "../src/");
   // يحاكي تحميل Apps Script لكل الملفات في نطاق واحد
-  vm.runInContext(fs.readFileSync(dir + "Code.gs", "utf8") + "\n" + fs.readFileSync(dir + "Schema.gs", "utf8") + "\nthis.__api={setup,login,logout,api,getPublicConfig,dailyBackup,sitePublic,siteSubmit};", g);
+  vm.runInContext(fs.readFileSync(dir + "Code.gs", "utf8") + "\n" + fs.readFileSync(dir + "Schema.gs", "utf8") + "\nthis.__api={setup,login,logout,api,getPublicConfig,dailyBackup,sitePublic,siteSubmit,SCHEMA_LEN:SCHEMA.G.length};", g);
   return g;
 }
 module.exports = { makeGas };

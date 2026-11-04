@@ -103,9 +103,9 @@ ok(imp.data.added === 1 && imp.data.skipped === 1, "import validates each row");
 // --- menu customisation (admin only)
 ok(A.api(ST, "saveNav", { order: [5, 4] }).code === "FORBIDDEN", "non-admin cannot customise menus");
 const nv = AM(T, "saveNav", { order: [6, 10, 6, 99], d: { 6: { n: "التبرعات والداعمون", i: "coins", c: "#123456" }, 0: { h: true } }, sec: { 6: [["قسم جديد", "star", [6, 7, 6, 999]]] }, mod: { "6-6": { n: "تبرع عام", i: "heart", h: false }, "99-1": { n: "x" }, "6-1": { i: "<script>" } } }).data.nav;
-ok(nv.order[0] === 6 && nv.order[1] === 10 && nv.order.length === 14, "order cleaned and completed");
+ok(nv.order[0] === 6 && nv.order[1] === 10 && nv.order.length === A.SCHEMA_LEN, "order cleaned and completed");
 ok(nv.d[6].n === "التبرعات والداعمون" && nv.d[6].c === "#123456" && !(nv.d[0] && nv.d[0].h), "dept override saved; dashboard cannot be hidden");
-ok(nv.sec[6][0][2].join() === "6,7" && nv.sec[6][1][2].length === 13, "sections dedupe and keep every module");
+ok(nv.sec[6][0][2].join() === "6,7" && nv.sec[6][1][2].length === AM(T, "bootstrap").data.schema.G[6].items.length - 2, "sections dedupe and keep every module");
 ok(nv.mod["6-6"].i === "heart" && !nv.mod["99-1"] && !nv.mod["6-1"], "module overrides validated");
 ok(AM(T, "bootstrap").data.settings.nav.order[0] === 6, "nav returned to clients");
 ok(AM(T, "saveNav", { reset: true }).ok && !AM(T, "bootstrap").data.settings.nav, "reset to defaults");

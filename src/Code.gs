@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.2.0';
+const APP_VERSION = '4.3.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -679,9 +679,9 @@ function loadDecisions_() {
 const WEB_DEPT = 3;
 const PARTS = {
   'site.tpl': { n: 'قوالب الموقع وهويته', max: 3, def: { contributor: 1, viewer: 1 } },
-  'site.content': { n: 'محتوى الموقع', max: 2, mods: [0, 1, 4, 5, 7, 8, 9, 10], def: { contributor: 2, viewer: 1 } },
-  'site.forms': { n: 'النماذج والخدمات الإلكترونية', max: 2, mods: [2, 3, 6, 15], def: { contributor: 2, viewer: 1 } },
-  'site.design': { n: 'تصميم الموقع وظهوره', max: 2, mods: [11, 12, 13, 14], def: { contributor: 1, viewer: 1 } },
+  'site.content': { n: 'محتوى الموقع', max: 2, mods: [0, 1, 4, 5, 7, 8, 9, 10, 22, 23, 24, 25, 26, 27, 28, 29, 30], def: { contributor: 2, viewer: 1 } },
+  'site.forms': { n: 'النماذج والخدمات الإلكترونية', max: 2, mods: [2, 3, 6, 15, 31, 32, 33], def: { contributor: 2, viewer: 1 } },
+  'site.design': { n: 'تصميم الموقع وظهوره', max: 2, mods: [11, 12, 13, 14, 16, 17, 18, 19, 20, 21], def: { contributor: 1, viewer: 1 } },
   'sys.theme': { n: 'مظهر النظام', max: 2, def: { contributor: 0, viewer: 0 } }
 };
 function parseCaps_(v) {

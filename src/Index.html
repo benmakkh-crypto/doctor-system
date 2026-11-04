@@ -1508,6 +1508,12 @@ body.ro-on .side{touch-action:none}
 .navtools{flex-wrap:wrap}.navtools button{white-space:nowrap}.navhint{flex-basis:100%;display:inline-flex;gap:5px;align-items:center;font-size:11px;color:rgba(255,255,255,.55);padding:2px 4px 0}.navhint svg{width:12px;height:12px}
 .navtools [data-roreset]{margin-inline-start:auto}.navtools [data-roreset] svg{transform:none!important}
 @media (prefers-reduced-motion:reduce){.ro-ph{animation:none}}
+
+.tkst{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px 10px 10px;border-bottom:1px solid var(--line)}
+.tkst button{display:grid;justify-items:center;gap:2px;padding:8px 4px;border-radius:12px;border:1px solid color-mix(in srgb,var(--tc) 35%,var(--line));background:color-mix(in srgb,var(--tc) 7%,var(--surface));cursor:pointer;color:var(--ink);font:inherit;transition:transform .15s,box-shadow .15s}
+.tkst button:hover{transform:translateY(-2px);box-shadow:0 6px 14px color-mix(in srgb,var(--tc) 22%,transparent)}
+.tkst span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--tc)}.tkst span svg{width:15px;height:15px}
+.tkst b{font-size:12px}.tkst em{font-style:normal;font-weight:800;font-size:14px;color:var(--tc)}
 </style>
 </head>
 <body class="auth">
@@ -1848,6 +1854,14 @@ Object.assign(IP,{
  ext:"M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"
 });
 const MOD_RULES=[
+ [/وقف|الأوقاف/,"bank"],[/الدفعات|الأقساط/,"payCard"],[/المساعد الذكي|مساعد .* الذكي|الذكاء الاصطناعي|ذكي/,"spin"],[/باركود/,"card"],[/الأرشيف|أرشيف/,"archive"],
+ [/البريد|بريد|المسودات/,"sms"],[/واتساب/,"whats"],[/رسالة نصية|المراسلات النصية/,"sms"],[/تنبيه|الإشعارات|إشعار|إنذار/,"bell"],
+ [/السيارات|سيارة/,"car"],[/الصيانة/,"tools"],[/القسائم|قسيمة/,"ticket"],[/الخطة|الخطط|مناظير|الأهداف/,"flag"],[/المؤشرات|مؤشرات/,"gauge"],[/رؤية 2030|التنمية المستدامة|تناغم/,"compass"],
+ [/الموردين|مورد/,"truck"],[/كانبان|مخطط المشروع/,"layout"],[/الحضور والانصراف|الأذونات|الحضور/,"finger"],[/الإجازات|إجازة/,"calCheck"],[/الرواتب|مسير/,"payCard"],
+ [/الدليل المحاسبي|قيد|القيود|السنة المالية|مراكز التكلفة|الأستاذ|ميزان/,"calc"],[/حسابات البنوك|البنك/,"bank"],[/المتجر/,"cart"],[/الخطوط/,"type"],[/الصور/,"image"],[/الفيديو/,"video"],
+ [/المسابقات|مسابقة|التزكيات|شهادات|الشهادات|الإهداءات/,"award"],[/الروابط|ربط/,"link"],[/الجمعية العمومية|الأعضاء|عضو|العضويات/,"userCheck"],[/الاشتراكات|اشتراك|سداد/,"receipt"],
+ [/التوظيف|وظيفة|مقابلة/,"briefcase"],[/السلامة|المخاطر/,"shieldCheck"],[/الأوصياء|وصي/,"guardian"],[/التابعين|تابع/,"people"],[/المهام|مهمة|مهامي/,"clipCheck"],
+ [/التعميد|تعميدات/,"stamp"],[/أوامر الصرف|أمر صرف/,"receipt"],[/التسويق|تسويق/,"ticket"],[/المتطوعين|التطوع|تطوعية/,"userHeart"],[/الصادر|الوارد/,"tray"],[/الملفات|ملف/,"folder"],
  [/^النظام$/,"RPT"],[/^المالية$/,"coins"],[/^الموظفين$/,"people"],[/^المشاريع$/,"PRJ"],[/^البرامج$/,"PRG"],[/^الكفالات$/,"heart"],[/^طلبات الإعانة$/,"hand"],[/^متابعة الحالات$/,"visit"],
  [/بحاجة لتحصيل/,"alert"],[/العينية/,"boxIn"],[/رصيد لجنة/,"FIN"],[/اعتماد الاجتماعات/,"stamp"],[/الاجتماعات/,"meeting"],[/تقويم/,"cal"],
  [/إحصائيات/,"pie"],[/الأمن السيبراني/,"shieldCheck"],[/تقارير|تقرير/,"fileChart"],[/مراجعة/,"review"],[/قاعدة بيانات|قواعد بيانات/,"db"],[/بطاقات/,"idCard"],[/تصدير/,"down"],
@@ -1874,13 +1888,16 @@ let BASE_G=[],ORDER=[];
 function applyNav(){
   if(!BASE_G.length)return;
   const nav=S.cfg&&S.cfg.nav;G=JSON.parse(JSON.stringify(BASE_G));
-  G.forEach(g=>{g.ic=g.c;g.mi={};g.mh={};g.sec=(g.sec||[]).map(s=>[s[0],s[1],""])});
+  G.forEach(g=>{g.ic=g.ic||g.c;g.mi={};g.mh={};g.sec=(g.sec||[]).map(s=>[s[0],s[1],""])});
   if(nav){
     Object.keys(nav.d||{}).forEach(k=>{const g=G[k],x=nav.d[k];if(!g)return;if(x.n)g.n=x.n;if(x.i)g.ic=x.i;if(x.c)g.col=x.c;if(x.h)g.hid=true});
-    Object.keys(nav.sec||{}).forEach(k=>{if(G[k])G[k].sec=nav.sec[k].map(s=>[s[0],s[2],s[1]||""])});
+    Object.keys(nav.sec||{}).forEach(k=>{const g=G[k];if(!g)return;const base=(BASE_G[k].sec||[]);g.sec=nav.sec[k].map(s=>[s[0],s[2],s[1]||""]);
+      // وحدات أضيفت بعد حفظ التخصيص: تظهر في عنوانها الأصلي
+      const used=new Set(g.sec.flatMap(s=>s[1]));base.forEach(b=>{const miss=b[1].filter(m=>!used.has(m));if(!miss.length)return;let t=g.sec.find(s=>s[0]===b[0]);if(!t){t=[b[0],[],""];g.sec.push(t)}t[1]=t[1].concat(miss);miss.forEach(m=>used.add(m))})});
     Object.keys(nav.mod||{}).forEach(k=>{const [g,m]=k.split("-").map(Number),x=nav.mod[k];if(!G[g]||G[g].items[m]==null)return;if(x.n)G[g].items[m]=x.n;if(x.i)G[g].mi[m]=x.i;if(x.h)G[g].mh[m]=true});
   }
-  ORDER=nav&&Array.isArray(nav.order)&&nav.order.length===G.length?nav.order.slice():G.map((_,i)=>i);
+  ORDER=nav&&Array.isArray(nav.order)&&nav.order.length?nav.order.filter(i=>i>=0&&i<G.length):G.map((_,i)=>i);
+  G.forEach((_,i)=>{if(!ORDER.includes(i))ORDER.push(i)}); // الإدارات الجديدة تُلحق بآخر القائمة
   Object.keys(_mi).forEach(k=>delete _mi[k]);
 }
 const shownDept=i=>canDept(i)&&!G[i]?.hid;
@@ -3025,7 +3042,8 @@ function renderTop(){
   const dd=(id,btn,body,extra="")=>`<div class="dd ${ddOpen===id?"open":""} ${extra}" data-dd="${id}">${btn}<div class="ddp" role="menu">${body}</div></div>`;
   $("#tnav").innerHTML=orgSwitcherHTML()+(LAYOUT_PAGES(R.v)?`<button class="tn ${editMode?"on":""}" data-pgedit title="إظهار وإخفاء وتحريك وتحجيم عناصر الصفحة" aria-pressed="${editMode}">${ico("sliders")}<span class="lbl">${editMode?"إنهاء التخصيص":"تخصيص الصفحة"}</span></button>`:"")+
    dd("tasks",`<button class="tn" data-ddb="tasks" aria-haspopup="true" aria-expanded="${ddOpen==="tasks"}">${ico("list")}<span class="lbl">المهام</span>${tCount?`<span class="bdg">${tCount>99?"99+":tCount}</span>`:""}${ico("chev")}</button>`,
-    `<div class="ddh"><b>${S.me?"مهامي والأولويات":"الأولويات"}</b><small>${NF.format(tCount)} معاملة تحتاج تدخلًا</small></div>${tasks.length?tasks.map(r=>`<button class="ddi" data-open="${esc(r.id)}"><span class="dic" style="${dc(r.g)}">${ico(modIco(r.g,r.m))}</span><span class="dtx"><b>${esc(r.title)}</b><small>${esc(modName(r.g,r.m))}${r.due?` · يستحق ${dFmt(r.due)}`:""}</small></span>${badge(eff(r))}</button>`).join(""):`<div class="dde">${ico("check")}<b>لا مهام عاجلة</b><small>كل شيء تحت السيطرة.</small></div>`}<a class="ddf" href="#focus">عرض كافة المهام ‹</a>`)+
+    `<div class="ddh"><b>${S.me?"مهامي والأولويات":"الأولويات"}</b><small>${NF.format(tCount)} معاملة تحتاج تدخلًا</small></div>${(()=>{const AA=active().filter(r=>canDept(r.g));const C=[["جديد","جديدة","alert","#d9822b"],["قيد المتابعة","جارية","refresh","#2f6fd8"],["__late","متعثرة","xcircle","#c2334d"],["مكتمل","منتهية","check","#1d7548"]];
+      return `<div class="tkst">${C.map(([k,l,ic,c])=>{const n=k==="__late"?AA.filter(isLate).length:AA.filter(r=>eff(r)===k).length;return `<button data-tkst="${k}" style="--tc:${c}"><span>${ico(ic)}</span><b>${l}</b><em>${NF.format(n)}</em></button>`}).join("")}</div>`})()}${tasks.length?tasks.map(r=>`<button class="ddi" data-open="${esc(r.id)}"><span class="dic" style="${dc(r.g)}">${ico(modIco(r.g,r.m))}</span><span class="dtx"><b>${esc(r.title)}</b><small>${esc(modName(r.g,r.m))}${r.due?` · يستحق ${dFmt(r.due)}`:""}</small></span>${badge(eff(r))}</button>`).join(""):`<div class="dde">${ico("check")}<b>لا مهام عاجلة</b><small>كل شيء تحت السيطرة.</small></div>`}<a class="ddf" href="#focus">عرض كافة المهام ‹</a>`)+
    dd("alerts",`<button class="tn" data-ddb="alerts" aria-haspopup="true" aria-expanded="${ddOpen==="alerts"}">${ico("bell")}<span class="lbl">التنبيهات</span>${aCount?`<span class="bdg hot">${aCount>999?"999+":aCount}</span>`:""}${ico("chev")}</button>`,
     `<div class="ddh"><b>التنبيهات</b><small>${al.length?`${NF.format(al.length)} نوعًا من التنبيهات`:"لا تنبيهات"}</small></div><div class="ddl">${al.length?al.map(a=>`<a class="ddi al tone-${a.tone}" href="${a.h}"><span class="aw">${ico(a.ic)}</span><span class="dtx">يوجد <b class="num">${NF.format(a.n)}</b> ${esc(a.t)}</span></a>`).join(""):`<div class="dde">${ico("check")}<b>لا توجد تنبيهات</b><small>سيظهر هنا كل ما يحتاج متابعة.</small></div>`}</div>`,"wide")+
    dd("links",`<button class="tn" data-ddb="links" aria-haspopup="true" aria-expanded="${ddOpen==="links"}">${ico("link")}<span class="lbl">الروابط</span>${ico("chev")}</button>`,
@@ -3047,6 +3065,7 @@ function renderTop(){
 }
 document.addEventListener("click",e=>{
   const pe=e.target.closest("[data-pgedit]");if(pe){toggleEdit();return}
+  const tk=e.target.closest("[data-tkst]");if(tk){ddOpen=null;renderTop();const k=tk.dataset.tkst;if(k==="__late"){location.hash="focus";setTimeout(()=>{const el=document.getElementById("fl-late");if(el)el.scrollIntoView({behavior:"smooth",block:"start"})},350)}else openStage(k);return}
   const so=e.target.closest("[data-setorg]");if(so){e.preventDefault();setOrg(so.dataset.setorg);return}
   const b=e.target.closest("[data-ddb]");
   if(b){e.preventDefault();ddOpen=ddOpen===b.dataset.ddb?null:b.dataset.ddb;renderTop();return}
