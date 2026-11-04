@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.4.0';
+const APP_VERSION = '4.5.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -39,7 +39,7 @@ const HEAD = {
  */
 let CUR_ORG = null;
 const MAIN_ORG = 'main';
-const ORG_KEYS = ['orgName', 'threshold', 'sod', 'notify', 'siteUrl', 'siteCity', 'sitePhone', 'siteEmail', 'siteAbout', 'publicStats', 'nav', 'layout', 'siteTheme', 'siteDraft', 'sysTheme'];
+const ORG_KEYS = ['orgName', 'threshold', 'sod', 'notify', 'siteUrl', 'siteCity', 'sitePhone', 'siteEmail', 'siteAbout', 'publicStats', 'nav', 'layout', 'siteTheme', 'siteDraft', 'sysTheme', 'siteAboutTitle', 'siteValues', 'siteCommit', 'siteTagline'];
 const ORG_TYPES = ['جمعية خيرية', 'مؤسسة أهلية', 'جمعية تعاونية', 'جمعية مهنية', 'وقف', 'شركة غير ربحية', 'شركة', 'جهة حكومية', 'أخرى'];
 const ORG_SECTORS = ['القطاع غير الربحي', 'القطاع الخاص', 'القطاع الحكومي', 'القطاع الوقفي'];
 const ORG_AREAS = ['اجتماعي وأسري', 'إغاثي', 'صحي', 'تعليمي', 'ديني ودعوي', 'تحفيظ القرآن', 'تنموي وتمكين', 'إسكاني', 'بيئي', 'ثقافي', 'شبابي ورياضي', 'رعاية الأيتام', 'ذوي الإعاقة', 'كبار السن', 'المرأة والطفل', 'تقني', 'مهني', 'إعلامي'];
@@ -60,10 +60,10 @@ const HIST_MAX = 60;
  * نقطة الدخول
  * ===================================================================== */
 function doGet(e) {
-  if (e && e.parameter && e.parameter.api === 'public') return json_(sitePublic(e.parameter.org));
+  if (e && e.parameter && e.parameter.api === 'public') return json_(e.parameter.org ? sitePublic(e.parameter.org) : platformPublic());
   if (e && e.parameter && e.parameter.page === 'site') {
     return HtmlService.createHtmlOutputFromFile('Site')
-      .setTitle(String((function () { try { const o = siteOrg_(e.parameter.org); return o ? o.name : ''; } catch (x) { return ''; } })() || 'الموقع الإلكتروني'))
+      .setTitle(String((function () { try { if (!e.parameter.org) return 'نافذ — منصة إدارة الجمعيات والمؤسسات'; const o = siteOrg_(e.parameter.org); return o ? o.name : ''; } catch (x) { return ''; } })() || 'الموقع الإلكتروني'))
       .addMetaTag('viewport', 'width=device-width, initial-scale=1')
       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
@@ -250,6 +250,7 @@ function loadOrgs_() {
 function getOrg_(id) { return loadOrgs_().find(function (o) { return o.id === id; }) || null; }
 function orgByCode_(code) { code = String(code || '').toUpperCase(); return loadOrgs_().find(function (o) { return o.code === code; }) || null; }
 function saveOrgRow_(o) {
+  try { CacheService.getScriptCache().remove('platform_pub_v1'); CacheService.getScriptCache().remove('public_v1_' + o.id); } catch (e) { }
   const c = JSON.parse(JSON.stringify(o)); delete c._row;
   const line = [c.id, c.code, c.name, c.status || 'active', c.created || now_(), JSON.stringify(c)];
   const row = findRow_('orgs', c.id);
@@ -522,6 +523,11 @@ const ACTIONS = {
       putSetting_('siteEmail', str_(p.site.email, 120));
       putSetting_('siteAbout', str_(p.site.about, 1200));
       putSetting_('publicStats', p.site.stats !== false);
+      if (p.site.aboutTitle !== undefined) putSetting_('siteAboutTitle', str_(p.site.aboutTitle, 120));
+      if (p.site.values !== undefined) putSetting_('siteValues', str_(p.site.values, 300));
+      if (p.site.commit !== undefined) putSetting_('siteCommit', str_(p.site.commit, 500));
+      if (p.site.tagline !== undefined) putSetting_('siteTagline', str_(p.site.tagline, 120));
+      try { CacheService.getScriptCache().remove('platform_pub_v1'); } catch (e) { }
       try { CacheService.getScriptCache().remove('public_v1_' + (CUR_ORG || MAIN_ORG)); } catch (e) { }
     }
     audit_(me.username, 'تعديل الإعدادات', '', '', 'حد الاعتماد ' + t + (p.sod ? ' · فصل المهام' : ''));
@@ -1366,6 +1372,22 @@ function dailyBackup() {
 const WEBSITE_ME = { username: 'website', name: 'الموقع الإلكتروني', role: 'contributor', depts: [] };
 /** مستدعاة من صفحة الموقع العامة عبر google.script.run (بلا جلسة). */
 function siteOrg_(code) { migrate_(); const o = code ? orgByCode_(code) : getOrg_(MAIN_ORG); if (!o || o.status !== 'active') return null; CUR_ORG = o.id; return o; }
+/** بوابة منصة نافذ العامة: المؤسسات النشطة وروابط مواقعها (بيانات عامة فقط) */
+function platformPublic() {
+  try {
+    migrate_();
+    const cache = CacheService.getScriptCache(); const hit = cache.get('platform_pub_v1'); if (hit) return JSON.parse(hit);
+    const orgs = loadOrgs_().filter(function (o) { return o.status === 'active'; }).map(function (o) {
+      const st = o.settings || {};
+      return { code: o.code, name: o.name, type: o.type || 'جهة غير ربحية', sector: o.sector || '', region: o.region || '', city: o.city || st.siteCity || '', areas: o.areas || '', vision: str_(o.vision || st.siteAbout || '', 220), tagline: st.siteTagline || '', theme: st.siteTheme ? st.siteTheme.tpl : '' };
+    });
+    const types = {}; orgs.forEach(function (o) { types[o.type] = (types[o.type] || 0) + 1; });
+    let appUrl = ''; try { appUrl = ScriptApp.getService().getUrl(); } catch (e) { }
+    const out = { ok: true, orgs: orgs, types: types, regions: Object.keys(orgs.reduce(function (a, o) { if (o.region) a[o.region] = 1; return a; }, {})).length, appUrl: appUrl, at: now_() };
+    cache.put('platform_pub_v1', JSON.stringify(out), 300);
+    return out;
+  } catch (e) { console.error(e); return { ok: false, reason: 'error' }; }
+}
 function sitePublic(code) { const o = siteOrg_(code); if (!o) return { ok: false, reason: 'no-org' }; const d = publicData_(); try { d.appUrl = ScriptApp.getService().getUrl(); } catch (e) { } d.code = o.code; return d; }
 function siteSubmit(p) { p = p || {}; if (!siteOrg_(p.org)) return { ok: false, message: 'الجمعية غير متاحة.' }; return publicSubmit_(p); }
 function getSettingsSafe_() { try { return PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID') ? getSettings_() : {}; } catch (e) { return {}; } }
@@ -1408,7 +1430,9 @@ function publicData_() {
     const web = { menu: W(0, 8).map(it), slides: W(1, 6).map(it), pages: W(4, 12).map(it), gallery: W(7, 24).map(it), videos: W(8, 12).map(it), policies: W(10, 24).map(it),
       social: W(21, 10).map(it), counters: W(22, 8).map(it), about: ab ? it(ab) : null, reports: W(24, 12).map(it), initiatives: W(25, 12).map(it), testimonials: W(26, 12).map(it),
       links: W(27, 16).map(it), popup: pop ? it(pop) : null, competitions: W(29, 8).filter(function (r) { return !r.f.until || String(r.f.until) >= today; }).map(it) };
-    const out = { ok: true, org: cfg.orgName || '', city: cfg.siteCity || '', phone: cfg.sitePhone || '', email: cfg.siteEmail || '', about: cfg.siteAbout || '', news: news, programs: programs, partners: partners, stats: stats, theme: cfg.siteTheme || null, web: web, at: now_() };
+    const out = { ok: true, org: cfg.orgName || '', city: cfg.siteCity || '', phone: cfg.sitePhone || '', email: cfg.siteEmail || '', about: cfg.siteAbout || '', news: news, programs: programs, partners: partners, stats: stats, theme: cfg.siteTheme || null, web: web, at: now_(),
+      profile: (function () { const o = getOrg_(CUR_ORG || MAIN_ORG) || {}; return { type: o.type || '', sector: o.sector || '', region: o.region || '', city: o.city || '', areas: o.areas || '', vision: o.vision || '', mission: o.mission || '', goals: o.goals || '',
+        aboutTitle: cfg.siteAboutTitle || '', values: cfg.siteValues || '', commit: cfg.siteCommit || '', tagline: cfg.siteTagline || '' }; })() };
     cache.put(ck, JSON.stringify(out), 300);
     return out;
   } catch (e) { console.error(e); return { ok: false, reason: 'error' }; }

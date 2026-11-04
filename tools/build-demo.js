@@ -5,7 +5,7 @@ const root = path.join(__dirname, "..");
 const read = f => fs.readFileSync(path.join(root, f), "utf8");
 
 const server = read("src/Code.gs") + "\n" + read("src/Schema.gs") +
-  "\nreturn {setup:setup,login:login,logout:logout,api:api,getPublicConfig:getPublicConfig,dailyBackup:dailyBackup,sitePublic:sitePublic,siteSubmit:siteSubmit};";
+  "\nreturn {setup:setup,login:login,logout:logout,api:api,getPublicConfig:getPublicConfig,dailyBackup:dailyBackup,sitePublic:sitePublic,siteSubmit:siteSubmit,platformPublic:platformPublic};";
 let runtime = read("tools/demo-runtime.js");
 const token = '"/*@@SERVER@@*/\\nreturn {setup:setup,login:login,logout:logout,api:api,getPublicConfig:getPublicConfig,dailyBackup:dailyBackup};"';
 if (!runtime.includes(token)) throw new Error("server token not found in demo-runtime.js");

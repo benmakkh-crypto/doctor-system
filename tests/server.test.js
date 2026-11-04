@@ -239,6 +239,14 @@ ok(A.sitePublic("MAIN").theme.tpl === "lazuli-center", "public site receives pub
 ok(A.api(T, "saveTheme", { __org: "*", kind: "site", theme: { tpl: "x" } }).code === "VALIDATION", "template needs an organisation");
 ok(AM(T, "saveTheme", { kind: "sys", theme: { tpl: "royal" } }).ok && AM(T, "bootstrap").data.settings.sysTheme.tpl === "royal", "admin sets system theme for org");
 ok(AM(T, "saveTheme", { kind: "site", theme: null, publish: true }).ok && !A.sitePublic("MAIN").theme, "back to original template");
+// بوابة المنصة وهوية الجهة القابلة للتعديل
+const pp = A.platformPublic();
+ok(pp.ok && pp.orgs.length >= 1 && pp.orgs.every(o => o.code && o.name && o.type) && Object.keys(pp.types).length >= 1, "platform portal lists organisations by type");
+ok(!JSON.stringify(pp).includes("pwHash") && !JSON.stringify(pp).includes("email"), "portal exposes no private fields");
+ok(AM(T, "saveSettings", { orgName: "", threshold: 5000, sod: false, notify: false, site: { url: "", city: "", phone: "", email: "", about: "نبذة", stats: true, aboutTitle: "مؤسسة تنموية رائدة", values: "الأمانة، الإتقان", commit: "شفافية تامة", tagline: "معًا للأثر" } }).ok, "admin saves site identity");
+const prf = A.sitePublic("MAIN").profile;
+ok(prf.aboutTitle === "مؤسسة تنموية رائدة" && prf.values === "الأمانة، الإتقان" && prf.commit === "شفافية تامة" && prf.tagline === "معًا للأثر", "public site receives editable identity");
+ok(A.platformPublic().orgs.find(o => o.code === "MAIN").tagline === "معًا للأثر", "portal cache refreshed after save");
 A.logout(ST);
 ok(A.api(ST, "bootstrap").code === "AUTH", "logout ends session");
 ok(A.api("forged-token", "bootstrap").code === "AUTH", "forged token rejected");

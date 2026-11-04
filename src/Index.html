@@ -3677,6 +3677,11 @@ function viewOrg(){
      <label>الهاتف<input id="s_phone" dir="ltr" maxlength="30" value="${esc(S.cfg.sitePhone||"")}" ${ro?"disabled":""}></label>
      <label class="w">البريد العام<input id="s_email" dir="ltr" type="email" maxlength="120" value="${esc(S.cfg.siteEmail||"")}" ${ro?"disabled":""}></label>
      <label class="w">نبذة عن الجمعية<textarea id="s_about" maxlength="1200" ${ro?"disabled":""}>${esc(S.cfg.siteAbout||"")}</textarea></label>
+     <label class="w">عنوان قسم «من نحن»<input id="s_atitle" maxlength="120" placeholder="جمعية خيرية تعمل بمنهجية مؤسسية" value="${esc(S.cfg.siteAboutTitle||"")}" ${ro?"disabled":""}></label>
+     <label>الشعار تحت الاسم<input id="s_tagline" maxlength="120" placeholder="نعمل بالعطاء… ونقيس بالأثر" value="${esc(S.cfg.siteTagline||"")}" ${ro?"disabled":""}></label>
+     <label>القيم (افصل بينها بفاصلة)<input id="s_values" maxlength="300" placeholder="الأمانة، الشفافية، الإتقان" value="${esc(S.cfg.siteValues||"")}" ${ro?"disabled":""}></label>
+     <label class="w">التزامنا<textarea id="s_commit" maxlength="500" placeholder="حوكمة رشيدة وشفافية في التقارير…" ${ro?"disabled":""}>${esc(S.cfg.siteCommit||"")}</textarea></label>
+     <p class="w muted" style="margin:0;font-size:13px">الرؤية والرسالة ونوع الجهة تُؤخذ من بطاقة الجهة في كشاف المؤسسات، وتظهر في موقعها وفي دليل منصة نافذ.</p>
      <label class="check w"><input id="s_stats" type="checkbox" ${S.cfg.publicStats===false?"":"checked"} ${ro?"disabled":""}>عرض أرقام الأثر (أعداد فقط، بلا مبالغ أو بيانات شخصية)</label>
      <p class="why w" style="margin:0">يعرض الموقع ما تنشره إدارة «الموقع الإلكتروني»: الأخبار والشركاء بحالة «منشور»، والبرامج «قيد التسويق». وتصل طلبات الزوار (إعانة، تطوع، تبرع، تواصل) معاملاتٍ جديدة في إداراتها.</p>
      ${ro?"":`<div class="w"><button class="btn pri" type="submit">حفظ إعدادات الموقع</button></div>`}
@@ -3769,7 +3774,7 @@ function bindMain(){
   const cf=$("#cfgForm");if(cf)cf.onsubmit=async e=>{e.preventDefault();if(!S.admin)return;const t=+$("#c_thr").value;if(!isFinite(t)||t<0){toast("حد الاعتماد يجب أن يكون رقمًا موجبًا.");return}
     const d=await act("saveSettings",{orgName:$("#c_org").value.trim(),threshold:t,sod:$("#c_sod").checked,notify:$("#c_ntf").checked},"حُفظت الإعدادات");if(d){S.cfg={...S.cfg,...d};render()}};
   const sf=$("#siteForm");if(sf&&S.admin)sf.onsubmit=async e=>{e.preventDefault();
-    const d=await act("saveSettings",{orgName:S.cfg.orgName||"",threshold:thr(),sod:!!S.cfg.sod,notify:!!S.cfg.notify,site:{url:$("#s_url").value.trim(),city:$("#s_city").value.trim(),phone:$("#s_phone").value.trim(),email:$("#s_email").value.trim(),about:$("#s_about").value.trim(),stats:$("#s_stats").checked}},"حُفظت إعدادات الموقع");if(d){S.cfg={...S.cfg,...d};render()}};
+    const d=await act("saveSettings",{orgName:S.cfg.orgName||"",threshold:thr(),sod:!!S.cfg.sod,notify:!!S.cfg.notify,site:{url:$("#s_url").value.trim(),city:$("#s_city").value.trim(),phone:$("#s_phone").value.trim(),email:$("#s_email").value.trim(),about:$("#s_about").value.trim(),aboutTitle:$("#s_atitle").value.trim(),tagline:$("#s_tagline").value.trim(),values:$("#s_values").value.trim(),commit:$("#s_commit").value.trim(),stats:$("#s_stats").checked}},"حُفظت إعدادات الموقع");if(d){S.cfg={...S.cfg,...d};render()}};
   const q=s=>main.querySelector(s);
   if(q("[data-exportall]"))q("[data-exportall]").onclick=()=>exportCSV(active(),null);
   if(q("[data-backup]"))q("[data-backup]").onclick=backup;
