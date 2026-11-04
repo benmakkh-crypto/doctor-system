@@ -1492,6 +1492,22 @@ td.pc small{display:block;font-size:10.5px;color:var(--muted)}
 .qr.on .qrs::after{content:"";position:absolute;bottom:-7px;width:5px;height:5px;border-radius:50%;background:var(--gold,#deb24e)}
 @media (max-width:1250px){.qrl span{display:none}}
 @media (max-width:900px){.crow{flex-direction:column;align-items:stretch}.qrt{overflow-x:auto;justify-content:flex-start;scrollbar-width:none;padding-bottom:6px}.qrt::-webkit-scrollbar{display:none}.qr:hover,.qr:has(+ .qr:hover),.qr:hover + .qr{transform:none}}
+
+/* ================= ترتيب القائمة بالضغط المطوّل ================= */
+.side a,.side .ng,.side .qk,.side .qhero{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.side [data-ro]{position:relative}
+.side [data-ro].ro-hold::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;border:2px solid var(--gold,#deb24e);clip-path:inset(0 100% 0 0);animation:roHold .65s linear forwards}
+.side .ng.ro-hold>.ngh::after{content:"";position:absolute;inset:2px;border-radius:14px;pointer-events:none;border:2px solid var(--gold,#deb24e);clip-path:inset(0 100% 0 0);animation:roHold .65s linear forwards}
+.side .ng.ro-hold::after{display:none}
+@keyframes roHold{to{clip-path:inset(0 0 0 0)}}
+.ro-drag{transform:scale(1.04) rotate(-.6deg);box-shadow:0 18px 40px rgba(0,0,0,.45),0 0 0 2px var(--gold,#deb24e)!important;border-radius:14px;background:color-mix(in srgb,var(--sb2,#0a3a30) 92%,#000)!important;opacity:.97;cursor:grabbing;transition:transform .15s,box-shadow .15s;pointer-events:none}
+.ro-ph{border-radius:14px;margin:2px 0;border:2px dashed color-mix(in srgb,var(--gold,#deb24e) 70%,transparent);background:color-mix(in srgb,var(--gold,#deb24e) 10%,transparent);animation:roPh .9s ease-in-out infinite alternate}
+@keyframes roPh{to{background:color-mix(in srgb,var(--gold,#deb24e) 20%,transparent)}}
+body.ro-on,body.ro-on *{cursor:grabbing!important}
+body.ro-on .side{touch-action:none}
+.navtools{flex-wrap:wrap}.navtools button{white-space:nowrap}.navhint{flex-basis:100%;display:inline-flex;gap:5px;align-items:center;font-size:11px;color:rgba(255,255,255,.55);padding:2px 4px 0}.navhint svg{width:12px;height:12px}
+.navtools [data-roreset]{margin-inline-start:auto}.navtools [data-roreset] svg{transform:none!important}
+@media (prefers-reduced-motion:reduce){.ro-ph{animation:none}}
 </style>
 </head>
 <body class="auth">
@@ -2585,6 +2601,58 @@ function orgSwitcherHTML(){
 async function setOrg(id){S.org=id;try{localStorage.setItem("ds.org",id)}catch(e){}ddOpen=null;S.loaded=false;navDraft=null;permDraft=null;usersCache=null;orgsCache=null;render();
   try{await loadAll();toast(id==="*"?"تعرض الآن كل المؤسسات":"تعمل الآن داخل: "+orgName(id));location.hash=id==="*"?"orgs":"home"}catch(e){}}
 /*@@THEMESUI@@*/
+/*@@RO@@*/
+/* ================= ترتيب القائمة بالضغط المطوّل =================
+ * اضغط مطولًا (نحو ثانية) على إدارة أو وحدة أو رابط سريع، ثم اسحبه لأعلى أو لأسفل وأفلته.
+ * الترتيب لكل مستخدم: S.prefs.navOrder (الإدارات) · S.prefs.modOrder["إدارة:عنوان"] (الوحدات) · S.prefs.topOrder (الروابط السريعة)
+ */
+function roSort(list,key,sub){let o=S.prefs&&S.prefs[key];if(sub!=null)o=o&&o[sub];if(!Array.isArray(o)||!o.length)return list.slice();
+  const pos=new Map(o.map((k,i)=>[String(k),i]));return list.slice().sort((a,b)=>(pos.has(String(a))?pos.get(String(a)):1e3+list.indexOf(a))-(pos.has(String(b))?pos.get(String(b)):1e3+list.indexOf(b)))}
+function roCustom(){const p=S.prefs||{};return !!((p.navOrder&&p.navOrder.length)||(p.topOrder&&p.topOrder.length)||(p.modOrder&&Object.keys(p.modOrder).length))}
+let roDrag=null,roTimer=null,roStart=null,roJust=false;
+const RO_HOLD=650;
+function roCancel(){clearTimeout(roTimer);roTimer=null;if(roStart&&roStart.el)roStart.el.classList.remove("ro-hold");roStart=null}
+document.addEventListener("pointerdown",e=>{
+  if(e.button>0||roDrag)return;const el=e.target.closest(".side [data-ro]");if(!el||e.target.closest("input,button.tg,.navtools,.navsrch"))return;
+  if(ui.navq&&el.dataset.ro!=="top")return; // لا ترتيب أثناء البحث
+  let item=el;if(el.dataset.ro==="dept"&&e.target.closest(".ngb"))return; // الضغط داخل الإدارة المفتوحة يخص الوحدات
+  roStart={el:item,x:e.clientX,y:e.clientY,id:e.pointerId};item.classList.add("ro-hold");
+  roTimer=setTimeout(()=>roBegin(e),RO_HOLD)},true);
+document.addEventListener("pointermove",e=>{
+  if(roStart&&!roDrag&&(Math.abs(e.clientX-roStart.x)>8||Math.abs(e.clientY-roStart.y)>8))roCancel();
+  if(roDrag)roMove(e)},true);
+document.addEventListener("pointerup",e=>{if(roDrag)roEnd(true);else roCancel()},true);
+document.addEventListener("pointercancel",e=>{if(roDrag)roEnd(false);else roCancel()},true);
+document.addEventListener("touchmove",e=>{if(roDrag)e.preventDefault()},{passive:false});
+document.addEventListener("contextmenu",e=>{if((roStart||roDrag)&&e.target.closest(".side"))e.preventDefault()},true);
+document.addEventListener("click",e=>{if(roJust&&e.target.closest(".side")){e.preventDefault();e.stopPropagation()}},true);
+document.addEventListener("keydown",e=>{if(roDrag&&e.key==="Escape")roEnd(false)});
+function roBegin(e){if(!roStart)return;const el=roStart.el;el.classList.remove("ro-hold");
+  const box=el.parentNode;const r=el.getBoundingClientRect();
+  const ph=document.createElement("div");ph.className="ro-ph";ph.style.height=r.height+"px";
+  roDrag={st:el.getAttribute("style")||"",el,box,ph,type:el.dataset.ro,dy:roStart.y-r.top,startY:roStart.y,side:el.closest(".side"),orig:[...box.children].indexOf(el)};roStart=null;roTimer=null;
+  box.insertBefore(ph,el);el.classList.add("ro-drag");Object.assign(el.style,{position:"fixed",left:r.left+"px",top:r.top+"px",width:r.width+"px",zIndex:999});
+  document.body.classList.add("ro-on");try{navigator.vibrate&&navigator.vibrate(25)}catch(x){}
+  toast("اسحب لأعلى أو لأسفل ثم أفلت · Esc للإلغاء");
+  roScrollLoop();
+}
+function roMove(e){const d=roDrag;d.y=e.clientY;d.el.style.top=(e.clientY-d.dy)+"px";
+  const sibs=[...d.box.children].filter(x=>x!==d.el&&x!==d.ph&&x.dataset&&x.dataset.ro===d.type);
+  let before=null;for(const s of sibs){const r=s.getBoundingClientRect();if(e.clientY<r.top+r.height/2){before=s;break}}
+  if(before){if(d.ph.nextSibling!==before)d.box.insertBefore(d.ph,before)}else{const last=sibs[sibs.length-1];if(last&&d.ph.previousSibling!==last)last.after(d.ph)}}
+function roScrollLoop(){const d=roDrag;if(!d)return;const sc=d.side;if(sc&&d.y!=null){const r=sc.getBoundingClientRect();
+    if(d.y<r.top+60)sc.scrollTop-=10;else if(d.y>r.bottom-60)sc.scrollTop+=10}requestAnimationFrame(roScrollLoop)}
+function roEnd(ok){const d=roDrag;if(!d)return;
+  d.el.classList.remove("ro-drag");d.el.setAttribute("style",d.st);
+  if(ok)d.box.insertBefore(d.el,d.ph);d.ph.remove();document.body.classList.remove("ro-on");roDrag=null;roJust=true;setTimeout(()=>roJust=false,80);
+  if(ok){const keys=[...d.box.children].filter(x=>x.dataset&&x.dataset.ro===d.type).map(x=>x.dataset.k);
+    S.prefs=S.prefs||{};
+    if(d.type==="dept")S.prefs.navOrder=keys.map(Number);
+    else if(d.type==="top")S.prefs.topOrder=keys;
+    else{S.prefs.modOrder=S.prefs.modOrder||{};S.prefs.modOrder[d.box.dataset.rg]=keys.map(Number)}
+    if([...d.box.children].indexOf(d.el)!==d.orig){savePrefsSoon();toast("حُفظ ترتيب القائمة")}}
+  renderNav()}
+/*@@/RO@@*/
 /* ================= القوالب والمظهر (#themes) =================
  * مكتبة 100 قالب للموقع العام + 30 مظهرًا للنظام. لكل جزء صلاحية: S.parts["site.tpl"|"sys.theme"] (0 لا يرى، 1 اطلاع، 2 تعديل، 3 نشر).
  */
@@ -3044,33 +3112,33 @@ function banners(){
   return b;
 }
 function renderNav(){
+  if(roDrag)return;
   const A=active();
   const pend=A.filter(r=>eff(r)==="بانتظار الاعتماد").length;
   const hot=A.filter(r=>isOpen(r)&&(pri(r)===2||isLate(r)||isMine(r))).length;
   const trash=S.recs.filter(r=>r.deleted).length;
   const openN=A.filter(r=>isOpen(r)).length;const nOrgs=(S.orgs||[]).length;
   const qk=(h,ic,t,sub,col,n,hotN)=>`<a href="#${h}" class="qk ${R.v===h?"on":""}" style="--qc:${col}"${R.v===h?' aria-current="page"':""}><span class="qki">${ico(ic)}</span><span class="qkt"><b>${t}</b><small>${sub}</small></span>${n?`<span class="qkn ${hotN?"pulse":""}">${n}</span>`:`<span class="qka">${ico("chev")}</span>`}</a>`;
+  const topItems=[["focus",qk("focus","focus","مهامي والأولويات",hot?`${hot} تحتاج متابعتك`:"لا شيء عاجل","#e0573a",hot,hot>0)],["inbox",qk("inbox","inbox","صندوق الاعتمادات",pend?`${pend} بانتظار الاعتماد`:"لا شيء معلّق","#7b5ce0",pend,false)],["flow",qk("flow","flow","مسار المعاملات","تتبّع المراحل","#13a597",0)]];
+  if(S.member)topItems.push(["orgs",qk("orgs","building","الكشاف",`${nOrgs} ${nOrgs>2&&nOrgs<11?"مؤسسات":"مؤسسة"} في المنصة`,"#2f86d8",nOrgs,false)]);
   $("#navTop").innerHTML=`<a href="#home" class="qhero ${R.v==="home"?"on":""}"${R.v==="home"?' aria-current="page"':""}><span class="qhi">${ico("home")}</span><span class="qht"><small>لوحة القيادة</small><b>الرئيسية</b></span><span class="qhs"><b>${openN}</b><small>مفتوحة</small></span></a>`
-   +qk("focus","focus","مهامي والأولويات",hot?`${hot} تحتاج متابعتك`:"لا شيء عاجل","#e0573a",hot,hot>0)
-   +qk("inbox","inbox","صندوق الاعتمادات",pend?`${pend} بانتظار الاعتماد`:"لا شيء معلّق","#7b5ce0",pend,false)
-   +qk("flow","flow","مسار المعاملات","تتبّع المراحل","#13a597",0)
-   +(S.member?qk("orgs","building","الكشاف",`${nOrgs} ${nOrgs>2&&nOrgs<11?"مؤسسات":"مؤسسة"} في المنصة`,"#2f86d8",nOrgs,false):"");
+   +roSort(topItems.map(x=>x[0]),"topOrder").map(k=>topItems.find(x=>x[0]===k)[1].replace('<a ',`<a data-ro="top" data-k="${k}" `)).join("");
   const inG=(R.v==="grp"||R.v==="mod")?R.g:-1;
   const nq=(ui.navq||"").trim();const hl=t=>{const e=esc(t);if(!nq)return e;const q=esc(nq).replace(/[.*+?^${}()|[\]\\]/g,"\\$&");return e.replace(new RegExp(q,"g"),m=>`<mark>${m}</mark>`)};
   const hit=t=>!nq||String(t).includes(nq);
   let shown=0;
-  const groups=ORDER.map(i=>{const g=G[i];if(!shownDept(i))return "";
+  const groups=roSort(ORDER,"navOrder").map(i=>{const g=G[i];if(!shownDept(i))return "";
     const c=i?A.filter(r=>r.g===i).length:0;const secs=secsOf(i);
     const dHit=hit(g.n);
     const body=secs.map(([t,ids,sic])=>{const mm=ids.filter(m=>dHit||hit(t)||hit(g.items[m]));if(!mm.length)return "";
-      return `<div class="nsg"><div class="nsec"><span class="nsi">${ico(secIco(t,sic))}</span><span class="nst">${hl(t)}</span><em>${mm.length}</em></div><div class="nmods">${mm.map(m=>{const k=i?A.filter(r=>r.g===i&&r.m===m).length:0;const on=R.v==="mod"&&R.g===i&&R.m===m;
-        return `<a href="#m${i}-${m}" class="sub ${on?"on":""}" title="${esc(idesc(i,m))}"${on?' aria-current="page"':""}><span class="si">${ico(modIco(i,m))}</span><span class="sn">${hl(g.items[m])}</span>${k?`<span class="cnt">${k}</span>`:""}</a>`}).join("")}</div></div>`}).join("");
+      return `<div class="nsg"><div class="nsec"><span class="nsi">${ico(secIco(t,sic))}</span><span class="nst">${hl(t)}</span><em>${mm.length}</em></div><div class="nmods" data-rg="${i}:${esc(t)}">${roSort(mm,"modOrder",i+":"+t).map(m=>{const k=i?A.filter(r=>r.g===i&&r.m===m).length:0;const on=R.v==="mod"&&R.g===i&&R.m===m;
+        return `<a href="#m${i}-${m}" data-ro="mod" data-k="${m}" class="sub ${on?"on":""}" title="${esc(idesc(i,m))}"${on?' aria-current="page"':""}><span class="si">${ico(modIco(i,m))}</span><span class="sn">${hl(g.items[m])}</span>${k?`<span class="cnt">${k}</span>`:""}</a>`}).join("")}</div></div>`}).join("");
     if(nq&&!dHit&&!body)return "";shown++;
     const open=nq?true:navOpen.has(i);const nMods=secs.reduce((a,x)=>a+x[1].length,0);
-    return `<div class="ng ${open?"open":""} ${inG===i?"cur":""}" style="${dc(i)}"><div class="ngh"><a href="#g${i}" class="dl ${inG===i&&R.v==="grp"?"on":""}"><span class="gi">${ico(g.ic||g.c)}</span><span class="dn"><b>${hl(g.n)}</b><small>${secs.length} ${secs.length>2&&secs.length<11?"عناوين":"عنوان"} · ${nMods} ${nMods>2&&nMods<11?"وحدات":"وحدة"}</small></span>${c?`<span class="cnt">${c}</span>`:""}</a><button class="tg" data-tg="${i}" aria-expanded="${open}" aria-label="${open?"طي":"فتح"} ${esc(g.n)}">${ico("chev")}</button></div><div class="ngb"><div class="ngi">${body}</div></div></div>`}).join("");
+    return `<div class="ng ${open?"open":""} ${inG===i?"cur":""}" data-ro="dept" data-k="${i}" style="${dc(i)}"><div class="ngh"><a href="#g${i}" class="dl ${inG===i&&R.v==="grp"?"on":""}"><span class="gi">${ico(g.ic||g.c)}</span><span class="dn"><b>${hl(g.n)}</b><small>${secs.length} ${secs.length>2&&secs.length<11?"عناوين":"عنوان"} · ${nMods} ${nMods>2&&nMods<11?"وحدات":"وحدة"}</small></span>${c?`<span class="cnt">${c}</span>`:""}</a><button class="tg" data-tg="${i}" aria-expanded="${open}" aria-label="${open?"طي":"فتح"} ${esc(g.n)}">${ico("chev")}</button></div><div class="ngb"><div class="ngi">${body}</div></div></div>`}).join("");
   const navEl=$("#nav");const hadFocus=document.activeElement&&document.activeElement.id==="navq";const pos=hadFocus?document.activeElement.selectionStart:0;
   navEl.innerHTML=`<div class="navsrch"><span>${ico("search")}</span><input id="navq" type="search" placeholder="ابحث في الإدارات والوحدات…" value="${esc(nq)}" aria-label="بحث في القائمة" autocomplete="off">${nq?`<button data-navq aria-label="مسح البحث">✕</button>`:""}</div>
-   <div class="navtools"><button data-navall="1">${ico("chev")} فتح الكل</button><button data-navall="0">${ico("chev")} طي الكل</button>${nq?`<span>${shown} نتيجة</span>`:""}</div>`+(groups||`<div class="navnone">${ico("search")}<b>لا نتائج</b><small>جرّب كلمة أخرى</small></div>`);
+   <div class="navtools"><button data-navall="1">${ico("chev")} فتح الكل</button><button data-navall="0">${ico("chev")} طي الكل</button>${nq?`<span>${shown} نتيجة</span>`:roCustom()?`<button data-roreset title="إعادة ترتيب القائمة كما كان">${ico("refresh")} الترتيب الأصلي</button>`:`<span class="navhint" title="اضغط مطولًا على أي إدارة أو وحدة أو رابط، ثم اسحبه لأعلى أو لأسفل">${ico("swap")} اضغط مطولًا للترتيب</span>`}</div>`+(groups||`<div class="navnone">${ico("search")}<b>لا نتائج</b><small>جرّب كلمة أخرى</small></div>`);
   if(hadFocus){const n=$("#navq");n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}
   const sysT=(h,ic,t,sub,col,n)=>`<a href="#${h}" class="st ${R.v===h?"on":""}" style="--sc:${col}" title="${esc(t)} — ${esc(sub)}"${R.v===h?' aria-current="page"':""}><span class="sti">${ico(ic)}</span><span class="stt"><b>${t}</b><small>${sub}</small></span>${n?`<span class="stn">${n}</span>`:""}</a>`;
   $("#navSys").innerHTML=`<div class="sysg">`+sysT("org","org","الإعدادات","الجهة والبيانات","#0e9f8e")
@@ -4112,6 +4180,7 @@ $("#nav").addEventListener("input",e=>{if(e.target.id==="navq"){ui.navq=e.target
 $("#nav").addEventListener("keydown",e=>{if(e.target.id==="navq"&&e.key==="Enter"){const a=$("#nav .ngb a.sub, #nav .ngh a");if(a){location.hash=a.getAttribute("href").slice(1);ui.navq="";renderNav()}}if(e.target.id==="navq"&&e.key==="Escape"){ui.navq="";renderNav()}});
 $("#nav").addEventListener("click",e=>{
   if(e.target.closest("[data-navq]")){ui.navq="";renderNav();$("#navq").focus();return}
+  if(e.target.closest("[data-roreset]")){confirmBox("الترتيب الأصلي","سيعود ترتيب الإدارات والوحدات والروابط في قائمتك كما كان.","إعادة",()=>{delete S.prefs.navOrder;delete S.prefs.modOrder;delete S.prefs.topOrder;savePrefsSoon();renderNav();toast("عاد ترتيب القائمة كما كان")});return}
   const t=e.target.closest("[data-tg]");if(t){e.preventDefault();const i=+t.dataset.tg;const ng=t.closest(".ng");const open=!ng.classList.contains("open");ng.classList.toggle("open",open);t.setAttribute("aria-expanded",open);open?navOpen.add(i):navOpen.delete(i);saveNavOpen();return}
   const a=e.target.closest("[data-navall]");if(a){navOpen.clear();if(a.dataset.navall==="1")G.forEach((_,i)=>navOpen.add(i));saveNavOpen();renderNav()}
 });
