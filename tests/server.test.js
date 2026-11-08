@@ -239,6 +239,16 @@ ok(A.sitePublic("MAIN").theme.tpl === "lazuli-center", "public site receives pub
 ok(A.api(T, "saveTheme", { __org: "*", kind: "site", theme: { tpl: "x" } }).code === "VALIDATION", "template needs an organisation");
 ok(AM(T, "saveTheme", { kind: "sys", theme: { tpl: "royal" } }).ok && AM(T, "bootstrap").data.settings.sysTheme.tpl === "royal", "admin sets system theme for org");
 ok(AM(T, "saveTheme", { kind: "site", theme: null, publish: true }).ok && !A.sitePublic("MAIN").theme, "back to original template");
+// حذف المؤسسة (أرشفة) واستعادتها، وترتيب المؤسسات
+const ordBefore = AM(T, "listOrgs").data.map(o => o.id);
+ok(ordBefore.length >= 2, "at least two organisations to order");
+const rev = ordBefore.slice().reverse();
+ok(AM(T, "orderOrgs", { ids: rev }).ok && JSON.stringify(AM(T, "listOrgs").data.map(o => o.id)) === JSON.stringify(rev), "organisations reordered");
+const victim = rev.find(id => id !== "main");
+ok(AM(T, "setOrgStatus", { id: victim, status: "archived" }).ok && !A.platformPublic().orgs.some(o => AM(T, "listOrgs").data.find(x => x.id === victim).code === o.code), "archived organisation hidden from the portal");
+ok(AM(T, "setOrgStatus", { id: "main", status: "archived" }).code === "VALIDATION", "main organisation cannot be deleted");
+ok(AM(T, "setOrgStatus", { id: victim, status: "active" }).ok, "archived organisation restored");
+AM(T, "orderOrgs", { ids: ordBefore });
 // بوابة المنصة وهوية الجهة القابلة للتعديل
 const pp = A.platformPublic();
 ok(pp.ok && pp.orgs.length >= 1 && pp.orgs.every(o => o.code && o.name && o.type) && Object.keys(pp.types).length >= 1, "platform portal lists organisations by type");

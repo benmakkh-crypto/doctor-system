@@ -1587,6 +1587,8 @@ body.ro-on .side{touch-action:none}
 .lg-safe{display:inline-flex;align-items:center;gap:5px}.lg-safe .lgi{width:14px;height:14px;color:var(--brand)}
 @media (max-width:860px){.login{grid-template-columns:1fr}.login-art{min-height:auto;padding:16px 18px 22px;gap:14px}.la-orbit,.art-copy{display:none}.art-copy h2{font-size:20px}.la-links a{padding:6px 10px;font-size:12px}.login-side{padding-top:18px}}
 @media (prefers-reduced-motion:reduce){.la-rose path,.la-core svg,.lg-seal .o,.la-sat,.la-glow,#lgBtn::after,.login-card{animation:none!important}}
+.omove{display:inline-flex;gap:2px;margin-inline-start:auto}.omove .btn{min-width:30px;padding-inline:6px}
+.ocard.archived{opacity:.75;filter:saturate(.6)}
 </style>
 </head>
 <body class="auth">
@@ -2921,7 +2923,7 @@ function orgPickHTML(O){const q=(ui.opq||"").trim();const L=O.filter(o=>!q||[o.n
 let orgsCache=null;
 async function loadOrgs(){try{orgsCache=await call("listOrgs");schedule()}catch(e){if(e.code!=="AUTH")toast(e.message)}}
 function orgFiltered(){const q=(ui.oq||"").trim(),st=ui.ost||"",ty=ui.oty||"",rg=ui.org2||"",ar=ui.oar||"",sc=ui.osc||"";
-  return (orgsCache||[]).filter(o=>(!q||[o.name,o.code,o.city,o.region,o.manager,o.license,o.areas,o.vision,o.mission,o.goals,o.branches].join(" ").includes(q))&&(!st||o.status===st)&&(!ty||o.type===ty)&&(!rg||o.region===rg)&&(!ar||areasOf(o).includes(ar))&&(!sc||o.sector===sc))}
+  return (orgsCache||[]).filter(o=>(ui.oarch?o.status==="archived":o.status!=="archived")&&(!q||[o.name,o.code,o.city,o.region,o.manager,o.license,o.areas,o.vision,o.mission,o.goals,o.branches].join(" ").includes(q))&&(!st||o.status===st)&&(!ty||o.type===ty)&&(!rg||o.region===rg)&&(!ar||areasOf(o).includes(ar))&&(!sc||o.sector===sc))}
 function viewOrgs(){
   if(!S.member)return `${crumb([["الكشاف"]])}<div class="tw"><div class="empty"><b>الكشاف لمنسوبي منصة نافذ</b></div></div>`;
   const ro=!S.platform;
@@ -2937,17 +2939,18 @@ function viewOrgs(){
     sheets:[{name:"المؤسسات",head:[...ORG_IMPORT_COLS.filter(c=>!c[0].startsWith("admin")).map(c=>c[1]),"الحالة","المستخدمون","المعاملات","المفتوحة","المتأخرة","التبرعات هذا العام","المصروفات هذا العام","تاريخ الإضافة"],
       rows:L.map(o=>[...ORG_IMPORT_COLS.filter(c=>!c[0].startsWith("admin")).map(c=>o[c[0]]||""),o.status==="active"?"نشطة":"موقوفة",o.stats.users,o.stats.records,o.stats.open,o.stats.late,o.stats.donations,o.stats.expenses,(o.created||"").slice(0,10)])}]});
   const card=o=>`<article class="ocard ${o.status}" style="--dc:${o.status==="suspended"?"#cf3f3f":"#0e7a5f"}">
-    <header>${ro?"":`<label class="check osel"><input type="checkbox" data-osel="${esc(o.id)}" ${sel.has(o.id)?"checked":""} aria-label="تحديد ${esc(o.name)}"></label>`}<span class="oic">${ico("building")}</span><div><h3>${esc(o.name)}</h3><small><span class="code">${esc(o.code)}</span>${o.type?" · "+esc(o.type):""}${o.city?" · "+esc(o.city):""}</small></div><span class="badge tone-${o.status==="active"?"good":"bad"}">${o.status==="active"?"نشطة":"موقوفة"}</span></header>
+    <header>${ro?"":`<label class="check osel"><input type="checkbox" data-osel="${esc(o.id)}" ${sel.has(o.id)?"checked":""} aria-label="تحديد ${esc(o.name)}"></label>`}<span class="oic">${ico("building")}</span><div><h3>${esc(o.name)}</h3><small><span class="code">${esc(o.code)}</span>${o.type?" · "+esc(o.type):""}${o.city?" · "+esc(o.city):""}</small></div><span class="badge tone-${o.status==="active"?"good":"bad"}">${o.status==="active"?"نشطة":o.status==="archived"?"محذوفة":"موقوفة"}</span></header>
     <div class="ostats"><div><b>${NF.format(o.stats.users)}</b><span>مستخدم</span></div><div><b>${NF.format(o.stats.records)}</b><span>معاملة</span></div><div><b>${NF.format(o.stats.open)}</b><span>مفتوحة</span></div><div class="${o.stats.late?"bad":""}"><b>${NF.format(o.stats.late)}</b><span>متأخرة</span></div></div>
     ${areasOf(o).length?`<div class="areas">${areasOf(o).map(a=>`<span>${esc(a)}</span>`).join("")}</div>`:""}
     ${o.vision?`<p class="ovis">${ico("eye")} ${esc(o.vision)}</p>`:""}
     <dl class="okv">${o.sector?`<dt>القطاع</dt><dd>${esc(o.sector)}</dd>`:""}${o.branches?`<dt>الفروع</dt><dd>${esc(o.branches.split(/\n+/).filter(Boolean).length)} فرع${o.mapUrl?` · <a href="${esc(o.mapUrl)}" target="_blank" rel="noopener">الخريطة</a>`:""}</dd>`:o.mapUrl?`<dt>الموقع</dt><dd><a href="${esc(o.mapUrl)}" target="_blank" rel="noopener">فتح الخريطة</a></dd>`:""}${o.manager?`<dt>المدير</dt><dd>${esc(o.manager)}${o.managerPhone?` <span class="code" dir="ltr">${esc(o.managerPhone)}</span>`:""}</dd>`:""}${o.license?`<dt>الترخيص</dt><dd>${esc(o.license)}${o.licenseExpiry?` · ينتهي ${dFmt(o.licenseExpiry)}`:""}</dd>`:""}<dt>التبرعات هذا العام</dt><dd>${money(o.stats.donations)}</dd><dt>آخر نشاط</dt><dd>${o.stats.lastActivity?ago(o.stats.lastActivity):"لا نشاط بعد"}</dd><dt>المسؤولون</dt><dd class="code">${esc(o.stats.admins.join("، ")||"—")}</dd></dl>
     <footer><button class="btn sm pri" data-setorg="${esc(o.id)}">${ico("login")} ${ro?"اطلاع":"دخول المؤسسة"}</button><button class="btn sm" data-oprof="${esc(o.id)}">${ico("idCard")} الملف</button>${ro?"":`<button class="btn sm" data-oedit="${esc(o.id)}">تعديل</button><button class="btn sm warn" data-opw="${esc(o.id)}">${ico("key")} كلمة مرور المسؤول</button>`}
-     <a class="btn sm" href="${esc((S.appUrl?S.appUrl+"?page=site&org=":(window.__DEMO__?"../site/?org=":"site/?org="))+o.code)}" target="_blank" rel="noopener">${ico("WEB")} موقعها</a>${o.id==="main"||ro?"":`<button class="btn sm ${o.status==="active"?"danger":"ok"}" data-ostat="${esc(o.id)}" data-v="${o.status==="active"?"suspended":"active"}">${o.status==="active"?"إيقاف":"تفعيل"}</button>`}</footer></article>`;
+     <a class="btn sm" href="${esc((S.appUrl?S.appUrl+"?page=site&org=":(window.__DEMO__?"../site/?org=":"site/?org="))+o.code)}" target="_blank" rel="noopener">${ico("WEB")} موقعها</a>${o.id==="main"||ro?"":`<button class="btn sm ${o.status==="active"?"danger":"ok"}" data-ostat="${esc(o.id)}" data-v="${o.status==="active"?"suspended":"active"}">${o.status==="active"?"إيقاف":o.status==="archived"?"استعادة":"تفعيل"}</button>${o.status!=="archived"?`<button class="btn sm danger" data-odel="${esc(o.id)}">${ico("trash")} حذف</button>`:""}`}
+     ${ro||ui.oarch?"":`<span class="omove"><button class="btn sm" data-omove="${esc(o.id)}" data-d="-1" title="تقديم في الترتيب" aria-label="تقديم ${esc(o.name)}">▲</button><button class="btn sm" data-omove="${esc(o.id)}" data-d="1" title="تأخير في الترتيب" aria-label="تأخير ${esc(o.name)}">▼</button></span>`}</footer></article>`;
   const table=`<div class="tw"><table><thead><tr><th><input type="checkbox" data-oselall ${L.length&&L.every(o=>sel.has(o.id))?"checked":""} aria-label="تحديد الكل"></th><th>المؤسسة</th><th>النوع</th><th>المدينة</th><th>المدير</th><th>المستخدمون</th><th>المعاملات</th><th>المفتوحة</th><th>المتأخرة</th><th>التبرعات</th><th>آخر نشاط</th><th>الحالة</th><th></th></tr></thead><tbody>
    ${L.map(o=>`<tr><td><input type="checkbox" data-osel="${esc(o.id)}" ${sel.has(o.id)?"checked":""}></td><td class="t">${esc(o.name)}<span class="code">${esc(o.code)}</span></td><td>${esc(o.type||"—")}</td><td>${esc(o.city||"—")}</td><td>${esc(o.manager||"—")}</td><td class="num">${o.stats.users}</td><td class="num">${o.stats.records}</td><td class="num">${o.stats.open}</td><td class="num">${o.stats.late}</td><td class="num">${money(o.stats.donations)}</td><td class="num">${o.stats.lastActivity?ago(o.stats.lastActivity):"—"}</td><td><span class="badge tone-${o.status==="active"?"good":"bad"}">${o.status==="active"?"نشطة":"موقوفة"}</span></td><td><span class="flow"><button class="btn sm pri" data-setorg="${esc(o.id)}">${ro?"اطلاع":"دخول"}</button><button class="btn sm" data-oprof="${esc(o.id)}">الملف</button>${ro?"":`<button class="btn sm" data-oedit="${esc(o.id)}">تعديل</button>`}</span></td></tr>`).join("")}</tbody></table></div>`;
   const W=[
-   {id:"o-pick",title:"اختر مؤسسة للاطلاع",span:12,html:orgPickHTML(O)},
+   {id:"o-pick",title:"اختر مؤسسة للاطلاع",span:12,html:orgPickHTML(O.filter(o=>o.status!=="archived"))},
    {id:"o-quick",title:"الوصول السريع للكشاف",span:12,html:orgQuick(!S.platform)},
    {id:"o-kpis",title:"مؤشرات المنصة",span:12,html:`<div class="kgrid okgrid">${[["المؤسسات",O.length,"#0e7a5f","building"],["النشطة",O.filter(o=>o.status==="active").length,"#1f8a4c","check"],["الموقوفة",O.filter(o=>o.status!=="active").length,"#cf3f3f","xcircle"],["المستخدمون",sum("users"),"#3157b8","people"],["المعاملات",sum("records"),"#6d3fc0","list"],["المفتوحة",sum("open"),"#d9702a","spin"],["المتأخرة",sum("late"),"#cf3f3f","alert"],["التبرعات هذا العام",sum("donations"),"#b98a14","coins",1]].map(([l,v,c,i,m])=>`<div class="kt" style="--t:${c}"><span class="ki">${ico(i)}</span><small>${l}</small><b>${m?NFc.format(v):NF.format(v)}${m?" <i>ر.س</i>":""}</b></div>`).join("")}</div>`},
    {id:"o-region",title:"المؤسسات حسب المنطقة",span:6,html:chartCard("o-region","المؤسسات حسب المنطقة","توزيع جغرافي","visit","#0e7a5f",byCount("region",O),{type:"hbar",pal:"brand"})},
@@ -2968,7 +2971,7 @@ function viewOrgs(){
      ${L.length?(view==="table"?table:`<div class="ogrid">${L.map(card).join("")}</div>`):`<div class="tw"><div class="empty"><b>لا مؤسسات مطابقة</b></div></div>`}</section>`}];
   return `<div class="crow">${crumb([["الكشاف"]])}${qRibbon()}</div>
    <div class="head"><div><h1>الكشاف: دليل المؤسسات</h1><p>كل مؤسسة تعمل في نافذ بحساباتها وبياناتها المنفصلة، وأنت تراها جميعًا من هنا.</p></div>
-    <div class="actions">${ro?`<span class="badge tone-info">اطلاع فقط</span>`:`<button class="btn pri" data-onew>${ico("building")} مؤسسة جديدة</button><button class="btn" data-oimport>${ico("down")} استيراد من Excel</button><button class="btn" data-otpl>نموذج الاستيراد</button>`}${repBtn("orgs")}</div></div>
+    <div class="actions">${ro?`<span class="badge tone-info">اطلاع فقط</span>`:`<button class="btn pri" data-onew>${ico("building")} مؤسسة جديدة</button><button class="btn ${ui.oarch?"pri":""}" data-oarch>${ico("trash")} ${ui.oarch?"العودة إلى المؤسسات":"المحذوفة ("+NF.format((orgsCache||[]).filter(o=>o.status==="archived").length)+")"}</button><button class="btn" data-oimport>${ico("down")} استيراد من Excel</button><button class="btn" data-otpl>نموذج الاستيراد</button>`}${repBtn("orgs")}</div></div>
    ${layoutPage("orgs",W)}`;
 }
 function bindOrgs(main){
@@ -2983,6 +2986,13 @@ function bindOrgs(main){
   const all=main.querySelector("[data-oselall]");if(all)all.onchange=()=>{orgFiltered().forEach(o=>all.checked?ui.osel.add(o.id):ui.osel.delete(o.id));re()};
   const cl=main.querySelector("[data-oselclear]");if(cl)cl.onclick=()=>{ui.osel.clear();re()};
   const nw=main.querySelector("[data-onew]");if(nw)nw.onclick=()=>orgDialog(null);
+  const oa=main.querySelector("[data-oarch]");if(oa)oa.onclick=()=>{ui.oarch=!ui.oarch;re()};
+  main.querySelectorAll("[data-odel]").forEach(b=>b.onclick=()=>{const o=orgsCache.find(x=>x.id===b.dataset.odel);
+    confirmBox("حذف المؤسسة",`ستُنقل «${o.name}» إلى «المحذوفة»، ويتوقف دخول مستخدميها، وتختفي من البوابة. تبقى بياناتها محفوظة، ويمكنك استعادتها في أي وقت.`,"حذف",async()=>{const d=await act("setOrgStatus",{id:o.id,status:"archived"},"حُذفت المؤسسة (يمكن استعادتها)");if(d){orgsCache=null;await refreshOrgs()}})});
+  main.querySelectorAll("[data-omove]").forEach(b=>b.onclick=async()=>{const ids=orgsCache.filter(o=>o.status!=="archived").map(o=>o.id);const i=ids.indexOf(b.dataset.omove),j=i+(+b.dataset.d);
+    if(i<0||j<0||j>=ids.length)return;[ids[i],ids[j]]=[ids[j],ids[i]];
+    const map=new Map(orgsCache.map(o=>[o.id,o]));orgsCache=[...ids.map(id=>map.get(id)),...orgsCache.filter(o=>o.status==="archived")];re();
+    const d=await act("orderOrgs",{ids},"حُفظ الترتيب");if(!d){orgsCache=null;await refreshOrgs()}});
   main.querySelectorAll("[data-oedit]").forEach(b=>b.onclick=()=>orgDialog(orgsCache.find(o=>o.id===b.dataset.oedit)));
   main.querySelectorAll("[data-oprof]").forEach(b=>b.onclick=()=>orgProfile(orgsCache.find(o=>o.id===b.dataset.oprof)));
   main.querySelectorAll("[data-ostat]").forEach(b=>b.onclick=()=>{const o=orgsCache.find(x=>x.id===b.dataset.ostat);const stop=b.dataset.v==="suspended";

@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.6.1';
+const APP_VERSION = '4.6.2';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -244,7 +244,10 @@ function loadOrgs_() {
     let j = {}; try { j = JSON.parse(r.json || '{}'); } catch (e) { j = {}; }
     j.id = String(r.id); j.code = String(r.code); j.name = String(r.name); j.status = String(r.status || 'active'); j.created = String(r.created || ''); j._row = r._row;
     return j;
-  });
+  }).map(function (o, i) { return [o, i]; }).sort(function (a, b) {
+    const x = typeof a[0].sort === 'number' ? a[0].sort : 1e6 + a[1], y = typeof b[0].sort === 'number' ? b[0].sort : 1e6 + b[1];
+    return x - y;
+  }).map(function (p) { return p[0]; });
   return ORGS_CACHE_;
 }
 function getOrg_(id) { return loadOrgs_().find(function (o) { return o.id === id; }) || null; }
@@ -477,7 +480,7 @@ function inUserScope_(me, u) {
   if (isPlatform_(me)) return CUR_ORG === '*' || uo === CUR_ORG || uo === '*';
   return uo === me.org;
 }
-const WRITE_ACTIONS = ['saveOrg', 'setOrgStatus', 'importOrgs', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+const WRITE_ACTIONS = ['saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -539,13 +542,22 @@ const ACTIONS = {
   setOrgStatus: function (me, p) {
     needPlatform_(me);
     const o = getOrg_(str_(p.id, 40)); if (!o) throw err_('NOTFOUND', 'المؤسسة غير موجودة.');
-    if (['active', 'suspended'].indexOf(p.status) < 0) throw err_('VALIDATION', 'حالة غير صحيحة.');
-    if (o.id === MAIN_ORG && p.status === 'suspended') throw err_('VALIDATION', 'لا يمكن إيقاف المؤسسة الرئيسية.');
+    if (['active', 'suspended', 'archived'].indexOf(p.status) < 0) throw err_('VALIDATION', 'حالة غير صحيحة.');
+    if (o.id === MAIN_ORG && p.status !== 'active') throw err_('VALIDATION', 'لا يمكن إيقاف المؤسسة الرئيسية أو حذفها.');
     o.status = p.status; saveOrgRow_(o);
-    audit_(me.username, p.status === 'active' ? 'تفعيل مؤسسة' : 'إيقاف مؤسسة', '', '', o.name);
+    audit_(me.username, { active: 'تفعيل مؤسسة', suspended: 'إيقاف مؤسسة', archived: 'حذف مؤسسة (أرشفة)' }[p.status], '', '', o.name);
     return orgPublic_(o);
   },
   importOrgs: function (me, p) { needPlatform_(me); return actImportOrgs_(me, p); },
+  // ترتيب المؤسسات في الكشاف والبوابة: قائمة المعرّفات بالترتيب المطلوب
+  orderOrgs: function (me, p) {
+    needPlatform_(me);
+    const ids = (Array.isArray(p.ids) ? p.ids : []).slice(0, 500).map(function (x) { return str_(x, 40); });
+    ids.forEach(function (id, i) { const o = getOrg_(id); if (o && o.sort !== i) { o.sort = i; saveOrgRow_(o); } });
+    ORGS_CACHE_ = null;
+    audit_(me.username, 'ترتيب المؤسسات', '', '', ids.length + ' مؤسسة');
+    return { ok: true };
+  },
   bulkResetPasswords: function (me, p) {
     needAdmin_(me);
     const list = (Array.isArray(p.usernames) ? p.usernames : []).slice(0, 300).map(normUser_);
