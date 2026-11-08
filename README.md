@@ -9,14 +9,16 @@
 | | |
 | --- | --- |
 | النظام (تطبيق الويب) | https://script.google.com/macros/s/AKfycbyOlWoG2qxREQoahc9sTmXgelljI3C15_j6NAaNEb3CkXp6uEEelcSxfqEX0kcsWYQqUw/exec |
-| النسخة HTML (GitHub Pages) | https://benmakkh-crypto.github.io/doctor-system/ |
+| بوابة نافذ (الدومين) | https://nafithapp.com/ |
+| النسخة التجريبية (HTML) | https://nafithapp.com/demo/ |
 | الموقع الإلكتروني العام | رابط النظام مع `?page=site` |
-| الموقع العام (نسخة تجريبية) | https://benmakkh-crypto.github.io/doctor-system/site/ |
+| الموقع العام (نسخة تجريبية) | https://nafithapp.com/site/ |
+| البريد | info@nafithapp.com |
 | مشروع Apps Script | https://script.google.com/home/projects/1r6FuCZ7UOKhRxDBWlEwxnmwbTfi4JjUV4MnFuc1Rx2DYGhgDRueBKlPb/edit |
 
 ## النسخة HTML المستقلة
 
-الملف [`index.html`](index.html)، ومنشور على https://benmakkh-crypto.github.io/doctor-system/ ، نسخة كاملة من النظام في ملف واحد، تعمل بفتحه في أي متصفح دون Google ودون إنترنت (عدا الخطوط). تشغّل شيفرة الخادم نفسها (`Code.gs`) داخل المتصفح، وتحفظ البيانات في المتصفح فقط، وتأتي ببيانات وحسابات تجريبية.
+الملف [`demo/index.html`](demo/index.html)، ومنشور على https://nafithapp.com/demo/ ، نسخة كاملة من النظام في ملف واحد، تعمل بفتحه في أي متصفح دون Google ودون إنترنت (عدا الخطوط). تشغّل شيفرة الخادم نفسها (`Code.gs`) داخل المتصفح، وتحفظ البيانات في المتصفح فقط، وتأتي ببيانات وحسابات تجريبية.
 
 بيانات الحسابات التجريبية لا تُنشر هنا؛ يطلبها من يحتاجها من المشرف العام.
 
