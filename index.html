@@ -590,6 +590,8 @@ var NF=new Intl.NumberFormat("ar-SA-u-nu-latn");
 var dG=function(d){try{return new Intl.DateTimeFormat("ar-SA-u-ca-gregory-nu-latn",{day:"numeric",month:"long",year:"numeric"}).format(new Date(d+"T12:00:00"))}catch(e){return d}};
 var dH=function(d){try{return new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura-nu-latn",{day:"numeric",month:"long",year:"numeric"}).format(new Date(d+"T12:00:00"))}catch(e){return""}};
 var GAS=!!(window.google&&google.script&&google.script.run);
+// على خادم نافذ (هوستنجر): النظام على /system/ من النطاق نفسه
+if(window.__NAFITH_HOST__)ENDPOINT=location.origin+"/system/";
 function call(fn,arg){
   if(GAS)return new Promise(function(res,rej){var r=google.script.run.withSuccessHandler(res).withFailureHandler(rej);arg===undefined?r[fn]():r[fn](arg)});
   if(fn==="platformPublic")return fetch(ENDPOINT+"?api=public").then(function(r){return r.json()});
@@ -699,7 +701,7 @@ function profilePaint(P){if(!P)return;
   if(!V.length&&P.areas)V=String(P.areas).split(/[،,]+/).map(function(x){return x.trim()}).filter(Boolean).slice(0,6);
   if(V.length)$("#valList").innerHTML=V.slice(0,8).map(function(v){return "<span>"+esc(v)+"</span>"}).join("");
 }
-function portalLink(code,app){if(GAS&&app&&!window.__DEMO__)return app+"?page=site"+(code?"&org="+encodeURIComponent(code):"");return "./"+(code?"?org="+encodeURIComponent(code):"")}
+function portalLink(code,app){if(window.__NAFITH_HOST__)return "/"+(code?"?org="+encodeURIComponent(code):"");if(GAS&&app&&!window.__DEMO__)return app+"?page=site"+(code?"&org="+encodeURIComponent(code):"");return "./"+(code?"?org="+encodeURIComponent(code):"")}
 /* ---------- بوابة منصة نافذ: دليل الجهات ومواقعها ---------- */
 var PORTAL={q:"",type:""};
 function portal(d){document.body.classList.add("portal");document.title="نافذ — منصة إدارة الجمعيات والمؤسسات";
