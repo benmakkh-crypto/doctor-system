@@ -15,7 +15,9 @@ const { openStore } = require("./store");
 
 const ROOT = path.join(__dirname, "..");
 const env = process.env;
-const PORT = +env.PORT || 3000;
+// هوستنجر يكتب متغيرات البيئة في ملف .env بجذر التطبيق؛ نقرؤه إن لم تكن محمّلة (دون استبدال الموجود).
+try { fs.readFileSync(path.join(ROOT, ".env"), "utf8").split(/\r?\n/).forEach(l => { const m = /^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/.exec(l); if (m && env[m[1]] === undefined) env[m[1]] = m[2].replace(/^(['"])(.*)\1$/, "$2"); }); } catch (e) { }
+const PORT = env.PORT || 3000;   // قد يكون رقمًا أو مسار مقبس
 const PUBLIC_URL = (env.PUBLIC_URL || "https://nafithapp.com").replace(/\/+$/, "");
 const RPC = new Set(["getPublicConfig", "login", "logout", "api", "sitePublic", "siteSubmit", "platformPublic"]);
 const STATIC = ["app", "docs", "demo", "site"];
@@ -140,6 +142,7 @@ async function maybeBackup() {
 }
 
 async function main() {
+  await null;
   store = await openStore(env);
   const st = await store.load();
   if (env.SMTP_HOST && env.SMTP_USER && env.SMTP_PASS) {
@@ -165,8 +168,13 @@ async function main() {
   }
   try { RT.api.getPublicConfig(); await persist(); } catch (e) { console.error(e); } // يشغّل الترحيل التلقائي للمخطط
   maybeBackup(); setInterval(maybeBackup, 6 * 3600 * 1000).unref();
-  http.createServer((req, res) => handle(req, res).catch(e => { console.error(e); try { send(res, 500, "خطأ في الخادم"); } catch (x) { } }))
-    .listen(PORT, () => console.log(`نافذ ${RT.api.APP_VERSION} يعمل على المنفذ ${PORT} · التخزين: ${store.kind}`));
 }
-if (require.main === module) main().catch(e => { console.error(e); process.exit(1); });
-module.exports = { main, handle };
+
+// هوستنجر يتطلب استدعاء listen() فورًا عند تحميل الملف؛ فنستمع أولًا، وتنتظر الطلبات حتى تجهز البيانات.
+const ready = main();
+ready.then(() => console.log(`نافذ ${RT.api.APP_VERSION} يعمل على المنفذ ${PORT} · التخزين: ${store.kind}`))
+  .catch(e => { console.error("تعذّر بدء نافذ:", e); });
+http.createServer((req, res) => {
+  ready.then(() => handle(req, res)).catch(e => { console.error(e); try { send(res, 503, "نافذ غير متاح الآن: " + (e && e.code || "خطأ في البدء"), null, { "Retry-After": "30" }); } catch (x) { } });
+}).listen(PORT);
+module.exports = { handle };
