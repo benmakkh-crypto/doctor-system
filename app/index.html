@@ -95,7 +95,7 @@ body.run #land{display:none}body.run #app{display:block}
 </div>
 <script>
 // رابط النظام الفعلي على Google Apps Script
-var SYSTEM_URL="https://script.google.com/macros/s/AKfycbyOlWoG2qxREQoahc9sTmXgelljI3C15_j6NAaNEb3CkXp6uEEelcSxfqEX0kcsWYQqUw/exec";
+var SYSTEM_URL="/system/";
 var standalone=window.matchMedia("(display-mode: standalone)").matches||window.matchMedia("(display-mode: minimal-ui)").matches||navigator.standalone===true;
 var deferred=null;
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});

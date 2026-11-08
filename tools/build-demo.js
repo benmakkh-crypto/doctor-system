@@ -19,9 +19,10 @@ html = html.slice(0, at) +
   runtime.replace(/<\/script/gi, "<\\/script") + "</script>\n" + html.slice(at);
 html = html.replace("<title>نافذ — منصة الإدارة المؤسسية</title>", "<title>نافذ — نسخة تجريبية</title>");
 html = html.replace("<span>اتصال مشفّر عبر Google</span>", "<span>نسخة تجريبية · تعمل داخل المتصفح</span>");
-fs.mkdirSync(path.join(root, "demo"), { recursive: true });
-fs.writeFileSync(path.join(root, "demo", "index.html"), html);
-console.log("demo/index.html", (html.length / 1024).toFixed(0) + " KB");
+const ARC = path.join(root, "archive");
+fs.mkdirSync(path.join(ARC, "demo"), { recursive: true });
+fs.writeFileSync(path.join(ARC, "demo", "index.html"), html);
+console.log("archive/demo/index.html", (html.length / 1024).toFixed(0) + " KB");
 
 // الموقع العام التجريبي: يستخدم الخادم نفسه داخل المتصفح ويشارك بيانات النسخة التجريبية (نفس النطاق)
 let site = read("src/Site.html");
@@ -29,11 +30,8 @@ const sAt = site.indexOf("</head>");
 if (sAt < 0) throw new Error("no </head> in Site.html");
 site = site.slice(0, sAt) + "<!-- نسخة تجريبية: تُبنى آليًا من src/Site.html. لا تعدّلها يدويًا. -->\n<script>" +
   runtime.replace(/<\/script/gi, "<\\/script") + "</script>\n" + site.slice(sAt);
-fs.mkdirSync(path.join(root, "site"), { recursive: true });
-fs.writeFileSync(path.join(root, "site", "index.html"), site);
-console.log("site/index.html", (site.length / 1024).toFixed(0) + " KB");
+fs.mkdirSync(path.join(ARC, "site"), { recursive: true });
+fs.writeFileSync(path.join(ARC, "site", "index.html"), site);
+console.log("archive/site/index.html", (site.length / 1024).toFixed(0) + " KB");
 
-// الصفحة الرئيسة للدومين (nafithapp.com): بوابة نافذ الحية، تقرأ الجهات ومواقعها من نظام Apps Script الفعلي
-fs.writeFileSync(path.join(root, "index.html"), "<!-- بوابة نافذ الحية: تُبنى آليًا من src/Site.html. لا تعدّلها يدويًا. -->\n" + read("src/Site.html"));
-fs.writeFileSync(path.join(root, "CNAME"), "nafithapp.com\n");
-fs.writeFileSync(path.join(root, "404.html"), '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=/"><title>نافذ</title><a href="/">نافذ</a>');
+// النسخة التجريبية محفوظة في archive/ ولا تُنشر على nafithapp.com؛ الدومين يخدمه خادم Node (hostinger/server.js) وحده.
