@@ -9,7 +9,12 @@ const fs = require("fs"), path = require("path");
 
 async function openStore(env) {
   if (env.DB_HOST && env.DB_USER && env.DB_NAME) return mysqlStore(env);
-  return fileStore(env.DATA_DIR || path.join(__dirname, "..", "..", "nafith-data"));
+  return fileStore(env.DATA_DIR || defaultDir());
+}
+// على هوستنجر يُنشر كل إصدار في مجلد جديد (…/hbuilds/versions/<id>)؛ فنحفظ البيانات خارجه حتى تبقى بين عمليات النشر.
+function defaultDir() {
+  const m = /^(.*?)[\\/]hbuilds[\\/]/.exec(__dirname);
+  return m ? path.join(m[1], "nafith-data") : path.join(__dirname, "..", "..", "nafith-data");
 }
 
 /* ---------- MySQL ---------- */
