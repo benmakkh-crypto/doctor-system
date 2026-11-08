@@ -36,7 +36,7 @@ function start() {
   const app = await (await get("/app/")).text();
   ok(app.includes('var SYSTEM_URL="/system/";'), "app opens the same-origin system");
   ok((await get("/app/manifest.webmanifest")).headers.get("content-type").includes("manifest"), "manifest type");
-  ok((await get("/demo/")).status === 200 && (await get("/site/")).status === 200, "demo and demo site served");
+  ok((await fetch(B + "/demo/", { redirect: "manual" })).headers.get("location") === "/system/" && (await fetch(B + "/site/?org=X", { redirect: "manual" })).headers.get("location") === "/?org=X", "old demo links redirect to the real system");
   ok((await get("/src/Code.gs")).status === 404 && (await get("/app/../src/Code.gs")).status === 404 && (await get("/%2e%2e/package.json")).status === 404 && (await get("/hostinger/server.js")).status === 404, "server code and data are not exposed");
   const gz = await fetch(B + "/system/", { headers: { "Accept-Encoding": "gzip" } });
   ok(gz.status === 200, "gzip works");

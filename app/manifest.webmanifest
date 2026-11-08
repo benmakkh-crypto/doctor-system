@@ -20,6 +20,6 @@
     { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    { "name": "النسخة التجريبية", "short_name": "تجريبي", "url": "../demo/", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+    { "name": "دليل الجهات", "short_name": "الجهات", "url": "/", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }

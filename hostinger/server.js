@@ -20,7 +20,7 @@ try { fs.readFileSync(path.join(ROOT, ".env"), "utf8").split(/\r?\n/).forEach(l 
 const PORT = env.PORT || 3000;   // قد يكون رقمًا أو مسار مقبس
 const PUBLIC_URL = (env.PUBLIC_URL || "https://nafithapp.com").replace(/\/+$/, "");
 const RPC = new Set(["getPublicConfig", "login", "logout", "api", "sitePublic", "siteSubmit", "platformPublic"]);
-const STATIC = ["app", "docs", "demo", "site"];
+const STATIC = ["app", "docs"];
 const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".json": "application/json", ".webmanifest": "application/manifest+json", ".png": "image/png", ".svg": "image/svg+xml", ".ico": "image/x-icon", ".pdf": "application/pdf", ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation", ".jpg": "image/jpeg", ".webp": "image/webp", ".txt": "text/plain; charset=utf-8" };
 
 // يجعل google.script.run وgoogle.script.url تعمل في المتصفح عبر /rpc
@@ -128,6 +128,9 @@ async function handle(req, res) {
   if (p === "/robots.txt") return send(res, 200, "User-agent: *\nDisallow: /system/\nDisallow: /rpc\n");
   if (p === "/favicon.ico") return serveStatic(req, res, "/app/icons/icon-192.png");
   if (p === "/" || p === "/index.html") return renderHtml(res, Object.assign({ page: "site" }, params));
+  // النسخة التجريبية القديمة لم تعد متاحة على الدومين: كل شيء على النظام الحقيقي
+  if (p === "/demo" || p.startsWith("/demo/")) return send(res, 301, "", null, { Location: "/system/" });
+  if (p === "/site" || p.startsWith("/site/")) return send(res, 301, "", null, { Location: "/" + u.search });
   if (p === "/system" ) return send(res, 301, "", null, { Location: "/system/" + u.search });
   if (p === "/system/" || p === "/exec") return renderHtml(res, params);
   if (STATIC.some(d => p === "/" + d || p.startsWith("/" + d + "/"))) return serveStatic(req, res, p);
