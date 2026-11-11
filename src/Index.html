@@ -1589,6 +1589,56 @@ body.ro-on .side{touch-action:none}
 @media (prefers-reduced-motion:reduce){.la-rose path,.la-core svg,.lg-seal .o,.la-sat,.la-glow,#lgBtn::after,.login-card{animation:none!important}}
 .omove{display:inline-flex;gap:2px;margin-inline-start:auto}.omove .btn{min-width:30px;padding-inline:6px}
 .ocard.archived{opacity:.75;filter:saturate(.6)}
+
+/* ================= مركز الحوكمة ================= */
+.gcyc{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted)}.gcyc select{border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:var(--surface);font:inherit;color:var(--ink)}
+.govhero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;margin-bottom:14px}
+.gsteps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.gstep{position:relative;display:grid;gap:4px;padding:14px;border-radius:16px;background:var(--surface);border:1px solid var(--line);overflow:hidden}
+.gstep::after{content:"";position:absolute;inset:auto 0 0;height:3px;background:linear-gradient(90deg,transparent,#c9a227,transparent);opacity:.6}
+.gstep span{width:32px;height:32px;display:grid;place-items:center;color:#fff;font-weight:800;background:#8a3b12;clip-path:polygon(50% 0,64.7% 14.5%,85.4% 14.6%,85.5% 35.3%,100% 50%,85.5% 64.7%,85.4% 85.4%,64.7% 85.5%,50% 100%,35.3% 85.5%,14.6% 85.4%,14.5% 64.7%,0 50%,14.5% 35.3%,14.6% 14.6%,35.3% 14.5%)}
+.gstep.done span{background:#1d7548}.gstep b{font-family:var(--f-display);font-size:14.5px}.gstep small{color:var(--muted);font-size:12px;line-height:1.6}
+.grings{display:grid;grid-template-columns:auto auto minmax(96px,auto);grid-template-rows:auto auto;align-items:center;justify-content:space-around;gap:10px;padding:12px;border-radius:18px;background:linear-gradient(160deg,color-mix(in srgb,#0b4639 8%,var(--surface)),var(--surface));border:1px solid var(--line)}
+.gring{position:relative;display:grid;place-items:center;flex:none}.gring svg{position:absolute;inset:0;width:100%;height:100%}
+.gring .gbg{fill:color-mix(in srgb,var(--gc) 9%,var(--surface));stroke:color-mix(in srgb,var(--gc) 35%,transparent);stroke-width:1}
+.gring .gtr{fill:none;stroke:color-mix(in srgb,var(--gc) 14%,transparent);stroke-width:7}.gring .gfg{fill:none;stroke:var(--gc);stroke-width:7;stroke-linecap:round;transition:stroke-dasharray .8s}
+.gring b{position:relative;font-family:var(--f-display);font-size:clamp(17px,2vw,24px);color:var(--gc);margin-top:-8px}.gring small{position:absolute;bottom:22%;font-size:10.5px;color:var(--muted);max-width:70%;text-align:center;line-height:1.3}
+.grings>.gring{grid-row:span 2}.gkpi{display:grid;justify-items:center;gap:2px;padding:10px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line);min-width:96px}.gkpi b{font-family:var(--f-display);font-size:24px}.gkpi b small{font-size:13px;color:var(--muted)}.gkpi span{font-size:12px;color:var(--muted)}.gkpi.warn b{color:#c27a0e}
+.gstds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.gstdc{display:grid;gap:6px;text-align:start;padding:14px 16px;border-radius:16px;border:1px solid var(--line);border-top:4px solid var(--sc);background:var(--surface);font:inherit;color:var(--ink);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.gstdc:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.gstdc.on{background:color-mix(in srgb,var(--sc) 7%,var(--surface));box-shadow:0 0 0 2px color-mix(in srgb,var(--sc) 40%,transparent)}
+.gstdc .gn{width:26px;height:26px;display:grid;place-items:center;border-radius:8px;background:var(--sc);color:#fff;font-weight:800;font-size:13px}.gstdc b{font-family:var(--f-display);font-size:16px}.gstdc small{color:var(--muted);font-size:12px}
+.gbar{display:block;height:7px;border-radius:9px;background:color-mix(in srgb,var(--sc,#0e7a5f) 13%,var(--surface-2));overflow:hidden}.gbar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--sc,#0e7a5f),color-mix(in srgb,var(--sc,#0e7a5f) 60%,#c9a227))}
+.gtabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 12px;border-bottom:1px solid var(--line)}.gtabs button{border:0;background:none;font:inherit;font-weight:600;color:var(--muted);padding:10px 14px;border-bottom:3px solid transparent;cursor:pointer}.gtabs button.on{color:var(--brand);border-bottom-color:#c9a227}
+.gstd-d{margin:0 0 12px;padding:12px 14px;border-inline-start:4px solid var(--sc);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px}
+.gind{border:1px solid var(--line);border-radius:16px;background:var(--surface);margin-bottom:10px;overflow:hidden}.gind.open{box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--sc) 35%,var(--line))}
+.gih{width:100%;display:grid;grid-template-columns:auto 1fr minmax(80px,160px) auto auto;align-items:center;gap:12px;padding:14px 16px;border:0;background:none;font:inherit;color:var(--ink);text-align:start;cursor:pointer}
+.gih .gnum{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:var(--sc);color:#fff;font-weight:800}.gih .gtt b{display:block;font-family:var(--f-display);font-size:15px;line-height:1.6}.gih small{color:var(--muted);font-size:12px}
+.gih em{font-style:normal;font-weight:800;color:var(--sc);min-width:40px;text-align:center}.gih>svg{transition:transform .2s}.gind.open .gih>svg{transform:rotate(90deg)}
+.gav{font-weight:700;color:var(--ac)}
+.gib{padding:0 16px 16px;display:grid;gap:10px}.gib h4{margin:6px 0 0;font-size:14px}.gib h4 small{color:var(--muted);font-weight:500}
+.gwhat{padding:10px 14px;border-radius:12px;background:var(--surface-2)}.gwhat p{margin:4px 0 0;color:var(--muted);font-size:13.5px}
+.gdocs{display:grid;gap:8px}
+.gdoc{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
+.gdoc .gst{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;color:#fff;font-weight:800}
+.gdoc.miss{background:color-mix(in srgb,#b0291f 5%,var(--surface));border-color:color-mix(in srgb,#b0291f 22%,var(--line))}.gdoc.miss .gst{background:#c0392b}
+.gdoc.ok{background:color-mix(in srgb,#1d7548 6%,var(--surface));border-color:color-mix(in srgb,#1d7548 25%,var(--line))}.gdoc.ok .gst{background:#1d7548}
+.gdoc.na .gst{background:#6b7280}.gdoc.exp{background:color-mix(in srgb,#c27a0e 8%,var(--surface));border-color:color-mix(in srgb,#c27a0e 35%,var(--line))}.gdoc.exp .gst{background:#c27a0e}
+.gdt small{display:block;color:var(--muted);font-size:11.5px}.gdt b{display:block;font-size:14.5px;line-height:1.6}.gsl{font-size:12px;color:var(--muted)}.gdoc.miss .gsl{color:#b0291f}.gdoc.ok .gsl{color:#1d7548}
+.guse{font-style:normal;color:#8a3b12;font-weight:700}.gfn{direction:ltr;unicode-bidi:isolate}.gsoon{font-style:normal;color:#c27a0e;font-weight:700}.gnote{display:block;font-size:12px;color:var(--ink);margin-top:2px}
+.gact{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.gact label.btn{cursor:pointer}
+.gans{display:flex;gap:8px;flex-wrap:wrap}.gans button{border:1.5px solid color-mix(in srgb,var(--ac) 40%,var(--line));background:var(--surface);color:var(--ac);border-radius:999px;padding:7px 16px;font:inherit;font-weight:700;cursor:pointer}.gans button.on{background:var(--ac);color:#fff}
+.gnt{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit;background:var(--bg);color:var(--ink)}
+.gmap{border:1px solid var(--line);border-radius:18px;background:var(--surface);margin-bottom:14px;overflow:hidden;border-top:4px solid var(--gc)}
+.gmap>header{display:flex;overflow:visible;align-items:center;gap:14px;padding:14px 16px;background:color-mix(in srgb,var(--gc) 6%,var(--surface));flex-wrap:wrap}.gmap>header>div{flex:1;min-width:160px}.gmap h3{margin:0;font-size:17px;color:var(--gc)}.gmap header small{color:var(--muted)}
+.gmi{width:46px;height:46px;display:grid;place-items:center;border-radius:14px;background:var(--gc);color:#fff}.gmi svg{width:24px;height:24px}
+.gmap h4{margin:12px 16px 6px;font-size:14px;color:var(--gc);display:flex;justify-content:space-between}.gmap h4 small{color:var(--muted)}
+.gtiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;padding:0 16px 12px}
+.gtile{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}.gtile b{flex:1;font-weight:500;font-size:13.5px;line-height:1.5}
+.gtile>span{width:22px;height:22px;flex:none;display:grid;place-items:center;border-radius:50%;color:#fff;font-size:12px;font-weight:800}.gtile.ok>span{background:#1d7548}.gtile.miss>span{background:#c0392b}.gtile.exp>span{background:#c27a0e}
+.gtile .lnk{border:0;background:none;color:var(--muted);cursor:pointer;padding:2px;display:inline-grid}.gtile .lnk:hover{color:var(--brand)}.gtile .lnk svg{width:16px;height:16px}
+.govov{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}.govoc{display:grid;justify-items:center;gap:6px;padding:16px;border-radius:18px;background:var(--surface);border:1px solid var(--line);text-align:center}.govoc header{display:flex;gap:8px}.govoc h3{margin:4px 0 0;font-size:16px}.govoc small{color:var(--muted)}
+@media (max-width:900px){.govhero{grid-template-columns:1fr}.gsteps{grid-template-columns:1fr 1fr}.gstds{grid-template-columns:1fr}.gih{grid-template-columns:auto 1fr auto;}.gih .gbar{display:none}.gdoc{grid-template-columns:auto 1fr}.gact{grid-column:1/-1;justify-content:flex-start}}
 </style>
 </head>
 <body class="auth">
@@ -2347,7 +2397,7 @@ function route(){
   const h=(location.hash||"#home").slice(1);let m;
   if((m=h.match(/^m(\d+)-(\d+)$/))&&G[+m[1]]?.items[+m[2]]!=null)return{v:"mod",g:+m[1],m:+m[2]};
   if((m=h.match(/^g(\d+)$/))&&G[+m[1]])return{v:"grp",g:+m[1]};
-  if(["inbox","trash","org","focus","flow","users","audit","menus","perms","orgs","themes"].includes(h))return{v:h};
+  if(["inbox","trash","org","focus","flow","users","audit","menus","perms","orgs","themes","gov"].includes(h))return{v:h};
   return{v:"home"};
 }
 let R=route();let navDepth=0;if(R.v==="grp"||R.v==="mod")navOpen.add(R.g);
@@ -3130,7 +3180,7 @@ function renderTop(){
   const al=computeAlerts(A),aCount=al.reduce((a,x)=>a+x.n,0);
   const name=(S.meP&&S.meP.name)||"";const role=S.platform?"مدير النظام · المشرف العام":S.member?"عضو منصة نافذ (اطلاع)":S.admin?"مسؤول النظام":S.canWrite?"مساهم":"مشاهد";
   const dark=document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
-  const links=[["home","الرئيسية","#home"],["focus","مهامي والأولويات","#focus"],["inbox","صندوق الاعتمادات","#inbox"],["flow","مسار المعاملات","#flow"],["RPT","التقارير","#g0"],["WEB","إدارة الموقع","#g3"],["org","الإعدادات والبيانات","#org"],["trash","المحذوفات","#trash"]]
+  const links=[["home","الرئيسية","#home"],["focus","مهامي والأولويات","#focus"],["inbox","صندوق الاعتمادات","#inbox"],["flow","مسار المعاملات","#flow"],["GOV","مركز الحوكمة","#gov"],["RPT","التقارير","#g0"],["WEB","إدارة الموقع","#g3"],["org","الإعدادات والبيانات","#org"],["trash","المحذوفات","#trash"]]
    .concat([["shieldCheck","الصلاحيات","#perms"]]).concat(S.admin?[["users","المستخدمون","#users"],["menu","تخصيص القوائم","#menus"],["audit","سجل التدقيق","#audit"]]:[]);
   const dd=(id,btn,body,extra="")=>`<div class="dd ${ddOpen===id?"open":""} ${extra}" data-dd="${id}">${btn}<div class="ddp" role="menu">${body}</div></div>`;
   $("#tnav").innerHTML=orgSwitcherHTML()+(LAYOUT_PAGES(R.v)?`<button class="tn ${editMode?"on":""}" data-pgedit title="إظهار وإخفاء وتحريك وتحجيم عناصر الصفحة" aria-pressed="${editMode}">${ico("sliders")}<span class="lbl">${editMode?"إنهاء التخصيص":"تخصيص الصفحة"}</span></button>`:"")+
@@ -3185,14 +3235,14 @@ function render(){
   $("#addBtn").hidden=!S.canWrite;
   let v;
   if(!S.loaded)v=`<div class="skel" style="height:120px"></div><div class="kpis"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></div><div class="skel" style="height:240px"></div>`;
-  else v=banners()+({mod:()=>R.g===0?viewReport():viewModule(),grp:viewGroup,inbox:viewInbox,trash:viewTrash,org:viewOrg,focus:viewFocus,flow:viewFlow,users:viewUsers,audit:viewAudit,menus:viewMenus,perms:viewPerms,orgs:viewOrgs,themes:viewThemes}[R.v]||viewHome)();
+  else v=banners()+({mod:()=>R.g===0?viewReport():viewModule(),grp:viewGroup,inbox:viewInbox,trash:viewTrash,org:viewOrg,focus:viewFocus,flow:viewFlow,users:viewUsers,audit:viewAudit,menus:viewMenus,perms:viewPerms,orgs:viewOrgs,themes:viewThemes,gov:viewGov}[R.v]||viewHome)();
   $("#main").innerHTML=`<div class="wrap">${v}</div>`;
   decorateHead();
   bindMain();
   if(aid){const n=document.getElementById(aid);if(n){n.focus();if(sel)try{n.setSelectionRange(sel[0],sel[1])}catch(e){}}}
   if(drawerId)paintDrawer();
 }
-const PH={focus:["focus","#d9702a","Priorities"],inbox:["inbox","#6d3fc0","Approvals"],flow:["flow","#3157b8","Workflow"],trash:["trash","#cf3f3f","Trash"],org:["org","#4B5563","Settings & Data"],users:["users","#0F766E","Users & Access"],audit:["audit","#243B6B","Audit Log"],menus:["menu","#B03A8C","Menus & Headings"],perms:["shieldCheck","#0B6E4F","Permissions Matrix"],orgs:["building","#0e7a5f","Organizations Directory"]};
+const PH={gov:["GOV","#8a3b12","Governance Center"],focus:["focus","#d9702a","Priorities"],inbox:["inbox","#6d3fc0","Approvals"],flow:["flow","#3157b8","Workflow"],trash:["trash","#cf3f3f","Trash"],org:["org","#4B5563","Settings & Data"],users:["users","#0F766E","Users & Access"],audit:["audit","#243B6B","Audit Log"],menus:["menu","#B03A8C","Menus & Headings"],perms:["shieldCheck","#0B6E4F","Permissions Matrix"],orgs:["building","#0e7a5f","Organizations Directory"]};
 function decorateHead(){
   const h=$("#main .wrap>.head");if(!h)return;
   let k=null;if(PH[R.v])k=PH[R.v];else if(R.v==="mod"&&R.g===0)k=[modIco(0,R.m),G[0].col,G[0].en];
@@ -3235,7 +3285,7 @@ function renderNav(){
   const trash=S.recs.filter(r=>r.deleted).length;
   const openN=A.filter(r=>isOpen(r)).length;const nOrgs=(S.orgs||[]).length;
   const qk=(h,ic,t,sub,col,n,hotN)=>`<a href="#${h}" class="qk ${R.v===h?"on":""}" style="--qc:${col}"${R.v===h?' aria-current="page"':""}><span class="qki">${ico(ic)}</span><span class="qkt"><b>${t}</b><small>${sub}</small></span>${n?`<span class="qkn ${hotN?"pulse":""}">${n}</span>`:`<span class="qka">${ico("chev")}</span>`}</a>`;
-  const topItems=[["focus",qk("focus","focus","مهامي والأولويات",hot?`${hot} تحتاج متابعتك`:"لا شيء عاجل","#e0573a",hot,hot>0)],["inbox",qk("inbox","inbox","صندوق الاعتمادات",pend?`${pend} بانتظار الاعتماد`:"لا شيء معلّق","#7b5ce0",pend,false)],["flow",qk("flow","flow","مسار المعاملات","تتبّع المراحل","#13a597",0)]];
+  const topItems=[["focus",qk("focus","focus","مهامي والأولويات",hot?`${hot} تحتاج متابعتك`:"لا شيء عاجل","#e0573a",hot,hot>0)],["inbox",qk("inbox","inbox","صندوق الاعتمادات",pend?`${pend} بانتظار الاعتماد`:"لا شيء معلّق","#7b5ce0",pend,false)],["flow",qk("flow","flow","مسار المعاملات","تتبّع المراحل","#13a597",0)],["gov",qk("gov","GOV","مركز الحوكمة",govCache&&govCache.score?`جاهزية ${govCache.score.readyPct}٪`:"المعايير والشواهد","#8a3b12",0)]];
   if(S.member)topItems.push(["orgs",qk("orgs","building","الكشاف",`${nOrgs} ${nOrgs>2&&nOrgs<11?"مؤسسات":"مؤسسة"} في المنصة`,"#2f86d8",nOrgs,false)]);
   $("#navTop").innerHTML=`<a href="#home" class="qhero ${R.v==="home"?"on":""}"${R.v==="home"?' aria-current="page"':""}><span class="qhi">${ico("home")}</span><span class="qht"><small>لوحة القيادة</small><b>الرئيسية</b></span><span class="qhs"><b>${openN}</b><small>مفتوحة</small></span></a>`
    +roSort(topItems.map(x=>x[0]),"topOrder").map(k=>topItems.find(x=>x[0]===k)[1].replace('<a ',`<a data-ro="top" data-k="${k}" `)).join("");
@@ -3828,6 +3878,103 @@ function viewAudit(){
    </tbody></table></div>`;
 }
 
+/* ================= مركز الحوكمة ================= */
+let govCache=null,govLoading=false;
+const GOV_ANS=[["full","مطابق","#1d7548"],["part","مطابق جزئيًا","#c27a0e"],["none","غير مطابق","#b0291f"],["na","لا ينطبق","#6b7280"]];
+const GOV_ICO={found:"contract",policy:"book",ga:"users",board:"GOV",exec:"briefcase",fin:"FIN",plans:"fileChart",letters:"COM",web:"WEB"};
+async function loadGov(cycle){if(govLoading)return;govLoading=true;
+  try{govCache=await call("govGet",{cycle:cycle||ui.govCycle||String(new Date().getFullYear())});govCache.__org=S.org||"";ui.govCycle=govCache.cycle}
+  catch(e){govCache={err:e.message||"تعذّر التحميل"}}finally{govLoading=false;if(R.v==="gov")render()}}
+function govApply(d){if(d){d.__org=S.org||"";govCache=d;ui.govCycle=d.cycle;render()}}
+function govDoc(k){const G=govCache;return G.def.docs[k]||G.lib[k]||{t:k,g:"found",s:""}}
+function govUses(k){const n=[];govCache.def.standards.forEach(s=>s.ind.forEach(i=>{if(i.docs.includes(k))n.push(i.id)}));return n}
+function govReady(k){const d=govCache.docs[k];return !!(d&&(d.has||d.na))}
+function govExpSoon(d){if(!d||!d.exp)return 0;const t=(new Date(d.exp)-Date.now())/864e5;return t<0?-1:t<=60?1:0}
+function govRing(p,c,label,size=118){const r=size/2-9,C=2*Math.PI*r,v=p==null?0:p;
+  return `<span class="gring" style="--gc:${c};width:${size}px;height:${size}px"><svg viewBox="0 0 ${size} ${size}"><path d="${star8(size/2,size/2,size/2-2,.84)}" class="gbg"/><circle cx="${size/2}" cy="${size/2}" r="${r}" class="gtr"/><circle cx="${size/2}" cy="${size/2}" r="${r}" class="gfg" stroke-dasharray="${(C*v/100).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 ${size/2} ${size/2})"/></svg><b>${p==null?"—":NF.format(v)+"٪"}</b><small>${esc(label)}</small></span>`}
+function govUploadPick(key,file){
+  if(!file)return;const ok=["application/pdf","image/jpeg","image/png","image/webp","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/msword","application/vnd.ms-excel"];
+  if(!ok.includes(file.type)){toast("الأنواع المسموحة: PDF وWord وExcel والصور.");return}
+  if(file.size>10*1048576){toast("حجم الملف أكبر من 10 ميجابايت.");return}
+  const fr=new FileReader();fr.onload=async()=>{toast("جارٍ رفع «"+file.name+"»…");const d=await act("govUpload",{cycle:govCache.cycle,key,name:file.name,mime:file.type,data:String(fr.result).split(",")[1]},"رُفع «"+govDoc(key).t+"»");govApply(d)};
+  fr.onerror=()=>toast("تعذّرت قراءة الملف.");fr.readAsDataURL(file)}
+async function govDownload(key){toast("جارٍ تجهيز المستند…");try{const d=await call("govFile",{cycle:govCache.cycle,key});const bin=atob(d.data),u8=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);saveBlob(new Blob([u8],{type:d.mime}),d.name)}catch(e){if(e.code!=="AUTH")toast(e.message)}}
+function govDocRow(k,{ctx=""}={}){
+  const G=govCache,d=G.docs[k]||{},D=govDoc(k),uses=govUses(k),grp=G.def.groups.find(x=>x.id===D.g)||{n:""},ready=govReady(k),ex=govExpSoon(d),w=S.canWrite;
+  const st=d.na?["na","لا ينطبق: "+(d.naWhy||""),"minus"]:d.has?(ex<0?["exp","انتهت صلاحيته في "+d.exp,"alert"]:["ok","تم رفع الشاهد"+(d.at?" · "+d.at.slice(0,10):""),"check"]):["miss","مطلوب — لم يُرفع بعد","up"];
+  return `<div class="gdoc ${st[0]}" data-gk="${esc(k)}"><span class="gst">${st[0]==="ok"?"✓":st[0]==="na"?"—":st[0]==="exp"?"!":"↑"}</span>
+   <div class="gdt"><small>${esc(grp.n)}${D.s?" · "+esc(D.s):""}${uses.length>1?` · <em class="guse" title="${esc(uses.join("، "))}">يخدم ${NF.format(uses.length)} مؤشرات</em>`:""}</small><b>${esc(D.t)}</b>
+    <span class="gsl">${esc(st[1])}${d.has&&d.name?` · <span class="gfn">${esc(d.name)}</span>`:""}${d.exp&&st[0]!=="exp"?` · ينتهي ${esc(d.exp)}${ex>0?' <i class="gsoon">قريبًا</i>':""}`:""}${d.hist?` · ${NF.format(d.hist)} نسخة سابقة`:""}</span>${d.note?`<span class="gnote">${esc(d.note)}</span>`:""}</div>
+   <div class="gact">${d.has?`<button class="btn sm" data-gdl="${esc(k)}" title="تنزيل">${ico("eye")}</button>`:""}${w?`<label class="btn sm ${d.has?"":"pri"}">${d.has?"تحديث":"رفع"}<input type="file" hidden data-gup="${esc(k)}" accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"></label><button class="btn sm" data-gmeta="${esc(k)}" title="الصلاحية والملاحظة وعدم الانطباق">${ico("sliders")}</button>${d.has||d.na?`<button class="btn sm" data-gclr="${esc(k)}" title="إزالة">✕</button>`:""}`:""}</div></div>`}
+function viewGov(){
+  const head=(sub,acts="")=>`<div class="head"><div><h1>مركز الحوكمة</h1><p>${sub}</p></div><div class="actions">${acts}</div></div>`;
+  if(!govCache||govCache.__org!==(S.org||"")){if(!govLoading)loadGov();return head("جارٍ التحميل…")+`<div class="skel" style="height:320px"></div>`}
+  const G=govCache;if(G.err)return head("")+`<div class="tw"><div class="empty"><b>${esc(G.err)}</b></div></div>`;
+  const yr=new Date().getFullYear(),cycles=[...new Set([...(G.cycles||[]),String(yr),String(yr+1),G.cycle])].sort().reverse();
+  const cyc=`<label class="gcyc">دورة التقييم <select data-gcycle>${cycles.map(c=>`<option ${c===G.cycle?"selected":""}>${c}</option>`).join("")}</select></label>`;
+  if(G.overview){const O=G.overview;
+    return head("نظرة المشرف العام: جاهزية الحوكمة في كل مؤسسة",cyc)+`<div class="govov">${O.map(o=>`<article class="govoc"><header>${govRing(o.readyPct,"#0e7a5f","الجاهزية",96)}${govRing(o.compPct,"#b07a12","الامتثال",96)}</header><h3>${esc(o.name)}</h3><small>${esc(o.code)} · ${NF.format(o.ready)} من ${NF.format(o.total)} شاهدًا</small><button class="btn sm pri" data-setorg="${esc(o.id)}">${ico("login")} فتح مركز حوكمتها</button></article>`).join("")||`<div class="empty">لا مؤسسات.</div>`}</div>`}
+  const sc=G.score,allDocs=[...new Set(G.def.standards.flatMap(s=>s.ind.flatMap(i=>i.docs)))],readyDocs=allDocs.filter(govReady).length;
+  const expiring=Object.keys(G.docs).filter(k=>govExpSoon(G.docs[k])!==0),answered=G.def.standards.reduce((a,s)=>a+s.ind.filter(i=>G.ans[i.id]&&G.ans[i.id].v).length,0),indN=G.def.standards.reduce((a,s)=>a+s.ind.length,0);
+  const prev=cycles.find(c=>c<G.cycle&&(G.cycles||[]).includes(c));
+  const acts=`${cyc}${S.canWrite&&prev?`<button class="btn" data-gcopy="${prev}" title="ينقل المستندات الثابتة (اللوائح والسياسات والعقود) دون الإجابات">${ico("repeat")} نسخ مستندات ${prev}</button>`:""}<button class="btn" data-rep="gov">${ico("fileChart")} طباعة / PDF</button><button class="btn" data-rep="gov" data-fmt="xlsx">Excel</button>`;
+  const steps=[["افهم المطلوب","3 معايير و"+NF.format(indN)+" مؤشرًا مشروحة",1],["جهّز مستنداتك",NF.format(readyDocs)+" من "+NF.format(allDocs.length)+" مستندًا جاهزًا",readyDocs===allDocs.length],["ارفع مرة واحدة","المستند المشترك يكتمل في كل مؤشراته",readyDocs>0],["قيّم مؤشراتك",NF.format(answered)+" من "+NF.format(indN)+" مؤشرًا مقيّمًا",answered===indN]];
+  const tab=ui.govTab||"ind",std=ui.govStd||"C";
+  let body="";
+  if(tab==="ind"){const S0=G.def.standards.find(s=>s.id===std)||G.def.standards[0];
+    body=`<p class="gstd-d" style="--sc:${S0.c}">${esc(S0.d)}</p>`+S0.ind.map((I,n)=>{const r=I.docs.filter(govReady).length,a=G.ans[I.id]||{},open=ui.govOpen===I.id;const pct=Math.round(r/I.docs.length*100);
+      return `<section class="gind ${open?"open":""}" style="--sc:${S0.c}"><button class="gih" data-gopen="${I.id}" aria-expanded="${open}"><span class="gnum">${NF.format(n+1)}</span><span class="gtt"><b>${esc(I.n)}</b><small>${NF.format(I.docs.length)} شاهدًا · جاهز ${NF.format(r)} من ${NF.format(I.docs.length)}${a.v?` · <span class="gav" style="--ac:${(GOV_ANS.find(x=>x[0]===a.v)||[])[2]}">${(GOV_ANS.find(x=>x[0]===a.v)||[])[1]}</span>`:""}</small></span><span class="gbar"><i style="width:${pct}%"></i></span><em>${NF.format(pct)}٪</em>${ico("chev")}</button>
+      ${open?`<div class="gib"><div class="gwhat"><b>ما هذا المؤشر؟</b><p>جهّز الشواهد المطلوبة أدناه وارفعها؛ ما رفعته سابقًا لمؤشر آخر يظهر هنا مكتملًا تلقائيًا. ثم قيّم مدى مطابقة الجمعية للمؤشر.</p></div>
+       <h4>الشواهد المطلوبة <small>${NF.format(I.docs.length-r)} متبقٍ</small></h4><div class="gdocs">${I.docs.map(k=>govDocRow(k)).join("")}</div>
+       <h4>التقييم الذاتي للمؤشر</h4><div class="gans">${GOV_ANS.map(([v,l,c])=>`<button class="${a.v===v?"on":""}" style="--ac:${c}" data-gans="${I.id}" data-v="${v}" ${S.canWrite?"":"disabled"}>${l}</button>`).join("")}</div>
+       <textarea class="gnt" data-gnote="${I.id}" rows="2" placeholder="ملاحظة: ما الذي ينقص؟ ومن المسؤول؟ ومتى يكتمل؟" ${S.canWrite?"":"disabled"}>${esc(a.note||"")}</textarea>${a.by?`<small class="muted">آخر تقييم: ${esc(a.by)} · ${esc((a.at||"").slice(0,10))}</small>`:""}</div>`:""}</section>`}).join("")}
+  else if(tab==="map"){const lib=Object.assign({},G.def.docs,G.lib);
+    body=G.def.groups.map(g=>{const keys=Object.keys(lib).filter(k=>lib[k].g===g.id);if(!keys.length)return"";const r=keys.filter(govReady).length;const subs=[...new Set(keys.map(k=>lib[k].s||""))];
+      return `<section class="gmap" style="--gc:${g.c}"><header><span class="gmi">${ico(GOV_ICO[g.id]||"doc")}</span><div><h3>${esc(g.n)}</h3><small>${NF.format(subs.length)} تصنيفات · ${NF.format(keys.length)} مستندًا</small></div>${govRing(keys.length?Math.round(r/keys.length*100):0,g.c,NF.format(r)+" / "+NF.format(keys.length),78)}${S.canWrite?`<button class="btn sm" data-gadd="${g.id}">${ico("filePlus")} مستند إضافي</button>`:""}</header>
+       ${subs.map(sb=>{const ks=keys.filter(k=>(lib[k].s||"")===sb);return `<h4>${esc(sb||"عام")} <small>${NF.format(ks.filter(govReady).length)} / ${NF.format(ks.length)}</small></h4><div class="gtiles">${ks.map(k=>{const d=G.docs[k]||{};const ok=govReady(k),ex=govExpSoon(d);return `<div class="gtile ${ok?(ex<0?"exp":"ok"):"miss"}"><span>${ok?(d.na?"—":ex<0?"!":"✓"):"✕"}</span><b title="${esc(lib[k].t)}">${esc(lib[k].t)}</b>${d.has?`<button class="lnk" data-gdl="${esc(k)}" title="تنزيل">${ico("eye")}</button>`:""}${S.canWrite?`<label class="lnk" title="${d.has?"تحديث":"رفع"}">${ico("filePlus")}<input type="file" hidden data-gup="${esc(k)}" accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"></label>`:""}${lib[k].custom&&S.canWrite?`<button class="lnk" data-gdel="${esc(k)}" title="حذف من المكتبة">✕</button>`:""}</div>`}).join("")}</div>`}).join("")}</section>`}).join("")}
+  else if(tab==="miss"){const miss=allDocs.filter(k=>!govReady(k)).sort((a,b)=>govUses(b).length-govUses(a).length);
+    body=`<p class="muted">مرتبة حسب الأثر: المستند الذي يخدم مؤشرات أكثر أولًا، فرفعه يرفع نسبتك أسرع.</p><div class="gdocs">${miss.map(k=>govDocRow(k)).join("")||`<div class="empty"><b>اكتملت كل الشواهد. بارك الله في جهودكم.</b></div>`}</div>`}
+  else if(tab==="exp"){body=`<div class="gdocs">${expiring.sort((a,b)=>(G.docs[a].exp||"").localeCompare(G.docs[b].exp||"")).map(k=>govDocRow(k)).join("")||`<div class="empty"><b>لا مستندات منتهية أو تنتهي خلال 60 يومًا.</b><small>أضف تاريخ الصلاحية للمستندات المؤقتة (العقود، الشهادات، التراخيص) من زر الإعدادات بجانب كل مستند.</small></div>`}</div>`}
+  return head("متطلبات حوكمة الجمعيات الأهلية خطوة بخطوة — دورة "+G.cycle,acts)+
+   `<section class="govhero"><div class="gsteps">${steps.map((s,i)=>`<div class="gstep ${s[2]?"done":""}"><span>${s[2]?"✓":NF.format(i+1)}</span><b>${s[0]}</b><small>${s[1]}</small></div>`).join("")}</div>
+    <div class="grings">${govRing(sc.readyPct,"#0e7a5f","جاهزية الشواهد",132)}${govRing(sc.compPct,"#b07a12","الامتثال الذاتي",132)}<div class="gkpi"><b>${NF.format(readyDocs)}<small>/${NF.format(allDocs.length)}</small></b><span>مستند جاهز</span></div><div class="gkpi ${expiring.length?"warn":""}"><b>${NF.format(expiring.length)}</b><span>تنتهي صلاحيته</span></div></div></section>
+   <div class="gstds">${G.def.standards.map((s,i)=>{const x=sc.standards[i];const p=x.total?Math.round(x.ready/x.total*100):0;return `<button class="gstdc ${tab==="ind"&&std===s.id?"on":""}" style="--sc:${s.c}" data-gstd="${s.id}"><span class="gn">${NF.format(i+1)}</span><b>${esc(s.n)}</b><small>${NF.format(x.ind)} مؤشرات · الشواهد ${NF.format(x.ready)} / ${NF.format(x.total)}${x.comp!=null?" · امتثال "+NF.format(x.comp)+"٪":""}</small><span class="gbar"><i style="width:${p}%"></i></span></button>`}).join("")}</div>
+   <nav class="gtabs" role="tablist">${[["ind","المعايير والمؤشرات"],["map","خارطة الملفات المؤسسية"],["miss","النواقص ("+NF.format(allDocs.length-readyDocs)+")"],["exp","الصلاحية ("+NF.format(expiring.length)+")"]].map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?"on":""}" data-gtab="${k}">${l}</button>`).join("")}</nav>
+   <div class="gbody">${body}</div>`;
+}
+REPORTS.gov=()=>{const G=govCache;if(!G||!G.def||G.overview)return{title:"مركز الحوكمة",blocks:[]};const sc=G.score;
+  const rows=[];G.def.standards.forEach(s=>s.ind.forEach(i=>{const a=G.ans[i.id]||{};rows.push([s.n,i.id,i.n,i.docs.filter(govReady).length+" / "+i.docs.length,(GOV_ANS.find(x=>x[0]===a.v)||["",""])[1],a.note||""])}));
+  const docs=[...new Set(G.def.standards.flatMap(s=>s.ind.flatMap(i=>i.docs)))].map(k=>{const d=G.docs[k]||{};return[govDoc(k).t,(G.def.groups.find(g=>g.id===govDoc(k).g)||{}).n||"",d.na?"لا ينطبق":d.has?"مرفوع":"ناقص",d.name||"",(d.at||"").slice(0,10),d.exp||"",govUses(k).length]});
+  return{title:"تقرير جاهزية الحوكمة — دورة "+G.cycle,subtitle:S.cfg.orgName||"",landscape:true,
+   blocks:[{type:"kpis",items:[["جاهزية الشواهد",sc.readyPct+"٪"],["الامتثال الذاتي",sc.compPct==null?"—":sc.compPct+"٪"],["المستندات الجاهزة",docs.filter(d=>d[2]!=="ناقص").length],["الناقصة",docs.filter(d=>d[2]==="ناقص").length]]},
+    {type:"table",title:"المؤشرات",head:["المعيار","الرمز","المؤشر","الشواهد","التقييم","ملاحظة"],rows},
+    {type:"table",title:"المستندات",head:["المستند","المجموعة","الحالة","الملف","تاريخ الرفع","الصلاحية","عدد المؤشرات"],rows:docs}]}};
+function govMetaDialog(k){const d=govCache.docs[k]||{},D=govDoc(k);
+  modal(`<div class="dh"><h2>${ico("sliders")} ${esc(D.t)}</h2><button class="x" data-close aria-label="إغلاق">✕</button></div>
+   <div class="db form"><label>تاريخ انتهاء الصلاحية<input type="date" id="gmExp" value="${esc(d.exp||"")}"><small class="muted">للعقود والشهادات والتراخيص؛ يظهر تنبيه قبل الانتهاء بـ60 يومًا.</small></label>
+    <label>ملاحظة<textarea id="gmNote" rows="2" maxlength="300">${esc(d.note||"")}</textarea></label>
+    <label class="check"><input type="checkbox" id="gmNa" ${d.na?"checked":""}>هذا المستند لا ينطبق على الجمعية</label>
+    <label>سبب عدم الانطباق<input id="gmWhy" maxlength="200" value="${esc(d.naWhy||"")}" placeholder="مثال: لا توجد للجمعية فروع"></label></div>
+   <div class="df"><button class="btn pri" id="gmSave">حفظ</button><button class="btn" data-close>إلغاء</button></div>`);
+  $("#gmSave").onclick=async()=>{const dd=await act("govDocMeta",{cycle:govCache.cycle,key:k,exp:$("#gmExp").value,note:$("#gmNote").value,na:$("#gmNa").checked,naWhy:$("#gmWhy").value},"حُفظ");if(dd){closeModal();govApply(dd)}}}
+function bindGov(main){if(R.v!=="gov")return;
+  const q=(s,f)=>main.querySelectorAll(s).forEach(f);
+  const cy=main.querySelector("[data-gcycle]");if(cy)cy.onchange=()=>{ui.govCycle=cy.value;govCache=null;render()};
+  q("[data-gtab]",b=>b.onclick=()=>{ui.govTab=b.dataset.gtab;render()});
+  q("[data-gstd]",b=>b.onclick=()=>{ui.govStd=b.dataset.gstd;ui.govTab="ind";ui.govOpen=null;render()});
+  q("[data-gopen]",b=>b.onclick=()=>{ui.govOpen=ui.govOpen===b.dataset.gopen?null:b.dataset.gopen;render();const el=main.querySelector(`[data-gopen="${b.dataset.gopen}"]`);if(el)el.scrollIntoView({block:"nearest"})});
+  q("[data-gup]",i=>i.onchange=()=>govUploadPick(i.dataset.gup,i.files[0]));
+  q("[data-gdl]",b=>b.onclick=()=>govDownload(b.dataset.gdl));
+  q("[data-gmeta]",b=>b.onclick=()=>govMetaDialog(b.dataset.gmeta));
+  q("[data-gclr]",b=>b.onclick=()=>confirmBox("إزالة الشاهد",`سيعود «${govDoc(b.dataset.gclr).t}» مطلوبًا في كل المؤشرات التي يخدمها. يبقى الملف في سجل المرفقات.`,"إزالة",async()=>govApply(await act("govClear",{cycle:govCache.cycle,key:b.dataset.gclr},"أُزيل"))));
+  q("[data-gans]",b=>b.onclick=async()=>{const id=b.dataset.gans,a=govCache.ans[id]||{};const v=a.v===b.dataset.v?"":b.dataset.v;govApply(await act("govAnswer",{cycle:govCache.cycle,ind:id,v,note:a.note||""},"حُفظ التقييم"))});
+  q("[data-gnote]",t=>t.onchange=async()=>{const id=t.dataset.gnote,a=govCache.ans[id]||{};govApply(await act("govAnswer",{cycle:govCache.cycle,ind:id,v:a.v||"",note:t.value},"حُفظت الملاحظة"))});
+  q("[data-gcopy]",b=>b.onclick=()=>confirmBox("نسخ المستندات",`تُنسخ مستندات دورة ${b.dataset.gcopy} المرفوعة إلى دورة ${govCache.cycle} حيث لم تُرفع بعد، دون التقييمات. راجع المستندات التي تتغير سنويًا (القوائم المالية، المحاضر) وحدّثها.`,"نسخ",async()=>{const d=await act("govCopy",{from:b.dataset.gcopy,to:govCache.cycle});if(d){toast("نُسخ "+NF.format(d.copied)+" مستندًا");govApply(d)}}));
+  q("[data-gadd]",b=>b.onclick=()=>{modal(`<div class="dh"><h2>${ico("filePlus")} مستند إضافي</h2><button class="x" data-close aria-label="إغلاق">✕</button></div><div class="db form"><label>اسم المستند<input id="gaT" maxlength="160"></label><label>التصنيف الفرعي<input id="gaS" maxlength="60" placeholder="مستندات إضافية"></label></div><div class="df"><button class="btn pri" id="gaOk">إضافة</button><button class="btn" data-close>إلغاء</button></div>`);
+    $("#gaOk").onclick=async()=>{const d=await act("govCustomDoc",{cycle:govCache.cycle,title:$("#gaT").value,g:b.dataset.gadd,s:$("#gaS").value},"أُضيف المستند");if(d){closeModal();govApply(d)}}});
+  q("[data-gdel]",b=>b.onclick=()=>confirmBox("حذف من المكتبة","يُحذف هذا المستند الإضافي من خارطة الملفات.","حذف",async()=>govApply(await act("govCustomDoc",{cycle:govCache.cycle,title:"-",remove:b.dataset.gdel},"حُذف"))));
+}
+
 /* ================= Bindings ================= */
 function bindMain(){
   const main=$("#main");
@@ -3835,7 +3982,7 @@ function bindMain(){
   main.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(null,b.dataset.g!=null?+b.dataset.g:null,b.dataset.m!=null?+b.dataset.m:null));
   main.querySelectorAll("[data-back]").forEach(b=>b.onclick=goBack);
   main.querySelectorAll("[data-stage]").forEach(a=>a.onclick=e=>{e.preventDefault();openStage(a.dataset.stage)});
-  bindDash(main);bindMenus(main);bindPerms(main);bindCharts(main);bindLayout(main);bindReports(main);bindOrgs(main);bindThemes(main);
+  bindDash(main);bindMenus(main);bindPerms(main);bindCharts(main);bindLayout(main);bindReports(main);bindOrgs(main);bindThemes(main);bindGov(main);
   const fq=$("#fq"),fs=$("#fs");
   if(fq)fq.oninput=()=>{ui.q=fq.value;ui.page=0;render()};
   if(fs)fs.onchange=()=>{ui.st=fs.value;ui.page=0;render()};

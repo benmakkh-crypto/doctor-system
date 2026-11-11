@@ -249,6 +249,25 @@ ok(AM(T, "setOrgStatus", { id: victim, status: "archived" }).ok && !A.platformPu
 ok(AM(T, "setOrgStatus", { id: "main", status: "archived" }).code === "VALIDATION", "main organisation cannot be deleted");
 ok(AM(T, "setOrgStatus", { id: victim, status: "active" }).ok, "archived organisation restored");
 AM(T, "orderOrgs", { ids: ordBefore });
+// مركز الحوكمة
+const pdf = Buffer.from("%PDF-1.4 governance test").toString("base64");
+let gv = AM(T, "govGet", { cycle: "2026" });
+ok(gv.ok && gv.data.def.standards.length === 3 && gv.data.score.readyPct === 0, "governance centre loads with three standards");
+gv = AM(T, "govUpload", { cycle: "2026", key: "gaMinutes", name: "محاضر.pdf", mime: "application/pdf", data: pdf });
+const shared = gv.data.def.standards.flatMap(s => s.ind).filter(i => i.docs.includes("gaMinutes")).length;
+ok(gv.ok && gv.data.docs.gaMinutes.has && shared >= 5 && gv.data.score.ready === gv.data.def.standards.flatMap(s => s.ind).reduce((a, i) => a + i.docs.filter(k => k === "gaMinutes").length, 0), "one upload satisfies every indicator that needs it");
+ok(AM(T, "govUpload", { cycle: "2026", key: "nope", name: "x.pdf", mime: "application/pdf", data: pdf }).code === "VALIDATION", "unknown evidence rejected");
+ok(AM(T, "govUpload", { cycle: "2026", key: "bylaws", name: "x.exe", mime: "application/x-msdownload", data: pdf }).code === "VALIDATION", "unsafe file type rejected");
+ok(AM(T, "govFile", { cycle: "2026", key: "gaMinutes" }).data.data === pdf, "evidence downloads intact");
+ok(AM(T, "govDocMeta", { cycle: "2026", key: "branches", na: true }).code === "VALIDATION" && AM(T, "govDocMeta", { cycle: "2026", key: "branches", na: true, naWhy: "لا فروع للجمعية" }).data.docs.branches.na, "not-applicable needs a reason");
+gv = AM(T, "govAnswer", { cycle: "2026", ind: "C1", v: "full", note: "مكتمل" });
+ok(gv.data.score.compPct === 100 && AM(T, "govAnswer", { cycle: "2026", ind: "C2", v: "part" }).data.score.compPct === 75, "self-assessment scored");
+gv = AM(T, "govCopy", { from: "2026", to: "2027" });
+ok(gv.data.copied === 2 && gv.data.docs.gaMinutes.has && !gv.data.ans.C1, "copy carries documents, not answers, to the new cycle");
+gv = AM(T, "govCustomDoc", { cycle: "2026", title: "شهادة الجودة", g: "found" });
+ok(Object.values(gv.data.lib).some(d => d.t === "شهادة الجودة"), "custom document added to the library");
+ok(A.api(T, "govUpload", { __org: "*", cycle: "2026", key: "bylaws", name: "a.pdf", mime: "application/pdf", data: pdf }).code === "VALIDATION", "governance writes need an organisation");
+ok(A.api(T, "govGet", { __org: "*", cycle: "2026" }).data.overview.some(o => o.readyPct > 0), "platform overview shows readiness per organisation");
 // بوابة المنصة وهوية الجهة القابلة للتعديل
 const pp = A.platformPublic();
 ok(pp.ok && pp.orgs.length >= 1 && pp.orgs.every(o => o.code && o.name && o.type) && Object.keys(pp.types).length >= 1, "platform portal lists organisations by type");

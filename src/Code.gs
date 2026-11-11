@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.6.3';
+const APP_VERSION = '4.7.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -19,7 +19,8 @@ const SH = {
   audit: 'سجل_التدقيق',
   counters: 'العدادات',
   files: 'المرفقات',
-  orgs: 'المؤسسات'
+  orgs: 'المؤسسات',
+  gov: 'الحوكمة'
 };
 const HEAD = {
   users: ['username', 'name', 'email', 'role', 'depts', 'active', 'salt', 'hash', 'failed', 'lockedUntil', 'mustChange', 'lastLogin', 'created', 'org', 'prefs', 'phone', 'caps'],
@@ -29,7 +30,8 @@ const HEAD = {
   audit: ['at', 'user', 'action', 'recordId', 'no', 'detail', 'org'],
   counters: ['key', 'value'],
   files: ['id', 'recordId', 'name', 'mime', 'size', 'driveId', 'by', 'at'],
-  orgs: ['id', 'code', 'name', 'status', 'created', 'json']
+  orgs: ['id', 'code', 'name', 'status', 'created', 'json'],
+  gov: ['id', 'org', 'cycle', 'json']
 };
 /* ---------- تعدد المؤسسات ----------
  * كل معاملة ومستخدم وسطر تدقيق يحمل معرّف مؤسسته. المؤسسة النشطة في الطلب الحالي في CUR_ORG:
@@ -463,7 +465,7 @@ function api(token, action, payload) {
   } catch (e) { return fail_(e); }
 }
 /** إجراءات تحتاج مؤسسة محددة (لا تُنفذ في عرض «كل المؤسسات»). */
-const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash'];
+const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc'];
 function isPlatform_(me) { return me.role === 'admin' && me.org === '*'; }
 /** عضو المنصة: حساب على مستوى نافذ (org = '*') بأي دور؛ المشاهد منهم يطّلع على كل المؤسسات دون أي تعديل. */
 function isPlatformMember_(me) { return me.org === '*'; }
@@ -480,7 +482,7 @@ function inUserScope_(me, u) {
   if (isPlatform_(me)) return CUR_ORG === '*' || uo === CUR_ORG || uo === '*';
   return uo === me.org;
 }
-const WRITE_ACTIONS = ['saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+const WRITE_ACTIONS = ['saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -642,6 +644,14 @@ const ACTIONS = {
   },
   upload: actUpload_,
   getFile: actGetFile_,
+  govGet: actGovGet_,
+  govUpload: actGovUpload_,
+  govFile: actGovFile_,
+  govClear: actGovClear_,
+  govDocMeta: actGovDocMeta_,
+  govAnswer: actGovAnswer_,
+  govCopy: actGovCopy_,
+  govCustomDoc: actGovCustomDoc_,
   removeFile: actRemoveFile_,
   audit: function (me, p) {
     needAdmin_(me);
@@ -1253,6 +1263,147 @@ function actListOrgs_() {
     };
     return x;
   });
+}
+
+
+/* =====================================================================
+ * مركز الحوكمة: مكتبة مستندات مؤسسية مشتركة بين المؤشرات (يُرفع المستند مرة واحدة ويخدم كل مؤشر يحتاجه)،
+ * ودورات تقييم سنوية، وتقييم ذاتي لكل مؤشر. التعريف في SCHEMA.GOV، والحالة لكل مؤسسة ودورة صف في ورقة «الحوكمة».
+ * ===================================================================== */
+const GOV_TYPES = FILE_TYPES.concat(['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/msword', 'application/vnd.ms-excel']);
+const GOV_ANS = ['full', 'part', 'none', 'na'];
+function govSheet_() {
+  let s = sheet_('gov');
+  if (!s) { s = ss_().insertSheet(SH.gov); s.getRange(1, 1, 1, HEAD.gov.length).setValues([HEAD.gov]); s.setFrozenRows(1); }
+  return s;
+}
+function govCycle_(c) { c = str_(String(c || ''), 8); return /^(20\d\d|_lib)$/.test(c) ? c : String(new Date().getFullYear()); }
+function govLoad_(org, cycle) {
+  const s = govSheet_(), id = org + '|' + cycle;
+  const row = findRow_('gov', id);
+  if (!row) return { _row: 0, docs: {}, ans: {} };
+  let j = {}; try { j = JSON.parse(String(s.getRange(row, 4).getValue() || '{}')); } catch (e) { j = {}; }
+  j.docs = j.docs || {}; j.ans = j.ans || {}; j._row = row; return j;
+}
+function govSave_(org, cycle, st) {
+  const s = govSheet_(), id = org + '|' + cycle; const c = JSON.parse(JSON.stringify(st)); delete c._row;
+  const line = [id, org, cycle, JSON.stringify(c)];
+  const row = st._row || findRow_('gov', id);
+  if (row) s.getRange(row, 1, 1, line.length).setValues([line]); else s.appendRow(line);
+}
+function govNeedOrg_() { if (!CUR_ORG || CUR_ORG === '*') throw err_('VALIDATION', 'اختر مؤسسة من أعلى الصفحة أولًا.'); return CUR_ORG; }
+function govLib_(org) { return govLoad_(org, '_lib').docs || {}; }
+function govDocExists_(org, key) { return !!(SCHEMA.GOV.docs[key] || govLib_(org)[key]); }
+/** نسبة الجاهزية والامتثال لمؤسسة في دورة: تُستخدم في المركز وفي نظرة المشرف العام. */
+function govScore_(org, cycle, st) {
+  st = st || govLoad_(org, cycle);
+  const ready = function (k) { const d = st.docs[k]; return !!(d && (d.fid || d.na)); };
+  const out = { standards: [], ready: 0, total: 0, comp: 0, compN: 0 };
+  SCHEMA.GOV.standards.forEach(function (S) {
+    let r = 0, t = 0, cs = 0, cn = 0;
+    S.ind.forEach(function (I) {
+      I.docs.forEach(function (k) { t++; if (ready(k)) r++; });
+      const a = st.ans[I.id] && st.ans[I.id].v;
+      if (a && a !== 'na') { cn++; cs += a === 'full' ? 1 : a === 'part' ? 0.5 : 0; }
+    });
+    out.standards.push({ id: S.id, ready: r, total: t, comp: cn ? Math.round(cs / cn * 100) : null, answered: cn, ind: S.ind.length });
+    out.ready += r; out.total += t; out.comp += cs; out.compN += cn;
+  });
+  out.readyPct = out.total ? Math.round(out.ready / out.total * 100) : 0;
+  out.compPct = out.compN ? Math.round(out.comp / out.compN * 100) : null;
+  return out;
+}
+function actGovGet_(me, p) {
+  const cycle = govCycle_(p.cycle);
+  if (!CUR_ORG || CUR_ORG === '*') {
+    if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
+    return { overview: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const sc = govScore_(o.id, cycle); return { id: o.id, code: o.code, name: o.name, readyPct: sc.readyPct, compPct: sc.compPct, ready: sc.ready, total: sc.total }; }), cycle: cycle, def: SCHEMA.GOV };
+  }
+  const st = govLoad_(CUR_ORG, cycle);
+  const cycles = govSheet_().getLastRow() > 1 ? table_('gov').rows.filter(function (r) { return r.org === CUR_ORG && r.cycle !== '_lib'; }).map(function (r) { return String(r.cycle); }) : [];
+  if (cycles.indexOf(cycle) < 0) cycles.push(cycle);
+  const docs = {}; Object.keys(st.docs).forEach(function (k) { const d = st.docs[k]; docs[k] = { name: d.name, mime: d.mime, size: d.size, by: d.by, at: d.at, exp: d.exp || '', note: d.note || '', na: !!d.na, naWhy: d.naWhy || '', has: !!d.fid, hist: (d.hist || []).length }; });
+  return { cycle: cycle, cycles: cycles.sort().reverse(), def: SCHEMA.GOV, lib: govLib_(CUR_ORG), docs: docs, ans: st.ans, score: govScore_(CUR_ORG, cycle, st) };
+}
+function actGovUpload_(me, p) {
+  const org = govNeedOrg_(), cycle = govCycle_(p.cycle), key = str_(p.key, 60);
+  if (!govDocExists_(org, key)) throw err_('VALIDATION', 'مستند غير معروف.');
+  const name = str_(p.name, 120).replace(/[\\/:*?"<>|]/g, '_') || 'مستند';
+  const mime = String(p.mime || '');
+  if (GOV_TYPES.indexOf(mime) < 0) throw err_('VALIDATION', 'الأنواع المسموحة: PDF وWord وExcel وصور JPG/PNG/WEBP.');
+  const bytes = Utilities.base64Decode(String(p.data || ''));
+  if (!bytes.length) throw err_('VALIDATION', 'الملف فارغ.');
+  if (bytes.length > MAX_FILE * 2) throw err_('VALIDATION', 'حجم الملف أكبر من 10 ميجابايت.');
+  const folder = DriveApp.getFolderById(PropertiesService.getScriptProperties().getProperty('FILES_FOLDER_ID'));
+  const file = folder.createFile(Utilities.newBlob(bytes, mime, 'حوكمة ' + cycle + ' — ' + name));
+  const fid = Utilities.getUuid();
+  sheet_('files').appendRow([fid, 'gov:' + org + ':' + cycle + ':' + key, name, mime, bytes.length, file.getId(), me.username, now_()]);
+  const st = govLoad_(org, cycle), old = st.docs[key] || {};
+  const hist = (old.hist || []); if (old.fid) hist.unshift({ fid: old.fid, name: old.name, at: old.at, by: old.by });
+  st.docs[key] = { fid: fid, name: name, mime: mime, size: bytes.length, by: me.username, at: now_(), exp: str_(p.exp, 10) || old.exp || '', note: str_(p.note, 300) || old.note || '', hist: hist.slice(0, 5) };
+  govSave_(org, cycle, st);
+  audit_(me.username, old.fid ? 'تحديث مستند حوكمة' : 'رفع مستند حوكمة', '', '', name);
+  return actGovGet_(me, { cycle: cycle });
+}
+function actGovFile_(me, p) {
+  const org = govNeedOrg_(), cycle = govCycle_(p.cycle), key = str_(p.key, 60);
+  if (me.role === 'viewer') throw err_('FORBIDDEN', 'صلاحية المشاهد لا تشمل تنزيل المستندات.');
+  const d = govLoad_(org, cycle).docs[key];
+  if (!d || !d.fid) throw err_('NOTFOUND', 'لم يُرفع هذا المستند بعد.');
+  const row = findRow_('files', d.fid); if (!row) throw err_('NOTFOUND', 'الملف غير موجود.');
+  const v = sheet_('files').getRange(row, 1, 1, HEAD.files.length).getValues()[0];
+  if (String(v[1]).indexOf('gov:' + org + ':') !== 0) throw err_('FORBIDDEN', 'غير مسموح.');
+  audit_(me.username, 'تنزيل مستند حوكمة', '', '', String(v[2]));
+  return { name: String(v[2]), mime: String(v[3]), data: Utilities.base64Encode(DriveApp.getFileById(String(v[5])).getBlob().getBytes()) };
+}
+function actGovClear_(me, p) {
+  const org = govNeedOrg_(), cycle = govCycle_(p.cycle), key = str_(p.key, 60);
+  const st = govLoad_(org, cycle), d = st.docs[key];
+  if (d) { delete st.docs[key]; govSave_(org, cycle, st); audit_(me.username, 'إزالة مستند حوكمة', '', '', d.name || key); }
+  return actGovGet_(me, { cycle: cycle });
+}
+function actGovDocMeta_(me, p) {
+  const org = govNeedOrg_(), cycle = govCycle_(p.cycle), key = str_(p.key, 60);
+  if (!govDocExists_(org, key)) throw err_('VALIDATION', 'مستند غير معروف.');
+  const st = govLoad_(org, cycle), d = st.docs[key] || {};
+  if (p.exp !== undefined) d.exp = /^\d{4}-\d\d-\d\d$/.test(String(p.exp)) ? String(p.exp) : '';
+  if (p.note !== undefined) d.note = str_(p.note, 300);
+  if (p.na !== undefined) { d.na = !!p.na; d.naWhy = d.na ? str_(p.naWhy, 200) : ''; if (d.na && !d.naWhy) throw err_('VALIDATION', 'اذكر سبب عدم الانطباق.', 'naWhy'); }
+  if (!d.fid && !d.na && !d.exp && !d.note) delete st.docs[key]; else st.docs[key] = d;
+  govSave_(org, cycle, st);
+  return actGovGet_(me, { cycle: cycle });
+}
+function actGovAnswer_(me, p) {
+  const org = govNeedOrg_(), cycle = govCycle_(p.cycle), id = str_(p.ind, 10);
+  if (!SCHEMA.GOV.standards.some(function (S) { return S.ind.some(function (I) { return I.id === id; }); })) throw err_('VALIDATION', 'مؤشر غير معروف.');
+  const v = String(p.v || '');
+  if (v && GOV_ANS.indexOf(v) < 0) throw err_('VALIDATION', 'إجابة غير صحيحة.');
+  const st = govLoad_(org, cycle);
+  if (!v && !str_(p.note, 600)) delete st.ans[id]; else st.ans[id] = { v: v, note: str_(p.note, 600), by: me.username, at: now_() };
+  govSave_(org, cycle, st);
+  return actGovGet_(me, { cycle: cycle });
+}
+/** نسخ المستندات الثابتة من دورة سابقة (اللائحة، السياسات، العقود…) دون مضاعفة الملفات. */
+function actGovCopy_(me, p) {
+  const org = govNeedOrg_(), from = govCycle_(p.from), to = govCycle_(p.to);
+  if (from === to) throw err_('VALIDATION', 'اختر دورة مختلفة.');
+  const a = govLoad_(org, from), b = govLoad_(org, to); let n = 0;
+  const keys = Array.isArray(p.keys) && p.keys.length ? p.keys.map(function (k) { return str_(k, 60); }) : Object.keys(a.docs);
+  keys.forEach(function (k) { const d = a.docs[k]; if (d && (d.fid || d.na) && !b.docs[k]) { b.docs[k] = JSON.parse(JSON.stringify(d)); b.docs[k].hist = []; b.docs[k].copied = from; n++; } });
+  govSave_(org, to, b);
+  audit_(me.username, 'نسخ مستندات الحوكمة', '', '', from + ' ← ' + to + ' (' + n + ')');
+  const out = actGovGet_(me, { cycle: to }); out.copied = n; return out;
+}
+function actGovCustomDoc_(me, p) {
+  const org = govNeedOrg_();
+  const t = str_(p.title, 160); if (!t) throw err_('VALIDATION', 'اكتب اسم المستند.', 'title');
+  const g = SCHEMA.GOV.groups.some(function (x) { return x.id === p.g; }) ? String(p.g) : 'found';
+  const lib = govLoad_(org, '_lib');
+  if (p.remove) { delete lib.docs[str_(p.remove, 60)]; govSave_(org, '_lib', lib); return actGovGet_(me, { cycle: p.cycle }); }
+  const key = 'x' + Utilities.getUuid().slice(0, 8);
+  lib.docs[key] = { t: t, g: g, s: str_(p.s, 60) || 'مستندات إضافية', custom: true };
+  govSave_(org, '_lib', lib);
+  return actGovGet_(me, { cycle: p.cycle });
 }
 
 /* ---------- المرفقات ---------- */
