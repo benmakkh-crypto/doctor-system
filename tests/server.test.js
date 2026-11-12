@@ -276,7 +276,12 @@ tr = AM(T, "treeSave", { tree: t2, log: "إضافة لجنة" });
 ok(tr.ok && tr.data.saved && tr.data.tree.children[0].children.some(c => c.code === "BOD-C99" && !c.evil), "structure saved and sanitised");
 ok(AM(T, "treeGet").data.tree.children[0].children.length === t2.children[0].children.length, "structure persists per organisation");
 ok(AM(T, "treeSave", { reset: "empty" }).data.tree.children.length === 0 && AM(T, "treeSave", { reset: "template" }).data.tree.children.length === 2, "structure can be reset");
-ok(A.api(T, "treeSave", { __org: "*", reset: "empty" }).code === "VALIDATION", "structure edits need an organisation");
+{ const g0 = A.api(T, "treeGet", { __org: "*" }).data.tree; const g1 = JSON.parse(JSON.stringify(g0)); g1.children[0].children.push({ id: "gx", name: "لجنة عامة جديدة", type: "لجنة", children: [] });
+  ok(A.api(T, "treeSave", { __org: "*", tree: g1, log: "t" }).ok, "platform supervisor edits the general structure");
+  ok(A.api(T, "treeGet", { __org: "*" }).data.saved && A.api(T, "treeGet", { __org: "*" }).data.tree.children[0].children.some(c => c.id === "gx"), "general structure saved");
+  const ap = A.api(T, "treeSave", { __org: "*", apply: "all" }); ok(ap.ok && ap.data.applied >= 1, "general structure applied to all organisations");
+  ok(AM(T, "treeGet").data.tree.children[0].children.some(c => c.id === "gx"), "organisation received the general structure");
+  ok(A.api(T, "treeSave", { __org: "*", reset: "template" }).ok, "general structure reset to the original template"); }
 { const g = A.api(T, "treeGet", { __org: "*" }); ok(g.ok && g.data.general && g.data.tree.children.length === 2 && g.data.orgs.length >= 1 && g.data.orgs.every(o => typeof o.count === "number"), "platform view shows the general structure and the listed organisations"); }
 const bomb = { name: "x", children: [] }; let cur = bomb; for (let i = 0; i < 30; i++) { const n = { name: "x" + i, children: [] }; cur.children.push(n); cur = n; }
 ok(AM(T, "treeSave", { tree: bomb }).data.tree && true, "deep trees are truncated safely");

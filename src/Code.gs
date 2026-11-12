@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.8.1';
+const APP_VERSION = '4.9.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -465,7 +465,7 @@ function api(token, action, payload) {
   } catch (e) { return fail_(e); }
 }
 /** إجراءات تحتاج مؤسسة محددة (لا تُنفذ في عرض «كل المؤسسات»). */
-const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave'];
+const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc'];
 function isPlatform_(me) { return me.role === 'admin' && me.org === '*'; }
 /** عضو المنصة: حساب على مستوى نافذ (org = '*') بأي دور؛ المشاهد منهم يطّلع على كل المؤسسات دون أي تعديل. */
 function isPlatformMember_(me) { return me.org === '*'; }
@@ -1433,29 +1433,40 @@ function treeClean_(x, depth, cnt, ids) {
   (Array.isArray(x.children) ? x.children : []).forEach(function (c) { const y = treeClean_(c, depth + 1, cnt, ids); if (y) o.children.push(y); });
   return o;
 }
+function treeGeneral_() { const g = govLoad_('*', '_tree'); return g.tree ? g : null; }
 function actTreeGet_(me) {
+  const g = treeGeneral_(), base = g ? g.tree : SCHEMA.ORGTREE;
   if (!CUR_ORG || CUR_ORG === '*') {
     if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
     const cnt = function (t) { let k = 0; (function w(n) { if (n.type !== 'تصنيف') k++; (n.children || []).forEach(w); })(t); return k - 1; };
-    return { tree: SCHEMA.ORGTREE, saved: false, template: true, general: true, orgs: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const st = govLoad_(o.id, '_tree'); return { id: o.id, code: o.code, name: o.name, type: o.type || '', saved: !!st.tree, count: cnt(st.tree || SCHEMA.ORGTREE), by: st.by || '', at: st.at || '' }; }) };
+    return { tree: base, saved: !!g, by: g ? g.by || '' : '', at: g ? g.at || '' : '', template: !g, general: true, orgs: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const st = govLoad_(o.id, '_tree'); return { id: o.id, code: o.code, name: o.name, type: o.type || '', saved: !!st.tree, count: cnt(st.tree || base), by: st.by || '', at: st.at || '' }; }) };
   }
   const org = govNeedOrg_();
   const st = govLoad_(org, '_tree');
-  return st.tree ? { tree: st.tree, saved: true, by: st.by || '', at: st.at || '' } : { tree: SCHEMA.ORGTREE, saved: false, template: true };
+  return st.tree ? { tree: st.tree, saved: true, by: st.by || '', at: st.at || '' } : { tree: base, saved: false, template: true };
 }
 function actTreeSave_(me, p) {
-  const org = govNeedOrg_();
-  if (me.role !== 'admin') throw err_('FORBIDDEN', 'تعديل الهيكل التنظيمي لمسؤول النظام فقط.');
+  const general = !CUR_ORG || CUR_ORG === '*';
+  if (general) needPlatform_(me);
+  else if (me.role !== 'admin') throw err_('FORBIDDEN', 'تعديل الهيكل التنظيمي لمسؤول النظام فقط.');
+  const org = general ? '*' : govNeedOrg_();
+  if (general && p.apply === 'all') {
+    const g = treeGeneral_(), src = g ? g.tree : SCHEMA.ORGTREE; let k = 0;
+    loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).forEach(function (o) { const st = govLoad_(o.id, '_tree'); st.tree = JSON.parse(JSON.stringify(src)); st.by = me.username; st.at = now_(); govSave_(o.id, '_tree', st); k++; });
+    audit_(me.username, 'تعميم الهيكل العام على المؤسسات', '', '', String(k));
+    const out = actTreeGet_(me); out.applied = k; return out;
+  }
   const st = govLoad_(org, '_tree');
   let tree;
-  if (p.reset === 'template') tree = JSON.parse(JSON.stringify(SCHEMA.ORGTREE));
-  else if (p.reset === 'empty') tree = { id: 'root', name: String(getSettings_().orgName || 'الجهة'), type: 'جهة', code: '', meta: {}, children: [] };
+  if (p.reset === 'template') { const g = general ? null : treeGeneral_(); tree = JSON.parse(JSON.stringify(g ? g.tree : SCHEMA.ORGTREE)); }
+  else if (p.reset === 'empty') tree = { id: 'root', name: general ? 'الجهة' : String(getSettings_().orgName || 'الجهة'), type: 'جهة', code: '', meta: {}, children: [] };
   else tree = p.tree;
   st.tree = treeClean_(tree, 0, { n: 0 }, {});
   if (!st.tree) throw err_('VALIDATION', 'هيكل غير صالح.');
   st.by = me.username; st.at = now_();
   govSave_(org, '_tree', st);
-  if (p.reset || p.log) audit_(me.username, p.reset ? 'إعادة تعيين الهيكل التنظيمي' : 'تعديل الهيكل التنظيمي', '', '', str_(p.log || p.reset, 200));
+  if (p.reset || p.log) audit_(me.username, (p.reset ? 'إعادة تعيين الهيكل التنظيمي' : 'تعديل الهيكل التنظيمي') + (general ? ' العام' : ''), '', '', str_(p.log || p.reset, 200));
+  if (general) return actTreeGet_(me);
   return { tree: st.tree, saved: true, by: st.by, at: st.at };
 }
 
