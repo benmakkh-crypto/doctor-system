@@ -6,6 +6,8 @@ const head = src.slice(0, src.indexOf("{"));
 const S = JSON.parse(src.slice(src.indexOf("{"), src.lastIndexOf("}") + 1));
 delete require.cache[require.resolve("./gov-def.js")];
 S.GOV = require("./gov-def.js");
+// قالب الهيكل التنظيمي الجاهز (المجلس واللجان والقطاعات والإدارات)
+S.ORGTREE = JSON.parse(fs.readFileSync(path.join(__dirname, "data", "org-structure.json"), "utf8"));
 fs.writeFileSync(file, head + JSON.stringify(S, null, 1) + ";\n");
 const n = S.GOV.standards.reduce((a, s) => a + s.ind.length, 0);
 console.log(`مركز الحوكمة: ${Object.keys(S.GOV.docs).length} مستندًا في ${S.GOV.groups.length} مجموعات · ${S.GOV.standards.length} معايير · ${n} مؤشرًا`);

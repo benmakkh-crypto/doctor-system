@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.7.2';
+const APP_VERSION = '4.8.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -465,7 +465,7 @@ function api(token, action, payload) {
   } catch (e) { return fail_(e); }
 }
 /** إجراءات تحتاج مؤسسة محددة (لا تُنفذ في عرض «كل المؤسسات»). */
-const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc'];
+const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave'];
 function isPlatform_(me) { return me.role === 'admin' && me.org === '*'; }
 /** عضو المنصة: حساب على مستوى نافذ (org = '*') بأي دور؛ المشاهد منهم يطّلع على كل المؤسسات دون أي تعديل. */
 function isPlatformMember_(me) { return me.org === '*'; }
@@ -482,7 +482,7 @@ function inUserScope_(me, u) {
   if (isPlatform_(me)) return CUR_ORG === '*' || uo === CUR_ORG || uo === '*';
   return uo === me.org;
 }
-const WRITE_ACTIONS = ['saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+const WRITE_ACTIONS = ['saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -652,6 +652,8 @@ const ACTIONS = {
   govAnswer: actGovAnswer_,
   govCopy: actGovCopy_,
   govCustomDoc: actGovCustomDoc_,
+  treeGet: actTreeGet_,
+  treeSave: actTreeSave_,
   removeFile: actRemoveFile_,
   audit: function (me, p) {
     needAdmin_(me);
@@ -785,7 +787,7 @@ function bootstrap_(me) {
   let prefs = null; try { prefs = urow && urow.prefs ? JSON.parse(urow.prefs) : null; } catch (e) { prefs = null; }
   const orgs = isPlatformMember_(me) ? loadOrgs_().map(orgPublic_) : (getOrg_(me.org) ? [orgPublic_(getOrg_(me.org))] : []);
   const meOut = clean_(me); meOut.platform = isPlatform_(me); meOut.member = isPlatformMember_(me); meOut.parts = capsOut_(me);
-  return { me: meOut, scope: CUR_ORG, orgs: orgs, prefs: prefs, settings: getSettings_(), records: recs, decisions: dec, people: people, schema: SCHEMA, version: APP_VERSION, now: now_(), appUrl: (function () { try { return ScriptApp.getService().getUrl(); } catch (e) { return ''; } })() };
+  return { me: meOut, scope: CUR_ORG, orgs: orgs, prefs: prefs, settings: getSettings_(), records: recs, decisions: dec, people: people, schema: schemaClient_(), version: APP_VERSION, now: now_(), appUrl: (function () { try { return ScriptApp.getService().getUrl(); } catch (e) { return ''; } })() };
 }
 
 /* =====================================================================
@@ -794,6 +796,12 @@ function bootstrap_(me) {
 function str_(v, n) { return typeof v === 'string' ? v.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').trim().slice(0, n) : ''; }
 function date_(v) { return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && !isNaN(new Date(v + 'T12:00:00')) ? v : ''; }
 function now_() { return new Date().toISOString(); }
+let SCHEMA_CLIENT_ = null;
+/** المخطط المرسل للمتصفح عند كل تحميل: دون تعريف الحوكمة وقالب الهيكل (يُجلبان عند فتح صفحتيهما فقط). */
+function schemaClient_() {
+  if (!SCHEMA_CLIENT_) { SCHEMA_CLIENT_ = {}; Object.keys(SCHEMA).forEach(function (k) { if (k !== 'GOV' && k !== 'ORGTREE') SCHEMA_CLIENT_[k] = SCHEMA[k]; }); }
+  return SCHEMA_CLIENT_;
+}
 function recSum_(r) { return SCHEMA.MONEY_KEYS.reduce(function (a, k) { return a + (+(r.f && r.f[k]) || 0); }, 0); }
 function requires_(r, cfg) { const t = +cfg.threshold || 0; return t > 0 && recSum_(r) >= t; }
 
@@ -1404,6 +1412,46 @@ function actGovCustomDoc_(me, p) {
   lib.docs[key] = { t: t, g: g, s: str_(p.s, 60) || 'مستندات إضافية', custom: true };
   govSave_(org, '_lib', lib);
   return actGovGet_(me, { cycle: p.cycle });
+}
+
+
+/* =====================================================================
+ * الهيكل التنظيمي: شجرة المجلس واللجان والقطاعات والإدارات والوحدات والمهام لكل مؤسسة.
+ * إن لم تحفظ المؤسسة هيكلها بعد يُعرض القالب الجاهز SCHEMA.ORGTREE، ويُحفظ عند أول تعديل.
+ * ===================================================================== */
+const TREE_MAX = 4000;
+function treeClean_(x, depth, cnt, ids) {
+  if (!x || typeof x !== 'object' || depth > 12) return null;
+  if (++cnt.n > TREE_MAX) throw err_('VALIDATION', 'الهيكل أكبر من الحد المسموح (' + TREE_MAX + ' عنصر).');
+  let id = str_(String(x.id || ''), 24).replace(/[^A-Za-z0-9_-]/g, '');
+  if (!id || ids[id]) id = 'n' + Utilities.getUuid().replace(/-/g, '').slice(0, 10);
+  ids[id] = 1;
+  const meta = {};
+  if (x.meta && typeof x.meta === 'object') Object.keys(x.meta).slice(0, 20).forEach(function (k) { const kk = str_(k, 40), v = str_(String(x.meta[k] == null ? '' : x.meta[k]), 1000); if (kk && v) meta[kk] = v; });
+  const o = { id: id, name: str_(String(x.name || ''), 200) || 'بدون اسم', type: str_(String(x.type || ''), 40) || 'إدارة', code: str_(String(x.code || ''), 40), meta: meta, children: [] };
+  ['head', 'phone', 'email'].forEach(function (k) { const v = str_(String(x[k] || ''), 120); if (v) o[k] = v; });
+  (Array.isArray(x.children) ? x.children : []).forEach(function (c) { const y = treeClean_(c, depth + 1, cnt, ids); if (y) o.children.push(y); });
+  return o;
+}
+function actTreeGet_(me) {
+  const org = govNeedOrg_();
+  const st = govLoad_(org, '_tree');
+  return st.tree ? { tree: st.tree, saved: true, by: st.by || '', at: st.at || '' } : { tree: SCHEMA.ORGTREE, saved: false, template: true };
+}
+function actTreeSave_(me, p) {
+  const org = govNeedOrg_();
+  if (me.role !== 'admin') throw err_('FORBIDDEN', 'تعديل الهيكل التنظيمي لمسؤول النظام فقط.');
+  const st = govLoad_(org, '_tree');
+  let tree;
+  if (p.reset === 'template') tree = JSON.parse(JSON.stringify(SCHEMA.ORGTREE));
+  else if (p.reset === 'empty') tree = { id: 'root', name: String(getSettings_().orgName || 'الجهة'), type: 'جهة', code: '', meta: {}, children: [] };
+  else tree = p.tree;
+  st.tree = treeClean_(tree, 0, { n: 0 }, {});
+  if (!st.tree) throw err_('VALIDATION', 'هيكل غير صالح.');
+  st.by = me.username; st.at = now_();
+  govSave_(org, '_tree', st);
+  if (p.reset || p.log) audit_(me.username, p.reset ? 'إعادة تعيين الهيكل التنظيمي' : 'تعديل الهيكل التنظيمي', '', '', str_(p.log || p.reset, 200));
+  return { tree: st.tree, saved: true, by: st.by, at: st.at };
 }
 
 /* ---------- المرفقات ---------- */

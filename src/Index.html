@@ -1639,6 +1639,36 @@ body.ro-on .side{touch-action:none}
 .gtile .lnk{border:0;background:none;color:var(--muted);cursor:pointer;padding:2px;display:inline-grid}.gtile .lnk:hover{color:var(--brand)}.gtile .lnk svg{width:16px;height:16px}
 .govov{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}.govoc{display:grid;justify-items:center;gap:6px;padding:16px;border-radius:18px;background:var(--surface);border:1px solid var(--line);text-align:center}.govoc header{display:flex;gap:8px}.govoc h3{margin:4px 0 0;font-size:16px}.govoc small{color:var(--muted)}
 @media (max-width:900px){.govhero{grid-template-columns:1fr}.gsteps{grid-template-columns:1fr 1fr}.gstds{grid-template-columns:1fr}.gih{grid-template-columns:auto 1fr auto;}.gih .gbar{display:none}.gdoc{grid-template-columns:auto 1fr}.gact{grid-column:1/-1;justify-content:flex-start}}
+
+/* ================= الهيكل التنظيمي ================= */
+.trchips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.trchips button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink)}
+.trchips button svg{width:15px;height:15px;color:var(--tc,var(--brand))}.trchips em{font-style:normal;font-weight:800;color:var(--tc,var(--brand))}.trchips button.on{background:var(--tc,var(--brand));color:#fff;border-color:transparent}.trchips button.on svg,.trchips button.on em{color:#fff}
+.trwrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,380px);gap:14px;align-items:start}
+.trmain{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px;min-height:400px;overflow:auto}
+.trside{position:sticky;top:84px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;max-height:calc(100vh - 100px);overflow:auto}
+.trtree,.trtree ul{list-style:none;margin:0;padding:0}.trtree ul{margin-inline-start:22px;border-inline-start:1.5px dashed color-mix(in srgb,var(--tc) 35%,var(--line));padding-inline-start:6px}
+.trr{display:flex;align-items:center;gap:4px;border-radius:10px}.trr.sel{background:color-mix(in srgb,var(--tc) 10%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--tc) 45%,transparent)}.trr.hit .trb b{background:color-mix(in srgb,#c9a227 30%,transparent);border-radius:4px}
+.trt,.trt0{width:26px;height:26px;flex:none;display:grid;place-items:center;border:0;background:none;color:var(--muted);cursor:pointer;border-radius:8px}.trt svg{width:14px;height:14px;transform:rotate(180deg);transition:transform .2s}.trt[aria-expanded=true] svg{transform:rotate(90deg)}.trt:hover{background:var(--surface-2)}
+.trb{flex:1;min-width:0;display:flex;align-items:center;gap:8px;border:0;background:none;font:inherit;color:var(--ink);padding:6px 6px;text-align:start;cursor:pointer;border-radius:10px}.trb:hover{background:var(--surface-2)}
+.tri{width:28px;height:28px;flex:none;display:grid;place-items:center;border-radius:9px;background:color-mix(in srgb,var(--tc) 14%,var(--surface));color:var(--tc)}.tri svg{width:16px;height:16px}
+.trb b{font-weight:600;font-size:14px;line-height:1.5}.trb code,.trd code,.occ code{font-size:11px;direction:ltr;padding:1px 6px;border-radius:6px;background:var(--surface-2);color:var(--muted)}.trb small{color:var(--muted);font-size:11.5px;margin-inline-start:auto;white-space:nowrap}
+.trb em{font-style:normal;font-size:11px;font-weight:800;color:#fff;background:var(--tc);border-radius:999px;padding:0 7px}
+.trn.cat>.trr .trb b{color:var(--muted);font-weight:700;font-size:12.5px}.trn.cat>.trr .tri{background:none}
+.trd header{display:flex;gap:12px;align-items:center;margin:8px 0 12px}.trdi{width:48px;height:48px;flex:none;display:grid;place-items:center;border-radius:14px;background:var(--tc);color:#fff}.trdi svg{width:24px;height:24px}.trd h3{margin:2px 0 0;font-size:18px;line-height:1.5}.trd header small{color:var(--muted)}
+.trp{display:flex;flex-wrap:wrap;gap:4px;font-size:12px;color:var(--muted)}.trp .lnk{border:0;background:none;color:var(--brand);cursor:pointer;font:inherit;padding:0}.trp i{font-style:normal}
+.trspec{padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--tc) 7%,var(--surface));border-inline-start:3px solid var(--tc);margin-bottom:10px}.trspec p{margin:4px 0 0;font-size:14px}
+.trkv{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px}.trkv span{color:var(--muted)}
+.trcnt{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;margin:10px 0}.trcnt span{display:grid;justify-items:center;gap:1px;padding:8px;border-radius:12px;background:color-mix(in srgb,var(--tc) 8%,var(--surface));color:var(--tc)}.trcnt svg{width:16px;height:16px}.trcnt b{font-family:var(--f-display);font-size:18px}.trcnt small{color:var(--muted);font-size:11px}
+.trd h4{margin:12px 0 6px;font-size:13.5px}.trkids{display:grid;gap:6px}.trkids button{display:flex;gap:8px;align-items:center;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 10px;font:inherit;font-size:13px;text-align:start;cursor:pointer;color:var(--ink)}.trkids svg{width:15px;height:15px;color:var(--tc);flex:none}
+.tra{margin-top:12px;flex-wrap:wrap}.trf{display:grid;gap:10px}.trf .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ochart{display:grid;gap:10px}.ocrow{display:flex;justify-content:center}.ocrow.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}.ocline{height:20px;width:2px;background:#c9a227;margin:0 auto}
+.occ{display:inline-flex;align-items:center;gap:8px;border:1.5px solid color-mix(in srgb,var(--tc) 40%,var(--line));background:color-mix(in srgb,var(--tc) 6%,var(--surface));border-radius:14px;padding:8px 12px;font:inherit;color:var(--ink);cursor:pointer;text-align:start}.occ span{color:var(--tc);display:inline-grid}.occ span svg{width:18px;height:18px}.occ b{font-size:13.5px;font-weight:600}
+.occ.big{padding:12px 18px;background:var(--tc);color:#fff;border-color:transparent;box-shadow:0 10px 24px -10px var(--tc)}.occ.big span{color:#fff}.occ.big b{font-family:var(--f-display);font-size:16px}.occ.big code{background:rgb(255 255 255 / 18%);color:#fff}.occ.sel{outline:3px solid #c9a227;outline-offset:2px}
+.occol{display:grid;gap:10px;justify-items:stretch}.occol>.occ{justify-self:center}.ocmini{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}.ocmini .occ{padding:6px 10px}.ocmini .occ b{font-size:12.5px}
+.seg svg{width:16px;height:16px}.ocsec{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.osec{border:1px solid var(--line);border-top:4px solid var(--tc);border-radius:16px;background:var(--surface);overflow:hidden}.osec header{display:flex;gap:10px;align-items:center;padding:10px 12px;cursor:pointer;background:color-mix(in srgb,var(--tc) 6%,var(--surface))}.osec header>span{color:var(--tc)}.osec header b{display:block;font-family:var(--f-display);font-size:14.5px}.osec header small{color:var(--muted);font-size:11.5px}
+.osg{display:grid;gap:6px;padding:10px}.osg button{display:grid;gap:2px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;font:inherit;text-align:start;cursor:pointer;color:var(--ink)}.osg button.sel{border-color:#c9a227;box-shadow:0 0 0 2px color-mix(in srgb,#c9a227 35%,transparent)}.osg b{font-size:13px}.osg small{color:var(--muted);font-size:11px}
+@media (max-width:1000px){.trwrap{grid-template-columns:1fr}.trside{position:static;max-height:none}.ocrow.two{grid-template-columns:1fr}}
 </style>
 </head>
 <body class="auth">
@@ -2401,7 +2431,7 @@ function route(){
     const gt=GOV_MODS[G[+m[1]].items[+m[2]]];if(gt){ui.govTab=gt;return{v:"gov",g:+m[1],m:+m[2]}}
     return{v:"mod",g:+m[1],m:+m[2]}}
   if((m=h.match(/^g(\d+)$/))&&G[+m[1]])return{v:"grp",g:+m[1]};
-  if(["inbox","trash","org","focus","flow","users","audit","menus","perms","orgs","themes","gov"].includes(h))return{v:h};
+  if(["inbox","trash","org","focus","flow","users","audit","menus","perms","orgs","themes","gov","structure"].includes(h))return{v:h};
   return{v:"home"};
 }
 let R=route();let navDepth=0;if((R.v==="grp"||R.v==="mod"||R.v==="gov")&&R.g!=null)navOpen.add(R.g);
@@ -3184,7 +3214,7 @@ function renderTop(){
   const al=computeAlerts(A),aCount=al.reduce((a,x)=>a+x.n,0);
   const name=(S.meP&&S.meP.name)||"";const role=S.platform?"مدير النظام · المشرف العام":S.member?"عضو منصة نافذ (اطلاع)":S.admin?"مسؤول النظام":S.canWrite?"مساهم":"مشاهد";
   const dark=document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
-  const links=[["home","الرئيسية","#home"],["focus","مهامي والأولويات","#focus"],["inbox","صندوق الاعتمادات","#inbox"],["flow","مسار المعاملات","#flow"],["GOV","مركز الحوكمة","#gov"],["RPT","التقارير","#g0"],["WEB","إدارة الموقع","#g3"],["org","الإعدادات والبيانات","#org"],["trash","المحذوفات","#trash"]]
+  const links=[["home","الرئيسية","#home"],["focus","مهامي والأولويات","#focus"],["inbox","صندوق الاعتمادات","#inbox"],["flow","مسار المعاملات","#flow"],["GOV","مركز الحوكمة","#gov"],["tree","الهيكل التنظيمي","#structure"],["RPT","التقارير","#g0"],["WEB","إدارة الموقع","#g3"],["org","الإعدادات والبيانات","#org"],["trash","المحذوفات","#trash"]]
    .concat([["shieldCheck","الصلاحيات","#perms"]]).concat(S.admin?[["users","المستخدمون","#users"],["menu","تخصيص القوائم","#menus"],["audit","سجل التدقيق","#audit"]]:[]);
   const dd=(id,btn,body,extra="")=>`<div class="dd ${ddOpen===id?"open":""} ${extra}" data-dd="${id}">${btn}<div class="ddp" role="menu">${body}</div></div>`;
   $("#tnav").innerHTML=orgSwitcherHTML()+(LAYOUT_PAGES(R.v)?`<button class="tn ${editMode?"on":""}" data-pgedit title="إظهار وإخفاء وتحريك وتحجيم عناصر الصفحة" aria-pressed="${editMode}">${ico("sliders")}<span class="lbl">${editMode?"إنهاء التخصيص":"تخصيص الصفحة"}</span></button>`:"")+
@@ -3239,14 +3269,14 @@ function render(){
   $("#addBtn").hidden=!S.canWrite;
   let v;
   if(!S.loaded)v=`<div class="skel" style="height:120px"></div><div class="kpis"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></div><div class="skel" style="height:240px"></div>`;
-  else v=banners()+({mod:()=>R.g===0?viewReport():viewModule(),grp:viewGroup,inbox:viewInbox,trash:viewTrash,org:viewOrg,focus:viewFocus,flow:viewFlow,users:viewUsers,audit:viewAudit,menus:viewMenus,perms:viewPerms,orgs:viewOrgs,themes:viewThemes,gov:viewGov}[R.v]||viewHome)();
+  else v=banners()+({mod:()=>R.g===0?viewReport():viewModule(),grp:viewGroup,inbox:viewInbox,trash:viewTrash,org:viewOrg,focus:viewFocus,flow:viewFlow,users:viewUsers,audit:viewAudit,menus:viewMenus,perms:viewPerms,orgs:viewOrgs,themes:viewThemes,gov:viewGov,structure:viewStructure}[R.v]||viewHome)();
   $("#main").innerHTML=`<div class="wrap">${v}</div>`;
   decorateHead();
   bindMain();
   if(aid){const n=document.getElementById(aid);if(n){n.focus();if(sel)try{n.setSelectionRange(sel[0],sel[1])}catch(e){}}}
   if(drawerId)paintDrawer();
 }
-const PH={gov:["GOV","#8a3b12","Governance Center"],focus:["focus","#d9702a","Priorities"],inbox:["inbox","#6d3fc0","Approvals"],flow:["flow","#3157b8","Workflow"],trash:["trash","#cf3f3f","Trash"],org:["org","#4B5563","Settings & Data"],users:["users","#0F766E","Users & Access"],audit:["audit","#243B6B","Audit Log"],menus:["menu","#B03A8C","Menus & Headings"],perms:["shieldCheck","#0B6E4F","Permissions Matrix"],orgs:["building","#0e7a5f","Organizations Directory"]};
+const PH={structure:["tree","#1d4e89","Organization Structure"],gov:["GOV","#8a3b12","Governance Center"],focus:["focus","#d9702a","Priorities"],inbox:["inbox","#6d3fc0","Approvals"],flow:["flow","#3157b8","Workflow"],trash:["trash","#cf3f3f","Trash"],org:["org","#4B5563","Settings & Data"],users:["users","#0F766E","Users & Access"],audit:["audit","#243B6B","Audit Log"],menus:["menu","#B03A8C","Menus & Headings"],perms:["shieldCheck","#0B6E4F","Permissions Matrix"],orgs:["building","#0e7a5f","Organizations Directory"]};
 function decorateHead(){
   const h=$("#main .wrap>.head");if(!h)return;
   let k=null;if(PH[R.v])k=PH[R.v];else if(R.v==="mod"&&R.g===0)k=[modIco(0,R.m),G[0].col,G[0].en];
@@ -3290,7 +3320,7 @@ function renderNav(){
   const trash=S.recs.filter(r=>r.deleted).length;
   const openN=A.filter(r=>isOpen(r)).length;const nOrgs=(S.orgs||[]).length;
   const qk=(h,ic,t,sub,col,n,hotN)=>`<a href="#${h}" class="qk ${R.v===h?"on":""}" style="--qc:${col}"${R.v===h?' aria-current="page"':""}><span class="qki">${ico(ic)}</span><span class="qkt"><b>${t}</b><small>${sub}</small></span>${n?`<span class="qkn ${hotN?"pulse":""}">${n}</span>`:`<span class="qka">${ico("chev")}</span>`}</a>`;
-  const topItems=[["focus",qk("focus","focus","مهامي والأولويات",hot?`${hot} تحتاج متابعتك`:"لا شيء عاجل","#e0573a",hot,hot>0)],["inbox",qk("inbox","inbox","صندوق الاعتمادات",pend?`${pend} بانتظار الاعتماد`:"لا شيء معلّق","#7b5ce0",pend,false)],["flow",qk("flow","flow","مسار المعاملات","تتبّع المراحل","#13a597",0)],["gov",qk("gov","GOV","مركز الحوكمة",govCache&&govCache.score?`جاهزية ${govCache.score.readyPct}٪`:"المعايير والشواهد","#8a3b12",0)]];
+  const topItems=[["focus",qk("focus","focus","مهامي والأولويات",hot?`${hot} تحتاج متابعتك`:"لا شيء عاجل","#e0573a",hot,hot>0)],["inbox",qk("inbox","inbox","صندوق الاعتمادات",pend?`${pend} بانتظار الاعتماد`:"لا شيء معلّق","#7b5ce0",pend,false)],["flow",qk("flow","flow","مسار المعاملات","تتبّع المراحل","#13a597",0)],["structure",qk("structure","tree","الهيكل التنظيمي","المجلس واللجان والقطاعات والإدارات","#1d4e89",0)],["gov",qk("gov","GOV","مركز الحوكمة",govCache&&govCache.score?`جاهزية ${govCache.score.readyPct}٪`:"المعايير والشواهد","#8a3b12",0)]];
   if(S.member)topItems.push(["orgs",qk("orgs","building","الكشاف",`${nOrgs} ${nOrgs>2&&nOrgs<11?"مؤسسات":"مؤسسة"} في المنصة`,"#2f86d8",nOrgs,false)]);
   $("#navTop").innerHTML=`<a href="#home" class="qhero ${R.v==="home"?"on":""}"${R.v==="home"?' aria-current="page"':""}><span class="qhi">${ico("home")}</span><span class="qht"><small>لوحة القيادة</small><b>الرئيسية</b></span><span class="qhs"><b>${openN}</b><small>مفتوحة</small></span></a>`
    +roSort(topItems.map(x=>x[0]),"topOrder").map(k=>topItems.find(x=>x[0]===k)[1].replace('<a ',`<a data-ro="top" data-k="${k}" `)).join("");
@@ -3981,6 +4011,95 @@ function bindGov(main){if(R.v!=="gov")return;
   q("[data-gdel]",b=>b.onclick=()=>confirmBox("حذف من المكتبة","يُحذف هذا المستند الإضافي من خارطة الملفات.","حذف",async()=>govApply(await act("govCustomDoc",{cycle:govCache.cycle,title:"-",remove:b.dataset.gdel},"حُذف"))));
 }
 
+/* ================= الهيكل التنظيمي ================= */
+let trCache=null,trLoading=false;
+const TT={"شركة":["building","#8a3b12"],"جهة":["building","#8a3b12"],"مجلس":["GOV","#1d4e89"],"لجنة":["users","#5b3a8c"],"تنفيذي":["briefcase","#0b4639"],"مكتب":["folder","#3d6b35"],"قطاع":["grid","#0b6e8f"],"إدارة عامة":["layout","#b07a12"],"تصنيف":["list","#6b7280"],"إدارة":["doc","#0e7a5f"],"قسم":["doc","#2e7d6b"],"وحدة تابعة":["tree","#7b2d43"],"فرع":["building","#456b8a"],"مهمة":["check","#c2334d"]};
+const TT_ORDER=["مجلس","لجنة","تنفيذي","مكتب","قطاع","إدارة عامة","إدارة","قسم","وحدة تابعة","فرع","مهمة","تصنيف"];
+const tt=t=>TT[t]||["doc","#475569"];
+async function loadTree(){if(trLoading)return;trLoading=true;try{trCache=await call("treeGet",{});trCache.__org=S.org||""}catch(e){trCache={err:e.message||"تعذّر التحميل"}}finally{trLoading=false;if(R.v==="structure")render()}}
+function trWalk(n,f,path=[],d=0){f(n,path,d);(n.children||[]).forEach(c=>trWalk(c,f,path.concat(n),d+1))}
+function trFind(id){let hit=null;trWalk(trCache.tree,(n,p)=>{if(n.id===id)hit={n,path:p}});return hit}
+function trCount(n){const c={};trWalk(n,(x,p,d)=>{if(d)c[x.type]=(c[x.type]||0)+1});return c}
+async function trSave(log){const d=await act("treeSave",{tree:trCache.tree,log},"حُفظ الهيكل");if(d){d.__org=S.org||"";trCache=d;render()}else{trCache=null;render()}}
+function trRow(n,d,q,open,sel,matchSet){
+  const [ic,c]=tt(n.type),kids=n.children||[],isOpen=open.has(n.id)||(q&&matchSet.has(n.id)),hit=q&&(n.name+" "+n.code+" "+Object.values(n.meta||{}).join(" ")).includes(q);
+  if(q&&!matchSet.has(n.id)&&!hit)return"";
+  return `<li class="trn ${n.type==="تصنيف"?"cat":""}" style="--tc:${c}"><div class="trr ${sel===n.id?"sel":""} ${hit?"hit":""}">${kids.length?`<button class="trt" data-trt="${n.id}" aria-expanded="${isOpen}" aria-label="${isOpen?"طي":"فتح"}">${ico("chev")}</button>`:`<span class="trt0"></span>`}
+   <button class="trb" data-trs="${n.id}"><span class="tri">${ico(ic)}</span><b>${esc(n.name)}</b>${n.code?`<code>${esc(n.code)}</code>`:""}<small>${esc(n.type)}</small>${kids.length?`<em>${NF.format(kids.length)}</em>`:""}</button></div>
+   ${kids.length&&isOpen?`<ul>${kids.map(k=>trRow(k,d+1,q,open,sel,matchSet)).join("")}</ul>`:""}</li>`}
+function trDetail(id){const f=trFind(id);if(!f)return`<div class="empty-s">اختر عنصرًا من الهيكل لعرض بياناته.</div>`;const n=f.n,[ic,c]=tt(n.type),cnt=trCount(n),adm=S.admin;
+  const ed=ui.trEdit===n.id;
+  const types=[...new Set(TT_ORDER.concat(Object.keys(trCount(trCache.tree))))];
+  return `<div class="trd" style="--tc:${c}"><div class="trp">${f.path.map(p=>`<button class="lnk" data-trs="${p.id}">${esc(p.name)}</button>`).join(`<i>‹</i>`)}</div>
+   <header><span class="trdi">${ico(ic)}</span><div><small>${esc(n.type)}${n.code?` · <code>${esc(n.code)}</code>`:""}</small><h3>${esc(n.name)}</h3></div></header>
+   ${ed?`<div class="form trf"><label>الاسم<input id="trName" maxlength="200" value="${esc(n.name)}"></label>
+     <div class="row2"><label>النوع<input id="trType" list="trTypes" maxlength="40" value="${esc(n.type)}"><datalist id="trTypes">${types.map(t=>`<option value="${esc(t)}">`).join("")}</datalist></label><label>الرمز<input id="trCode" dir="ltr" maxlength="40" value="${esc(n.code||"")}"></label></div>
+     <label>الاختصاص<textarea id="trSpec" rows="3" maxlength="1000">${esc((n.meta||{})["الاختصاص"]||"")}</textarea></label>
+     <div class="row2"><label>المسؤول<input id="trHead" maxlength="120" value="${esc(n.head||"")}"></label><label>الجوال<input id="trPhone" dir="ltr" maxlength="120" value="${esc(n.phone||"")}"></label></div>
+     <label>البريد<input id="trMail" dir="ltr" maxlength="120" value="${esc(n.email||"")}"></label>
+     <div class="actions"><button class="btn pri" data-trsave="${n.id}">${ico("check")} حفظ</button><button class="btn" data-trcancel>إلغاء</button></div></div>`
+   :`${(n.meta||{})["الاختصاص"]?`<div class="trspec"><b>الاختصاص</b><p>${esc(n.meta["الاختصاص"])}</p></div>`:""}
+    ${Object.keys(n.meta||{}).filter(k=>k!=="الاختصاص").map(k=>`<div class="trkv"><span>${esc(k)}</span><b>${esc(n.meta[k])}</b></div>`).join("")}
+    ${n.head||n.phone||n.email?`<div class="trkv"><span>المسؤول</span><b>${esc(n.head||"—")}</b></div>${n.phone?`<div class="trkv"><span>الجوال</span><b dir="ltr">${esc(n.phone)}</b></div>`:""}${n.email?`<div class="trkv"><span>البريد</span><b dir="ltr">${esc(n.email)}</b></div>`:""}`:""}
+    ${Object.keys(cnt).length?`<div class="trcnt">${Object.entries(cnt).sort((a,b)=>TT_ORDER.indexOf(a[0])-TT_ORDER.indexOf(b[0])).map(([t,v])=>`<span style="--tc:${tt(t)[1]}">${ico(tt(t)[0])}<b>${NF.format(v)}</b><small>${esc(t)}</small></span>`).join("")}</div>`:""}
+    ${(n.children||[]).length?`<h4>يتبعه مباشرة (${NF.format(n.children.length)})</h4><div class="trkids">${n.children.map(k=>`<button data-trs="${k.id}" style="--tc:${tt(k.type)[1]}">${ico(tt(k.type)[0])}<span>${esc(k.name)}</span></button>`).join("")}</div>`:""}
+    ${adm?`<div class="actions tra"><button class="btn sm pri" data-tredit="${n.id}">${ico("userEdit")} تعديل</button><button class="btn sm" data-tradd="${n.id}">＋ إضافة تابع</button>${f.path.length?`<button class="btn sm" data-trmv="${n.id}" data-d="-1" title="تقديم">▲</button><button class="btn sm" data-trmv="${n.id}" data-d="1" title="تأخير">▼</button><button class="btn sm danger" data-trdel="${n.id}">${ico("trash")} حذف</button>`:""}</div>`:""}`}</div>`}
+function viewStructure(){
+  const head=(sub,acts="")=>`<div class="head"><div><h1>الهيكل التنظيمي</h1><p>${sub}</p></div><div class="actions">${acts}</div></div>`;
+  if(!S.scope||S.scope==="*")return head("اختر مؤسسة من أعلى الصفحة لعرض هيكلها التنظيمي.")+`<div class="tw"><div class="empty"><b>الهيكل التنظيمي خاص بكل مؤسسة</b><small>اختر المؤسسة من «المؤسسة» في الشريط العلوي.</small></div></div>`;
+  if(!trCache||trCache.__org!==(S.org||"")){if(!trLoading)loadTree();return head("جارٍ التحميل…")+`<div class="skel" style="height:360px"></div>`}
+  if(trCache.err)return head("")+`<div class="tw"><div class="empty"><b>${esc(trCache.err)}</b></div></div>`;
+  const T=trCache.tree,all=[];trWalk(T,(n,p,d)=>all.push({n,p,d}));const cnt=trCount(T);
+  const q=(ui.trq||"").trim(),fType=ui.trType||"";const open=ui.trOpen||(ui.trOpen=new Set([T.id,...(T.children||[]).map(c=>c.id)]));
+  const matchSet=new Set();if(q||fType)all.forEach(({n,p})=>{const m=(!q||(n.name+" "+n.code+" "+Object.values(n.meta||{}).join(" ")).includes(q))&&(!fType||n.type===fType);if(m){matchSet.add(n.id);p.forEach(x=>matchSet.add(x.id))}});
+  const sel=ui.trSel||T.id,view=ui.trView||"tree";
+  const acts=`<label class="opq">${ico("search")}<input id="trq" type="search" placeholder="ابحث باسم أو رمز أو اختصاص" value="${esc(q)}" autocomplete="off"></label>
+   <div class="seg"><button class="${view==="tree"?"on":""}" data-trview="tree">${ico("tree")} الشجرة</button><button class="${view==="chart"?"on":""}" data-trview="chart">${ico("grid")} المخطط</button></div>
+   <button class="btn" data-trall="1">فتح الكل</button><button class="btn" data-trall="0">طي الكل</button><button class="btn" data-rep="structure">${ico("fileChart")} طباعة / PDF</button><button class="btn" data-rep="structure" data-fmt="xlsx">Excel</button>
+   ${S.admin?`<button class="btn" data-trexp>تصدير JSON</button><label class="btn">استيراد JSON<input type="file" hidden accept=".json,.txt,application/json" data-trimp></label><button class="btn" data-trreset>${ico("refresh")} إعادة التعيين</button>`:""}`;
+  const chips=`<div class="trchips"><button class="${fType?"":"on"}" data-trtype="">الكل <em>${NF.format(all.length-1)}</em></button>${Object.entries(cnt).filter(([t])=>t!=="تصنيف").sort((a,b)=>TT_ORDER.indexOf(a[0])-TT_ORDER.indexOf(b[0])).map(([t,v])=>`<button class="${fType===t?"on":""}" style="--tc:${tt(t)[1]}" data-trtype="${esc(t)}">${ico(tt(t)[0])} ${esc(t)} <em>${NF.format(v)}</em></button>`).join("")}</div>`;
+  let main;
+  if(view==="chart"){
+    const card=(n,big)=>`<button class="occ ${big?"big":""} ${sel===n.id?"sel":""}" style="--tc:${tt(n.type)[1]}" data-trs="${n.id}"><span>${ico(tt(n.type)[0])}</span><b>${esc(n.name)}</b>${n.code?`<code>${esc(n.code)}</code>`:""}</button>`;
+    const lvl1=T.children||[];
+    const secAll=[];lvl1.forEach(c=>(c.children||[]).forEach(x=>{if(x.type==="قطاع")secAll.push(x)}));
+    main=`<div class="ochart"><div class="ocrow">${card(T,1)}</div><div class="ocline"></div><div class="ocrow two">${lvl1.map(c=>{const subs=c.children||[];const others=subs.filter(x=>x.type!=="قطاع");
+       return `<div class="occol">${card(c,1)}${others.length?`<div class="ocmini">${others.map(x=>card(x)).join("")}</div>`:""}</div>`}).join("")}</div>${secAll.length?`<div class="ocline"></div><div class="ocsec">${secAll.map(s=>{const gs=s.children||[];const k=trCount(s);return `<article class="osec" style="--tc:${tt(s.type)[1]}"><header data-trs="${s.id}"><span>${ico("grid")}</span><div><b>${esc(s.name)}</b><small>${NF.format(gs.length)} إدارة عامة · ${NF.format(k["إدارة"]||0)} إدارة · ${NF.format(k["لجنة"]||0)} لجنة</small></div></header><div class="osg">${gs.map(g=>{const kk=trCount(g);return `<button data-trs="${g.id}" class="${sel===g.id?"sel":""}"><b>${esc(g.name)}</b><small>${NF.format(kk["إدارة"]||0)} إدارة · ${NF.format(kk["لجنة"]||0)} لجنة · ${NF.format(kk["وحدة تابعة"]||0)} وحدة · ${NF.format(kk["مهمة"]||0)} مهمة</small></button>`}).join("")}</div></article>`}).join("")}</div>`:""}</div>`;
+    if(false){main=`${lvl1.map(c=>{const sectors=[];return `<div>${sectors.length?`<div class="ocsec">${sectors.map(s=>{const gs=s.children||[];const k=trCount(s);return `<article class="osec" style="--tc:${tt(s.type)[1]}"><header data-trs="${s.id}"><span>${ico("grid")}</span><div><b>${esc(s.name)}</b><small>${NF.format(gs.length)} إدارة عامة · ${NF.format(k["إدارة"]||0)} إدارة · ${NF.format(k["لجنة"]||0)} لجنة</small></div></header><div class="osg">${gs.map(g=>{const kk=trCount(g);return `<button data-trs="${g.id}" class="${sel===g.id?"sel":""}"><b>${esc(g.name)}</b><small>${NF.format(kk["إدارة"]||0)} إدارة · ${NF.format(kk["لجنة"]||0)} لجنة · ${NF.format(kk["وحدة تابعة"]||0)} وحدة · ${NF.format(kk["مهمة"]||0)} مهمة</small></button>`}).join("")}</div></article>`}).join("")}</div>`:""}</div>`}).join("")}</div></div>`;}
+  } else main=`<ul class="trtree">${trRow(T,0,q||fType?" ":"",open,sel,q||fType?matchSet:new Set())}</ul>`.replace(/ hit"/g,'"');
+  if((q||fType)&&view==="tree"){main=`<ul class="trtree">${(function rr(n){if(!matchSet.has(n.id))return"";const [ic,c]=tt(n.type),hit=(!q||(n.name+" "+n.code+" "+Object.values(n.meta||{}).join(" ")).includes(q))&&(!fType||n.type===fType);const kids=(n.children||[]).map(rr).join("");
+    return `<li class="trn" style="--tc:${c}"><div class="trr ${sel===n.id?"sel":""} ${hit?"hit":""}"><span class="trt0"></span><button class="trb" data-trs="${n.id}"><span class="tri">${ico(ic)}</span><b>${esc(n.name)}</b>${n.code?`<code>${esc(n.code)}</code>`:""}<small>${esc(n.type)}</small></button></div>${kids?`<ul>${kids}</ul>`:""}</li>`})(T)||`<div class="empty-s">لا نتائج.</div>`}</ul>`}
+  const savedNote=trCache.saved?`آخر تعديل: ${esc(trCache.by||"")} · ${esc((trCache.at||"").slice(0,10))}`:"هذا هو الهيكل الجاهز؛ يُحفظ لمؤسستك عند أول تعديل.";
+  return head(`${esc(T.name)} — ${NF.format(all.length-1)} عنصرًا: المجلس واللجان والقطاعات والإدارات والوحدات والمهام · ${savedNote}`,acts)+chips+
+   `<div class="trwrap"><section class="trmain">${main}</section><aside class="trside">${trDetail(sel)}</aside></div>`;
+}
+REPORTS.structure=()=>{const rows=[];if(trCache&&trCache.tree)trWalk(trCache.tree,(n,p,d)=>{if(n.type==="تصنيف")return;rows.push([d,"  ".repeat(Math.max(0,d-1))+n.name,n.type,n.code||"",p.filter(x=>x.type!=="تصنيف").map(x=>x.name).slice(1).join(" ‹ "),(n.meta||{})["الاختصاص"]||"",n.head||""])});
+  return{title:"الهيكل التنظيمي",subtitle:(trCache&&trCache.tree&&trCache.tree.name)||"",landscape:true,blocks:[{type:"table",title:"عناصر الهيكل",head:["المستوى","الاسم","النوع","الرمز","يتبع","الاختصاص","المسؤول"],rows}]}};
+function bindStructure(main){if(R.v!=="structure"||!trCache||!trCache.tree)return;
+  const q=(s,f)=>main.querySelectorAll(s).forEach(f);
+  const s=main.querySelector("#trq");if(s)s.oninput=()=>{ui.trq=s.value;render()};
+  q("[data-trview]",b=>b.onclick=()=>{ui.trView=b.dataset.trview;render()});
+  q("[data-trtype]",b=>b.onclick=()=>{ui.trType=b.dataset.trtype;render()});
+  q("[data-trt]",b=>b.onclick=()=>{const o=ui.trOpen;o.has(b.dataset.trt)?o.delete(b.dataset.trt):o.add(b.dataset.trt);render()});
+  q("[data-trs]",b=>b.onclick=()=>{ui.trSel=b.dataset.trs;ui.trEdit=null;const f=trFind(b.dataset.trs);if(f)f.path.forEach(p=>ui.trOpen.add(p.id));render();if(innerWidth<1000){const el=$("#main .trside");if(el)el.scrollIntoView({behavior:"smooth"})}});
+  q("[data-trall]",b=>b.onclick=()=>{if(b.dataset.trall==="1"){trWalk(trCache.tree,n=>ui.trOpen.add(n.id))}else ui.trOpen=new Set([trCache.tree.id]);render()});
+  q("[data-tredit]",b=>b.onclick=()=>{ui.trEdit=b.dataset.tredit;render()});
+  q("[data-trcancel]",b=>b.onclick=()=>{ui.trEdit=null;render()});
+  q("[data-trsave]",b=>b.onclick=()=>{const n=trFind(b.dataset.trsave).n;n.name=$("#trName").value.trim()||n.name;n.type=$("#trType").value.trim()||n.type;n.code=$("#trCode").value.trim();
+    n.meta=n.meta||{};const sp=$("#trSpec").value.trim();if(sp)n.meta["الاختصاص"]=sp;else delete n.meta["الاختصاص"];
+    [["head","#trHead"],["phone","#trPhone"],["email","#trMail"]].forEach(([k,i])=>{const v=$(i).value.trim();if(v)n[k]=v;else delete n[k]});ui.trEdit=null;trSave("تعديل «"+n.name+"»")});
+  q("[data-tradd]",b=>b.onclick=()=>{const p=trFind(b.dataset.tradd).n;const def={"مجلس":"لجنة","تنفيذي":"مكتب","قطاع":"إدارة عامة","إدارة عامة":"إدارة","تصنيف":(p.children[0]||{}).type||"إدارة"}[p.type]||"إدارة";
+    const id="n"+uid().replace(/-/g,"").slice(0,10);p.children=p.children||[];p.children.push({id,name:"عنصر جديد",type:def,code:"",meta:{},children:[]});ui.trOpen.add(p.id);ui.trSel=id;ui.trEdit=id;render();setTimeout(()=>{const i=$("#trName");if(i){i.select();i.focus()}},30)});
+  q("[data-trmv]",b=>b.onclick=()=>{const f=trFind(b.dataset.trmv),par=f.path[f.path.length-1],L=par.children,i=L.indexOf(f.n),j=i+(+b.dataset.d);if(j<0||j>=L.length)return;[L[i],L[j]]=[L[j],L[i]];trSave("ترتيب «"+f.n.name+"»")});
+  q("[data-trdel]",b=>b.onclick=()=>{const f=trFind(b.dataset.trdel),n=f.n;let k=0;trWalk(n,()=>k++);
+    confirmBox("حذف من الهيكل",`سيُحذف «${n.name}»${k>1?` ومعه ${NF.format(k-1)} عنصرًا يتبعه`:""}. يمكنك الرجوع إلى الهيكل الجاهز من «إعادة التعيين».`,"حذف",()=>{const par=f.path[f.path.length-1];par.children=par.children.filter(x=>x!==n);ui.trSel=par.id;trSave("حذف «"+n.name+"»")})});
+  const ex=main.querySelector("[data-trexp]");if(ex)ex.onclick=()=>saveBlob(new Blob([JSON.stringify(trCache.tree,null,2)],{type:"application/json"}),"الهيكل-التنظيمي.json");
+  const im=main.querySelector("[data-trimp]");if(im)im.onchange=()=>{const f=im.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{let t;try{t=JSON.parse(fr.result)}catch(e){toast("الملف ليس JSON صالحًا.");return}
+    confirmBox("استيراد الهيكل","سيحلّ الهيكل المستورد محل الهيكل الحالي لهذه المؤسسة.","استيراد",async()=>{const d=await act("treeSave",{tree:t,log:"استيراد من ملف"},"استُورد الهيكل");if(d){d.__org=S.org||"";trCache=d;ui.trSel=null;ui.trOpen=null;render()}})};fr.readAsText(f)};
+  const rs=main.querySelector("[data-trreset]");if(rs)rs.onclick=()=>{modal(`<div class="dh"><h2>${ico("refresh")} إعادة تعيين الهيكل</h2><button class="x" data-close aria-label="إغلاق">✕</button></div><div class="db"><p>اختر ما تبدأ به. سيحلّ محل الهيكل الحالي لهذه المؤسسة.</p></div><div class="df"><button class="btn pri" data-trr="template">الهيكل الجاهز (${NF.format(502)} عنصرًا)</button><button class="btn" data-trr="empty">هيكل فارغ</button><button class="btn" data-close>إلغاء</button></div>`);
+    document.querySelectorAll("#modalRoot [data-trr]").forEach(b=>b.onclick=async()=>{const d=await act("treeSave",{reset:b.dataset.trr},"أُعيد التعيين");closeModal();if(d){d.__org=S.org||"";trCache=d;ui.trSel=null;ui.trOpen=null;render()}})};
+}
+
 /* ================= Bindings ================= */
 function bindMain(){
   const main=$("#main");
@@ -3988,7 +4107,7 @@ function bindMain(){
   main.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(null,b.dataset.g!=null?+b.dataset.g:null,b.dataset.m!=null?+b.dataset.m:null));
   main.querySelectorAll("[data-back]").forEach(b=>b.onclick=goBack);
   main.querySelectorAll("[data-stage]").forEach(a=>a.onclick=e=>{e.preventDefault();openStage(a.dataset.stage)});
-  bindDash(main);bindMenus(main);bindPerms(main);bindCharts(main);bindLayout(main);bindReports(main);bindOrgs(main);bindThemes(main);bindGov(main);
+  bindDash(main);bindMenus(main);bindPerms(main);bindCharts(main);bindLayout(main);bindReports(main);bindOrgs(main);bindThemes(main);bindGov(main);bindStructure(main);
   const fq=$("#fq"),fs=$("#fs");
   if(fq)fq.oninput=()=>{ui.q=fq.value;ui.page=0;render()};
   if(fs)fs.onchange=()=>{ui.st=fs.value;ui.page=0;render()};

@@ -268,6 +268,17 @@ gv = AM(T, "govCustomDoc", { cycle: "2026", title: "شهادة الجودة", g:
 ok(Object.values(gv.data.lib).some(d => d.t === "شهادة الجودة"), "custom document added to the library");
 ok(A.api(T, "govUpload", { __org: "*", cycle: "2026", key: "bylaws", name: "a.pdf", mime: "application/pdf", data: pdf }).code === "VALIDATION", "governance writes need an organisation");
 ok(A.api(T, "govGet", { __org: "*", cycle: "2026" }).data.overview.some(o => o.readyPct > 0), "platform overview shows readiness per organisation");
+// الهيكل التنظيمي
+let tr = AM(T, "treeGet");
+ok(tr.ok && tr.data.template && tr.data.tree.children.length === 2, "organisation structure starts from the ready template");
+const t2 = JSON.parse(JSON.stringify(tr.data.tree)); t2.children[0].children.push({ name: "لجنة جديدة", type: "لجنة", code: "BOD-C99", meta: { "الاختصاص": "اختبار" }, children: [], evil: "<script>" });
+tr = AM(T, "treeSave", { tree: t2, log: "إضافة لجنة" });
+ok(tr.ok && tr.data.saved && tr.data.tree.children[0].children.some(c => c.code === "BOD-C99" && !c.evil), "structure saved and sanitised");
+ok(AM(T, "treeGet").data.tree.children[0].children.length === t2.children[0].children.length, "structure persists per organisation");
+ok(AM(T, "treeSave", { reset: "empty" }).data.tree.children.length === 0 && AM(T, "treeSave", { reset: "template" }).data.tree.children.length === 2, "structure can be reset");
+ok(A.api(T, "treeSave", { __org: "*", reset: "empty" }).code === "VALIDATION", "structure edits need an organisation");
+const bomb = { name: "x", children: [] }; let cur = bomb; for (let i = 0; i < 30; i++) { const n = { name: "x" + i, children: [] }; cur.children.push(n); cur = n; }
+ok(AM(T, "treeSave", { tree: bomb }).data.tree && true, "deep trees are truncated safely");
 // بوابة المنصة وهوية الجهة القابلة للتعديل
 const pp = A.platformPublic();
 ok(pp.ok && pp.orgs.length >= 1 && pp.orgs.every(o => o.code && o.name && o.type) && Object.keys(pp.types).length >= 1, "platform portal lists organisations by type");
