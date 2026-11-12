@@ -2393,14 +2393,18 @@ function startStars(){
 function stopStars(){if(starRaf>1)cancelAnimationFrame(starRaf);starRaf=0}
 
 /* ================= Routing ================= */
+const GOV_MODS={"إدارة الحوكمة":"ind","خارطة طريق الحوكمة":"ind","تسجيل إجابات المعايير":"ind","نموذج تقييم الحوكمة":"ind","تقرير تقييم الحوكمة":"ind","إدارة مرفقات التحقق":"miss","خارطة الملفات المؤسسية":"map"};
 function route(){
   const h=(location.hash||"#home").slice(1);let m;
-  if((m=h.match(/^m(\d+)-(\d+)$/))&&G[+m[1]]?.items[+m[2]]!=null)return{v:"mod",g:+m[1],m:+m[2]};
+  if((m=h.match(/^m(\d+)-(\d+)$/))&&G[+m[1]]?.items[+m[2]]!=null){
+    // وحدات الحوكمة تفتح مركز الحوكمة مباشرة على القسم المناسب
+    const gt=GOV_MODS[G[+m[1]].items[+m[2]]];if(gt){ui.govTab=gt;return{v:"gov",g:+m[1],m:+m[2]}}
+    return{v:"mod",g:+m[1],m:+m[2]}}
   if((m=h.match(/^g(\d+)$/))&&G[+m[1]])return{v:"grp",g:+m[1]};
   if(["inbox","trash","org","focus","flow","users","audit","menus","perms","orgs","themes","gov"].includes(h))return{v:h};
   return{v:"home"};
 }
-let R=route();let navDepth=0;if(R.v==="grp"||R.v==="mod")navOpen.add(R.g);
+let R=route();let navDepth=0;if((R.v==="grp"||R.v==="mod"||R.v==="gov")&&R.g!=null)navOpen.add(R.g);
 window.addEventListener("hashchange",()=>{R=route();if(R.v!=="themes"){if(thPrevSys){thPrevSys=null;applySysTheme()}}else{partsDraft=null}if((R.v==="grp"||R.v==="mod")&&!navOpen.has(R.g)){navOpen.add(R.g);saveNavOpen()}if(R.v==="users"||R.v==="perms"){usersCache=null;permDraft=null}if(R.v==="menus")navDraft=null;if(R.v==="orgs")orgsCache=null;if(!LAYOUT_PAGES(R.v))editMode=false;chOpen=null;if(R.v==="audit")auditCache=null;navDepth++;Object.assign(ui,{q:"",st:"",page:0,sort:{k:"date",d:-1}});closeSide();closeDrawer();render();window.scrollTo(0,0)});
 
 /* ================= Charts (SVG, theme tokens) ================= */
