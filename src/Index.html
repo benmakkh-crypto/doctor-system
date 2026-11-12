@@ -1670,6 +1670,9 @@ body.ro-on .side{touch-action:none}
 .osg{display:grid;gap:6px;padding:10px}.osg button{display:grid;gap:2px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;font:inherit;text-align:start;cursor:pointer;color:var(--ink)}.osg button.sel{border-color:#c9a227;box-shadow:0 0 0 2px color-mix(in srgb,#c9a227 35%,transparent)}.osg b{font-size:13px}.osg small{color:var(--muted);font-size:11px}
 @media (max-width:1000px){.trwrap{grid-template-columns:1fr}.trside{position:static;max-height:none}.ocrow.two{grid-template-columns:1fr}}
 /* ---- الهيكل 4.8.1: الواجهة الإبداعية ---- */
+.trnE{cursor:text;border-radius:5px;transition:box-shadow .15s}.trnE:hover{box-shadow:0 0 0 1.5px color-mix(in srgb,#deb24e 70%,transparent)}.trnI{outline:2px solid #deb24e!important;outline-offset:2px;background:rgb(255 255 255 / 92%);color:#13211d!important;padding:0 4px;min-width:3ch;display:inline-block;cursor:text;user-select:text;-webkit-user-select:text}
+.trd .trdh h3[data-trn]{cursor:text}.trpen{font-style:normal;font-size:13px;opacity:.7;margin-inline-start:8px}.trd .trdh h3.trnI{color:#13211d!important}
+
 .trw{position:relative;display:inline-flex}.treb{position:absolute;top:-12px;inset-inline-start:-6px;display:inline-flex;gap:2px;z-index:3;opacity:0;pointer-events:none;transform:translateY(4px);transition:opacity .15s,transform .15s}.trw:hover>.treb,.trw:focus-within>.treb,.trw.on>.treb{opacity:1;pointer-events:auto;transform:none}.trw.on>.occh,.trw.on>.ocn{outline:3px solid #deb24e;outline-offset:2px}
 .ocrootadd{position:absolute;inset-inline-start:calc(50% + 190px);top:50%;transform:translateY(-70%)}@media (max-width:900px){.ocrootadd{position:static;transform:none;margin-inline-start:8px;align-self:center}}.treb button{width:24px;height:24px;display:grid;place-items:center;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:12px;cursor:pointer;box-shadow:0 4px 10px -4px rgb(0 0 0 / 30%)}.treb button:hover{background:#deb24e;color:#3b2a05}.treb button.x:hover{background:#c2334d;color:#fff}
 .osc header .treb,.osgr .treb{position:static;flex:none;align-self:center;margin-inline:4px;opacity:1;pointer-events:auto;transform:none}.osgr .treb button{width:22px;height:22px}
@@ -4089,13 +4092,13 @@ function trRow(n,d,q,open,sel,matchSet){
   const [ic,c]=tt(n.type),kids=n.children||[],isOpen=open.has(n.id)||(q&&matchSet.has(n.id)),hit=q&&(n.name+" "+n.code+" "+Object.values(n.meta||{}).join(" ")).includes(q);
   if(q&&!matchSet.has(n.id)&&!hit)return"";
   return `<li class="trn ${n.type==="تصنيف"?"cat":""}" style="--tc:${c}"><div class="trr ${sel===n.id?"sel":""} ${hit?"hit":""}">${kids.length?`<button class="trt" data-trt="${n.id}" aria-expanded="${isOpen}" aria-label="${isOpen?"طي":"فتح"}">${ico("chev")}</button>`:`<span class="trt0"></span>`}
-   <button class="trb" data-trs="${n.id}"><span class="tri">${ico(ic)}</span><b>${esc(n.name)}</b>${n.code?`<code>${esc(n.code)}</code>`:""}<small>${esc(n.type)}</small>${kids.length?`<em>${NF.format(kids.length)}</em>`:""}</button></div>
+   <button class="trb" data-trs="${n.id}"><span class="tri">${ico(ic)}</span><b data-trn="${n.id}">${esc(n.name)}</b>${n.code?`<code>${esc(n.code)}</code>`:""}<small>${esc(n.type)}</small>${kids.length?`<em>${NF.format(kids.length)}</em>`:""}</button></div>
    ${kids.length&&isOpen?`<ul>${kids.map(k=>trRow(k,d+1,q,open,sel,matchSet)).join("")}</ul>`:""}</li>`}
 function trDetail(id){const f=trFind(id);if(!f)return`<div class="empty-s">اختر عنصرًا من الهيكل لعرض بياناته.</div>`;const n=f.n,[ic]=tt(n.type),c=trHueMap(trCache.tree).get(n.id)||tt(n.type)[1],cnt=trCount(n),adm=trCanEdit();
   const ed=ui.trEdit===n.id;
   const types=[...new Set(TT_ORDER.concat(Object.keys(trCount(trCache.tree))))];
   return `<div class="trd" style="--tc:${c}"><div class="trp">${f.path.map(p=>`<button class="lnk" data-trs="${p.id}">${esc(p.name)}</button>`).join(`<i>‹</i>`)}</div>
-   <header class="trdh"><span class="trdi">${ico(ic)}</span><div><small>${esc(n.type)}${n.code?` · <code>${esc(n.code)}</code>`:""}</small><h3>${esc(n.name)}</h3></div></header>
+   <header class="trdh"><span class="trdi">${ico(ic)}</span><div><small>${esc(n.type)}${n.code?` · <code>${esc(n.code)}</code>`:""}</small><h3 ${adm?`data-trn="${n.id}" data-trn1 title="اضغط لتعديل الاسم"`:""}>${esc(n.name)}${adm?`<i class="trpen">✎</i>`:""}</h3></div></header>
    ${ed?`<div class="form trf"><label>الاسم<input id="trName" maxlength="200" value="${esc(n.name)}"></label>
      <div class="row2"><label>النوع<input id="trType" list="trTypes" maxlength="40" value="${esc(n.type)}"><datalist id="trTypes">${types.map(t=>`<option value="${esc(t)}">`).join("")}</datalist></label><label>الرمز<input id="trCode" dir="ltr" maxlength="40" value="${esc(n.code||"")}"></label></div>
      <label>الاختصاص<textarea id="trSpec" rows="3" maxlength="1000">${esc((n.meta||{})["الاختصاص"]||"")}</textarea></label>
@@ -4138,18 +4141,18 @@ function trEB(n,root){return ui.trEM&&trCanEdit()?`<span class="treb"><button da
 function trAddBtn(pid,label){return ui.trEM&&trCanEdit()?`<button class="tradd" data-tra="${pid}">＋ ${label}</button>`:""}
 function trOrgChart(T,sel,hue){
   const em=ui.trEM&&trCanEdit(),wrap=(n,h,root)=>em?`<span class="trw ${sel===n.id?"on":""}">${h}${trEB(n,root)}</span>`:h;
-  const node0=(n,cls="")=>`<button class="ocn ${cls} ${sel===n.id?"sel":""}" style="--tc:${hue.get(n.id)||tt(n.type)[1]}" data-trs="${n.id}"><span class="ocni">${ico(tt(n.type)[0])}</span><span class="ocnt"><small>${esc(n.type)}</small><b>${esc(n.name)}</b></span>${n.code?`<code>${esc(n.code)}</code>`:""}</button>`;
+  const node0=(n,cls="")=>`<button class="ocn ${cls} ${sel===n.id?"sel":""}" style="--tc:${hue.get(n.id)||tt(n.type)[1]}" data-trs="${n.id}"><span class="ocni">${ico(tt(n.type)[0])}</span><span class="ocnt"><small>${esc(n.type)}</small><b data-trn="${n.id}">${esc(n.name)}</b></span>${n.code?`<code>${esc(n.code)}</code>`:""}</button>`;
   const node=(n,cls="")=>wrap(n,node0(n,cls),n===T);
-  const chip0=n=>`<button class="occh ${sel===n.id?"sel":""}" style="--tc:${hue.get(n.id)||tt(n.type)[1]}" data-trs="${n.id}">${ico(tt(n.type)[0])}<span>${esc(n.name)}</span></button>`;
+  const chip0=n=>`<button class="occh ${sel===n.id?"sel":""}" style="--tc:${hue.get(n.id)||tt(n.type)[1]}" data-trs="${n.id}">${ico(tt(n.type)[0])}<span data-trn="${n.id}">${esc(n.name)}</span></button>`;
   const chip=n=>wrap(n,chip0(n));
   const L1=trKids(T),secs=trSectors(T),secSet=new Set(secs.map(s=>s.id));
   const parOf=x=>{const f=trFind(x.id);return f&&f.path.length?f.path[f.path.length-1].id:T.id};
   const cols=L1.map(c=>{const k=trKids(c).filter(x=>!secSet.has(x.id));return `<div class="occol2">${node(c,"lg")}${k.length?`<div class="ocsub"><div class="ocsubt">${NF.format(k.length)} ${esc(c.type==="مجلس"?"لجنة":"مكتب")} تابعة</div><div class="occhs">${k.map(chip).join("")}${trAddBtn(k.length?parOf(k[0]):c.id,c.type==="مجلس"?"لجنة":"مكتب")}</div></div>`:em?`<div class="ocsub">${trAddBtn(c.id,"تابع")}</div>`:""}</div>`}).join("");
   const open=ui.trOpen;
   const cards=secs.map((s,i)=>{const col=hue.get(s.id),k=trCount(s),gds=trKids(s);
-    return `<article class="osc" style="--tc:${col}"><header data-trs="${s.id}" class="${sel===s.id?"sel":""}"><i class="osn">${String(i+1).padStart(2,"0")}</i><div><small>قطاع${s.code?` · ${esc(s.code)}`:""}</small><b>${esc(s.name)}</b></div>${em?trEB(s):`<span class="osci">${ico("grid")}</span>`}</header>
+    return `<article class="osc" style="--tc:${col}"><header data-trs="${s.id}" class="${sel===s.id?"sel":""}"><i class="osn">${String(i+1).padStart(2,"0")}</i><div><small>قطاع${s.code?` · ${esc(s.code)}`:""}</small><b data-trn="${s.id}">${esc(s.name)}</b></div>${em?trEB(s):`<span class="osci">${ico("grid")}</span>`}</header>
      <div class="osst">${[["إدارة عامة","layout"],["إدارة","doc"],["لجنة","users"],["وحدة تابعة","tree"],["مهمة","check"]].filter(([t])=>k[t]).map(([t,ic])=>`<span title="${esc(t)}">${ico(ic)}<b>${NF.format(k[t])}</b>${esc(t==="وحدة تابعة"?"وحدة":t)}</span>`).join("")}</div>
-     <ol class="osgd">${gds.map(g=>{const gk=trKids(g),isO=open.has(g.id);return `<li class="${isO?"open":""}"><div class="osgr ${sel===g.id?"sel":""}"><button class="osgb" data-trs="${g.id}"><b>${esc(g.name)}</b><small>${esc(g.type)}${g.code?` · ${esc(g.code)}`:""}</small></button>${gk.length?`<button class="osgt" data-trt="${g.id}" aria-expanded="${isO}" aria-label="${isO?"طي":"عرض التفاصيل"}"><em>${NF.format(gk.length)}</em>${ico("chev")}</button>`:""}${em?trEB(g):""}</div>
+     <ol class="osgd">${gds.map(g=>{const gk=trKids(g),isO=open.has(g.id);return `<li class="${isO?"open":""}"><div class="osgr ${sel===g.id?"sel":""}"><button class="osgb" data-trs="${g.id}"><b data-trn="${g.id}">${esc(g.name)}</b><small>${esc(g.type)}${g.code?` · ${esc(g.code)}`:""}</small></button>${gk.length?`<button class="osgt" data-trt="${g.id}" aria-expanded="${isO}" aria-label="${isO?"طي":"عرض التفاصيل"}"><em>${NF.format(gk.length)}</em>${ico("chev")}</button>`:""}${em?trEB(g):""}</div>
        ${isO&&(gk.length||em)?`<div class="osgk">${gk.map(chip).join("")}${trAddBtn(gk.length?parOf(gk[0]):g.id,"إدارة")}</div>`:""}</li>`}).join("")}</ol>${em?`<div class="oscadd">${trAddBtn(gds.length?parOf(gds[0]):s.id,"إدارة عامة")}</div>`:""}</article>`}).join("")+(em&&secs.length?`<article class="osc oscnew">${trAddBtn(parOf(secs[0]),"قطاع جديد")}</article>`:"");
   return `<div class="oc2"><div class="ocroot">${node(T,"xl")}${em?`<span class="ocrootadd">${trAddBtn(T.id,"جهة رئيسية")}</span>`:""}</div><div class="ocbr" style="--n:${L1.length}">${cols}</div>
    ${secs.length?`<div class="ocbus"><span>${ico("grid")} ${NF.format(secs.length)} قطاعات تتبع الرئيس التنفيذي</span></div><div class="ocsecs">${cards}</div>`:""}</div>`}
@@ -4195,6 +4198,14 @@ REPORTS.structure=()=>{const rows=[];const T=trCache&&trCache.tree;if(T)trWalk(T
     blocks.push({type:"kpis",items:[["قطاع","قطاعات"],["إدارة عامة","إدارات عامة"],["إدارة","إدارات"],["لجنة","لجان"]].map(([t,l])=>[l,cnt[t]||0])},{type:"html",html:`<h3>المخطط التنظيمي</h3>${html}`},{type:"html",html:`<div style="page-break-before:always"></div>`})}
   blocks.push({type:"table",title:"عناصر الهيكل بالتفصيل",head:["المستوى","الاسم","النوع","الرمز","يتبع","الاختصاص","المسؤول"],rows});
   return{title:"الهيكل التنظيمي",subtitle:(T&&T.name)||"",landscape:true,sign:false,blocks}};
+function trInline(el){if(el.isContentEditable)return;const id=el.dataset.trn,f=trFind(id);if(!f)return;const n=f.n,old=n.name;ui.trInline=true;
+  const pen=el.querySelector(".trpen");if(pen)pen.remove();el.textContent=old;
+  try{el.contentEditable="plaintext-only"}catch(x){el.contentEditable="true"}if(el.contentEditable!=="plaintext-only")el.contentEditable="true";el.classList.add("trnI");el.focus();
+  const r=document.createRange();r.selectNodeContents(el);const sl=getSelection();sl.removeAllRanges();sl.addRange(r);
+  let done=false;const fin=save=>{if(done)return;done=true;el.contentEditable="false";el.classList.remove("trnI");const v=el.textContent.replace(/\s+/g," ").trim().slice(0,200);
+    setTimeout(()=>{ui.trInline=false},0);if(save&&v&&v!==old){n.name=v;trSave("تعديل الاسم «"+old+"» إلى «"+v+"»")}else{el.textContent=old;render()}};
+  el.onkeydown=e=>{e.stopPropagation();if(e.key==="Enter"){e.preventDefault();fin(true)}else if(e.key==="Escape"){e.preventDefault();fin(false)}};
+  el.onkeyup=e=>{e.stopPropagation();if(e.key===" ")e.preventDefault()};el.onclick=e=>{e.stopPropagation();e.preventDefault()};el.onblur=()=>fin(true)}
 function trAddChild(pid){const p=trFind(pid).n;const k0=(p.children||[])[0];const def={"مجلس":"لجنة","تنفيذي":"مكتب","قطاع":"إدارة عامة","إدارة عامة":"إدارة","شركة":"قطاع","جهة":"قطاع","تصنيف":(k0||{}).type||"إدارة"}[p.type]||"إدارة";
   const id="n"+uid().replace(/-/g,"").slice(0,10);p.children=p.children||[];p.children.push({id,name:"عنصر جديد",type:def,code:"",meta:{},children:[]});ui.trOpen.add(p.id);ui.trSel=id;ui.trEdit=id;render();setTimeout(()=>{const i=$("#trName");if(i){i.select();i.focus()}},30)}
 function trDelete(id){const f=trFind(id);if(!f||!f.path.length)return;const n=f.n;let k=0;trWalk(n,()=>k++);
@@ -4213,7 +4224,8 @@ function bindStructure(main){if(R.v!=="structure"||!trCache||!trCache.tree)retur
   q("[data-trup]",b=>b.onclick=()=>{const f=trFind(ui.trFocus);let p=f&&f.path.length?f.path[f.path.length-1]:null;while(p&&p.type==="تصنيف"){const g=trFind(p.id);p=g.path.length?g.path[g.path.length-1]:null}ui.trFocus=p&&p!==trCache.tree?p.id:null;render()});
   q("[data-trtype]",b=>b.onclick=()=>{ui.trType=b.dataset.trtype;render()});
   q("[data-trt]",b=>b.onclick=()=>{const o=ui.trOpen;o.has(b.dataset.trt)?o.delete(b.dataset.trt):o.add(b.dataset.trt);render()});
-  q("[data-trs]",b=>b.onclick=()=>{ui.trSel=b.dataset.trs;ui.trEdit=null;const f=trFind(b.dataset.trs);if(f)f.path.forEach(p=>ui.trOpen.add(p.id));render();if(innerWidth<1000){const el=$("#main .trside");if(el)el.scrollIntoView({behavior:"smooth"})}});
+  if(trCanEdit()){q("[data-trn]",el=>{el.classList.add("trnE");if(!el.title)el.title="انقر على الاسم مرتين لتعديله";el.ondblclick=e=>{e.preventDefault();e.stopPropagation();trInline(el)};if(el.hasAttribute("data-trn1"))el.onclick=e=>{e.stopPropagation();trInline(el)}})}
+  q("[data-trs]",b=>b.onclick=e=>{if(ui.trInline)return;const ne=e.target.closest("[data-trn]");if(ne&&trCanEdit()&&ui.trSel===b.dataset.trs){e.preventDefault();trInline(ne);return}ui.trSel=b.dataset.trs;ui.trEdit=null;const f=trFind(b.dataset.trs);if(f)f.path.forEach(p=>ui.trOpen.add(p.id));render();if(innerWidth<1000){const el=$("#main .trside");if(el)el.scrollIntoView({behavior:"smooth"})}});
   q("[data-trall]",b=>b.onclick=()=>{if(b.dataset.trall==="1"){trWalk(trCache.tree,n=>ui.trOpen.add(n.id))}else ui.trOpen=new Set([trCache.tree.id]);render()});
   q("[data-tredit]",b=>b.onclick=()=>{ui.trEdit=b.dataset.tredit;render()});
   q("[data-trcancel]",b=>b.onclick=()=>{ui.trEdit=null;render()});
