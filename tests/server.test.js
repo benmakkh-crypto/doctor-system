@@ -277,6 +277,7 @@ ok(tr.ok && tr.data.saved && tr.data.tree.children[0].children.some(c => c.code 
 ok(AM(T, "treeGet").data.tree.children[0].children.length === t2.children[0].children.length, "structure persists per organisation");
 ok(AM(T, "treeSave", { reset: "empty" }).data.tree.children.length === 0 && AM(T, "treeSave", { reset: "template" }).data.tree.children.length === 2, "structure can be reset");
 ok(A.api(T, "treeSave", { __org: "*", reset: "empty" }).code === "VALIDATION", "structure edits need an organisation");
+{ const g = A.api(T, "treeGet", { __org: "*" }); ok(g.ok && g.data.general && g.data.tree.children.length === 2 && g.data.orgs.length >= 1 && g.data.orgs.every(o => typeof o.count === "number"), "platform view shows the general structure and the listed organisations"); }
 const bomb = { name: "x", children: [] }; let cur = bomb; for (let i = 0; i < 30; i++) { const n = { name: "x" + i, children: [] }; cur.children.push(n); cur = n; }
 ok(AM(T, "treeSave", { tree: bomb }).data.tree && true, "deep trees are truncated safely");
 // بوابة المنصة وهوية الجهة القابلة للتعديل

@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.8.0';
+const APP_VERSION = '4.8.1';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -1434,6 +1434,11 @@ function treeClean_(x, depth, cnt, ids) {
   return o;
 }
 function actTreeGet_(me) {
+  if (!CUR_ORG || CUR_ORG === '*') {
+    if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
+    const cnt = function (t) { let k = 0; (function w(n) { if (n.type !== 'تصنيف') k++; (n.children || []).forEach(w); })(t); return k - 1; };
+    return { tree: SCHEMA.ORGTREE, saved: false, template: true, general: true, orgs: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const st = govLoad_(o.id, '_tree'); return { id: o.id, code: o.code, name: o.name, type: o.type || '', saved: !!st.tree, count: cnt(st.tree || SCHEMA.ORGTREE), by: st.by || '', at: st.at || '' }; }) };
+  }
   const org = govNeedOrg_();
   const st = govLoad_(org, '_tree');
   return st.tree ? { tree: st.tree, saved: true, by: st.by || '', at: st.at || '' } : { tree: SCHEMA.ORGTREE, saved: false, template: true };
