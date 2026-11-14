@@ -1670,6 +1670,38 @@ body.ro-on .side{touch-action:none}
 .osg{display:grid;gap:6px;padding:10px}.osg button{display:grid;gap:2px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;font:inherit;text-align:start;cursor:pointer;color:var(--ink)}.osg button.sel{border-color:#c9a227;box-shadow:0 0 0 2px color-mix(in srgb,#c9a227 35%,transparent)}.osg b{font-size:13px}.osg small{color:var(--muted);font-size:11px}
 @media (max-width:1000px){.trwrap{grid-template-columns:1fr}.trside{position:static;max-height:none}.ocrow.two{grid-template-columns:1fr}}
 /* ---- الهيكل 4.8.1: الواجهة الإبداعية ---- */
+/* ---- 4.10: القائمة المنسدلة وتغذية الحقول ---- */
+.trwrap.v-list{grid-template-columns:1fr}.trwrap.v-list .trmain{padding:10px;background:var(--surface)}
+.tlist{display:grid;gap:4px}.tla{position:relative}.tlk{margin-inline-start:22px;padding-inline-start:10px;border-inline-start:2px solid color-mix(in srgb,var(--tc) 30%,var(--line));display:grid;gap:4px;padding-block:4px}
+.tlr{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:14px;border:1px solid var(--line);background:var(--surface);transition:border-color .15s,box-shadow .15s}.tlr:hover{border-color:color-mix(in srgb,var(--tc) 45%,var(--line))}
+.tla.open>.tlr{background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--tc) 7%,var(--surface)));border-color:color-mix(in srgb,var(--tc) 40%,var(--line))}.tlr.sel{box-shadow:0 0 0 2px #deb24e}.tlr.hit .tln b{background:color-mix(in srgb,#deb24e 32%,transparent);border-radius:4px}
+.tlt,.tlt0{width:30px;height:30px;flex:none;display:grid;place-items:center;border:0;border-radius:50%;background:color-mix(in srgb,var(--tc) 10%,transparent);color:var(--tc);cursor:pointer}.tlt0{background:none}.tlt svg{width:15px;height:15px;transform:rotate(90deg);transition:transform .25s}.tlt[aria-expanded=true] svg{transform:rotate(-90deg)}.tlt[aria-expanded=true]{background:var(--tc);color:#fff}
+.tlm{flex:1;min-width:0;display:flex;align-items:center;gap:10px;border:0;background:none;padding:4px;font:inherit;color:var(--ink);text-align:start;cursor:pointer}
+.tli{width:34px;height:34px;flex:none;display:grid;place-items:center;border-radius:11px;background:var(--tc);color:#fff;box-shadow:0 6px 14px -8px var(--tc)}.tli svg{width:17px;height:17px}
+.tln{display:grid;min-width:0}.tln b{font-size:14.5px;line-height:1.5}.tln small{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11.5px;color:var(--muted)}.tln small i{font-style:normal;color:var(--tc);font-weight:700}.tln code{font-size:10.5px;direction:ltr;padding:0 6px;border-radius:6px;background:var(--surface-2)}
+.tlh{display:inline-flex;gap:3px;align-items:center;color:var(--ink);font-weight:600}.tlh svg{width:12px;height:12px}
+.tlfill{flex:none;display:grid;gap:2px;width:64px}.tlfill i{display:block;height:5px;border-radius:9px;background:linear-gradient(90deg,#deb24e,var(--tc,#0e7a5f));box-shadow:inset 0 0 0 0 transparent;min-width:2px}.tlfill{background:none}.tlfill small{font-size:10px;color:var(--muted);text-align:center}
+.tlfill{position:relative}.tlfill::before{content:"";position:absolute;inset-inline:0;top:0;height:5px;border-radius:9px;background:var(--surface-2);z-index:0}.tlfill i{position:relative;z-index:1}
+.tlfill.big{width:100%;margin:6px 0 8px}.tlfill.big small{text-align:start}
+.tlb{width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--tc);cursor:pointer}.tlb svg{width:16px;height:16px}.tlb.on,.tlb:hover{background:var(--tc);color:#fff;border-color:transparent}
+.tlr .treb{position:static;opacity:1;pointer-events:auto;transform:none}
+.tlp{margin:6px 0 6px 0;padding:14px;border-radius:16px;border:1.5px solid color-mix(in srgb,var(--tc) 40%,var(--line));background:color-mix(in srgb,var(--tc) 4%,var(--surface));box-shadow:0 14px 30px -24px var(--tc)}
+.tlph{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:8px}.tlph b{display:flex;gap:6px;align-items:center;color:var(--tc)}.tlph b svg{width:16px;height:16px}.tlph .tlfill.big{width:180px;margin:0}
+.tlpg,.trfg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}.tlpg label,.trfg label{display:grid;gap:4px;font-size:12.5px;color:var(--muted)}.tlpg label.full,.trfg label.full{grid-column:1/-1}.tlp .actions{margin-top:10px}
+.trfg{grid-template-columns:1fr 1fr}.tlpv{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0 16px}
+.trgeo{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:14px 16px;border-radius:18px;margin-bottom:12px;background:linear-gradient(120deg,color-mix(in srgb,#7b2d43 10%,var(--surface)),var(--surface));border:1px dashed color-mix(in srgb,#7b2d43 45%,var(--line))}.trgeo>span{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#7b2d43;color:#fff}.trgeo>span svg{width:22px;height:22px}.trgeo div{flex:1;min-width:220px;display:grid}.trgeo small{color:var(--muted)}
+/* الشريط الجانبي */
+.navtree{margin-bottom:4px}.ntl{padding:8px 12px;font-size:12px;color:rgba(255,255,255,.55)}
+.ntroot{display:flex;gap:10px;align-items:center;padding:8px 10px;margin:0 4px 4px;border-radius:14px;color:#fff;text-decoration:none;background:linear-gradient(135deg,rgb(222 178 78 / 22%),rgb(222 178 78 / 6%));box-shadow:inset 0 0 0 1px rgb(222 178 78 / 35%)}.ntroot.on{box-shadow:inset 0 0 0 2px #deb24e}
+.ntroot .nti{width:34px;height:34px;border-radius:11px;background:linear-gradient(145deg,#e9c46a,#b8862b);color:#3b2a05}
+.nti{width:24px;height:24px;flex:none;display:grid;place-items:center;border-radius:7px;background:color-mix(in srgb,var(--tc) 30%,transparent);color:#fff}.nti svg{width:14px;height:14px}
+.ntk0,.ntk{display:grid;gap:1px}.ntk0{padding:4px 0 8px}.ntk{margin-inline-start:12px;padding-inline-start:6px;border-inline-start:1.5px solid color-mix(in srgb,var(--tc) 45%,rgba(255,255,255,.12))}
+.ntr{display:flex;align-items:center;gap:2px;border-radius:9px}.ntr a{flex:1;min-width:0;display:flex;gap:7px;align-items:center;padding:5px 6px;border-radius:9px;color:rgba(255,255,255,.86);text-decoration:none;font-size:12.5px}.ntr a:hover{background:rgba(255,255,255,.08);color:#fff}.ntr.on a{background:color-mix(in srgb,var(--tc) 45%,transparent);color:#fff;font-weight:700}
+.ntx{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ntr em{font-style:normal;font-size:10.5px;font-weight:800;padding:0 6px;border-radius:999px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.75)}
+.ntt,.ntt0{width:22px;height:22px;flex:none;display:grid;place-items:center;border:0;border-radius:50%;background:none;color:rgba(255,255,255,.6);cursor:pointer}.ntt svg{width:12px;height:12px;transform:rotate(90deg);transition:transform .2s}.ntt[aria-expanded=true] svg{transform:rotate(-90deg)}.ntt:hover{background:rgba(255,255,255,.1);color:#fff}
+.ntmore{display:block;padding:4px 30px;font-size:11.5px;color:#deb24e;text-decoration:none}
+@media (max-width:640px){.tlfill:not(.big){display:none}.tlk{margin-inline-start:10px;padding-inline-start:6px}.tln b{font-size:13.5px}.tlpg,.trfg{grid-template-columns:1fr}}
+
 .trnE{cursor:text;border-radius:5px;transition:box-shadow .15s}.trnE:hover{box-shadow:0 0 0 1.5px color-mix(in srgb,#deb24e 70%,transparent)}.trnI{outline:2px solid #deb24e!important;outline-offset:2px;background:rgb(255 255 255 / 92%);color:#13211d!important;padding:0 4px;min-width:3ch;display:inline-block;cursor:text;user-select:text;-webkit-user-select:text}
 .trd .trdh h3[data-trn]{cursor:text}.trpen{font-style:normal;font-size:13px;opacity:.7;margin-inline-start:8px}.trd .trdh h3.trnI{color:#13211d!important}
 
@@ -1811,6 +1843,8 @@ body.ro-on .side{touch-action:none}
 <div class="shell" id="shell">
   <aside class="side" id="side" aria-label="القائمة الرئيسية">
     <nav class="nav" id="navTop"></nav>
+    <div class="cap" id="capTree" hidden>الهيكل التنظيمي</div>
+    <nav class="nav navtree" id="navTree" hidden></nav>
     <div class="cap">الإدارات</div>
     <nav class="nav" id="nav"></nav>
     <div class="cap">النظام</div>
@@ -3408,6 +3442,7 @@ function renderNav(){
   navEl.innerHTML=`<div class="navsrch"><span>${ico("search")}</span><input id="navq" type="search" placeholder="ابحث في الإدارات والوحدات…" value="${esc(nq)}" aria-label="بحث في القائمة" autocomplete="off">${nq?`<button data-navq aria-label="مسح البحث">✕</button>`:""}</div>
    <div class="navtools"><button data-navall="1">${ico("chev")} فتح الكل</button><button data-navall="0">${ico("chev")} طي الكل</button>${nq?`<span>${shown} نتيجة</span>`:roCustom()?`<button data-roreset title="إعادة ترتيب القائمة كما كان">${ico("refresh")} الترتيب الأصلي</button>`:`<span class="navhint" title="اضغط مطولًا على أي إدارة أو وحدة أو رابط، ثم اسحبه لأعلى أو لأسفل">${ico("swap")} اضغط مطولًا للترتيب</span>`}</div>`+(groups||`<div class="navnone">${ico("search")}<b>لا نتائج</b><small>جرّب كلمة أخرى</small></div>`);
   if(hadFocus){const n=$("#navq");n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}
+  renderNavTree();
   const sysT=(h,ic,t,sub,col,n)=>`<a href="#${h}" class="st ${R.v===h?"on":""}" style="--sc:${col}" title="${esc(t)} — ${esc(sub)}"${R.v===h?' aria-current="page"':""}><span class="sti">${ico(ic)}</span><span class="stt"><b>${t}</b><small>${sub}</small></span>${n?`<span class="stn">${n}</span>`:""}</a>`;
   $("#navSys").innerHTML=`<div class="sysg">`+sysT("org","org","الإعدادات","الجهة والبيانات","#0e9f8e")
    +sysT("perms","shieldCheck","الصلاحيات","الموظفون والأدوار","#6d5bd0")
@@ -4080,14 +4115,14 @@ function bindGov(main){if(R.v!=="gov")return;
 
 /* ================= الهيكل التنظيمي ================= */
 let trCache=null,trLoading=false;
-const TT={"شركة":["building","#8a3b12"],"جهة":["building","#8a3b12"],"مجلس":["GOV","#1d4e89"],"لجنة":["users","#5b3a8c"],"تنفيذي":["briefcase","#0b4639"],"مكتب":["folder","#3d6b35"],"قطاع":["grid","#0b6e8f"],"إدارة عامة":["layout","#b07a12"],"تصنيف":["list","#6b7280"],"إدارة":["doc","#0e7a5f"],"قسم":["doc","#2e7d6b"],"وحدة تابعة":["tree","#7b2d43"],"فرع":["building","#456b8a"],"مهمة":["check","#c2334d"]};
-const TT_ORDER=["مجلس","لجنة","تنفيذي","مكتب","قطاع","إدارة عامة","إدارة","قسم","وحدة تابعة","فرع","مهمة","تصنيف"];
+const TT={"شركة":["building","#8a3b12"],"جهة":["building","#8a3b12"],"مجلس":["GOV","#1d4e89"],"لجنة":["users","#5b3a8c"],"تنفيذي":["briefcase","#0b4639"],"مكتب":["folder","#3d6b35"],"قطاع":["grid","#0b6e8f"],"إدارة عامة":["layout","#b07a12"],"تصنيف":["list","#6b7280"],"إدارة":["doc","#0e7a5f"],"قسم":["doc","#2e7d6b"],"وحدة تابعة":["tree","#7b2d43"],"فرع":["building","#456b8a"],"مهمة":["check","#c2334d"],"هيئة انتخابية":["GOV","#7b2d43"],"محافظة":["building","#0f5f73"],"ولاية":["layout","#5a4a8c"],"حي محلي":["people","#8a5a12"],"قرية":["home","#3d6b35"]};
+const TT_ORDER=["مجلس","لجنة","تنفيذي","مكتب","قطاع","إدارة عامة","إدارة","قسم","وحدة تابعة","فرع","مهمة","هيئة انتخابية","محافظة","ولاية","حي محلي","قرية","تصنيف"];
 const tt=t=>TT[t]||["doc","#475569"];
-async function loadTree(){if(trLoading)return;trLoading=true;try{trCache=await call("treeGet",{});trCache.__org=S.org||""}catch(e){trCache={err:e.message||"تعذّر التحميل"}}finally{trLoading=false;if(R.v==="structure")render()}}
+async function loadTree(){if(trLoading)return;trLoading=true;try{trCache=await call("treeGet",{});trCache.__org=S.org||""}catch(e){trCache={err:e.message||"تعذّر التحميل"}}finally{trLoading=false;if(R.v==="structure")render();else renderNavTree()}}
 function trWalk(n,f,path=[],d=0){f(n,path,d);(n.children||[]).forEach(c=>trWalk(c,f,path.concat(n),d+1))}
 function trFind(id){let hit=null;trWalk(trCache.tree,(n,p)=>{if(n.id===id)hit={n,path:p}});return hit}
 function trCount(n){const c={};trWalk(n,(x,p,d)=>{if(d)c[x.type]=(c[x.type]||0)+1});return c}
-async function trSave(log){const d=await act("treeSave",{tree:trCache.tree,log},"حُفظ الهيكل");if(d){d.__org=S.org||"";trCache=d;render()}else{trCache=null;render()}}
+async function trSave(log){const d=await act("treeSave",{tree:trCache.tree,log},"حُفظ الهيكل");if(d){d.__org=S.org||"";if(trCache.general&&!d.general)Object.assign(d,{general:true,orgs:trCache.orgs});trCache=d;render()}else{trCache=null;render()}}
 function trRow(n,d,q,open,sel,matchSet){
   const [ic,c]=tt(n.type),kids=n.children||[],isOpen=open.has(n.id)||(q&&matchSet.has(n.id)),hit=q&&(n.name+" "+n.code+" "+Object.values(n.meta||{}).join(" ")).includes(q);
   if(q&&!matchSet.has(n.id)&&!hit)return"";
@@ -4101,17 +4136,58 @@ function trDetail(id){const f=trFind(id);if(!f)return`<div class="empty-s">اخ�
    <header class="trdh"><span class="trdi">${ico(ic)}</span><div><small>${esc(n.type)}${n.code?` · <code>${esc(n.code)}</code>`:""}</small><h3 ${adm?`data-trn="${n.id}" data-trn1 title="اضغط لتعديل الاسم"`:""}>${esc(n.name)}${adm?`<i class="trpen">✎</i>`:""}</h3></div></header>
    ${ed?`<div class="form trf"><label>الاسم<input id="trName" maxlength="200" value="${esc(n.name)}"></label>
      <div class="row2"><label>النوع<input id="trType" list="trTypes" maxlength="40" value="${esc(n.type)}"><datalist id="trTypes">${types.map(t=>`<option value="${esc(t)}">`).join("")}</datalist></label><label>الرمز<input id="trCode" dir="ltr" maxlength="40" value="${esc(n.code||"")}"></label></div>
-     <label>الاختصاص<textarea id="trSpec" rows="3" maxlength="1000">${esc((n.meta||{})["الاختصاص"]||"")}</textarea></label>
-     <div class="row2"><label>المسؤول<input id="trHead" maxlength="120" value="${esc(n.head||"")}"></label><label>الجوال<input id="trPhone" dir="ltr" maxlength="120" value="${esc(n.phone||"")}"></label></div>
-     <label>البريد<input id="trMail" dir="ltr" maxlength="120" value="${esc(n.email||"")}"></label>
+     <div class="trfg">${trFieldsOf(n).map(f=>trInput(n,f)).join("")}</div>
      <div class="actions"><button class="btn pri" data-trsave="${n.id}">${ico("check")} حفظ</button><button class="btn" data-trcancel>إلغاء</button></div></div>`
    :`${(n.meta||{})["الاختصاص"]?`<div class="trspec"><b>الاختصاص</b><p>${esc(n.meta["الاختصاص"])}</p></div>`:""}
-    ${Object.keys(n.meta||{}).filter(k=>k!=="الاختصاص").map(k=>`<div class="trkv"><span>${esc(k)}</span><b>${esc(n.meta[k])}</b></div>`).join("")}
-    ${n.head||n.phone||n.email?`<div class="trkv"><span>المسؤول</span><b>${esc(n.head||"—")}</b></div>${n.phone?`<div class="trkv"><span>الجوال</span><b dir="ltr">${esc(n.phone)}</b></div>`:""}${n.email?`<div class="trkv"><span>البريد</span><b dir="ltr">${esc(n.email)}</b></div>`:""}`:""}
+    ${(()=>{const F=trFieldsOf(n),keys=new Set(F.map(f=>f[0])),fill=Math.round(trFill(n)*100);return `<div class="tlfill big" title="اكتمال البيانات"><i style="width:${fill}%"></i><small>${fill}٪ من الحقول مكتملة</small></div>`+F.filter(([k])=>k!=="الاختصاص"&&trGetF(n,k)).map(([k,l,kd])=>`<div class="trkv"><span>${l}</span><b ${kd==="tel"||kd==="mail"||kd==="num"?'dir="ltr"':""}>${esc(trGetF(n,k))}</b></div>`).join("")+Object.keys(n.meta||{}).filter(k=>!keys.has(k)).map(k=>`<div class="trkv"><span>${esc(k)}</span><b>${esc(n.meta[k])}</b></div>`).join("")})()}
     ${Object.keys(cnt).filter(t=>t!=="تصنيف").length?`<div class="trcnt">${Object.entries(cnt).filter(([t])=>t!=="تصنيف").sort((a,b)=>TT_ORDER.indexOf(a[0])-TT_ORDER.indexOf(b[0])).map(([t,v])=>`<span style="--tc:${tt(t)[1]}">${ico(tt(t)[0])}<b>${NF.format(v)}</b><small>${esc(t)}</small></span>`).join("")}</div>`:""}
     ${(n.children||[]).length?`<h4>يتبعه مباشرة (${NF.format(n.children.length)})</h4><div class="trkids">${n.children.map(k=>`<button data-trs="${k.id}" style="--tc:${tt(k.type)[1]}">${ico(tt(k.type)[0])}<span>${esc(k.name)}</span></button>`).join("")}</div>`:""}
     ${adm?`<div class="actions tra"><button class="btn sm pri" data-tredit="${n.id}">${ico("userEdit")} تعديل</button><button class="btn sm" data-tradd="${n.id}">＋ إضافة تابع</button>${f.path.length?`<button class="btn sm" data-trmv="${n.id}" data-d="-1" title="تقديم">▲</button><button class="btn sm" data-trmv="${n.id}" data-d="1" title="تأخير">▼</button><button class="btn sm danger" data-trdel="${n.id}">${ico("trash")} حذف</button>`:""}</div>`:""}`}</div>`}
 function trCanEdit(){return S.admin&&(!trCache||!trCache.general||S.platform)}
+const TR_GEO=new Set(["هيئة انتخابية","محافظة","ولاية","حي محلي","قرية"]);
+const TF_ADMIN=[["الاختصاص","الاختصاص","area"],["المهام","المهام الرئيسية","area"],["head","المسؤول"],["نائب المسؤول","نائب المسؤول"],["عدد الموظفين","عدد الموظفين","num"],["phone","الجوال","tel"],["email","البريد","mail"],["المقر","المقر"],["الميزانية","الميزانية السنوية (ريال)","num"],["مؤشرات الأداء","مؤشرات الأداء","area"]];
+const TF_GEO=[["head","الممثل المنتخب"],["نائب الممثل","نائب الممثل"],["عدد السكان","عدد السكان","num"],["عدد الناخبين","عدد الناخبين","num"],["عدد الأعضاء","عدد أعضاء المجلس","num"],["تاريخ الانتخاب","تاريخ الانتخاب","date"],["مدة الدورة","مدة الدورة"],["phone","الجوال","tel"],["email","البريد","mail"],["الموقع","الموقع / الإحداثيات"],["ملاحظات","ملاحظات","area"]];
+const TF_ROOT=[["head","رئيس المجلس العام"],["نائب الرئيس","نائب الرئيس"],["عدد الأعضاء","عدد الأعضاء","num"],["آلية الانتخاب","آلية الانتخاب","area"],["تاريخ الانتخاب","تاريخ الانتخاب","date"],["مدة الدورة","مدة الدورة"],["المقر","المقر"],["phone","الجوال","tel"],["email","البريد","mail"],["الاختصاص","الاختصاص","area"]];
+const TF_TOP=["head","phone","email"];
+function trFieldsOf(n){return TR_GEO.has(n.type)?TF_GEO:(n.type==="شركة"||n.type==="جهة")?TF_ROOT:TF_ADMIN}
+function trGetF(n,k){return TF_TOP.includes(k)?(n[k]||""):((n.meta||{})[k]||"")}
+function trSetF(n,k,v){v=String(v==null?"":v).replace(/\s+$/,"").replace(/^\s+/,"");if(TF_TOP.includes(k)){if(v)n[k]=v.slice(0,120);else delete n[k]}else{n.meta=n.meta||{};if(v)n.meta[k]=v.slice(0,1000);else delete n.meta[k]}}
+function trApplyFields(n,box){if(box)box.querySelectorAll("[data-tf]").forEach(i=>trSetF(n,i.dataset.tf,i.value))}
+function trInput(n,[k,l,kind]){const v=esc(trGetF(n,k));return kind==="area"?`<label class="full">${l}<textarea data-tf="${esc(k)}" rows="2" maxlength="1000">${v}</textarea></label>`
+  :`<label>${l}<input data-tf="${esc(k)}" type="${kind==="num"?"number":kind==="date"?"date":kind==="mail"?"email":kind==="tel"?"tel":"text"}" ${kind==="num"||kind==="tel"||kind==="mail"?'dir="ltr"':""} maxlength="${TF_TOP.includes(k)?120:1000}" value="${v}"></label>`}
+function trFill(n){const f=trFieldsOf(n);return f.filter(([k])=>trGetF(n,k)).length/f.length}
+function trFillAgg(n){let s=0,c=0;trWalk(n,x=>{if(x.type==="تصنيف")return;s+=trFill(x);c++});return c?s/c:0}
+function trSummary(n){const cnt=trCount(n),parts=Object.entries(cnt).filter(([t])=>t!=="تصنيف").sort((a,b)=>TT_ORDER.indexOf(a[0])-TT_ORDER.indexOf(b[0])).slice(0,3).map(([t,v])=>`${NF.format(v)} ${t}`);
+  return (n.head?`<b class="tlh">${ico("user")} ${esc(n.head)}</b>`:"")+(parts.length?`<span>${parts.join(" · ")}</span>`:"")}
+function trFieldPanel(n,can){const F=trFieldsOf(n),fill=Math.round(trFill(n)*100);
+  return `<div class="tlp"><div class="tlph"><b>${ico("list")} بيانات «${esc(n.name)}»</b><span class="tlfill big" title="اكتمال البيانات"><i style="width:${fill}%"></i><small>${fill}٪ مكتملة</small></span></div>
+   ${can?`<div class="tlpf form" data-tlp="${n.id}"><div class="tlpg"><label>الاسم<input data-tfn="name" maxlength="200" value="${esc(n.name)}"></label><label>الرمز<input data-tfn="code" dir="ltr" maxlength="40" value="${esc(n.code||"")}"></label>${F.map(f=>trInput(n,f)).join("")}</div>
+     <div class="actions"><button class="btn sm pri" data-tlsave="${n.id}">${ico("check")} حفظ البيانات</button><button class="btn sm" data-tlf="${n.id}">إغلاق</button></div></div>`
+   :`<div class="tlpv">${F.map(([k,l])=>`<div class="trkv"><span>${l}</span><b>${esc(trGetF(n,k)||"—")}</b></div>`).join("")}</div>`}</div>`}
+function trListRow(n,d,ctx){
+  if(ctx.match&&!ctx.match.has(n.id))return"";
+  const k=trKids(n),isO=!!ctx.match||ctx.open.has(n.id),c=ctx.hue.get(n.id)||tt(n.type)[1],fo=ctx.fopen.has(n.id),fill=Math.round(trFillAgg(n)*100);
+  const hit=ctx.match&&ctx.hits.has(n.id);
+  return `<div class="tla ${isO&&k.length?"open":""}" style="--tc:${c}">
+   <div class="tlr ${ctx.sel===n.id?"sel":""} ${hit?"hit":""}">${k.length?`<button class="tlt" data-tlt="${n.id}" aria-expanded="${isO}" aria-label="${isO?"طي":"فتح"} ${esc(n.name)}">${ico("chev")}</button>`:`<span class="tlt0"></span>`}
+    <button class="tlm" data-trs="${n.id}"><span class="tli">${ico(tt(n.type)[0])}</span><span class="tln"><b data-trn="${n.id}">${esc(n.name)}</b><small><i>${esc(n.type)}</i>${n.code?`<code>${esc(n.code)}</code>`:""}${trSummary(n)}</small></span></button>
+    <span class="tlfill" title="اكتمال البيانات ${fill}٪"><i style="width:${fill}%"></i><small>${fill}٪</small></span>
+    <button class="tlb ${fo?"on":""}" data-tlf="${n.id}" title="${ctx.can?"تغذية الحقول":"البيانات"}" aria-label="بيانات ${esc(n.name)}">${ico(ctx.can?"userEdit":"list")}</button>${ctx.can&&ui.trEM?trEB(n,!d):""}</div>
+   ${fo?trFieldPanel(n,ctx.can):""}
+   ${isO&&k.length?`<div class="tlk">${k.map(x=>trListRow(x,d+1,ctx)).join("")}</div>`:""}</div>`}
+function renderNavTree(){const el=$("#navTree"),cap=$("#capTree");if(!el)return;const hide=v=>{el.hidden=v;if(cap)cap.hidden=v};
+  if(!S.scope||!S.loaded&&!trCache){hide(true);return}
+  if(!trCache||trCache.__org!==(S.org||"")){hide(false);el.innerHTML=`<div class="ntl">جارٍ تحميل الهيكل…</div>`;if(!trLoading)loadTree();return}
+  if(trCache.err){hide(true);return}hide(false);
+  const T=trCache.tree,hue=trHueMap(T),op=ui.ntOpen||(ui.ntOpen=new Set()),cur=R.v==="structure"?ui.trSel:null;
+  const row=n=>{const k=trKids(n),o=op.has(n.id),c=hue.get(n.id)||tt(n.type)[1],more=k.length>120;
+    return `<div class="ntn ${o?"open":""}" style="--tc:${c}"><div class="ntr ${cur===n.id?"on":""}">${k.length?`<button class="ntt" data-ntg="${n.id}" aria-expanded="${o}" aria-label="${o?"طي":"فتح"} ${esc(n.name)}">${ico("chev")}</button>`:`<span class="ntt0"></span>`}<a href="#structure" data-nts="${n.id}"><span class="nti">${ico(tt(n.type)[0])}</span><span class="ntx">${esc(n.name)}</span>${k.length?`<em>${NF.format(k.length)}</em>`:""}</a></div>${o&&k.length?`<div class="ntk">${k.slice(0,120).map(row).join("")}${more?`<a href="#structure" class="ntmore" data-nts="${n.id}">+ ${NF.format(k.length-120)} أخرى…</a>`:""}</div>`:""}</div>`};
+  const sum=n=>Object.entries(trCount(n)).filter(([t])=>t!=="تصنيف").sort((a,b)=>TT_ORDER.indexOf(a[0])-TT_ORDER.indexOf(b[0])).slice(0,2).map(([t,v])=>`${NF.format(v)} ${t}`).join(" · ");
+  el.innerHTML=`<a href="#structure" data-nts="${T.id}" class="ntroot ${cur===T.id?"on":""}"><span class="nti">${ico(tt(T.type)[0])}</span><span class="dn"><b>${esc(T.name)}</b><small>${esc(T.head?("الرئيس: "+T.head):"الهيكل التنظيمي الكامل")}</small></span></a>`+trKids(T).map(c=>{const o=op.has(c.id),col=hue.get(c.id)||tt(c.type)[1];
+    return `<div class="ng ntg ${o?"open":""}" style="--dc:${col}"><div class="ngh"><a href="#structure" data-nts="${c.id}" class="dl ${cur===c.id?"on":""}"><span class="gi">${ico(tt(c.type)[0])}</span><span class="dn"><b>${esc(c.name)}</b><small>${sum(c)}</small></span></a><button class="tg" data-ntg="${c.id}" aria-expanded="${o}" aria-label="${o?"طي":"فتح"} ${esc(c.name)}">${ico("chev")}</button></div><div class="ngb"><div class="ngi">${o?`<div class="ntk0">${trKids(c).map(row).join("")}</div>`:""}</div></div></div>`}).join("");
+}
+function navTreeGo(id){const f=trFind(id);if(!f)return;ui.trSel=id;ui.trEdit=null;ui.trq="";ui.trType="";ui.trView="list";ui.trOpen=ui.trOpen||new Set();f.path.forEach(p=>ui.trOpen.add(p.id));ui.trOpen.add(id);
+  if(location.hash!=="#structure")location.hash="structure";else render();setTimeout(()=>{const r=document.querySelector(`#main .tlr.sel`);if(r)r.scrollIntoView({behavior:"smooth",block:"center"})},80)}
 const TR_PAL=["#0b6e8f","#7b2d43","#b07a12","#0e7a5f","#5b3a8c","#c2334d","#1d4e89","#3d6b35","#8a3b12","#456b8a"];
 function trKids(n){const o=[];(n.children||[]).forEach(c=>c.type==="تصنيف"?o.push(...trKids(c)):o.push(c));return o}
 function trSectors(T){const s=[];trWalk(T,n=>{if(n.type==="قطاع")s.push(n)});return s}
@@ -4147,7 +4223,7 @@ function trOrgChart(T,sel,hue){
   const chip=n=>wrap(n,chip0(n));
   const L1=trKids(T),secs=trSectors(T),secSet=new Set(secs.map(s=>s.id));
   const parOf=x=>{const f=trFind(x.id);return f&&f.path.length?f.path[f.path.length-1].id:T.id};
-  const cols=L1.map(c=>{const k=trKids(c).filter(x=>!secSet.has(x.id));return `<div class="occol2">${node(c,"lg")}${k.length?`<div class="ocsub"><div class="ocsubt">${NF.format(k.length)} ${esc(c.type==="مجلس"?"لجنة":"مكتب")} تابعة</div><div class="occhs">${k.map(chip).join("")}${trAddBtn(k.length?parOf(k[0]):c.id,c.type==="مجلس"?"لجنة":"مكتب")}</div></div>`:em?`<div class="ocsub">${trAddBtn(c.id,"تابع")}</div>`:""}</div>`}).join("");
+  const cols=L1.map(c=>{const k=trKids(c).filter(x=>!secSet.has(x.id));return `<div class="occol2">${node(c,"lg")}${k.length?`<div class="ocsub"><div class="ocsubt">${NF.format(k.length)} ${esc(k[0].type)} تابعة</div><div class="occhs">${k.map(chip).join("")}${trAddBtn(k.length?parOf(k[0]):c.id,c.type==="مجلس"?"لجنة":"مكتب")}</div></div>`:em?`<div class="ocsub">${trAddBtn(c.id,"تابع")}</div>`:""}</div>`}).join("");
   const open=ui.trOpen;
   const cards=secs.map((s,i)=>{const col=hue.get(s.id),k=trCount(s),gds=trKids(s);
     return `<article class="osc" style="--tc:${col}"><header data-trs="${s.id}" class="${sel===s.id?"sel":""}"><i class="osn">${String(i+1).padStart(2,"0")}</i><div><small>قطاع${s.code?` · ${esc(s.code)}`:""}</small><b data-trn="${s.id}">${esc(s.name)}</b></div>${em?trEB(s):`<span class="osci">${ico("grid")}</span>`}</header>
@@ -4164,27 +4240,31 @@ function viewStructure(){
   const T=trCache.tree,all=[];trWalk(T,(n,p,d)=>all.push({n,p,d}));const cnt=trCount(T),hue=trHueMap(T);
   const q=(ui.trq||"").trim(),fType=ui.trType||"";const open=ui.trOpen||(ui.trOpen=new Set([T.id,...(T.children||[]).map(c=>c.id)]));
   const matchSet=new Set();if(q||fType)all.forEach(({n,p})=>{const m=(!q||(n.name+" "+n.code+" "+Object.values(n.meta||{}).join(" ")).includes(q))&&(!fType||n.type===fType);if(m){matchSet.add(n.id);p.forEach(x=>matchSet.add(x.id))}});
-  const sel=ui.trSel||T.id,view=(q||fType)?"tree":(ui.trView||"chart");
+  const sel=ui.trSel||T.id,view=(q||fType)?"list":(ui.trView||"list");
   const total=all.filter(x=>x.d&&x.n.type!=="تصنيف").length;
   const savedNote=trCache.general?`الهيكل العام · ${NF.format((trCache.orgs||[]).length)} مؤسسة مدرجة${trCache.saved?` · آخر تعديل: ${esc(trCache.by||"")} ${esc((trCache.at||"").slice(0,10))}`:""}`:trCache.saved?`آخر تعديل: ${esc(trCache.by||"")} · ${esc((trCache.at||"").slice(0,10))}`:"الهيكل الجاهز — يُحفظ لمؤسستك عند أول تعديل";
-  const stats=[["قطاع","قطاعات"],["إدارة عامة","إدارات عامة"],["إدارة","إدارات"],["لجنة","لجان"],["مكتب","مكاتب"],["وحدة تابعة","وحدات"],["مهمة","مهام"]].filter(([t])=>cnt[t]);
+  const stats=[["قطاع","قطاعات"],["إدارة عامة","إدارات عامة"],["إدارة","إدارات"],["لجنة","لجان"],["مكتب","مكاتب"],["وحدة تابعة","وحدات"],["مهمة","مهام"],["محافظة","محافظات"],["ولاية","ولايات"],["حي محلي","أحياء محلية"],["قرية","قرى"]].filter(([t])=>cnt[t]);
   const hero=`<section class="trhero"><div class="trhp" aria-hidden="true"></div><div class="trht"><small>ORGANIZATION STRUCTURE</small><h1>الهيكل التنظيمي${trCache.general?" العام":""}</h1><p><b>${trCache.general?"كل المؤسسات":esc(T.name)}</b> · ${NF.format(total)} عنصرًا في ${NF.format(Object.keys(cnt).filter(t=>t!=="تصنيف").length)} مستويات وأنواع</p><span class="trhn">${ico(trCache.saved?"check":"tree")} ${savedNote}</span></div>
    <div class="trhs">${stats.map(([t,l])=>`<button data-trtype="${esc(t)}" style="--tc:${tt(t)[1]}"><span>${ico(tt(t)[0])}</span><b>${NF.format(cnt[t])}</b><small>${l}</small></button>`).join("")}</div></section>`;
   const bar=`<div class="trbar"><label class="opq">${ico("search")}<input id="trq" type="search" placeholder="ابحث باسم أو رمز أو اختصاص" value="${esc(q)}" autocomplete="off"></label>
-   <div class="trseg" role="tablist">${[["chart","org","المخطط"],["sun","focus","الدائري"],["tree","tree","الشجرة"]].map(([k,ic,l])=>`<button role="tab" aria-selected="${view===k}" class="${view===k?"on":""}" data-trview="${k}">${ico(ic)} ${l}</button>`).join("")}</div>
-   <span class="trsp"></span>${view==="tree"?`<button class="btn sm" data-trall="1">فتح الكل</button><button class="btn sm" data-trall="0">طي الكل</button>`:view==="chart"?`<button class="btn sm" data-trall="1">إظهار كل الإدارات</button><button class="btn sm" data-trall="0">إخفاؤها</button>`:""}
+   <div class="trseg" role="tablist">${[["list","list","القائمة"],["chart","org","المخطط"],["sun","focus","الدائري"]].map(([k,ic,l])=>`<button role="tab" aria-selected="${view===k}" class="${view===k?"on":""}" data-trview="${k}">${ico(ic)} ${l}</button>`).join("")}</div>
+   <span class="trsp"></span>${view==="tree"||view==="list"?`<button class="btn sm" data-trall="1">فتح الكل</button><button class="btn sm" data-trall="0">طي الكل</button>`:view==="chart"?`<button class="btn sm" data-trall="1">إظهار كل الإدارات</button><button class="btn sm" data-trall="0">إخفاؤها</button>`:""}
    <span class="repg"><button class="btn sm" data-rep="structure" data-fmt="print">${ico("fileChart")} طباعة / PDF</button><button class="btn sm" data-rep="structure" data-fmt="xlsx">${ico("grid")} Excel</button></span>
    ${trCanEdit()?`<button class="btn sm ${ui.trEM?"pri":""}" data-trem aria-pressed="${!!ui.trEM}">${ico("userEdit")} ${ui.trEM?"إنهاء التعديل":"وضع التعديل"}</button><details class="trmore"><summary class="btn sm">${ico("sliders")} أدوات</summary><div><button class="btn sm" data-trexp>${ico("down")} تصدير JSON</button><label class="btn sm">${ico("filePlus")} استيراد JSON<input type="file" hidden accept=".json,.txt,application/json" data-trimp></label><button class="btn sm" data-trreset>${ico("refresh")} إعادة التعيين</button>${trCache.general?`<button class="btn sm" data-trapply>${ico("send")} تعميم على كل المؤسسات</button>`:""}</div></details>`:""}</div>`;
   const chips=(q||fType)?`<div class="trchips"><button class="${fType?"":"on"}" data-trtype="">الكل <em>${NF.format(total)}</em></button>${Object.entries(cnt).filter(([t])=>t!=="تصنيف").sort((a,b)=>TT_ORDER.indexOf(a[0])-TT_ORDER.indexOf(b[0])).map(([t,v])=>`<button class="${fType===t?"on":""}" style="--tc:${tt(t)[1]}" data-trtype="${esc(t)}">${ico(tt(t)[0])} ${esc(t)} <em>${NF.format(v)}</em></button>`).join("")}</div>`:"";
   let main;
-  if(view==="chart")main=trOrgChart(T,sel,hue);
+  if(view==="list"){const hits=new Set();if(q||fType)all.forEach(({n})=>{if((!q||(n.name+" "+n.code+" "+(n.head||"")+" "+Object.values(n.meta||{}).join(" ")).includes(q))&&(!fType||n.type===fType))hits.add(n.id)});
+    const ctx={sel,hue,open,fopen:ui.tlF||(ui.tlF=new Set()),match:(q||fType)?matchSet:null,hits,can:trCanEdit()};const body=trListRow(T,0,ctx);
+    main=`<div class="tlist">${body||`<div class="empty-s">لا نتائج.</div>`}</div>`}
+  else if(view==="chart")main=trOrgChart(T,sel,hue);
   else if(view==="sun"){const secs=trSectors(T);main=`<div class="sbw">${trSunburst(T,ui.trFocus,sel,hue)}<div class="sbl">${secs.map(s=>`<button data-trf="${s.id}" style="--tc:${hue.get(s.id)}"><i></i>${esc(s.name)}</button>`).join("")}</div><p class="sbh">اضغط أي جزء لتكبيره وعرض بياناته، واضغط المركز للرجوع.</p></div>`}
   else if(q||fType){main=`<ul class="trtree">${(function rr(n){if(!matchSet.has(n.id))return"";const [ic,c]=tt(n.type),hit=(!q||(n.name+" "+n.code+" "+Object.values(n.meta||{}).join(" ")).includes(q))&&(!fType||n.type===fType);const kids=(n.children||[]).map(rr).join("");
     return `<li class="trn" style="--tc:${c}"><div class="trr ${sel===n.id?"sel":""} ${hit?"hit":""}"><span class="trt0"></span><button class="trb" data-trs="${n.id}"><span class="tri">${ico(ic)}</span><b>${esc(n.name)}</b>${n.code?`<code>${esc(n.code)}</code>`:""}<small>${esc(n.type)}</small></button></div>${kids?`<ul>${kids}</ul>`:""}</li>`})(T)||`<div class="empty-s">لا نتائج.</div>`}</ul>`}
   else main=`<ul class="trtree">${trRow(T,0,"",open,sel,new Set())}</ul>`;
   const gen=trCache.general?`<section class="trgen"><header><div><small>الهيكل العام للمنصة</small><h2>${ico("building")} هياكل المؤسسات المدرجة</h2><p>هذا هو الهيكل العام الذي تبدأ منه كل مؤسسة${trCanEdit()?"، ويمكنك تعديله هنا من «وضع التعديل» ثم تعميمه على المؤسسات من «أدوات»":""}. اختر مؤسسة لعرض هيكلها الخاص وتعديله.</p></div></header>
    <div class="trgo">${(trCache.orgs||[]).map((o,i)=>`<button data-setorg="${esc(o.id)}" style="--tc:${TR_PAL[i%TR_PAL.length]}"><span class="trgi">${ico("building")}</span><span class="trgt"><b>${esc(o.name)}</b><small>${esc(o.code||"")}${o.type?` · ${esc(o.type)}`:""}</small></span><span class="trgs"><b>${NF.format(o.count)}</b><small>${o.saved?"هيكل خاص":"الهيكل العام"}</small></span></button>`).join("")||`<div class="empty-s">لا توجد مؤسسات مدرجة بعد.</div>`}</div></section>`:"";
-  return hero+gen+bar+chips+`<div class="trwrap v-${view}"><section class="trmain">${main}</section><aside class="trside">${trDetail(sel)}</aside></div>`;
+  const geoBtn=trCanEdit()&&!trKids(T).some(c=>c.code==="GEO")?`<div class="trgeo"><span>${ico("GOV")}</span><div><b>الهيئة الانتخابية والتقسيم الجغرافي</b><small>17 محافظة ← 27 ولاية ← 280 حيًّا محليًا ← 1297 قرية، فرعًا مستقلًا بأسماء مؤقتة تعدّلها.</small></div><button class="btn pri" data-tradgeo>${ico("filePlus")} إضافتها إلى الهيكل</button></div>`:"";
+  return hero+gen+geoBtn+bar+chips+(view==="list"?`<div class="trwrap v-list"><section class="trmain">${main}</section></div>`:`<div class="trwrap v-${view}"><section class="trmain">${main}</section><aside class="trside">${trDetail(sel)}</aside></div>`);
 }
 REPORTS.structure=()=>{const rows=[];const T=trCache&&trCache.tree;if(T)trWalk(T,(n,p,d)=>{if(n.type==="تصنيف")return;rows.push([d,"  ".repeat(Math.max(0,d-1))+n.name,n.type,n.code||"",p.filter(x=>x.type!=="تصنيف").map(x=>x.name).slice(1).join(" ‹ "),(n.meta||{})["الاختصاص"]||"",n.head||""])});
   const blocks=[];if(T){const hue=trHueMap(T),cnt=trCount(T),secs=trSectors(T),secSet=new Set(secs.map(s=>s.id));
@@ -4214,6 +4294,11 @@ function bindStructure(main){if(R.v!=="structure"||!trCache||!trCache.tree)retur
   const q=(s,f)=>main.querySelectorAll(s).forEach(f);
   const s=main.querySelector("#trq");if(s)s.oninput=()=>{ui.trq=s.value;render()};
   q("[data-trview]",b=>b.onclick=()=>{ui.trView=b.dataset.trview;render()});
+  q("[data-tlt]",b=>b.onclick=e=>{e.stopPropagation();const id=b.dataset.tlt,o=ui.trOpen;o.has(id)?o.delete(id):o.add(id);render()});
+  q("[data-tlf]",b=>b.onclick=e=>{e.stopPropagation();const id=b.dataset.tlf,o=ui.tlF||(ui.tlF=new Set());o.has(id)?o.delete(id):o.add(id);ui.trSel=id;render();if(o.has(id))setTimeout(()=>{const i=document.querySelector(`[data-tlp="${id}"] [data-tf]`);if(i)i.focus()},40)});
+  q("[data-tlsave]",b=>b.onclick=()=>{const id=b.dataset.tlsave,f=trFind(id),box=b.closest("[data-tlp]");if(!f||!box)return;const n=f.n;const nm=box.querySelector('[data-tfn="name"]').value.trim();if(nm)n.name=nm.slice(0,200);n.code=box.querySelector('[data-tfn="code"]').value.trim().slice(0,40);trApplyFields(n,box);ui.tlF.delete(id);trSave("تغذية بيانات «"+n.name+"»")});
+  q("[data-tlp] input,[data-tlp] textarea",i=>i.onkeydown=e=>{if(e.key==="Enter"&&i.tagName==="INPUT"){e.preventDefault();const s=i.closest("[data-tlp]").querySelector("[data-tlsave]");if(s)s.click()}});
+  const ag=main.querySelector("[data-tradgeo]");if(ag)ag.onclick=()=>confirmBox("إضافة الهيئة الانتخابية","سيُضاف فرع مستقل فيه 17 محافظة و27 ولاية و280 حيًّا محليًا و1297 قرية بأسماء مؤقتة، تعدّلها وتغذّي بياناتها بعد ذلك.","إضافة",async()=>{const d=await act("treeSave",{addGeo:1,log:"إضافة الهيئة الانتخابية"},"أُضيفت الهيئة الانتخابية");if(d){d.__org=S.org||"";if(trCache.general&&!d.general)Object.assign(d,{general:true,orgs:trCache.orgs});trCache=d;ui.trOpen.add("geo");render()}});
   const em=main.querySelector("[data-trem]");if(em)em.onclick=()=>{ui.trEM=!ui.trEM;if(ui.trEM&&ui.trView!=="tree")ui.trView="chart";render()};
   const goSide=()=>{if(innerWidth<1000){const el=$("#main .trside");if(el)el.scrollIntoView({behavior:"smooth"})}};
   q("[data-tre]",b=>b.onclick=e=>{e.stopPropagation();const id=b.dataset.tre,f=trFind(id);ui.trSel=id;ui.trEdit=id;if(f)f.path.forEach(p=>ui.trOpen.add(p.id));render();goSide();setTimeout(()=>{const i=$("#trName");if(i){i.focus();i.select()}},40)});
@@ -4225,13 +4310,13 @@ function bindStructure(main){if(R.v!=="structure"||!trCache||!trCache.tree)retur
   q("[data-trtype]",b=>b.onclick=()=>{ui.trType=b.dataset.trtype;render()});
   q("[data-trt]",b=>b.onclick=()=>{const o=ui.trOpen;o.has(b.dataset.trt)?o.delete(b.dataset.trt):o.add(b.dataset.trt);render()});
   if(trCanEdit()){q("[data-trn]",el=>{el.classList.add("trnE");if(!el.title)el.title="انقر على الاسم مرتين لتعديله";el.ondblclick=e=>{e.preventDefault();e.stopPropagation();trInline(el)};if(el.hasAttribute("data-trn1"))el.onclick=e=>{e.stopPropagation();trInline(el)}})}
-  q("[data-trs]",b=>b.onclick=e=>{if(ui.trInline)return;const ne=e.target.closest("[data-trn]");if(ne&&trCanEdit()&&ui.trSel===b.dataset.trs){e.preventDefault();trInline(ne);return}ui.trSel=b.dataset.trs;ui.trEdit=null;const f=trFind(b.dataset.trs);if(f)f.path.forEach(p=>ui.trOpen.add(p.id));render();if(innerWidth<1000){const el=$("#main .trside");if(el)el.scrollIntoView({behavior:"smooth"})}});
+  q("[data-trs]",b=>b.onclick=e=>{if(ui.trInline)return;const ne=e.target.closest("[data-trn]");if(ne&&trCanEdit()&&ui.trSel===b.dataset.trs){e.preventDefault();trInline(ne);return}const wasSel=ui.trSel===b.dataset.trs;ui.trSel=b.dataset.trs;ui.trEdit=null;const f=trFind(b.dataset.trs);if(f)f.path.forEach(p=>ui.trOpen.add(p.id));
+    if(b.classList.contains("tlm")&&f&&trKids(f.n).length&&!(ui.trq||ui.trType)){const o=ui.trOpen,id=b.dataset.trs;if(o.has(id)&&wasSel)o.delete(id);else o.add(id)}render();if(innerWidth<1000){const el=$("#main .trside");if(el)el.scrollIntoView({behavior:"smooth"})}});
   q("[data-trall]",b=>b.onclick=()=>{if(b.dataset.trall==="1"){trWalk(trCache.tree,n=>ui.trOpen.add(n.id))}else ui.trOpen=new Set([trCache.tree.id]);render()});
   q("[data-tredit]",b=>b.onclick=()=>{ui.trEdit=b.dataset.tredit;render()});
   q("[data-trcancel]",b=>b.onclick=()=>{ui.trEdit=null;render()});
   q("[data-trsave]",b=>b.onclick=()=>{const n=trFind(b.dataset.trsave).n;n.name=$("#trName").value.trim()||n.name;n.type=$("#trType").value.trim()||n.type;n.code=$("#trCode").value.trim();
-    n.meta=n.meta||{};const sp=$("#trSpec").value.trim();if(sp)n.meta["الاختصاص"]=sp;else delete n.meta["الاختصاص"];
-    [["head","#trHead"],["phone","#trPhone"],["email","#trMail"]].forEach(([k,i])=>{const v=$(i).value.trim();if(v)n[k]=v;else delete n[k]});ui.trEdit=null;trSave("تعديل «"+n.name+"»")});
+    trApplyFields(n,b.closest(".trf"));ui.trEdit=null;trSave("تعديل «"+n.name+"»")});
   q("[data-tradd]",b=>b.onclick=()=>trAddChild(b.dataset.tradd));
   q("[data-trmv]",b=>b.onclick=()=>{const f=trFind(b.dataset.trmv),par=f.path[f.path.length-1],L=par.children,i=L.indexOf(f.n),j=i+(+b.dataset.d);if(j<0||j>=L.length)return;[L[i],L[j]]=[L[j],L[i]];trSave("ترتيب «"+f.n.name+"»")});
   q("[data-trdel]",b=>b.onclick=()=>trDelete(b.dataset.trdel));
@@ -4719,6 +4804,8 @@ $("#nav").addEventListener("click",e=>{
   const t=e.target.closest("[data-tg]");if(t){e.preventDefault();const i=+t.dataset.tg;const ng=t.closest(".ng");const open=!ng.classList.contains("open");ng.classList.toggle("open",open);t.setAttribute("aria-expanded",open);open?navOpen.add(i):navOpen.delete(i);saveNavOpen();return}
   const a=e.target.closest("[data-navall]");if(a){navOpen.clear();if(a.dataset.navall==="1")G.forEach((_,i)=>navOpen.add(i));saveNavOpen();renderNav()}
 });
+$("#navTree").addEventListener("click",e=>{const g=e.target.closest("[data-ntg]");if(g){e.preventDefault();const o=ui.ntOpen||(ui.ntOpen=new Set()),id=g.dataset.ntg;o.has(id)?o.delete(id):o.add(id);renderNavTree();return}
+  const a=e.target.closest("[data-nts]");if(a){e.preventDefault();navTreeGo(a.dataset.nts);renderNavTree();if(typeof closeSide==="function")closeSide()}});
 $("#backBtn").onclick=goBack;
 function closeSide(){$("#side").classList.remove("open")}
 const ZS=[.85,.92,1,1.1,1.2,1.35];let zi=2;

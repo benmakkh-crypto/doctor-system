@@ -8,6 +8,10 @@ delete require.cache[require.resolve("./gov-def.js")];
 S.GOV = require("./gov-def.js");
 // قالب الهيكل التنظيمي الجاهز (المجلس واللجان والقطاعات والإدارات)
 S.ORGTREE = JSON.parse(fs.readFileSync(path.join(__dirname, "data", "org-structure.json"), "utf8"));
+// التقسيم الجغرافي والانتخابي يُضاف فرعًا ثالثًا تحت الجهة الرئيسية
+delete require.cache[require.resolve("./geo-def.js")];
+S.ORGTREE.children = S.ORGTREE.children.filter(c => c.code !== "GEO").concat(require("./geo-def.js")());
+S.ORGTREE.meta = Object.assign({ "عدد الأعضاء": "5", "آلية الانتخاب": "يُنتخب رئيس المجلس العام من ممثلي المحافظات السبع عشرة" }, S.ORGTREE.meta || {});
 fs.writeFileSync(file, head + JSON.stringify(S, null, 1) + ";\n");
 const n = S.GOV.standards.reduce((a, s) => a + s.ind.length, 0);
 console.log(`مركز الحوكمة: ${Object.keys(S.GOV.docs).length} مستندًا في ${S.GOV.groups.length} مجموعات · ${S.GOV.standards.length} معايير · ${n} مؤشرًا`);

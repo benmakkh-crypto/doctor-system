@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.9.1';
+const APP_VERSION = '4.10.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -1457,6 +1457,15 @@ function actTreeSave_(me, p) {
     const out = actTreeGet_(me); out.applied = k; return out;
   }
   const st = govLoad_(org, '_tree');
+  if (p.addGeo) {
+    const geo = SCHEMA.ORGTREE.children.filter(function (c) { return c.code === 'GEO'; })[0];
+    const g0 = general ? null : treeGeneral_();
+    const cur = st.tree || (g0 ? g0.tree : SCHEMA.ORGTREE);
+    if (!geo) throw err_('VALIDATION', 'الهيئة الانتخابية غير متاحة في القالب.');
+    if ((cur.children || []).some(function (c) { return c.code === 'GEO'; })) throw err_('VALIDATION', 'الهيئة الانتخابية موجودة في الهيكل.');
+    p.tree = JSON.parse(JSON.stringify(cur)); p.tree.children = (p.tree.children || []).concat([JSON.parse(JSON.stringify(geo))]);
+    p.log = p.log || 'إضافة الهيئة الانتخابية';
+  }
   let tree;
   if (p.reset === 'template') { const g = general ? null : treeGeneral_(); tree = JSON.parse(JSON.stringify(g ? g.tree : SCHEMA.ORGTREE)); }
   else if (p.reset === 'empty') tree = { id: 'root', name: general ? 'الجهة' : String(getSettings_().orgName || 'الجهة'), type: 'جهة', code: '', meta: {}, children: [] };

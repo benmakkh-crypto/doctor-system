@@ -270,19 +270,28 @@ ok(A.api(T, "govUpload", { __org: "*", cycle: "2026", key: "bylaws", name: "a.pd
 ok(A.api(T, "govGet", { __org: "*", cycle: "2026" }).data.overview.some(o => o.readyPct > 0), "platform overview shows readiness per organisation");
 // الهيكل التنظيمي
 let tr = AM(T, "treeGet");
-ok(tr.ok && tr.data.template && tr.data.tree.children.length === 2, "organisation structure starts from the ready template");
+ok(tr.ok && tr.data.template && tr.data.tree.children.length === 3, "organisation structure starts from the ready template");
 const t2 = JSON.parse(JSON.stringify(tr.data.tree)); t2.children[0].children.push({ name: "لجنة جديدة", type: "لجنة", code: "BOD-C99", meta: { "الاختصاص": "اختبار" }, children: [], evil: "<script>" });
 tr = AM(T, "treeSave", { tree: t2, log: "إضافة لجنة" });
 ok(tr.ok && tr.data.saved && tr.data.tree.children[0].children.some(c => c.code === "BOD-C99" && !c.evil), "structure saved and sanitised");
 ok(AM(T, "treeGet").data.tree.children[0].children.length === t2.children[0].children.length, "structure persists per organisation");
-ok(AM(T, "treeSave", { reset: "empty" }).data.tree.children.length === 0 && AM(T, "treeSave", { reset: "template" }).data.tree.children.length === 2, "structure can be reset");
+ok(AM(T, "treeSave", { reset: "empty" }).data.tree.children.length === 0 && AM(T, "treeSave", { reset: "template" }).data.tree.children.length === 3, "structure can be reset");
 { const g0 = A.api(T, "treeGet", { __org: "*" }).data.tree; const g1 = JSON.parse(JSON.stringify(g0)); g1.children[0].children.push({ id: "gx", name: "لجنة عامة جديدة", type: "لجنة", children: [] });
   ok(A.api(T, "treeSave", { __org: "*", tree: g1, log: "t" }).ok, "platform supervisor edits the general structure");
   ok(A.api(T, "treeGet", { __org: "*" }).data.saved && A.api(T, "treeGet", { __org: "*" }).data.tree.children[0].children.some(c => c.id === "gx"), "general structure saved");
   const ap = A.api(T, "treeSave", { __org: "*", apply: "all" }); ok(ap.ok && ap.data.applied >= 1, "general structure applied to all organisations");
   ok(AM(T, "treeGet").data.tree.children[0].children.some(c => c.id === "gx"), "organisation received the general structure");
   ok(A.api(T, "treeSave", { __org: "*", reset: "template" }).ok, "general structure reset to the original template"); }
-{ const g = A.api(T, "treeGet", { __org: "*" }); ok(g.ok && g.data.general && g.data.tree.children.length === 2 && g.data.orgs.length >= 1 && g.data.orgs.every(o => typeof o.count === "number"), "platform view shows the general structure and the listed organisations"); }
+{ const t0 = JSON.parse(JSON.stringify(A.api(T, "treeGet", { __org: "*" }).data.tree)); t0.children = t0.children.filter(c => c.code !== "GEO"); t0.name = "المجلس العام";
+  ok(A.api(T, "treeSave", { __org: "*", tree: t0 }).ok && !A.api(T, "treeGet", { __org: "*" }).data.tree.children.some(c => c.code === "GEO"), "general structure without the electoral branch");
+  const ag = A.api(T, "treeSave", { __org: "*", addGeo: 1 }); ok(ag.ok && ag.data.tree.name === "المجلس العام" && ag.data.tree.children.some(c => c.code === "GEO"), "electoral branch added, existing edits kept");
+  const cnt = {}; (function w(n) { cnt[n.type] = (cnt[n.type] || 0) + 1; n.children.forEach(w); })(ag.data.tree);
+  ok(cnt["محافظة"] === 17 && cnt["ولاية"] === 27 && cnt["حي محلي"] === 280 && cnt["قرية"] === 1297, "17 governorates, 27 states, 280 districts, 1297 villages");
+  ok(A.api(T, "treeSave", { __org: "*", addGeo: 1 }).code === "VALIDATION", "electoral branch not added twice");
+  const v = JSON.parse(JSON.stringify(ag.data.tree)); v.children.find(c => c.code === "GEO").children[0].meta["عدد السكان"] = "120000"; v.children.find(c => c.code === "GEO").children[0].head = "ممثل المحافظة";
+  ok(A.api(T, "treeSave", { __org: "*", tree: v }).data.tree.children.find(c => c.code === "GEO").children[0].meta["عدد السكان"] === "120000", "governorate fields saved");
+  A.api(T, "treeSave", { __org: "*", reset: "template" }); }
+{ const g = A.api(T, "treeGet", { __org: "*" }); ok(g.ok && g.data.general && g.data.tree.children.length === 3 && g.data.orgs.length >= 1 && g.data.orgs.every(o => typeof o.count === "number"), "platform view shows the general structure and the listed organisations"); }
 const bomb = { name: "x", children: [] }; let cur = bomb; for (let i = 0; i < 30; i++) { const n = { name: "x" + i, children: [] }; cur.children.push(n); cur = n; }
 ok(AM(T, "treeSave", { tree: bomb }).data.tree && true, "deep trees are truncated safely");
 // بوابة المنصة وهوية الجهة القابلة للتعديل
