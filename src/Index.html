@@ -1670,6 +1670,8 @@ body.ro-on .side{touch-action:none}
 .osg{display:grid;gap:6px;padding:10px}.osg button{display:grid;gap:2px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;font:inherit;text-align:start;cursor:pointer;color:var(--ink)}.osg button.sel{border-color:#c9a227;box-shadow:0 0 0 2px color-mix(in srgb,#c9a227 35%,transparent)}.osg b{font-size:13px}.osg small{color:var(--muted);font-size:11px}
 @media (max-width:1000px){.trwrap{grid-template-columns:1fr}.trside{position:static;max-height:none}.ocrow.two{grid-template-columns:1fr}}
 /* ---- إدارة السير والإركاب (4.19) ---- */
+.nsecl{text-decoration:none!important;cursor:pointer;color:inherit}.nsecl:hover,.nsecl.on{filter:brightness(1.15);box-shadow:inset 0 0 0 1px rgba(232,176,74,.6)}
+
 .opw,.opw>*{min-width:0;max-width:100%}.opt{overflow-x:auto}.qrib{max-width:100%;min-width:0}.qrib .qrt{min-width:0;flex:1 1 auto;overflow-x:auto;scrollbar-width:none}.captree{margin-top:6px}.ntsw{border:0;background:none;cursor:pointer;color:inherit;transition:transform .2s}.ntsw.open{transform:rotate(-90deg)}#navTree{margin-inline-start:14px;padding-inline-start:8px;border-inline-start:2px solid color-mix(in srgb,#e8b04a 45%,transparent)}
 
 .flw .ifh{background:linear-gradient(90deg,#0f2a6e,#1d4fd6)}
@@ -2874,7 +2876,7 @@ function route(){
   return{v:"home"};
 }
 let R=route();let navDepth=0;if((R.v==="grp"||R.v==="mod"||R.v==="gov")&&R.g!=null)navOpen.add(R.g);
-window.addEventListener("hashchange",()=>{R=route();if((R.v==="assets"||R.v==="purch"||R.v==="ctr"||R.v==="inv"||R.v==="exp"||R.v==="tsk"||R.v==="flt")&&R.g!=null)navOpen.add(R.g);if(R.v!=="themes"){if(thPrevSys){thPrevSys=null;applySysTheme()}}else{partsDraft=null}if((R.v==="grp"||R.v==="mod")&&!navOpen.has(R.g)){navOpen.add(R.g);saveNavOpen()}if(R.v==="users"||R.v==="perms"){usersCache=null;permDraft=null}if(R.v==="menus")navDraft=null;if(R.v==="orgs"||(R.v==="home"&&S.member))orgsCache=null;if(!LAYOUT_PAGES(R.v))editMode=false;chOpen=null;if(R.v==="audit")auditCache=null;navDepth++;Object.assign(ui,{q:"",st:"",page:0,sort:{k:"date",d:-1}});closeSide();closeDrawer();render();window.scrollTo(0,0)});
+window.addEventListener("hashchange",()=>{R=route();if((R.v==="grp"||R.v==="mod"||R.v==="gov"||R.v==="assets"||R.v==="purch"||R.v==="ctr"||R.v==="inv"||R.v==="exp"||R.v==="tsk"||R.v==="flt")&&R.g!=null)navOpen.add(R.g);if(R.v!=="themes"){if(thPrevSys){thPrevSys=null;applySysTheme()}}else{partsDraft=null}if((R.v==="grp"||R.v==="mod")&&!navOpen.has(R.g)){navOpen.add(R.g);saveNavOpen()}if(R.v==="users"||R.v==="perms"){usersCache=null;permDraft=null}if(R.v==="menus")navDraft=null;if(R.v==="orgs"||(R.v==="home"&&S.member))orgsCache=null;if(!LAYOUT_PAGES(R.v))editMode=false;chOpen=null;if(R.v==="audit")auditCache=null;navDepth++;Object.assign(ui,{q:"",st:"",page:0,sort:{k:"date",d:-1}});closeSide();closeDrawer();render();window.scrollTo(0,0)});
 
 /* ================= Charts (SVG, theme tokens) ================= */
 function niceMax(v){if(v<=4)return 4;const p=Math.pow(10,Math.floor(Math.log10(v)));const n=v/p;return (n<=1?1:n<=2?2:n<=5?5:10)*p}
@@ -3765,7 +3767,7 @@ function renderNav(){
   if(S.member)topItems.push(["orgs",qk("orgs","building","الكشاف",`${nOrgs} ${nOrgs>2&&nOrgs<11?"مؤسسات":"مؤسسة"} في المنصة`,"#2f86d8",nOrgs,false)]);
   $("#navTop").innerHTML=`<a href="#home" class="qhero ${R.v==="home"?"on":""}"${R.v==="home"?' aria-current="page"':""}><span class="qhi">${ico("home")}</span><span class="qht"><small>لوحة القيادة</small><b>الرئيسية</b></span><span class="qhs"><b>${openN}</b><small>مفتوحة</small></span></a>`
    +roSort(topItems.map(x=>x[0]),"topOrder").map(k=>topItems.find(x=>x[0]===k)[1].replace('<a ',`<a data-ro="top" data-k="${k}" `)).join("");
-  const inG=(R.v==="grp"||R.v==="mod"||R.v==="assets"||R.v==="purch"||R.v==="ctr"||R.v==="inv"||R.v==="exp"||R.v==="tsk"||R.v==="flt")?R.g:-1;
+  const inG=(R.v==="grp"||R.v==="mod"||R.v==="gov"||R.v==="assets"||R.v==="purch"||R.v==="ctr"||R.v==="inv"||R.v==="exp"||R.v==="tsk"||R.v==="flt")?R.g:-1;
   const nq=(ui.navq||"").trim();const hl=t=>{const e=esc(t);if(!nq)return e;const q=esc(nq).replace(/[.*+?^${}()|[\]\\]/g,"\\$&");return e.replace(new RegExp(q,"g"),m=>`<mark>${m}</mark>`)};
   const hit=t=>!nq||String(t).includes(nq);
   let shown=0;
@@ -3773,7 +3775,8 @@ function renderNav(){
     const c=i?A.filter(r=>r.g===i).length:0;const secs=secsOf(i);
     const dHit=hit(g.n);
     const body=secs.map(([t,ids,sic])=>{const mm=ids.filter(m=>dHit||hit(t)||hit(g.items[m]));if(!mm.length)return "";
-      return `<div class="nsg"><div class="nsec"><span class="nsi">${ico(secIco(t,sic))}</span><span class="nst">${hl(t)}</span><em>${mm.length}</em></div><div class="nmods" data-rg="${i}:${esc(t)}">${roSort(mm,"modOrder",i+":"+t).map(m=>{const k=i?A.filter(r=>r.g===i&&r.m===m).length:0;const on=(R.v==="mod"||R.v==="assets"||R.v==="purch"||R.v==="ctr"||R.v==="inv"||R.v==="exp"||R.v==="tsk"||R.v==="flt")&&R.g===i&&R.m===m;
+      const ord=roSort(mm,"modOrder",i+":"+t),same=ord.find(m=>g.items[m]===t),lead=same!=null?same:ord[0],secOn=(R.v==="mod"||R.v==="gov"||R.v==="assets"||R.v==="purch"||R.v==="ctr"||R.v==="inv"||R.v==="exp"||R.v==="tsk"||R.v==="flt")&&R.g===i&&R.m===lead,rest=ord.filter(m=>m!==same);
+      return `<div class="nsg"><a href="#m${i}-${lead}" class="nsec nsecl ${secOn?"on":""}" title="فتح ${esc(g.items[lead])}"><span class="nsi">${ico(secIco(t,sic))}</span><span class="nst">${hl(t)}</span><em>${mm.length}</em></a><div class="nmods" data-rg="${i}:${esc(t)}">${rest.map(m=>{const k=i?A.filter(r=>r.g===i&&r.m===m).length:0;const on=(R.v==="mod"||R.v==="gov"||R.v==="assets"||R.v==="purch"||R.v==="ctr"||R.v==="inv"||R.v==="exp"||R.v==="tsk"||R.v==="flt")&&R.g===i&&R.m===m;
         return `<a href="#m${i}-${m}" data-ro="mod" data-k="${m}" class="sub ${on?"on":""}" title="${esc(idesc(i,m))}"${on?' aria-current="page"':""}><span class="si">${ico(modIco(i,m))}</span><span class="sn">${hl(g.items[m])}</span>${k?`<span class="cnt">${k}</span>`:""}</a>`}).join("")}</div></div>`}).join("");
     if(nq&&!dHit&&!body)return "";shown++;
     const open=nq?true:navOpen.has(i);const nMods=secs.reduce((a,x)=>a+x[1].length,0);

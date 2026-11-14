@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.19.2';
+const APP_VERSION = '4.19.3';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -1435,11 +1435,8 @@ function astMoveAdd_(st, me, m) {
   st.moves.unshift(m); if (st.moves.length > 5000) st.moves.length = 5000; return m;
 }
 function actAstGet_(me) {
-  if (!CUR_ORG || CUR_ORG === '*') {
-    if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
-    return { overview: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const st = astLoad_(o.id); const c = { total: st.assets.length, custody: 0, store: 0, maint: 0, late: 0 }; const t = today_();
-      st.assets.forEach(function (a) { if (c[a.status] != null) c[a.status]++; if (a.status === 'custody' && a.due && a.due < t) c.late++; }); return { id: o.id, code: o.code, name: o.name, c: c, emps: st.emps.length }; }) };
-  }
+  if (!CUR_ORG || CUR_ORG === '*') return aggOrgs_(me, astLoad_, ['assets', 'emps', 'moves', 'counts'], { sts: AST_ST });
+
   const st = astLoad_(astNeed_()); if (!st.set.orgName) st.set.orgName = String(getSettings_().orgName || ''); return astOut_(st);
 }
 function today_() { return Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd'); }
@@ -1624,10 +1621,8 @@ function prOut_(st, extra) { const o = { set: st.set, reqs: st.reqs, sups: st.su
 function prLog_(r, me, act, note) { r.log = r.log || []; r.log.unshift({ at: now_(), by: me.username, act: act, note: str_(String(note || ''), 300) }); if (r.log.length > 60) r.log.length = 60; }
 function prLines_(L) { return (Array.isArray(L) ? L : []).slice(0, 60).map(function (x) { const q = Number(x.qty); return { desc: str_(String(x.desc || ''), 160), spec: str_(String(x.spec || ''), 300), unit: str_(String(x.unit || ''), 20), qty: isFinite(q) && q > 0 ? Math.round(q * 100) / 100 : 0, price: Math.max(0, Number(x.price) || 0), rcv: 0, asset: !!x.asset }; }).filter(function (x) { return x.desc; }); }
 function actPrGet_(me) {
-  if (!CUR_ORG || CUR_ORG === '*') {
-    if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
-    return { overview: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const st = prLoad_(o.id), c = {}; st.reqs.forEach(function (r) { c[r.status] = (c[r.status] || 0) + 1; }); return { id: o.id, code: o.code, name: o.name, total: st.reqs.length, c: c, sups: st.sups.length }; }) };
-  }
+  if (!CUR_ORG || CUR_ORG === '*') return aggOrgs_(me, prLoad_, ['reqs', 'sups', 'rcv'], { sts: PR_ST });
+
   const st = prLoad_(astNeed_()); if (!st.set.orgName) st.set.orgName = String(getSettings_().orgName || ''); return prOut_(st);
 }
 function actPrSave_(me, p) {
@@ -1775,10 +1770,8 @@ function ctOut_(st, org, extra) { const ps = prLoad_(org).sups.map(function (s) 
 function ctLog_(c, me, act, note) { c.log = c.log || []; c.log.unshift({ at: now_(), by: me.username, act: act, note: str_(String(note || ''), 300) }); if (c.log.length > 80) c.log.length = 80; }
 function ctNum_(v) { const n = Number(v); return isFinite(n) && n >= 0 ? Math.round(n * 100) / 100 : 0; }
 function actCtGet_(me) {
-  if (!CUR_ORG || CUR_ORG === '*') {
-    if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
-    return { overview: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const st = ctLoad_(o.id); return { id: o.id, code: o.code, name: o.name, total: st.cts.length, active: st.cts.filter(function (c) { return c.status === 'active'; }).length, value: st.cts.reduce(function (s, c) { return s + (c.value || 0); }, 0), obs: st.obs.filter(function (b) { return b.status === 'open'; }).length }; }) };
-  }
+  if (!CUR_ORG || CUR_ORG === '*') return aggOrgs_(me, ctLoad_, ['cts', 'obs', 'pays', 'chgs'], { sts: CT_ST, sups: aggSups_(me) });
+
   const org = astNeed_(), st = ctLoad_(org); if (!st.set.orgName) st.set.orgName = String(getSettings_().orgName || ''); return ctOut_(st, org);
 }
 function actCtSave_(me, p) {
@@ -1945,10 +1938,8 @@ function invNeedWh_(st, id, active) { const w = astList_(st.whs, String(id || ''
 function invMk_(st, me, o) { const S = st.set; const m = Object.assign({ id: invId_('m'), no: S.mPre + astPad_(S.mNext++, 4), status: 'posted', seq: ++st.seq, by: me.username, at: now_(), files: [] }, o); m.dir = INV_TYPES[m.type][1]; st.movs.unshift(m); return m; }
 
 function actInvGet_(me) {
-  if (!CUR_ORG || CUR_ORG === '*') {
-    if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
-    return { overview: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const st = invLoad_(o.id); return { id: o.id, code: o.code, name: o.name, items: st.items.length, whs: st.whs.length, movs: st.movs.filter(function (m) { return m.status === 'posted'; }).length }; }) };
-  }
+  if (!CUR_ORG || CUR_ORG === '*') return aggOrgs_(me, invLoad_, ['items', 'whs', 'movs', 'trs', 'counts'], { types: INV_TYPES, sups: aggSups_(me) });
+
   const org = astNeed_(), st = invLoad_(org); if (!st.set.orgName) st.set.orgName = String(getSettings_().orgName || ''); return invOut_(st, org);
 }
 function actInvItem_(me, p) {
@@ -2112,10 +2103,8 @@ function exLog_(x, me, act, note) { x.log = x.log || []; x.log.unshift({ at: now
 function exPaid_(st, id) { return Math.round(st.pays.filter(function (y) { return y.exp === id; }).reduce(function (a, y) { return a + y.amount; }, 0) * 100) / 100; }
 function exNum_(v) { const n = Number(v); return isFinite(n) && n > 0 ? Math.round(n * 100) / 100 : 0; }
 function actExGet_(me) {
-  if (!CUR_ORG || CUR_ORG === '*') {
-    if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
-    return { overview: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const st = exLoad_(o.id), A = st.exps.filter(function (e) { return e.status === 'approved'; }); const ap = A.reduce(function (a, e) { return a + e.amount; }, 0); return { id: o.id, code: o.code, name: o.name, total: st.exps.length, approved: ap, paid: st.pays.reduce(function (a, y) { return a + y.amount; }, 0), pending: st.exps.filter(function (e) { return e.status === 'pending'; }).length }; }) };
-  }
+  if (!CUR_ORG || CUR_ORG === '*') return aggOrgs_(me, exLoad_, ['exps', 'pays'], { sts: EX_ST, sups: aggSups_(me) });
+
   const org = astNeed_(), st = exLoad_(org); if (!st.set.orgName) st.set.orgName = String(getSettings_().orgName || ''); return exOut_(st, org);
 }
 // المصروف: مسودة ← بانتظار الاعتماد ← معتمد/مرفوض/معاد للاستكمال، والملغى للمعتمد غير المسدد
@@ -2233,10 +2222,8 @@ function tskDefaults_() {
 function tskLoad_(org) { const st = govLoad_(org, '_tsk'); st.set = Object.assign(tskDefaults_(), st.set || {}); st.tasks = st.tasks || []; return st; }
 function tskOut_(st, extra) { const o = { set: st.set, tasks: st.tasks, sts: TSK_ST }; if (extra) Object.keys(extra).forEach(function (k) { o[k] = extra[k]; }); return o; }
 function actTskGet_(me) {
-  if (!CUR_ORG || CUR_ORG === '*') {
-    if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.'); const T = today_();
-    return { overview: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const L = tskLoad_(o.id).tasks; return { id: o.id, code: o.code, name: o.name, total: L.length, done: L.filter(function (t) { return t.status === 'done'; }).length, late: L.filter(function (t) { return ['done', 'cancel'].indexOf(t.status) < 0 && t.due && t.due < T; }).length }; }) };
-  }
+  if (!CUR_ORG || CUR_ORG === '*') return aggOrgs_(me, tskLoad_, ['tasks'], { sts: TSK_ST });
+
   const org = astNeed_(), st = tskLoad_(org); if (!st.set.orgName) st.set.orgName = String(getSettings_().orgName || ''); return tskOut_(st);
 }
 function actTskSave_(me, p) {
@@ -2294,10 +2281,8 @@ function fltOdo_(st, vid) { let m = 0; const v = astList_(st.vehs, vid); if (v) 
 function fltNum_(v) { const n = Number(v); return isFinite(n) && n >= 0 ? Math.round(n * 100) / 100 : 0; }
 function fltDT_(v) { const s = str_(v, 16).replace(' ', 'T'); if (s && !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)) throw err_('VALIDATION', 'صيغة التاريخ والوقت غير صحيحة.'); return s; }
 function actFltGet_(me) {
-  if (!CUR_ORG || CUR_ORG === '*') {
-    if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
-    return { overview: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const st = fltLoad_(o.id); return { id: o.id, code: o.code, name: o.name, vehs: st.vehs.length, open: st.trips.filter(function (t) { return t.status === 'open'; }).length, maint: st.vehs.filter(function (v) { return v.status === 'maint'; }).length }; }) };
-  }
+  if (!CUR_ORG || CUR_ORG === '*') return aggOrgs_(me, fltLoad_, ['vehs', 'drivers', 'trips', 'fuels', 'mnts']);
+
   const org = astNeed_(), st = fltLoad_(org); if (!st.set.orgName) st.set.orgName = String(getSettings_().orgName || ''); return fltOut_(st);
 }
 function actFltVeh_(me, p) {
@@ -2448,6 +2433,22 @@ function actOpsGet_(me) {
   }
   return { all: 0, tot: opsSum_(astNeed_()) };
 }
+
+/* ===== عرض مجمّع لكل المؤسسات داخل كل نظام (4.19.3) ===== */
+function aggOrgs_(me, load, recKeys, extra) {
+  if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
+  const orgs = loadOrgs_().filter(function (o) { return o.status !== 'archived'; }), out = { all: 1, orgs: orgs.map(function (o) { return { id: o.id, code: o.code, name: o.name }; }) };
+  let set = null; recKeys.forEach(function (k) { out[k] = []; });
+  orgs.forEach(function (o) { const st = load(o.id);
+    if (!set) set = JSON.parse(JSON.stringify(st.set || {}));
+    else Object.keys(st.set || {}).forEach(function (k) { const a = st.set[k]; if (Array.isArray(a) && Array.isArray(set[k])) a.forEach(function (x) { if (x && x.id && !set[k].some(function (y) { return y.id === x.id; })) set[k].push(x); }); });
+    recKeys.forEach(function (k) { (st[k] || []).forEach(function (r) { out[k].push(Object.assign({}, r, { __o: o.id, __on: o.name })); }); });
+  });
+  out.set = set || (load('__none__').set); out.set.orgName = 'كل مؤسسات المنصة';
+  if (extra) Object.keys(extra).forEach(function (k) { out[k] = extra[k]; });
+  return out;
+}
+function aggSups_(me) { return aggOrgs_(me, prLoad_, ['sups']).sups.map(function (x) { return { id: x.id, n: x.name, no: x.no, active: x.active !== false, ext: 1 }; }); }
 
 function actGovCustomDoc_(me, p) {
   const org = govNeedOrg_();

@@ -337,7 +337,7 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
     ok(c.ok && c.data.counts[0].status === "approved" && a0.missing && a1.cond === r.data.set.conds[1].id && c.data.moves.some(m => m.type === "count"), "stocktake approved: missing flagged and condition updated");
     ok(AM(T, "astCount", { op: "save", id: cid, items: {} }).code === "VALIDATION", "approved stocktake is locked"); }
   ok(AM(T, "astSamples", { clear: 1 }).data.assets.every(x => !x.sample), "sample data cleared");
-  ok(A.api(T, "astGet", { __org: "*" }).data.overview.length >= 1, "platform overview of custody per organisation");
+  ok(A.api(T, "astGet", { __org: "*" }).data.all === 1, "platform overview of custody per organisation");
   ok(A.api(T, "astMove", { __org: "*", type: "issue" }).code === "VALIDATION", "custody actions need an organisation"); }
 
 // ===== طلبات الشراء =====
@@ -363,7 +363,7 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
   ok(AM(T, "prSup", { del: sid }).ok, "supplier without open supply can be deleted");
   r = AM(T, "prSamples", {}); ok(r.ok && r.data.reqs.filter(x => x.sample).length === 8 && r.data.sups.length >= 5, "procurement sample data added");
   ok(AM(T, "prSamples", { clear: 1 }).data.reqs.every(x => !x.sample), "procurement sample data cleared");
-  ok(A.api(T, "prGet", { __org: "*" }).data.overview.length >= 1, "platform overview of procurement"); }
+  ok(A.api(T, "prGet", { __org: "*" }).data.all === 1, "platform overview of procurement"); }
 
 // ===== العقود والالتزامات =====
 { let g = AM(T, "ctGet"); ok(g.ok && g.data.set.types.length && g.data.cts.length === 0, "contracts start empty");
@@ -387,7 +387,7 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
   r = AM(T, "ctSamples", {}); ok(r.ok && r.data.cts.filter(c => c.sample).length === 4 && r.data.chgs.some(x => x.sample), "contracts sample data added");
   ok(AM(T, "ctSamples", { clear: 1 }).data.cts.every(c => !c.sample), "contracts sample data cleared");
   ok(Array.isArray(AM(T, "ctGet").data.sups), "procurement suppliers available as contract parties");
-  ok(A.api(T, "ctGet", { __org: "*" }).data.overview.length >= 1, "platform overview of contracts"); }
+  ok(A.api(T, "ctGet", { __org: "*" }).data.all === 1, "platform overview of contracts"); }
 // حركة المخزون
 { let g = AM(T, "invGet"); ok(g.ok && g.data.set.units.length && g.data.items.length === 0, "inventory starts empty");
   const U = g.data.set.units, rz = U.find(u => u.n === "رزمة").id, mt = U.find(u => u.n === "متر").id;
@@ -427,7 +427,7 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
   ok(AM(T, "invSet", { set: { noNeg: false, mPre: "MV-" } }).data.set.mPre === "MV-", "inventory settings saved");
   r = AM(T, "invSamples", {}); ok(r.ok && r.data.items.filter(i => i.sample).length === 12 && r.data.trs.some(t => t.sample) && r.data.counts.some(c => c.sample && c.status === "pending"), "inventory sample data added");
   r = AM(T, "invSamples", { clear: 1 }); ok(r.data.items.every(i => !i.sample) && r.data.whs.length === 2, "inventory sample data cleared");
-  ok(A.api(T, "invGet", { __org: "*" }).data.overview.length >= 1, "platform overview of inventory"); }
+  ok(A.api(T, "invGet", { __org: "*" }).data.all === 1, "platform overview of inventory"); }
 // المصروفات التشغيلية
 { let g = AM(T, "exGet"); ok(g.ok && g.data.exps.length === 0 && g.data.set.depts.length, "expenses start empty");
   const D = g.data.set.depts[0].id, CL = g.data.set.classes[0].id, M = g.data.set.methods[0].id;
@@ -450,7 +450,7 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
   ok(AM(T, "exCat", { item: { id: B }, del: 1 }).code === "VALIDATION", "used category cannot be deleted");
   r = AM(T, "exSamples", {}); ok(r.ok && r.data.exps.filter(e => e.sample).length === 12 && r.data.set.cats.some(c => c.sample), "expenses sample data added");
   r = AM(T, "exSamples", { clear: 1 }); ok(r.data.exps.length === 1 && !r.data.set.cats.some(c => c.sample), "expenses sample data cleared");
-  ok(A.api(T, "exGet", { __org: "*" }).data.overview.length >= 1, "platform overview of expenses"); }
+  ok(A.api(T, "exGet", { __org: "*" }).data.all === 1, "platform overview of expenses"); }
 { const o = AM(T, "opsGet"); ok(o.ok && o.data.tot.exp && o.data.tot.inv && o.data.tot.ctr && o.data.tot.purch && o.data.tot.assets, "operational summary for one org");
   const a = A.api(T, "opsGet", { __org: "*" }); ok(a.ok && a.data.all && a.data.orgs.length >= 1 && a.data.tot.exp, "operational summary across orgs"); }
 // متابعة المهام
