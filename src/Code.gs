@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.12.0';
+const APP_VERSION = '4.13.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -465,7 +465,7 @@ function api(token, action, payload) {
   } catch (e) { return fail_(e); }
 }
 /** إجراءات تحتاج مؤسسة محددة (لا تُنفذ في عرض «كل المؤسسات»). */
-const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples'];
+const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'astCount'];
 function isPlatform_(me) { return me.role === 'admin' && me.org === '*'; }
 /** عضو المنصة: حساب على مستوى نافذ (org = '*') بأي دور؛ المشاهد منهم يطّلع على كل المؤسسات دون أي تعديل. */
 function isPlatformMember_(me) { return me.org === '*'; }
@@ -482,7 +482,7 @@ function inUserScope_(me, u) {
   if (isPlatform_(me)) return CUR_ORG === '*' || uo === CUR_ORG || uo === '*';
   return uo === me.org;
 }
-const WRITE_ACTIONS = ['astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+const WRITE_ACTIONS = ['astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -652,7 +652,7 @@ const ACTIONS = {
   govAnswer: actGovAnswer_,
   govCopy: actGovCopy_,
   govCustomDoc: actGovCustomDoc_,
-  astGet: actAstGet_, astSaveAsset: actAstSaveAsset_, astDelAsset: actAstDelAsset_, astSaveEmp: actAstSaveEmp_, astDelEmp: actAstDelEmp_, astMove: actAstMove_, astSet: actAstSet_, astUpload: actAstUpload_, astFile: actAstFile_, astSamples: actAstSamples_,
+  astGet: actAstGet_, astSaveAsset: actAstSaveAsset_, astDelAsset: actAstDelAsset_, astSaveEmp: actAstSaveEmp_, astDelEmp: actAstDelEmp_, astMove: actAstMove_, astSet: actAstSet_, astUpload: actAstUpload_, astFile: actAstFile_, astSamples: actAstSamples_, astCount: actAstCount_,
   treeGet: actTreeGet_,
   treeSave: actTreeSave_,
   removeFile: actRemoveFile_,
@@ -1413,17 +1413,17 @@ function astDefaults_() {
   return { orgName: '', officer: '', depts: L(['الموارد البشرية', 'المالية', 'المشتريات', 'المشاريع', 'تقنية المعلومات', 'الخدمات العامة'], C),
     locs: L(['المقر الرئيسي', 'الفرع الأول', 'المخزن الرئيسي', 'مركز الصيانة'], C), cats: L(['أجهزة تقنية', 'أجهزة مكتبية', 'أثاث', 'أدوات', 'مركبات'], ['#7b5ce0', '#2f6fdf', '#e08a1e', '#13a06f', '#0b6e8f']),
     conds: L(['جيد', 'يحتاج صيانة', 'تالف'], ['#13a06f', '#e08a1e', '#d64545']), acc: ['كابل الطاقة', 'دليل الاستخدام', 'الشاحن', 'الحقيبة', 'الملحقات الأخرى'],
-    aPre: 'A-', aNext: 1, mPre: 'M-', mNext: 1, ePre: 'E-', eNext: 1, warnDays: 7, reqForm: true, allowOpen: true, currency: 'ريال' };
+    aPre: 'A-', aNext: 1, mPre: 'M-', mNext: 1, ePre: 'E-', eNext: 1, cPre: 'C-', cNext: 1, warrantyDays: 30, warnDays: 7, reqForm: true, allowOpen: true, currency: 'ريال' };
 }
 function astLoad_(org) {
   const st = govLoad_(org, '_assets'); const d = astDefaults_();
-  st.set = Object.assign(d, st.set || {}); st.assets = st.assets || []; st.emps = st.emps || []; st.moves = st.moves || []; return st;
+  st.set = Object.assign(d, st.set || {}); st.assets = st.assets || []; st.emps = st.emps || []; st.moves = st.moves || []; st.counts = st.counts || []; return st;
 }
 function astNeed_() { return govNeedOrg_(); }
 function astCanW_(me) { if (me.role === 'viewer') throw err_('FORBIDDEN', 'صلاحيتك للعرض فقط.'); }
 function astAdmin_(me) { if (me.role !== 'admin') throw err_('FORBIDDEN', 'هذا الإجراء لمسؤول النظام فقط.'); }
 function astPad_(n, w) { return String(n).padStart(w, '0'); }
-function astOut_(st, extra) { const o = { set: st.set, assets: st.assets, emps: st.emps, moves: st.moves, sts: AST_ST }; if (extra) Object.keys(extra).forEach(function (k) { o[k] = extra[k]; }); return o; }
+function astOut_(st, extra) { const o = { set: st.set, assets: st.assets, emps: st.emps, moves: st.moves, counts: st.counts || [], sts: AST_ST }; if (extra) Object.keys(extra).forEach(function (k) { o[k] = extra[k]; }); return o; }
 function astList_(L, id) { return (L || []).filter(function (x) { return x.id === id; })[0]; }
 function astMoveAdd_(st, me, m) {
   m.id = 'm' + Utilities.getUuid().replace(/-/g, '').slice(0, 10); m.no = st.set.mPre + astPad_(st.set.mNext++, 4); m.by = me.username; m.at = now_();
@@ -1439,7 +1439,7 @@ function actAstGet_(me) {
 }
 function today_() { return Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd'); }
 function astClean_(x, keys) { const o = {}; keys.forEach(function (k) { const v = x[k[0]]; if (k[1] === 'n') { const n = Number(v); if (v !== '' && v != null && isFinite(n)) o[k[0]] = Math.max(0, n); } else { const s = str_(String(v == null ? '' : v), k[1] || 200); if (s) o[k[0]] = s; } }); return o; }
-const AST_AK = [['no', 30], ['name', 120], ['cat', 20], ['brand', 120], ['model', 120], ['sn', 80], ['date', 10], ['cost', 'n'], ['loc', 20], ['dept', 20], ['cond', 20], ['note', 1000], ['icon', 20], ['warranty', 10], ['supplier', 120]];
+const AST_AK = [['no', 30], ['name', 120], ['cat', 20], ['brand', 120], ['model', 120], ['sn', 80], ['date', 10], ['cost', 'n'], ['loc', 20], ['dept', 20], ['cond', 20], ['note', 1000], ['icon', 20], ['warranty', 10], ['supplier', 120], ['life', 'n'], ['salvage', 'n'], ['tag', 60], ['program', 120]];
 const AST_EK = [['no', 30], ['name', 120], ['dept', 20], ['loc', 20], ['title', 120], ['phone', 30], ['email', 120], ['nid', 30]];
 function actAstSaveAsset_(me, p) {
   astCanW_(me); const org = astNeed_(), st = astLoad_(org), x = p.item || {};
@@ -1449,7 +1449,7 @@ function actAstSaveAsset_(me, p) {
   if (c.no && st.assets.some(function (y) { return y.no === c.no && (!a || y.id !== a.id); })) throw err_('VALIDATION', 'رقم الأصل ' + c.no + ' مستخدم لأصل آخر.');
   if (c.sn && st.assets.some(function (y) { return y.sn === c.sn && (!a || y.id !== a.id); })) throw err_('VALIDATION', 'الرقم التسلسلي ' + c.sn + ' مسجّل لأصل آخر.');
   if (a) {
-    const keep = { id: a.id, status: a.status, holder: a.holder, due: a.due, issued: a.issued, files: a.files || [], sample: a.sample, created: a.created };
+    const keep = { id: a.id, status: a.status, holder: a.holder, due: a.due, issued: a.issued, files: a.files || [], sample: a.sample, created: a.created, missing: a.missing, counted: a.counted };
     let ns = keep.status; if (p.status && keep.status !== 'custody' && ['store', 'maint', 'out'].indexOf(p.status) >= 0) ns = p.status;
     const old = a.status; Object.keys(a).forEach(function (k) { delete a[k]; }); Object.assign(a, c, keep); if (!a.no) a.no = st.set.aPre + astPad_(st.set.aNext++, 4); a.status = ns;
     if (ns !== old) astMoveAdd_(st, me, { type: 'status', asset: a.id, from: { st: old }, to: { st: ns, loc: a.loc }, date: today_(), cond: a.cond || '', note: str_(p.why, 300) });
@@ -1518,8 +1518,9 @@ function actAstSet_(me, p) {
   ['depts', 'locs', 'cats', 'conds'].forEach(function (k) { if (x[k]) { const v = lst(x[k]); if (!v.length) throw err_('VALIDATION', 'لا تترك القائمة فارغة.'); s[k] = v; } });
   if (x.acc) s.acc = (Array.isArray(x.acc) ? x.acc : []).slice(0, 20).map(function (v) { return str_(String(v), 60); }).filter(Boolean);
   ['orgName', 'officer', 'currency'].forEach(function (k) { if (x[k] != null) s[k] = str_(String(x[k]), 120); });
-  ['aPre', 'mPre', 'ePre'].forEach(function (k) { if (x[k] != null) s[k] = str_(String(x[k]), 8) || s[k]; });
-  ['aNext', 'mNext', 'eNext'].forEach(function (k) { const n = parseInt(x[k], 10); if (n > 0 && n < 1e7) s[k] = n; });
+  ['aPre', 'mPre', 'ePre', 'cPre'].forEach(function (k) { if (x[k] != null) s[k] = str_(String(x[k]), 8) || s[k]; });
+  ['aNext', 'mNext', 'eNext', 'cNext'].forEach(function (k) { const n = parseInt(x[k], 10); if (n > 0 && n < 1e7) s[k] = n; });
+  if (x.warrantyDays != null) s.warrantyDays = Math.max(0, Math.min(365, parseInt(x.warrantyDays, 10) || 0));
   if (x.warnDays != null) s.warnDays = Math.max(0, Math.min(90, parseInt(x.warnDays, 10) || 0));
   ['reqForm', 'allowOpen'].forEach(function (k) { if (x[k] != null) s[k] = !!x[k]; });
   audit_(me.username, 'إعدادات إدارة العهد', '', '', ''); govSave_(org, '_assets', st); return astOut_(st);
@@ -1544,10 +1545,41 @@ function actAstFile_(me, p) {
   if (String(v[1]).indexOf('ast:' + org + ':') !== 0) throw err_('FORBIDDEN', 'غير مسموح.');
   return { name: String(v[2]), mime: String(v[3]), data: Utilities.base64Encode(DriveApp.getFileById(String(v[5])).getBlob().getBytes()) };
 }
+/** جرد الأصول: جلسة لكل جرد، تُعتمد فتُحدَّث حالة الأصول وتُسجَّل الفروقات حركات. */
+function actAstCount_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = astLoad_(org), S = st.set, op = String(p.op || '');
+  if (op === 'start') {
+    const loc = str_(p.loc, 20); const L = st.assets.filter(function (a) { return a.status !== 'out' && (!loc || a.loc === loc); });
+    if (!L.length) throw err_('VALIDATION', 'لا توجد أصول في هذا النطاق للجرد.');
+    if (st.counts.some(function (c) { return c.status === 'open' && (c.loc || '') === loc; })) throw err_('VALIDATION', 'يوجد جرد مفتوح لنفس الموقع؛ أكمله أو احذفه أولًا.');
+    const items = {}; L.forEach(function (a) { items[a.id] = { f: null, cond: a.cond || '', loc: a.loc || '', holder: a.holder || '' }; });
+    const c = { id: 'c' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), no: S.cPre + astPad_(S.cNext++, 4), date: str_(p.date, 10) || today_(), loc: loc, team: str_(p.team, 200), note: str_(p.note, 300), status: 'open', items: items, by: me.username, at: now_() };
+    st.counts.unshift(c); audit_(me.username, 'بدء جرد أصول', '', c.no, String(L.length)); govSave_(org, '_assets', st); return astOut_(st, { id: c.id });
+  }
+  const c = astList_(st.counts, String(p.id || '')); if (!c) throw err_('NOTFOUND', 'الجرد غير موجود.');
+  if (op === 'del') { astAdmin_(me); if (c.status !== 'open') throw err_('VALIDATION', 'لا يُحذف جرد معتمد.'); st.counts = st.counts.filter(function (x) { return x !== c; }); govSave_(org, '_assets', st); return astOut_(st); }
+  if (c.status !== 'open') throw err_('VALIDATION', 'الجرد معتمد ولا يقبل التعديل.');
+  if (op === 'save' || op === 'approve') {
+    const it = p.items || {}; Object.keys(it).forEach(function (k) { if (!c.items[k]) return; const v = it[k] || {}; c.items[k].f = v.f === true || v.f === 1 ? 1 : v.f === false || v.f === 0 ? 0 : null; if (v.cond != null) c.items[k].cond = str_(String(v.cond), 20); c.items[k].note = str_(String(v.note || ''), 200); });
+    if (p.team != null) c.team = str_(p.team, 200); if (p.note != null) c.note = str_(p.note, 300);
+  }
+  if (op === 'approve') {
+    astAdmin_(me); const pend = Object.keys(c.items).filter(function (k) { return c.items[k].f == null; });
+    if (pend.length) throw err_('VALIDATION', 'بقي ' + pend.length + ' أصلًا لم يُحدَّد وجوده؛ أكمل الجرد قبل الاعتماد.');
+    let miss = 0, chg = 0;
+    Object.keys(c.items).forEach(function (k) { const a = astList_(st.assets, k), v = c.items[k]; if (!a) return;
+      a.counted = c.date;
+      if (v.f === 0) { if (!a.missing) { miss++; a.missing = c.no; astMoveAdd_(st, me, { type: 'count', asset: a.id, to: { st: a.status, loc: a.loc }, date: c.date, cond: a.cond || '', note: 'غير موجود في الجرد ' + c.no + (v.note ? ' — ' + v.note : '') }); } }
+      else { const was = a.missing; delete a.missing; if (v.cond && v.cond !== a.cond) { chg++; astMoveAdd_(st, me, { type: 'count', asset: a.id, to: { st: a.status, loc: a.loc }, date: c.date, cond: v.cond, note: 'تحديث الحالة في الجرد ' + c.no + (v.note ? ' — ' + v.note : '') }); a.cond = v.cond; } else if (was) astMoveAdd_(st, me, { type: 'count', asset: a.id, to: { st: a.status, loc: a.loc }, date: c.date, cond: a.cond || '', note: 'وُجد في الجرد ' + c.no }); } });
+    c.status = 'approved'; c.appBy = me.username; c.appAt = now_(); c.res = { total: Object.keys(c.items).length, missing: Object.keys(c.items).filter(function (k) { return c.items[k].f === 0; }).length, changed: chg };
+    audit_(me.username, 'اعتماد جرد أصول', '', c.no, 'مفقود ' + miss + ' · تغيّرت حالته ' + chg);
+  }
+  govSave_(org, '_assets', st); return astOut_(st, { id: c.id });
+}
 /** بيانات توضيحية للتجربة: تُعلَّم sample وتُمسح بزر واحد. */
 function actAstSamples_(me, p) {
   astAdmin_(me); const org = astNeed_(), st = astLoad_(org), S = st.set;
-  if (p.clear) { st.assets = st.assets.filter(function (a) { return !a.sample; }); st.emps = st.emps.filter(function (e) { return !e.sample; }); st.moves = st.moves.filter(function (m) { return !m.sample; }); govSave_(org, '_assets', st); return astOut_(st); }
+  if (p.clear) { st.assets = st.assets.filter(function (a) { return !a.sample; }); st.emps = st.emps.filter(function (e) { return !e.sample; }); st.moves = st.moves.filter(function (m) { return !m.sample; }); st.counts = st.counts.filter(function (c) { return !c.sample; }); govSave_(org, '_assets', st); return astOut_(st); }
   if (st.assets.some(function (a) { return a.sample; })) throw err_('VALIDATION', 'البيانات التوضيحية مضافة من قبل.');
   const d = function (n) { const x = new Date(); x.setDate(x.getDate() + n); return Utilities.formatDate(x, 'Asia/Riyadh', 'yyyy-MM-dd'); };
   const D = S.depts, L = S.locs, C = S.cats;
@@ -1558,7 +1590,7 @@ function actAstSamples_(me, p) {
   const maint = (L.filter(function (l) { return /صيانة/.test(l.n); })[0] || L[0] || {}).id || '';
   const good = (S.conds[0] || {}).id || '';
   items.forEach(function (r, i) {
-    const a = { id: 'a' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), no: S.aPre + astPad_(S.aNext++, 4), name: r[0], cat: (C[r[1] % C.length] || {}).id || '', icon: r[2], brand: r[3], sn: 'SN-' + astPad_(1000 + i, 4), date: d(-200 + i * 7), cost: r[4], loc: store, dept: (D[i % D.length] || {}).id || '', cond: good, status: 'store', holder: '', files: [], sample: true, created: now_() };
+    const a = { id: 'a' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), no: S.aPre + astPad_(S.aNext++, 4), name: r[0], cat: (C[r[1] % C.length] || {}).id || '', icon: r[2], brand: r[3], sn: 'SN-' + astPad_(1000 + i, 4), date: d(-200 - i * 60), cost: r[4], life: r[1] === 2 ? 10 : 4, salvage: Math.round(r[4] * 0.1), warranty: d(i === 0 ? 20 : 400 - i * 30), loc: store, dept: (D[i % D.length] || {}).id || '', cond: good, status: 'store', holder: '', files: [], sample: true, created: now_() };
     st.assets.push(a); astMoveAdd_(st, me, { type: 'add', asset: a.id, to: { loc: store, st: 'store' }, date: a.date, cond: good, sample: true });
   });
   const A = st.assets.filter(function (a) { return a.sample; }), E = emps;

@@ -329,6 +329,13 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
   ok(AM(T, "astSet", { set: { aPre: "AS-", aNext: 50, warnDays: 10, depts: [{ id: "d1", n: "الإدارة العامة", c: "#123456" }] } }).data.set.aNext === 50, "settings saved");
   ok(AM(T, "astSaveAsset", { item: { name: "طابعة", cat, loc } }).data.assets[0].no === "AS-0050", "numbering follows settings");
   r = AM(T, "astSamples", {}); ok(r.ok && r.data.assets.filter(x => x.sample).length === 12 && r.data.moves.some(m => m.type === "transfer"), "explanatory sample data added");
+  { const loc0 = r.data.set.locs.find(l => /مخزن/.test(l.n)).id; let c = AM(T, "astCount", { op: "start", loc: loc0 }); ok(c.ok && c.data.counts[0].status === "open" && Object.keys(c.data.counts[0].items).length > 0, "asset stocktake started for a location");
+    const cid = c.data.id, ids = Object.keys(c.data.counts[0].items); ok(AM(T, "astCount", { op: "start", loc: loc0 }).code === "VALIDATION", "one open stocktake per location");
+    ok(AM(T, "astCount", { op: "approve", id: cid, items: { [ids[0]]: { f: 1 } } }).code === "VALIDATION", "stocktake cannot be approved while items are unchecked");
+    const it = {}; ids.forEach((k, i) => it[k] = { f: i === 0 ? 0 : 1, cond: i === 1 ? r.data.set.conds[1].id : undefined });
+    c = AM(T, "astCount", { op: "approve", id: cid, items: it }); const a0 = c.data.assets.find(x => x.id === ids[0]), a1 = c.data.assets.find(x => x.id === ids[1]);
+    ok(c.ok && c.data.counts[0].status === "approved" && a0.missing && a1.cond === r.data.set.conds[1].id && c.data.moves.some(m => m.type === "count"), "stocktake approved: missing flagged and condition updated");
+    ok(AM(T, "astCount", { op: "save", id: cid, items: {} }).code === "VALIDATION", "approved stocktake is locked"); }
   ok(AM(T, "astSamples", { clear: 1 }).data.assets.every(x => !x.sample), "sample data cleared");
   ok(A.api(T, "astGet", { __org: "*" }).data.overview.length >= 1, "platform overview of custody per organisation");
   ok(A.api(T, "astMove", { __org: "*", type: "issue" }).code === "VALIDATION", "custody actions need an organisation"); }
