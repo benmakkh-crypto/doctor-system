@@ -453,5 +453,18 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
   ok(A.api(T, "exGet", { __org: "*" }).data.overview.length >= 1, "platform overview of expenses"); }
 { const o = AM(T, "opsGet"); ok(o.ok && o.data.tot.exp && o.data.tot.inv && o.data.tot.ctr && o.data.tot.purch && o.data.tot.assets, "operational summary for one org");
   const a = A.api(T, "opsGet", { __org: "*" }); ok(a.ok && a.data.all && a.data.orgs.length >= 1 && a.data.tot.exp, "operational summary across orgs"); }
+// متابعة المهام
+{ let g = AM(T, "tskGet"); ok(g.ok && g.data.tasks.length === 0 && g.data.set.sections.length, "tasks start empty");
+  const S0 = g.data.set.sections; let r = AM(T, "tskSet", { set: { emps: [{ n: "أحمد", sec: S0[0].id }] } }); const E = r.data.set.emps[0].id;
+  ok(AM(T, "tskSave", { item: { title: "" } }).code === "VALIDATION", "task needs a title");
+  ok(AM(T, "tskSave", { item: { title: "مهمة", emp: E, section: S0[1].id } }).code === "VALIDATION", "employee must belong to the section");
+  ok(AM(T, "tskSave", { item: { title: "مهمة", recvDate: "2026-10-10", due: "2026-10-01" } }).code === "VALIDATION", "due cannot precede receipt");
+  r = AM(T, "tskSave", { item: { title: "اعتماد خطة", emp: E, recvDate: "2026-10-01", due: "2026-10-10" } }); const id = r.data.id; ok(r.data.tasks[0].ref === "000001" && r.data.tasks[0].section === S0[0].id, "task saved with auto reference and section from employee");
+  r = AM(T, "tskSave", { item: { id, title: "اعتماد خطة", emp: E, recvDate: "2026-10-01", due: "2026-10-10", delivered: "2026-10-12", status: "doing" } }); ok(r.data.tasks[0].status === "done", "actual delivery completes the task");
+  ok(AM(T, "tskSave", { item: { id, title: "اعتماد خطة", status: "cancel" } }).code === "VALIDATION", "cancel needs a reason");
+  ok(AM(T, "tskSet", { set: { emps: [] } }).code === "VALIDATION", "used employee cannot be removed");
+  r = AM(T, "tskSamples", {}); ok(r.data.tasks.filter(t => t.sample).length === 20, "tasks sample data added");
+  r = AM(T, "tskSamples", { clear: 1 }); ok(r.data.tasks.length === 1, "tasks sample data cleared");
+  ok(AM(T, "opsGet").data.tot.tsk.total === 1, "tasks in operational summary"); }
 console.log("server tests passed:", pass);
 module.exports = {};

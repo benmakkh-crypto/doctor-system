@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.17.0';
+const APP_VERSION = '4.18.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -465,7 +465,7 @@ function api(token, action, payload) {
   } catch (e) { return fail_(e); }
 }
 /** إجراءات تحتاج مؤسسة محددة (لا تُنفذ في عرض «كل المؤسسات»). */
-const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'astCount', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples'];
+const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'astCount', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'tskSave', 'tskSet', 'tskSamples'];
 function isPlatform_(me) { return me.role === 'admin' && me.org === '*'; }
 /** عضو المنصة: حساب على مستوى نافذ (org = '*') بأي دور؛ المشاهد منهم يطّلع على كل المؤسسات دون أي تعديل. */
 function isPlatformMember_(me) { return me.org === '*'; }
@@ -482,7 +482,7 @@ function inUserScope_(me, u) {
   if (isPlatform_(me)) return CUR_ORG === '*' || uo === CUR_ORG || uo === '*';
   return uo === me.org;
 }
-const WRITE_ACTIONS = ['exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+const WRITE_ACTIONS = ['tskSave', 'tskSet', 'tskSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -656,7 +656,7 @@ const ACTIONS = {
   prGet: actPrGet_, prSave: actPrSave_, prDecide: actPrDecide_, prSupply: actPrSupply_, prReceive: actPrReceive_, prClose: actPrClose_, prDel: actPrDel_, prSup: actPrSup_, prSet: actPrSet_, prUpload: actPrUpload_, prFile: actPrFile_, prSamples: actPrSamples_,
   ctGet: actCtGet_, ctSave: actCtSave_, ctDel: actCtDel_, ctInst: actCtInst_, ctPay: actCtPay_, ctOb: actCtOb_, ctChg: actCtChg_, ctSet: actCtSet_, ctUpload: actCtUpload_, ctFile: actCtFile_, ctSamples: actCtSamples_,
   invGet: actInvGet_, invItem: actInvItem_, invWh: actInvWh_, invMov: actInvMov_, invTr: actInvTr_, invCount: actInvCount_, invSet: actInvSet_, invUpload: actInvUpload_, invFile: actInvFile_, invSamples: actInvSamples_,
-  exGet: actExGet_, exSave: actExSave_, exPay: actExPay_, exCat: actExCat_, exSet: actExSet_, exUpload: actExUpload_, exFile: actExFile_, exSamples: actExSamples_, opsGet: actOpsGet_,
+  exGet: actExGet_, exSave: actExSave_, exPay: actExPay_, exCat: actExCat_, exSet: actExSet_, exUpload: actExUpload_, exFile: actExFile_, exSamples: actExSamples_, opsGet: actOpsGet_, tskGet: actTskGet_, tskSave: actTskSave_, tskSet: actTskSet_, tskSamples: actTskSamples_,
   treeGet: actTreeGet_,
   treeSave: actTreeSave_,
   removeFile: actRemoveFile_,
@@ -1926,7 +1926,7 @@ function invDefaults_() {
   return { orgName: '', cats: L(['مستلزمات مكتبية', 'مواد تعبئة', 'قطع غيار', 'مواد خام', 'مواد غذائية', 'مواد نظافة'], C),
     units: [{ id: 'u1', n: 'قطعة', dec: 0 }, { id: 'u2', n: 'رزمة', dec: 0 }, { id: 'u3', n: 'علبة', dec: 0 }, { id: 'u4', n: 'كرتون', dec: 0 }, { id: 'u5', n: 'متر', dec: 2 }, { id: 'u6', n: 'كيلوجرام', dec: 3 }, { id: 'u7', n: 'لتر', dec: 2 }],
     parties: [], owners: [], reasons: L(['فرق جرد', 'تلف', 'انتهاء صلاحية', 'تصحيح إدخال', 'أخرى'], C), locs: L(['المقر', 'الفرع', 'الخدمات'], C),
-    iPre: 'IT-', iNext: 1, mPre: 'MOV-', mNext: 1, tPre: 'TR-', tNext: 1, cPre: 'CNT-', cNext: 1, wPre: 'WH-', wNext: 1, noNeg: true, reqRef: true, reqFile: false, defWh: '' };
+    iPre: 'IT-', iNext: 1, mPre: 'MOV-', mNext: 1, tPre: 'TR-', tNext: 1, cPre: 'CNT-', cNext: 1, wPre: 'WH-', wNext: 1, noNeg: true, reqRef: true, reqFile: false, defWh: '', days: 28 };
 }
 function invLoad_(org) { const st = govLoad_(org, '_inv'); st.set = Object.assign(invDefaults_(), st.set || {}); ['items', 'whs', 'movs', 'trs', 'counts'].forEach(function (k) { st[k] = st[k] || []; }); st.seq = st.seq || 0; return st; }
 function invOut_(st, org, extra) { const ps = prLoad_(org).sups.map(function (s) { return { id: s.id, n: s.name, no: s.no, kind: 'sup', active: s.active !== false, ext: 1 }; });
@@ -2047,7 +2047,7 @@ function actInvSet_(me, p) {
   if (x.orgName != null) s.orgName = str_(String(x.orgName), 120);
   ['iPre', 'mPre', 'tPre', 'cPre', 'wPre'].forEach(function (k) { if (x[k] != null) s[k] = str_(String(x[k]), 8) || s[k]; });
   ['iNext', 'mNext', 'tNext', 'cNext', 'wNext'].forEach(function (k) { const n = parseInt(x[k], 10); if (n > 0 && n < 1e7) s[k] = n; });
-  ['noNeg', 'reqRef', 'reqFile'].forEach(function (k) { if (x[k] != null) s[k] = !!x[k]; }); if (x.defWh != null && (x.defWh === '' || astList_(st.whs, x.defWh))) s.defWh = String(x.defWh);
+  ['noNeg', 'reqRef', 'reqFile'].forEach(function (k) { if (x[k] != null) s[k] = !!x[k]; }); if (x.days != null) s.days = Math.max(1, Math.min(365, parseInt(x.days, 10) || 28)); if (x.defWh != null && (x.defWh === '' || astList_(st.whs, x.defWh))) s.defWh = String(x.defWh);
   audit_(me.username, 'إعدادات المخزون', '', '', ''); govSave_(org, '_inv', st); return invOut_(st, org);
 }
 function actInvUpload_(me, p) {
@@ -2222,6 +2222,61 @@ function actExSamples_(me, p) {
   audit_(me.username, 'إضافة بيانات توضيحية للمصروفات', '', '', ''); govSave_(org, '_exp', st); return exOut_(st, org);
 }
 
+/* ================= متابعة المهام (4.18) ================= */
+const TSK_ST = { new: 'جديدة', doing: 'قيد التنفيذ', hold: 'معلقة', done: 'مكتملة', cancel: 'ملغاة' };
+function tskDefaults_() {
+  const L = function (a) { return a.map(function (n, i) { return { id: 'd' + (i + 1), n: n }; }); };
+  return { orgName: '', senders: L(['الإدارة العليا', 'المشتريات', 'الشؤون القانونية', 'الموارد البشرية', 'إدارة التشغيل', 'الجودة']), concerned: L(['إدارة التشغيل', 'الإدارة المالية', 'تقنية المعلومات', 'الموارد البشرية', 'الشؤون القانونية']),
+    sections: L(['العمليات', 'تقنية المعلومات', 'المالية', 'الموارد البشرية', 'المشتريات']), emps: [], stl: { new: 'تم الاستلام', doing: 'العمل جارٍ', hold: 'بانتظار إجراء', done: 'تم التسليم الفعلي', cancel: 'تُستبعد من نسبة الإنجاز' }, rPre: '', rNext: 1, soonDays: 7 };
+}
+function tskLoad_(org) { const st = govLoad_(org, '_tsk'); st.set = Object.assign(tskDefaults_(), st.set || {}); st.tasks = st.tasks || []; return st; }
+function tskOut_(st, extra) { const o = { set: st.set, tasks: st.tasks, sts: TSK_ST }; if (extra) Object.keys(extra).forEach(function (k) { o[k] = extra[k]; }); return o; }
+function actTskGet_(me) {
+  if (!CUR_ORG || CUR_ORG === '*') {
+    if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.'); const T = today_();
+    return { overview: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const L = tskLoad_(o.id).tasks; return { id: o.id, code: o.code, name: o.name, total: L.length, done: L.filter(function (t) { return t.status === 'done'; }).length, late: L.filter(function (t) { return ['done', 'cancel'].indexOf(t.status) < 0 && t.due && t.due < T; }).length }; }) };
+  }
+  const org = astNeed_(), st = tskLoad_(org); if (!st.set.orgName) st.set.orgName = String(getSettings_().orgName || ''); return tskOut_(st);
+}
+function actTskSave_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = tskLoad_(org), S = st.set, x = p.item || {};
+  let t = x.id ? astList_(st.tasks, String(x.id)) : null;
+  if (p.del) { if (!t) throw err_('NOTFOUND', 'المهمة غير موجودة.'); if (t.status === 'done') astAdmin_(me); st.tasks = st.tasks.filter(function (y) { return y !== t; }); audit_(me.username, 'حذف مهمة', '', t.ref, t.title); govSave_(org, '_tsk', st); return tskOut_(st); }
+  const D = function (k) { const v = str_(x[k], 10); if (v && !/^\d{4}-\d{2}-\d{2}$/.test(v)) throw err_('VALIDATION', 'تاريخ غير صحيح.'); return v; };
+  const v = { title: str_(x.title, 200), sender: str_(x.sender, 20), letterDate: D('letterDate'), recvDate: D('recvDate'), concerned: str_(x.concerned, 20), section: str_(x.section, 20), emp: str_(x.emp, 20), sendDate: D('sendDate'), due: D('due'), delivered: D('delivered'), status: TSK_ST[x.status] ? String(x.status) : 'new', note: str_(x.note, 500) };
+  if (!v.title) throw err_('VALIDATION', 'اكتب اسم المهمة.');
+  if (v.emp) { const e = astList_(S.emps, v.emp); if (!e) throw err_('VALIDATION', 'الموظف غير موجود.'); if (v.section && e.sec && e.sec !== v.section) throw err_('VALIDATION', 'الموظف «' + e.n + '» لا يتبع القسم المختار.'); if (!v.section) v.section = e.sec || ''; }
+  if (v.letterDate && v.recvDate && v.recvDate < v.letterDate) throw err_('VALIDATION', 'تاريخ الاستلام قبل تاريخ الخطاب.');
+  if (v.recvDate && v.due && v.due < v.recvDate) throw err_('VALIDATION', 'الموعد النهائي قبل تاريخ الاستلام.');
+  if (v.delivered) { if (v.delivered > today_()) throw err_('VALIDATION', 'لا يكون التسليم الفعلي بتاريخ مستقبلي.'); if (v.recvDate && v.delivered < v.recvDate) throw err_('VALIDATION', 'التسليم الفعلي قبل تاريخ الاستلام.'); if (v.status !== 'cancel') v.status = 'done'; }
+  if (v.status === 'cancel' && !v.note) throw err_('VALIDATION', 'اكتب سبب الإلغاء في الملاحظات.');
+  if (t) Object.assign(t, v, { upd: now_(), updBy: me.username });
+  else { const ref = str_(x.ref, 30) || (S.rPre || '') + astPad_(S.rNext++, 6); if (st.tasks.some(function (y) { return y.ref === ref; })) throw err_('VALIDATION', 'الرقم المرجعي مستخدم.'); t = Object.assign(v, { id: 't' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), ref: ref, by: me.username, at: now_() }); st.tasks.unshift(t); }
+  govSave_(org, '_tsk', st); return tskOut_(st, { id: t.id });
+}
+function actTskSet_(me, p) {
+  astAdmin_(me); const org = astNeed_(), st = tskLoad_(org), x = p.set || {}, s = st.set;
+  const lst = function (L) { return (Array.isArray(L) ? L : []).slice(0, 120).map(function (o, i) { return { id: str_(String(o.id || ''), 20).replace(/[^A-Za-z0-9_-]/g, '') || ('x' + i + Date.now().toString(36)), n: str_(String(o.n || ''), 120), sec: str_(String(o.sec || ''), 20) }; }).filter(function (o) { return o.n; }); };
+  const used = { senders: 'sender', concerned: 'concerned', sections: 'section', emps: 'emp' };
+  Object.keys(used).forEach(function (k) { if (!x[k]) return; const v = lst(x[k]); s[k].forEach(function (o) { if (!v.some(function (y) { return y.id === o.id; }) && st.tasks.some(function (t) { return t[used[k]] === o.id; })) throw err_('VALIDATION', '«' + o.n + '» مستخدم في مهام؛ لا يُحذف.'); }); s[k] = v; });
+  if (x.stl) Object.keys(TSK_ST).forEach(function (k) { if (x.stl[k] != null) s.stl[k] = str_(String(x.stl[k]), 80); });
+  if (x.orgName != null) s.orgName = str_(String(x.orgName), 120); if (x.rPre != null) s.rPre = str_(String(x.rPre), 8);
+  const n = parseInt(x.rNext, 10); if (n > 0 && n < 1e9) s.rNext = n; if (x.soonDays != null) s.soonDays = Math.max(1, Math.min(60, parseInt(x.soonDays, 10) || 7));
+  audit_(me.username, 'إعدادات المهام', '', '', ''); govSave_(org, '_tsk', st); return tskOut_(st);
+}
+function actTskSamples_(me, p) {
+  astAdmin_(me); const org = astNeed_(), st = tskLoad_(org), S = st.set;
+  if (p.clear) { st.tasks = st.tasks.filter(function (t) { return !t.sample; }); S.emps = S.emps.filter(function (e) { return !e.sample; }); govSave_(org, '_tsk', st); return tskOut_(st); }
+  if (st.tasks.some(function (t) { return t.sample; })) throw err_('VALIDATION', 'البيانات التوضيحية مضافة من قبل.');
+  const d = function (n) { const x = new Date(); x.setDate(x.getDate() + n); return Utilities.formatDate(x, 'Asia/Riyadh', 'yyyy-MM-dd'); }, SC = S.sections;
+  const E = [['أحمد', 0], ['محمد', 0], ['عمر', 0], ['خالد', 1], ['منى', 2], ['نورا', 3], ['سارة', 4]].map(function (r, i) { const o = { id: 'se' + i + Date.now().toString(36), n: r[0], sec: (SC[r[1]] || {}).id, sample: true }; S.emps.push(o); return o; });
+  const titles = ['اعتماد خطة الصيانة', 'مراجعة أوامر الشراء', 'تحديث سجل العقود', 'تسليم تقرير المصروفات', 'مراجعة صلاحيات النظام', 'إعداد خطة التدريب', 'تحديث دليل الإجراءات', 'تحديث قائمة الموردين', 'جرد المستودع الرئيسي', 'إعداد ميزانية الربع', 'مراجعة عقود الإيجار', 'تحديث بيانات الموظفين', 'تقرير الأداء الشهري', 'صيانة الشبكة', 'تجهيز قاعة الاجتماعات', 'مراجعة سياسة الخصوصية', 'أرشفة المراسلات', 'تحديث لوحة المؤشرات', 'إعداد محضر اللجنة', 'متابعة طلبات التوظيف'];
+  const plan = [[-20, 0, 13, null, 'doing'], [-17, 1, 9, null, 'hold'], [-14, 2, 16, null, 'doing'], [-13, 4, 14, null, 'new'], [-25, 3, 16, 15, 'done'], [-23, 5, 17, 17, 'done'], [-24, 6, 14, 16, 'done'], [-11, 6, 6, null, 'cancel'],
+    [-60, 0, 20, 18, 'done'], [-55, 4, 15, 15, 'done'], [-50, 2, 10, 14, 'done'], [-45, 5, 20, null, 'doing'], [-40, 3, 25, 22, 'done'], [-35, 3, 12, null, 'doing'], [-9, 1, 10, null, 'new'], [-8, 6, 20, null, 'hold'], [-90, 5, 15, 12, 'done'], [-80, 3, 10, 11, 'done'], [-5, 4, 4, null, 'doing'], [-3, 5, 12, null, 'new']];
+  plan.forEach(function (r, i) { const e = E[r[1]], recv = r[0], t = { id: 't' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), ref: astPad_(S.rNext++, 6), title: titles[i], sender: (S.senders[i % S.senders.length] || {}).id, letterDate: d(recv - 1), recvDate: d(recv), concerned: (S.concerned[i % S.concerned.length] || {}).id, section: e.sec, emp: e.id, sendDate: d(recv + 1), due: d(recv + r[2]), delivered: r[3] != null ? d(recv + r[3]) : '', status: r[4], note: r[4] === 'cancel' ? 'بناء على التوجيه.' : '', by: me.username, at: now_(), sample: true }; st.tasks.unshift(t); });
+  audit_(me.username, 'إضافة بيانات توضيحية للمهام', '', '', ''); govSave_(org, '_tsk', st); return tskOut_(st);
+}
+
 /* ================= ملخص الأنظمة التشغيلية للوحة الرئيسية (4.17) ================= */
 function opsSum_(org) {
   const T = today_(), a = govLoad_(org, '_assets'), pr = prLoad_(org), ct = ctLoad_(org), iv = invLoad_(org), ex = exLoad_(org);
@@ -2231,7 +2286,9 @@ function opsSum_(org) {
   const paid = {}; ex.pays.forEach(function (y) { paid[y.exp] = (paid[y.exp] || 0) + y.amount; }); const EA = ex.exps.filter(function (e) { return e.status === 'approved'; });
   const cpaid = {}; ct.pays.forEach(function (y) { cpaid[y.ct] = (cpaid[y.ct] || 0) + y.amount; });
   const CA = ct.cts.filter(function (c) { return c.status === 'active'; });
+  const TK = tskLoad_(org).tasks;
   return {
+    tsk: { total: TK.length, open: TK.filter(function (t) { return ['done', 'cancel'].indexOf(t.status) < 0; }).length, done: TK.filter(function (t) { return t.status === 'done'; }).length, late: TK.filter(function (t) { return ['done', 'cancel'].indexOf(t.status) < 0 && t.due && t.due < T; }).length },
     assets: { total: A.length, custody: A.filter(function (x) { return x.status === 'custody'; }).length, maint: A.filter(function (x) { return x.status === 'maint'; }).length, late: A.filter(function (x) { return x.status === 'custody' && x.due && x.due < T; }).length },
     purch: { total: R.length, pending: R.filter(function (r) { return r.status === 'pending'; }).length, supply: R.filter(function (r) { return r.status === 'supply' || r.status === 'partial'; }).length, late: R.filter(function (r) { return (r.status === 'supply' || r.status === 'partial') && (r.eta || r.need) && (r.eta || r.need) < T; }).length, sups: (pr.sups || []).length },
     inv: { items: iv.items.length, whs: iv.whs.length, out: out, low: low, movs: iv.movs.filter(function (m) { return m.status === 'posted'; }).length, counts: iv.counts.filter(function (c) { return c.status === 'pending'; }).length },
