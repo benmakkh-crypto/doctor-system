@@ -1670,6 +1670,8 @@ body.ro-on .side{touch-action:none}
 .osg{display:grid;gap:6px;padding:10px}.osg button{display:grid;gap:2px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;font:inherit;text-align:start;cursor:pointer;color:var(--ink)}.osg button.sel{border-color:#c9a227;box-shadow:0 0 0 2px color-mix(in srgb,#c9a227 35%,transparent)}.osg b{font-size:13px}.osg small{color:var(--muted);font-size:11px}
 @media (max-width:1000px){.trwrap{grid-template-columns:1fr}.trside{position:static;max-height:none}.ocrow.two{grid-template-columns:1fr}}
 /* ---- إدارة السير والإركاب (4.19) ---- */
+.captree{margin-top:6px}.ntsw{border:0;background:none;cursor:pointer;color:inherit;transition:transform .2s}.ntsw.open{transform:rotate(-90deg)}#navTree{margin-inline-start:14px;padding-inline-start:8px;border-inline-start:2px solid color-mix(in srgb,#e8b04a 45%,transparent)}
+
 .flw .ifh{background:linear-gradient(90deg,#0f2a6e,#1d4fd6)}
 .flk{align-items:stretch}.flkc{display:grid;gap:10px;align-content:start;padding:14px 16px;border-radius:22px;border:1px solid color-mix(in srgb,var(--c) 25%,var(--line));background:linear-gradient(150deg,color-mix(in srgb,var(--c) 9%,var(--surface)),var(--surface) 70%);font:inherit;color:var(--ink);text-align:start}button.flkc{cursor:pointer}.flkc>header{display:grid;grid-template-columns:1fr auto;align-items:center}.flkc>header b{font-size:20px;font-family:var(--f-display)}.flkc>header b small{font-size:12px;font-family:inherit;color:var(--muted)}.flkc>header strong{grid-row:2;font-family:var(--f-display);font-size:clamp(40px,5vw,64px);line-height:1;color:color-mix(in srgb,var(--c),#000 20%)}.flkc>header .i3{grid-row:span 2}.flkc>small{color:var(--muted);font-weight:700}
 .fl3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.fl3.two{grid-template-columns:repeat(2,minmax(0,1fr))}.fl3.four{grid-template-columns:repeat(4,minmax(0,1fr))}.fl3>*{display:flex;gap:8px;align-items:center;padding:10px;border-radius:14px;border:1px solid color-mix(in srgb,var(--c) 25%,var(--line));background:color-mix(in srgb,var(--c) 8%,var(--surface));font:inherit;color:var(--ink);text-align:start}.fl3>button{cursor:pointer}.fl3 span{display:grid}.fl3 small{font-size:12px;font-weight:800;color:color-mix(in srgb,var(--c),#000 25%)}.fl3 b{font-family:var(--f-display);font-size:28px;line-height:1;color:var(--c)}
@@ -2144,7 +2146,7 @@ button.akpi{cursor:pointer;transition:transform .18s,box-shadow .18s}button.akpi
 <div class="shell" id="shell">
   <aside class="side" id="side" aria-label="القائمة الرئيسية">
     <nav class="nav" id="navTop"></nav>
-    <div class="cap" id="capTree" hidden>الهيكل التنظيمي</div>
+    <nav class="nav captree" id="capTree" hidden></nav>
     <nav class="nav navtree" id="navTree" hidden></nav>
     <div class="cap">الإدارات</div>
     <nav class="nav" id="nav"></nav>
@@ -3758,7 +3760,7 @@ function renderNav(){
   const trash=S.recs.filter(r=>r.deleted).length;
   const openN=A.filter(r=>isOpen(r)).length;const nOrgs=(S.orgs||[]).length;
   const qk=(h,ic,t,sub,col,n,hotN)=>`<a href="#${h}" class="qk ${R.v===h?"on":""}" style="--qc:${col}"${R.v===h?' aria-current="page"':""}><span class="qki">${ico(ic)}</span><span class="qkt"><b>${t}</b><small>${sub}</small></span>${n?`<span class="qkn ${hotN?"pulse":""}">${n}</span>`:`<span class="qka">${ico("chev")}</span>`}</a>`;
-  const topItems=[["focus",qk("focus","focus","مهامي والأولويات",hot?`${hot} تحتاج متابعتك`:"لا شيء عاجل","#e0573a",hot,hot>0)],["inbox",qk("inbox","inbox","صندوق الاعتمادات",pend?`${pend} بانتظار الاعتماد`:"لا شيء معلّق","#7b5ce0",pend,false)],["flow",qk("flow","flow","مسار المعاملات","تتبّع المراحل","#13a597",0)],["structure",qk("structure","tree","الهيكل التنظيمي","المجلس واللجان والقطاعات والإدارات","#1d4e89",0)],["gov",qk("gov","GOV","مركز الحوكمة",govCache&&govCache.score?`جاهزية ${govCache.score.readyPct}٪`:"المعايير والشواهد","#8a3b12",0)]];
+  const topItems=[["focus",qk("focus","focus","مهامي والأولويات",hot?`${hot} تحتاج متابعتك`:"لا شيء عاجل","#e0573a",hot,hot>0)],["inbox",qk("inbox","inbox","صندوق الاعتمادات",pend?`${pend} بانتظار الاعتماد`:"لا شيء معلّق","#7b5ce0",pend,false)],["flow",qk("flow","flow","مسار المعاملات","تتبّع المراحل","#13a597",0)],["gov",qk("gov","GOV","مركز الحوكمة",govCache&&govCache.score?`جاهزية ${govCache.score.readyPct}٪`:"المعايير والشواهد","#8a3b12",0)]];
   if(S.member)topItems.push(["orgs",qk("orgs","building","الكشاف",`${nOrgs} ${nOrgs>2&&nOrgs<11?"مؤسسات":"مؤسسة"} في المنصة`,"#2f86d8",nOrgs,false)]);
   $("#navTop").innerHTML=`<a href="#home" class="qhero ${R.v==="home"?"on":""}"${R.v==="home"?' aria-current="page"':""}><span class="qhi">${ico("home")}</span><span class="qht"><small>لوحة القيادة</small><b>الرئيسية</b></span><span class="qhs"><b>${openN}</b><small>مفتوحة</small></span></a>`
    +roSort(topItems.map(x=>x[0]),"topOrder").map(k=>topItems.find(x=>x[0]===k)[1].replace('<a ',`<a data-ro="top" data-k="${k}" `)).join("");
@@ -4557,7 +4559,7 @@ function trCellEdit(el){if(el.isContentEditable)return;const id=el.dataset.trc,k
     setTimeout(()=>{ui.trInline=false},0);if(save&&v!==old){trSetF(n,k,v);const lab=(trFieldsOf(n).find(x=>x[0]===k)||[k,k])[1];trSave("«"+lab+"» في «"+n.name+"»")}else render()};
   el.onkeydown=e=>{e.stopPropagation();if(e.key==="Enter"){e.preventDefault();fin(true)}else if(e.key==="Escape"){e.preventDefault();fin(false)}else if(e.key==="Tab"){e.preventDefault();fin(true)}};
   el.onclick=e=>{e.stopPropagation()};el.onblur=()=>fin(true)}
-function renderNavTree(){const el=$("#navTree"),cap=$("#capTree");if(!el)return;const hide=v=>{el.hidden=v;if(cap)cap.hidden=v};
+function renderNavTree(){const el=$("#navTree"),cap=$("#capTree");if(!el)return;const open=ui.ntShow!==false;const hide=v=>{el.hidden=v||!open;if(cap){cap.hidden=!S.scope;cap.innerHTML=`<a href="#structure" class="qk ${R.v==="structure"?"on":""}" style="--qc:#1d4e89"><span class="qki">${ico("tree")}</span><span class="qkt"><b>الهيكل التنظيمي</b><small>المجلس واللجان والقطاعات والإدارات</small></span><button type="button" class="qka ntsw ${open?"open":""}" data-ntsw="1" aria-label="${open?"طي":"عرض"} الهيكل في القائمة">${ico("chev")}</button></a>`}};
   if(!S.scope||!S.loaded&&!trCache){hide(true);return}
   if(!trCache||trCache.__org!==(S.org||"")){hide(false);el.innerHTML=`<div class="ntl">جارٍ تحميل الهيكل…</div>`;if(!trLoading)loadTree();return}
   if(trCache.err){hide(true);return}hide(false);
@@ -7016,6 +7018,7 @@ $("#nav").addEventListener("click",e=>{
 });
 ($("#navAst")||document.createElement("i")).addEventListener("click",e=>{const g=e.target.closest("[data-asnt]");if(g){e.preventDefault();ui.asNav=!ui.asNav;renderNavAst();return}
   const a=e.target.closest("[data-asn]");if(a){e.preventDefault();const t=a.dataset.asn;if(t==="add"){ui.asEdit=null;if(ui.asD)delete ui.asD.add}ui.asTab=t;ui.asNav=true;const h="#assets/"+t;if(location.hash!==h)location.hash=h;else render();if(typeof closeSide==="function")closeSide()}});
+$("#capTree").addEventListener("click",e=>{const b=e.target.closest("[data-ntsw]");if(b){e.preventDefault();e.stopPropagation();ui.ntShow=ui.ntShow===false;renderNavTree()}});
 $("#navTree").addEventListener("click",e=>{const g=e.target.closest("[data-ntg]");if(g){e.preventDefault();const o=ui.ntOpen||(ui.ntOpen=new Set()),id=g.dataset.ntg;o.has(id)?o.delete(id):o.add(id);renderNavTree();return}
   const a=e.target.closest("[data-nts]");if(a){e.preventDefault();navTreeGo(a.dataset.nts);renderNavTree();if(typeof closeSide==="function")closeSide()}});
 $("#backBtn").onclick=goBack;
