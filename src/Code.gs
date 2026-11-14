@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.18.0';
+const APP_VERSION = '4.19.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -465,7 +465,7 @@ function api(token, action, payload) {
   } catch (e) { return fail_(e); }
 }
 /** إجراءات تحتاج مؤسسة محددة (لا تُنفذ في عرض «كل المؤسسات»). */
-const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'astCount', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'tskSave', 'tskSet', 'tskSamples'];
+const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'astCount', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'tskSave', 'tskSet', 'tskSamples', 'fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples'];
 function isPlatform_(me) { return me.role === 'admin' && me.org === '*'; }
 /** عضو المنصة: حساب على مستوى نافذ (org = '*') بأي دور؛ المشاهد منهم يطّلع على كل المؤسسات دون أي تعديل. */
 function isPlatformMember_(me) { return me.org === '*'; }
@@ -482,7 +482,7 @@ function inUserScope_(me, u) {
   if (isPlatform_(me)) return CUR_ORG === '*' || uo === CUR_ORG || uo === '*';
   return uo === me.org;
 }
-const WRITE_ACTIONS = ['tskSave', 'tskSet', 'tskSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+const WRITE_ACTIONS = ['fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples', 'tskSave', 'tskSet', 'tskSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -657,6 +657,7 @@ const ACTIONS = {
   ctGet: actCtGet_, ctSave: actCtSave_, ctDel: actCtDel_, ctInst: actCtInst_, ctPay: actCtPay_, ctOb: actCtOb_, ctChg: actCtChg_, ctSet: actCtSet_, ctUpload: actCtUpload_, ctFile: actCtFile_, ctSamples: actCtSamples_,
   invGet: actInvGet_, invItem: actInvItem_, invWh: actInvWh_, invMov: actInvMov_, invTr: actInvTr_, invCount: actInvCount_, invSet: actInvSet_, invUpload: actInvUpload_, invFile: actInvFile_, invSamples: actInvSamples_,
   exGet: actExGet_, exSave: actExSave_, exPay: actExPay_, exCat: actExCat_, exSet: actExSet_, exUpload: actExUpload_, exFile: actExFile_, exSamples: actExSamples_, opsGet: actOpsGet_, tskGet: actTskGet_, tskSave: actTskSave_, tskSet: actTskSet_, tskSamples: actTskSamples_,
+  fltGet: actFltGet_, fltVeh: actFltVeh_, fltDrv: actFltDrv_, fltTrip: actFltTrip_, fltFuel: actFltFuel_, fltMnt: actFltMnt_, fltSet: actFltSet_, fltUpload: actFltUpload_, fltFile: actFltFile_, fltSamples: actFltSamples_,
   treeGet: actTreeGet_,
   treeSave: actTreeSave_,
   removeFile: actRemoveFile_,
@@ -2277,6 +2278,147 @@ function actTskSamples_(me, p) {
   audit_(me.username, 'إضافة بيانات توضيحية للمهام', '', '', ''); govSave_(org, '_tsk', st); return tskOut_(st);
 }
 
+/* ================= إدارة السير والإركاب: المركبات وحركتها (4.19) ================= */
+function fltDefaults_() {
+  const L = function (a, c) { return a.map(function (r, i) { return { id: 'd' + (i + 1), n: r[0], code: r[1] || '', c: c[i % c.length] }; }); }, C = ['#13a06f', '#2f6fdf', '#e08a1e', '#7b5ce0', '#d64545', '#0b6e8f'];
+  return { orgName: '', currency: 'ريال', distUnit: 'كم', fuelUnit: 'لتر', depts: L([['الإدارة العامة', 'DEP-01'], ['إدارة التشغيل', 'DEP-02'], ['إدارة الصيانة', 'DEP-03'], ['الإدارة المالية', 'DEP-04'], ['الخدمات', 'DEP-05'], ['المشاريع', 'DEP-06']], C),
+    types: L([['شاحنة', 'TRUCK'], ['حافلة صغيرة', 'VAN'], ['سيارة', 'CAR'], ['مركبة نقل', 'PICKUP'], ['أخرى', 'OTHER']], C), locs: L([['المقر'], ['الفرع'], ['موقع 001']], C), purposes: L([['نقل مستندات'], ['نقل موظفين'], ['نقل مواد'], ['زيارة ميدانية'], ['خدمة مستفيدين'], ['أخرى']], C),
+    mtypes: L([['صيانة دورية'], ['تجديد مستند'], ['تجديد رخصة المركبة'], ['فحص دوري'], ['تأمين'], ['إصلاح عطل'], ['تغيير إطارات']], C),
+    vPre: 'VH-', vNext: 1, tPre: 'TR-', tNext: 1, fPre: 'FL-', fNext: 1, dPre: 'DR-', dNext: 1, mPre: 'MN-', mNext: 1, warnDays: 7, noOverlap: true };
+}
+function fltLoad_(org) { const st = govLoad_(org, '_flt'); st.set = Object.assign(fltDefaults_(), st.set || {}); ['vehs', 'drivers', 'trips', 'fuels', 'mnts'].forEach(function (k) { st[k] = st[k] || []; }); return st; }
+function fltOut_(st, extra) { const o = { set: st.set, vehs: st.vehs, drivers: st.drivers, trips: st.trips, fuels: st.fuels, mnts: st.mnts }; if (extra) Object.keys(extra).forEach(function (k) { o[k] = extra[k]; }); return o; }
+function fltId_(p) { return p + Utilities.getUuid().replace(/-/g, '').slice(0, 10); }
+function fltLog_(x, me, act, note) { x.log = x.log || []; x.log.unshift({ at: now_(), by: me.username, act: act, note: str_(String(note || ''), 300) }); if (x.log.length > 40) x.log.length = 40; }
+function fltOdo_(st, vid) { let m = 0; const v = astList_(st.vehs, vid); if (v) m = v.odo0 || 0; st.trips.forEach(function (t) { if (t.veh === vid) m = Math.max(m, t.outOdo || 0, t.backOdo || 0); }); st.fuels.forEach(function (f) { if (f.veh === vid) m = Math.max(m, f.odo || 0); }); return m; }
+function fltNum_(v) { const n = Number(v); return isFinite(n) && n >= 0 ? Math.round(n * 100) / 100 : 0; }
+function fltDT_(v) { const s = str_(v, 16).replace(' ', 'T'); if (s && !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)) throw err_('VALIDATION', 'صيغة التاريخ والوقت غير صحيحة.'); return s; }
+function actFltGet_(me) {
+  if (!CUR_ORG || CUR_ORG === '*') {
+    if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
+    return { overview: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const st = fltLoad_(o.id); return { id: o.id, code: o.code, name: o.name, vehs: st.vehs.length, open: st.trips.filter(function (t) { return t.status === 'open'; }).length, maint: st.vehs.filter(function (v) { return v.status === 'maint'; }).length }; }) };
+  }
+  const org = astNeed_(), st = fltLoad_(org); if (!st.set.orgName) st.set.orgName = String(getSettings_().orgName || ''); return fltOut_(st);
+}
+function actFltVeh_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = fltLoad_(org), S = st.set, x = p.item || {};
+  let v = x.id ? astList_(st.vehs, String(x.id)) : null;
+  if (p.del) { astAdmin_(me); if (!v) throw err_('NOTFOUND', 'المركبة غير موجودة.'); if (st.trips.some(function (t) { return t.veh === v.id; }) || st.fuels.some(function (f) { return f.veh === v.id; }) || st.mnts.some(function (m) { return m.veh === v.id; })) throw err_('VALIDATION', 'للمركبة سجلات؛ أوقفها بدل حذفها.'); st.vehs = st.vehs.filter(function (y) { return y !== v; }); govSave_(org, '_flt', st); return fltOut_(st); }
+  const val = { plate: str_(x.plate, 30), type: str_(x.type, 20), model: str_(x.model, 80), year: parseInt(x.year, 10) || '', dept: str_(x.dept, 20), status: ['ready', 'maint', 'stopped'].indexOf(x.status) >= 0 ? x.status : 'ready', color: str_(x.color, 30), vin: str_(x.vin, 40), loc: str_(x.loc, 20), note: str_(x.note, 1000) };
+  if (!val.plate) throw err_('VALIDATION', 'اكتب رقم اللوحة.'); if (!val.type) throw err_('VALIDATION', 'اختر نوع المركبة.');
+  if (st.vehs.some(function (y) { return y !== v && y.plate === val.plate; })) throw err_('VALIDATION', 'رقم اللوحة مسجّل لمركبة أخرى.');
+  if (val.year && (val.year < 1950 || val.year > new Date().getFullYear() + 1)) throw err_('VALIDATION', 'سنة الصنع غير صحيحة.');
+  if (v) { if (val.status !== v.status && st.trips.some(function (t) { return t.veh === v.id && t.status === 'open'; }) && val.status !== 'ready') throw err_('VALIDATION', 'المركبة في رحلة جارية؛ سجّل العودة أولًا.'); Object.assign(v, val); fltLog_(v, me, 'تعديل بيانات المركبة'); }
+  else { v = Object.assign(val, { id: fltId_('v'), code: S.vPre + astPad_(S.vNext++, 4), odo0: fltNum_(x.odo0), added: today_(), by: me.username, at: now_(), files: [], log: [] }); st.vehs.unshift(v); fltLog_(v, me, 'إضافة المركبة'); }
+  audit_(me.username, 'حفظ مركبة', '', v.code, v.plate); govSave_(org, '_flt', st); return fltOut_(st, { id: v.id });
+}
+function actFltDrv_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = fltLoad_(org), S = st.set, x = p.item || {};
+  let d = x.id ? astList_(st.drivers, String(x.id)) : null;
+  if (p.del) { astAdmin_(me); if (!d) throw err_('NOTFOUND', 'السائق غير موجود.'); if (st.trips.some(function (t) { return t.driver === d.id; })) throw err_('VALIDATION', 'للسائق رحلات؛ اجعله غير نشط بدل حذفه.'); st.drivers = st.drivers.filter(function (y) { return y !== d; }); govSave_(org, '_flt', st); return fltOut_(st); }
+  const val = { name: str_(x.name, 120), status: x.status === 'inactive' ? 'inactive' : 'active', phone: str_(x.phone, 30), docDate: str_(x.docDate, 10), licExp: str_(x.licExp, 10), loc: str_(x.loc, 20), note: str_(x.note, 500) };
+  if (!val.name) throw err_('VALIDATION', 'اكتب اسم السائق.');
+  if (d && val.status === 'inactive' && st.trips.some(function (t) { return t.driver === d.id && t.status === 'open'; })) throw err_('VALIDATION', 'السائق في رحلة جارية.');
+  const code = str_(x.code, 20);
+  if (d) Object.assign(d, val); else { const cd = code || S.dPre + astPad_(S.dNext++, 3); if (st.drivers.some(function (y) { return y.code === cd; })) throw err_('VALIDATION', 'كود السائق مستخدم.'); d = Object.assign(val, { id: fltId_('r'), code: cd, at: now_() }); st.drivers.unshift(d); }
+  govSave_(org, '_flt', st); return fltOut_(st, { id: d.id });
+}
+// الرحلة: الخروج (جارية) ثم العودة (مكتملة)
+function actFltTrip_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = fltLoad_(org), S = st.set, x = p.item || {};
+  let t = x.id ? astList_(st.trips, String(x.id)) : null;
+  if (p.del) { astAdmin_(me); if (!t) throw err_('NOTFOUND', 'الرحلة غير موجودة.'); const note = str_(p.note, 300); if (!note) throw err_('VALIDATION', 'اكتب سبب الحذف.'); st.trips = st.trips.filter(function (y) { return y !== t; }); audit_(me.username, 'حذف رحلة', '', t.no, note); govSave_(org, '_flt', st); return fltOut_(st); }
+  if (p.back) {
+    if (!t || t.status !== 'open') throw err_('VALIDATION', 'الرحلة ليست جارية.'); const at = fltDT_(x.backAt), odo = fltNum_(x.backOdo);
+    if (!at) throw err_('VALIDATION', 'حدّد تاريخ ووقت العودة.'); if (at < t.outAt) throw err_('VALIDATION', 'العودة قبل الخروج.'); if (at.slice(0, 10) > today_()) throw err_('VALIDATION', 'لا تُسجَّل عودة بتاريخ مستقبلي.');
+    if (!(odo > 0)) throw err_('VALIDATION', 'أدخل عداد العودة.'); if (odo < t.outOdo) throw err_('VALIDATION', 'عداد العودة أقل من عداد الخروج (' + t.outOdo + ').');
+    t.backAt = at; t.backOdo = odo; t.dist = Math.round((odo - t.outOdo) * 100) / 100; t.status = 'done'; if (x.note) t.note = str_(x.note, 500); fltLog_(t, me, 'تسجيل العودة', t.dist + ' ' + S.distUnit);
+    govSave_(org, '_flt', st); return fltOut_(st, { id: t.id });
+  }
+  if (t && t.status !== 'open') throw err_('VALIDATION', 'الرحلة مكتملة ولا تُعدَّل.');
+  const v = astList_(st.vehs, str_(x.veh, 24)); if (!v) throw err_('VALIDATION', 'اختر المركبة.'); const d = astList_(st.drivers, str_(x.driver, 24)); if (!d) throw err_('VALIDATION', 'اختر السائق.');
+  if (v.status !== 'ready') throw err_('VALIDATION', 'المركبة ' + v.code + ' ' + (v.status === 'maint' ? 'تحت الصيانة' : 'موقوفة') + '.'); if (d.status !== 'active') throw err_('VALIDATION', 'السائق غير نشط.');
+  if (S.noOverlap) { if (st.trips.some(function (y) { return y !== t && y.status === 'open' && y.veh === v.id; })) throw err_('VALIDATION', 'منع التداخل مفعّل: المركبة في رحلة جارية.'); if (st.trips.some(function (y) { return y !== t && y.status === 'open' && y.driver === d.id; })) throw err_('VALIDATION', 'منع التداخل مفعّل: السائق في رحلة جارية.'); }
+  const outAt = fltDT_(x.outAt); if (!outAt) throw err_('VALIDATION', 'حدّد تاريخ ووقت الخروج.'); if (outAt.slice(0, 10) > today_()) throw err_('VALIDATION', 'لا يُسجَّل خروج بتاريخ مستقبلي.');
+  const outOdo = fltNum_(x.outOdo), last = t ? 0 : fltOdo_(st, v.id); if (!(outOdo > 0)) throw err_('VALIDATION', 'أدخل عداد الخروج.'); if (outOdo < last) throw err_('VALIDATION', 'عداد الخروج أقل من آخر قراءة موثقة (' + last + ').');
+  const val = { veh: v.id, driver: d.id, purpose: str_(x.purpose, 20), from: str_(x.from, 20), to: str_(x.to, 20), toText: str_(x.toText, 120), outAt: outAt, outOdo: outOdo, note: str_(x.note, 500) };
+  if (!val.from || !(val.to || val.toText)) throw err_('VALIDATION', 'حدّد مكان الانطلاق والوجهة.');
+  if (t) Object.assign(t, val); else { t = Object.assign(val, { id: fltId_('t'), no: S.tPre + astPad_(S.tNext++, 4), status: 'open', by: me.username, at: now_(), log: [] }); st.trips.unshift(t); fltLog_(t, me, 'تسجيل الخروج'); }
+  audit_(me.username, 'رحلة مركبة', '', t.no, v.code); govSave_(org, '_flt', st); return fltOut_(st, { id: t.id });
+}
+function actFltFuel_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = fltLoad_(org), S = st.set, x = p.item || {};
+  if (p.del) { astAdmin_(me); const f = astList_(st.fuels, String(x.id || '')); if (!f) throw err_('NOTFOUND', 'غير موجود.'); st.fuels = st.fuels.filter(function (y) { return y !== f; }); govSave_(org, '_flt', st); return fltOut_(st); }
+  const v = astList_(st.vehs, str_(x.veh, 24)); if (!v) throw err_('VALIDATION', 'اختر المركبة.');
+  const date = str_(x.date, 10) || today_(); if (date > today_()) throw err_('VALIDATION', 'لا تُسجَّل تعبئة بتاريخ مستقبلي.');
+  const odo = fltNum_(x.odo), lit = fltNum_(x.liters); if (!(lit > 0)) throw err_('VALIDATION', 'أدخل كمية الوقود.'); if (!(odo > 0)) throw err_('VALIDATION', 'أدخل قراءة العداد.');
+  let prev = st.fuels.filter(function (f) { return f.veh === v.id && f.date <= date; }).reduce(function (m, f) { return Math.max(m, f.odo); }, v.odo0 || 0); st.trips.forEach(function (t) { if (t.veh !== v.id) return; if (t.outAt && t.outAt.slice(0, 10) <= date) prev = Math.max(prev, t.outOdo || 0); if (t.backAt && t.backAt.slice(0, 10) <= date) prev = Math.max(prev, t.backOdo || 0); }); if (odo < prev) throw err_('VALIDATION', 'قراءة العداد أقل من قراءة سابقة (' + prev + ').');
+  const f = { id: fltId_('f'), no: S.fPre + astPad_(S.fNext++, 4), veh: v.id, date: date, odo: odo, liters: lit, amount: fltNum_(x.amount), full: !!x.full && x.full !== '0', station: str_(x.station, 80), by: me.username, at: now_(), files: [] };
+  st.fuels.unshift(f); govSave_(org, '_flt', st); return fltOut_(st, { id: f.id });
+}
+function actFltMnt_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = fltLoad_(org), S = st.set, x = p.item || {};
+  let m = x.id ? astList_(st.mnts, String(x.id)) : null;
+  const syncVeh = function (vid) { const v = astList_(st.vehs, vid); if (!v || v.status === 'stopped') return; const open = st.mnts.some(function (y) { return y.veh === vid && y.started && !y.done; }); if (open) v.status = 'maint'; else if (v.status === 'maint') v.status = 'ready'; };
+  if (p.del) { if (!m) throw err_('NOTFOUND', 'غير موجود.'); if (m.done) astAdmin_(me); st.mnts = st.mnts.filter(function (y) { return y !== m; }); syncVeh(m.veh); govSave_(org, '_flt', st); return fltOut_(st); }
+  if (p.start) { if (!m || m.done) throw err_('VALIDATION', 'لا يمكن بدء هذه الصيانة.'); if (st.trips.some(function (t) { return t.veh === m.veh && t.status === 'open'; })) throw err_('VALIDATION', 'المركبة في رحلة جارية؛ سجّل العودة أولًا.'); m.started = today_(); fltLog_(m, me, 'إدخال المركبة للصيانة'); syncVeh(m.veh); govSave_(org, '_flt', st); return fltOut_(st, { id: m.id }); }
+  if (p.done) { if (!m || m.done) throw err_('VALIDATION', 'الصيانة منجزة مسبقًا أو غير موجودة.'); const dd = str_(x.done, 10) || today_(); if (dd > today_()) throw err_('VALIDATION', 'لا يكون الإنجاز بتاريخ مستقبلي.'); m.done = dd; m.cost = fltNum_(x.cost != null ? x.cost : m.cost); if (x.resp) m.resp = str_(x.resp, 120); if (x.docRef) m.docRef = str_(x.docRef, 60);
+    fltLog_(m, me, 'تأكيد الإنجاز'); syncVeh(m.veh);
+    if (x.nextDue) { const n = { id: fltId_('m'), no: S.mPre + astPad_(S.mNext++, 4), veh: m.veh, type: m.type, desc: m.desc, due: str_(x.nextDue, 10), cost: 0, resp: m.resp, docRef: '', by: me.username, at: now_(), files: [], log: [] }; st.mnts.unshift(n); }
+    govSave_(org, '_flt', st); return fltOut_(st, { id: m.id }); }
+  if (m && m.done) throw err_('VALIDATION', 'الصيانة منجزة ولا تُعدَّل.');
+  const v = astList_(st.vehs, str_(x.veh, 24)); if (!v) throw err_('VALIDATION', 'اختر المركبة.');
+  const val = { veh: v.id, type: str_(x.type, 20), desc: str_(x.desc, 300), due: str_(x.due, 10), cost: fltNum_(x.cost), resp: str_(x.resp, 120), docRef: str_(x.docRef, 60) };
+  if (!val.type) throw err_('VALIDATION', 'اختر نوع الصيانة أو التجديد.'); if (!/^\d{4}-\d{2}-\d{2}$/.test(val.due)) throw err_('VALIDATION', 'حدّد الموعد المعتمد.');
+  if (m) Object.assign(m, val); else { m = Object.assign(val, { id: fltId_('m'), no: S.mPre + astPad_(S.mNext++, 4), by: me.username, at: now_(), files: [], log: [] }); st.mnts.unshift(m); fltLog_(m, me, 'إضافة متابعة'); }
+  govSave_(org, '_flt', st); return fltOut_(st, { id: m.id });
+}
+function actFltSet_(me, p) {
+  astAdmin_(me); const org = astNeed_(), st = fltLoad_(org), x = p.set || {}, s = st.set;
+  const lst = function (L) { return (Array.isArray(L) ? L : []).slice(0, 80).map(function (o, i) { return { id: str_(String(o.id || ''), 20).replace(/[^A-Za-z0-9_-]/g, '') || ('x' + i + Date.now().toString(36)), n: str_(String(o.n || ''), 120), code: str_(String(o.code || ''), 20), c: /^#[0-9a-fA-F]{6}$/.test(o.c) ? o.c : '#2f6fdf', off: !!o.off }; }).filter(function (o) { return o.n; }); };
+  const used = { depts: function (id) { return st.vehs.some(function (v) { return v.dept === id; }); }, types: function (id) { return st.vehs.some(function (v) { return v.type === id; }); }, locs: function (id) { return st.trips.some(function (t) { return t.from === id || t.to === id; }) || st.drivers.some(function (d) { return d.loc === id; }); }, purposes: function (id) { return st.trips.some(function (t) { return t.purpose === id; }); }, mtypes: function (id) { return st.mnts.some(function (m) { return m.type === id; }); } };
+  Object.keys(used).forEach(function (k) { if (!x[k]) return; const v = lst(x[k]); if (!v.length) throw err_('VALIDATION', 'لا تترك القائمة فارغة.'); s[k].forEach(function (o) { if (!v.some(function (y) { return y.id === o.id; }) && used[k](o.id)) throw err_('VALIDATION', '«' + o.n + '» مستخدم؛ عطّله بدل حذفه.'); }); s[k] = v; });
+  ['orgName', 'currency', 'distUnit', 'fuelUnit'].forEach(function (k) { if (x[k] != null) s[k] = str_(String(x[k]), 120) || s[k]; });
+  ['vPre', 'tPre', 'fPre', 'dPre', 'mPre'].forEach(function (k) { if (x[k] != null) s[k] = str_(String(x[k]), 8) || s[k]; });
+  ['vNext', 'tNext', 'fNext', 'dNext', 'mNext'].forEach(function (k) { const n = parseInt(x[k], 10); if (n > 0 && n < 1e7) s[k] = n; });
+  if (x.warnDays != null) s.warnDays = Math.max(1, Math.min(90, parseInt(x.warnDays, 10) || 7)); if (x.noOverlap != null) s.noOverlap = !!x.noOverlap;
+  audit_(me.username, 'إعدادات المركبات', '', '', ''); govSave_(org, '_flt', st); return fltOut_(st);
+}
+function actFltUpload_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = fltLoad_(org), K = { veh: 'vehs', fuel: 'fuels', mnt: 'mnts', drv: 'drivers' }[p.kind]; if (!K) throw err_('VALIDATION', 'نوع غير معروف.');
+  const t = astList_(st[K], String(p.id || '')); if (!t) throw err_('NOTFOUND', 'العنصر غير موجود.');
+  const name = str_(p.name, 120).replace(/[\\/:*?"<>|]/g, '_') || 'مستند', mime = String(p.mime || '');
+  if (GOV_TYPES.indexOf(mime) < 0) throw err_('VALIDATION', 'الأنواع المسموحة: PDF وWord وExcel وصور JPG/PNG/WEBP.');
+  const bytes = Utilities.base64Decode(String(p.data || '')); if (!bytes.length) throw err_('VALIDATION', 'الملف فارغ.'); if (bytes.length > MAX_FILE * 2) throw err_('VALIDATION', 'حجم الملف أكبر من 10 ميجابايت.');
+  const folder = DriveApp.getFolderById(PropertiesService.getScriptProperties().getProperty('FILES_FOLDER_ID'));
+  const file = folder.createFile(Utilities.newBlob(bytes, mime, 'مركبات — ' + name)), fid = Utilities.getUuid();
+  sheet_('files').appendRow([fid, 'flt:' + org + ':' + t.id, name, mime, bytes.length, file.getId(), me.username, now_()]);
+  t.files = t.files || []; t.files.unshift({ fid: fid, name: name, mime: mime, size: bytes.length, at: now_(), by: me.username }); t.files = t.files.slice(0, 15);
+  govSave_(org, '_flt', st); return fltOut_(st);
+}
+function actFltFile_(me, p) {
+  const org = astNeed_(); if (me.role === 'viewer') throw err_('FORBIDDEN', 'صلاحية المشاهد لا تشمل تنزيل المستندات.');
+  const row = findRow_('files', String(p.fid || '')); if (!row) throw err_('NOTFOUND', 'الملف غير موجود.');
+  const v = sheet_('files').getRange(row, 1, 1, HEAD.files.length).getValues()[0];
+  if (String(v[1]).indexOf('flt:' + org + ':') !== 0) throw err_('FORBIDDEN', 'غير مسموح.');
+  return { name: String(v[2]), mime: String(v[3]), data: Utilities.base64Encode(DriveApp.getFileById(String(v[5])).getBlob().getBytes()) };
+}
+function actFltSamples_(me, p) {
+  astAdmin_(me); const org = astNeed_(), st = fltLoad_(org), S = st.set;
+  if (p.clear) { const V = {}; st.vehs.forEach(function (v) { if (v.sample) V[v.id] = 1; }); ['trips', 'fuels', 'mnts'].forEach(function (k) { st[k] = st[k].filter(function (x) { return !V[x.veh]; }); }); st.vehs = st.vehs.filter(function (v) { return !v.sample; }); st.drivers = st.drivers.filter(function (d) { return !d.sample; }); govSave_(org, '_flt', st); return fltOut_(st); }
+  if (st.vehs.some(function (v) { return v.sample; })) throw err_('VALIDATION', 'البيانات التوضيحية مضافة من قبل.');
+  const d = function (n, h) { const x = new Date(); x.setDate(x.getDate() + n); return Utilities.formatDate(x, 'Asia/Riyadh', 'yyyy-MM-dd') + (h != null ? 'T' + String(h).padStart(2, '0') + ':00' : ''); }, T = S.types, D = S.depts, Lc = S.locs, P = S.purposes, MT = S.mtypes;
+  const V = [[2, 4, 12000, 'أبيض'], [3, 0, 24500, 'فضي'], [2, 5, 31000, 'أزرق'], [0, 1, 54000, 'أبيض'], [1, 4, 8800, 'رمادي'], [2, 0, 15200, 'أسود']].map(function (r, i) { const v = { id: fltId_('v'), code: S.vPre + astPad_(S.vNext++, 4), plate: 'لوحة تجريبية ' + astPad_(i + 1, 3), type: (T[r[0]] || {}).id, model: ['تويوتا كامري', 'هيونداي H1', 'نيسان صني', 'إيسوزو NPR', 'تويوتا هايس', 'كيا K5'][i], year: 2020 + (i % 6), dept: (D[r[1]] || {}).id, status: i === 2 ? 'maint' : 'ready', color: r[3], vin: '', loc: (Lc[0] || {}).id, odo0: r[2], note: i === 0 ? 'خاضعة لبرنامج الصيانة الدورية وحالتها العامة جيدة.' : '', added: d(-120), by: me.username, at: now_(), files: [], log: [], sample: true }; st.vehs.push(v); return v; });
+  const R = ['001', '002', '003', '004', '005'].map(function (n, i) { const r = { id: fltId_('r'), code: S.dPre + astPad_(S.dNext++, 3), name: 'سائق ' + n, status: i === 4 ? 'inactive' : 'active', phone: '', docDate: d(-200 - i * 30), licExp: d(300 - i * 50), loc: (Lc[i % 2] || {}).id, note: '', at: now_(), sample: true }; st.drivers.push(r); return r; });
+  const trip = function (vi, ri, day, h, odo, back, to, pu) { const t = { id: fltId_('t'), no: S.tPre + astPad_(S.tNext++, 4), veh: V[vi].id, driver: R[ri].id, purpose: (P[pu] || {}).id, from: (Lc[0] || {}).id, to: (Lc[to] || {}).id, toText: '', outAt: d(day, h), outOdo: odo, status: back ? 'done' : 'open', by: me.username, at: now_(), log: [], note: '' }; if (back) { t.backAt = d(day, h + back[0]); t.backOdo = odo + back[1]; t.dist = back[1]; } st.trips.unshift(t); };
+  trip(1, 2, -6, 10, 24210, [1, 60], 1, 2); trip(0, 1, -5, 8, 11720, [2, 120], 2, 0); trip(3, 0, -4, 7, 53600, [5, 180], 1, 2); trip(5, 3, -3, 9, 15020, [3, 90], 2, 3); trip(1, 2, -2, 10, 24270, [1, 60], 1, 0); trip(4, 3, 0, 8, 8800, [2, 40], 1, 1); trip(0, 0, 0, 9, 12000, null, 1, 0); trip(3, 1, 0, 11, 54000, null, 2, 2);
+  const fuel = function (vi, day, odo, lit, amt, full) { st.fuels.unshift({ id: fltId_('f'), no: S.fPre + astPad_(S.fNext++, 4), veh: V[vi].id, date: d(day), odo: odo, liters: lit, amount: amt, full: full, station: 'محطة توضيحية', by: me.username, at: now_(), files: [] }); };
+  fuel(1, -9, 24100, 30, 36, true); fuel(1, -1, 24500, 20, 24, false); fuel(0, -6, 11700, 35, 42, true); fuel(0, -1, 11990, 20, 24, false); fuel(3, -5, 53550, 60, 72, true); fuel(3, -2, 53800, 40, 48, true);
+  const mnt = function (vi, mi, due, desc, started, done, cost) { st.mnts.unshift({ id: fltId_('m'), no: S.mPre + astPad_(S.mNext++, 4), veh: V[vi].id, type: (MT[mi] || {}).id, desc: desc, due: d(due), cost: cost || 0, resp: 'مسؤول الحركة', docRef: mi === 2 ? 'DOC-2026-011' : '', started: started ? d(-1) : '', done: done ? d(done) : '', by: me.username, at: now_(), files: [], log: [] }); };
+  mnt(2, 0, 0, 'صيانة دورية للمركبة', 1); mnt(0, 2, 4, 'تجديد رخصة المركبة'); mnt(1, 3, 9, 'فحص دوري حسب الوثيقة'); mnt(5, 4, 6, 'تجديد التأمين'); mnt(3, 0, -30, 'صيانة دورية', 0, -29, 850); mnt(4, 6, 40, 'تغيير الإطارات');
+  audit_(me.username, 'إضافة بيانات توضيحية للمركبات', '', '', ''); govSave_(org, '_flt', st); return fltOut_(st);
+}
+
 /* ================= ملخص الأنظمة التشغيلية للوحة الرئيسية (4.17) ================= */
 function opsSum_(org) {
   const T = today_(), a = govLoad_(org, '_assets'), pr = prLoad_(org), ct = ctLoad_(org), iv = invLoad_(org), ex = exLoad_(org);
@@ -2286,8 +2428,9 @@ function opsSum_(org) {
   const paid = {}; ex.pays.forEach(function (y) { paid[y.exp] = (paid[y.exp] || 0) + y.amount; }); const EA = ex.exps.filter(function (e) { return e.status === 'approved'; });
   const cpaid = {}; ct.pays.forEach(function (y) { cpaid[y.ct] = (cpaid[y.ct] || 0) + y.amount; });
   const CA = ct.cts.filter(function (c) { return c.status === 'active'; });
-  const TK = tskLoad_(org).tasks;
+  const TK = tskLoad_(org).tasks, FL = fltLoad_(org), wd = new Date(); wd.setDate(wd.getDate() + (FL.set.warnDays || 7)); const WD = Utilities.formatDate(wd, 'Asia/Riyadh', 'yyyy-MM-dd');
   return {
+    flt: { vehs: FL.vehs.length, ready: FL.vehs.filter(function (v) { return v.status === 'ready' && !FL.trips.some(function (t) { return t.veh === v.id && t.status === 'open'; }); }).length, open: FL.trips.filter(function (t) { return t.status === 'open'; }).length, maint: FL.vehs.filter(function (v) { return v.status === 'maint'; }).length, renew: FL.mnts.filter(function (m) { return !m.done && m.due <= WD; }).length },
     tsk: { total: TK.length, open: TK.filter(function (t) { return ['done', 'cancel'].indexOf(t.status) < 0; }).length, done: TK.filter(function (t) { return t.status === 'done'; }).length, late: TK.filter(function (t) { return ['done', 'cancel'].indexOf(t.status) < 0 && t.due && t.due < T; }).length },
     assets: { total: A.length, custody: A.filter(function (x) { return x.status === 'custody'; }).length, maint: A.filter(function (x) { return x.status === 'maint'; }).length, late: A.filter(function (x) { return x.status === 'custody' && x.due && x.due < T; }).length },
     purch: { total: R.length, pending: R.filter(function (r) { return r.status === 'pending'; }).length, supply: R.filter(function (r) { return r.status === 'supply' || r.status === 'partial'; }).length, late: R.filter(function (r) { return (r.status === 'supply' || r.status === 'partial') && (r.eta || r.need) && (r.eta || r.need) < T; }).length, sups: (pr.sups || []).length },

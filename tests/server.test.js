@@ -466,5 +466,29 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
   r = AM(T, "tskSamples", {}); ok(r.data.tasks.filter(t => t.sample).length === 20, "tasks sample data added");
   r = AM(T, "tskSamples", { clear: 1 }); ok(r.data.tasks.length === 1, "tasks sample data cleared");
   ok(AM(T, "opsGet").data.tot.tsk.total === 1, "tasks in operational summary"); }
+// المركبات وحركتها
+{ let g = AM(T, "fltGet"); ok(g.ok && g.data.vehs.length === 0 && g.data.set.types.length, "fleet starts empty");
+  const TY = g.data.set.types[2].id, LC = g.data.set.locs;
+  ok(AM(T, "fltVeh", { item: { type: TY } }).code === "VALIDATION", "vehicle needs a plate");
+  let r = AM(T, "fltVeh", { item: { plate: "أ ب ج 123", type: TY, odo0: 1000 } }); const V = r.data.id; ok(r.data.vehs[0].code === "VH-0001", "vehicle added");
+  ok(AM(T, "fltVeh", { item: { plate: "أ ب ج 123", type: TY } }).code === "VALIDATION", "plate must be unique");
+  r = AM(T, "fltDrv", { item: { name: "سائق 1" } }); const D = r.data.id; ok(r.data.drivers[0].code === "DR-001", "driver added");
+  const base = { veh: V, driver: D, from: LC[0].id, to: LC[1].id };
+  ok(AM(T, "fltTrip", { item: Object.assign({ outAt: "2026-10-30T09:00", outOdo: 900 }, base) }).code === "VALIDATION", "odometer cannot go below last reading");
+  r = AM(T, "fltTrip", { item: Object.assign({ outAt: "2026-10-30T09:00", outOdo: 1000 }, base) }); const TR = r.data.id; ok(r.data.trips[0].status === "open" && r.data.trips[0].no === "TR-0001", "trip departure recorded");
+  ok(AM(T, "fltTrip", { item: Object.assign({ outAt: "2026-10-30T10:00", outOdo: 1000 }, base) }).code === "VALIDATION", "no overlapping trips for vehicle");
+  ok(AM(T, "fltTrip", { item: { id: TR, backAt: "2026-10-30T08:00", backOdo: 1100 }, back: 1 }).code === "VALIDATION", "return cannot precede departure");
+  ok(AM(T, "fltTrip", { item: { id: TR, backAt: "2026-10-30T12:00", backOdo: 990 }, back: 1 }).code === "VALIDATION", "return odometer cannot be lower");
+  r = AM(T, "fltTrip", { item: { id: TR, backAt: "2026-10-30T12:00", backOdo: 1120 }, back: 1 }); ok(r.data.trips[0].status === "done" && r.data.trips[0].dist === 120, "return computes distance");
+  ok(AM(T, "fltFuel", { item: { veh: V, date: "2026-10-31", odo: 1050, liters: 20 } }).code === "VALIDATION", "fuel odometer cannot go back");
+  ok(AM(T, "fltFuel", { item: { veh: V, date: "2026-10-31", odo: 1130, liters: 20, amount: 24, full: 1 } }).data.fuels[0].no === "FL-0001", "fuel recorded");
+  r = AM(T, "fltMnt", { item: { veh: V, type: g.data.set.mtypes[0].id, due: "2026-11-01" } }); const M = r.data.id;
+  r = AM(T, "fltMnt", { item: { id: M }, start: 1 }); ok(r.data.vehs[0].status === "maint", "starting maintenance puts vehicle in maintenance");
+  ok(AM(T, "fltTrip", { item: Object.assign({ outAt: "2026-11-01T09:00", outOdo: 1130 }, base) }).code === "VALIDATION", "vehicle under maintenance cannot travel");
+  r = AM(T, "fltMnt", { item: { id: M, done: "2026-11-02", cost: 300 }, done: 1 }); ok(r.data.vehs[0].status === "ready" && r.data.mnts[0].done, "completing maintenance frees vehicle");
+  ok(AM(T, "fltVeh", { item: { id: V }, del: 1 }).code === "VALIDATION", "vehicle with records cannot be deleted");
+  r = AM(T, "fltSamples", {}); ok(r.data.vehs.filter(v => v.sample).length === 6 && r.data.trips.some(t => t.status === "open"), "fleet sample data added");
+  r = AM(T, "fltSamples", { clear: 1 }); ok(r.data.vehs.length === 1 && r.data.drivers.length === 1, "fleet sample data cleared");
+  ok(AM(T, "opsGet").data.tot.flt.vehs === 1, "fleet in operational summary"); }
 console.log("server tests passed:", pass);
 module.exports = {};
