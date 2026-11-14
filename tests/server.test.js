@@ -428,5 +428,30 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
   r = AM(T, "invSamples", {}); ok(r.ok && r.data.items.filter(i => i.sample).length === 12 && r.data.trs.some(t => t.sample) && r.data.counts.some(c => c.sample && c.status === "pending"), "inventory sample data added");
   r = AM(T, "invSamples", { clear: 1 }); ok(r.data.items.every(i => !i.sample) && r.data.whs.length === 2, "inventory sample data cleared");
   ok(A.api(T, "invGet", { __org: "*" }).data.overview.length >= 1, "platform overview of inventory"); }
+// المصروفات التشغيلية
+{ let g = AM(T, "exGet"); ok(g.ok && g.data.exps.length === 0 && g.data.set.depts.length, "expenses start empty");
+  const D = g.data.set.depts[0].id, CL = g.data.set.classes[0].id, M = g.data.set.methods[0].id;
+  let r = AM(T, "exCat", { kind: "cc", item: { n: "المبنى", dept: D } }); const CC = r.data.id; ok(r.data.set.ccs[0].code === "CC-001", "cost center added");
+  ok(AM(T, "exCat", { item: { n: "مكتبية" } }).code === "VALIDATION", "category needs classification, cost center and owner");
+  r = AM(T, "exSet", { set: { owners: [{ n: "مسؤول 1" }] } }); const OW = r.data.set.owners[0].id;
+  r = AM(T, "exCat", { item: { n: "مستلزمات", cls: CL, cc: CC, owner: OW } }); const B = r.data.id; ok(r.data.set.cats[0].code === "BND-001", "expense category added");
+  r = AM(T, "exSave", { item: { cat: B, amount: 1200, dept: D, desc: "احتياجات", date: "2026-10-29", due: "2026-10-31" }, submit: 1 }); ok(r.code === "VALIDATION", "invoice required before submit");
+  r = AM(T, "exSave", { item: { cat: B, amount: 1200, dept: D, desc: "احتياجات", date: "2026-10-29", due: "2026-10-31" } }); const E = r.data.id; ok(r.data.exps[0].no === "EX-0001" && r.data.exps[0].status === "draft", "expense draft saved");
+  ok(AM(T, "exSave", { item: { id: E, cat: B, amount: 1200, dept: D, desc: "احتياجات", date: "2026-10-29" }, submit: 1, hasFile: 1 }).data.exps[0].status === "pending", "expense submitted");
+  ok(AM(T, "exPay", { exp: E, amount: 100, method: M }).code === "VALIDATION", "approval does not mean payment: pending cannot be paid");
+  ok(AM(T, "exSave", { item: { id: E }, decide: "approve" }).code === "VALIDATION", "segregation of duties blocks self approval");
+  ok(AM(T, "exSave", { item: { id: E }, decide: "reject" }).code === "VALIDATION", "rejection needs a reason");
+  r = AM(T, "exSave", { item: { id: E }, decide: "approve", self: 1, date: "2026-10-30" }); ok(r.data.exps[0].status === "approved", "expense approved");
+  ok(AM(T, "exPay", { exp: E, amount: 2000, method: M, date: "2026-10-30" }).code === "VALIDATION", "payment cannot exceed remaining");
+  ok(AM(T, "exPay", { exp: E, amount: 100, method: M, date: "2026-10-01" }).code === "VALIDATION", "payment cannot precede approval");
+  r = AM(T, "exPay", { exp: E, amount: 700, method: M, date: "2026-10-30" }); ok(r.data.pays[0].no === "PAY-0001", "partial payment recorded");
+  ok(AM(T, "exSave", { item: { id: E }, del: 1 }).code === "VALIDATION", "expense with payments cannot be deleted");
+  ok(AM(T, "exSave", { item: { id: E }, decide: "cancel", note: "x" }).code === "VALIDATION", "paid expense cannot be cancelled");
+  ok(AM(T, "exCat", { item: { id: B }, del: 1 }).code === "VALIDATION", "used category cannot be deleted");
+  r = AM(T, "exSamples", {}); ok(r.ok && r.data.exps.filter(e => e.sample).length === 12 && r.data.set.cats.some(c => c.sample), "expenses sample data added");
+  r = AM(T, "exSamples", { clear: 1 }); ok(r.data.exps.length === 1 && !r.data.set.cats.some(c => c.sample), "expenses sample data cleared");
+  ok(A.api(T, "exGet", { __org: "*" }).data.overview.length >= 1, "platform overview of expenses"); }
+{ const o = AM(T, "opsGet"); ok(o.ok && o.data.tot.exp && o.data.tot.inv && o.data.tot.ctr && o.data.tot.purch && o.data.tot.assets, "operational summary for one org");
+  const a = A.api(T, "opsGet", { __org: "*" }); ok(a.ok && a.data.all && a.data.orgs.length >= 1 && a.data.tot.exp, "operational summary across orgs"); }
 console.log("server tests passed:", pass);
 module.exports = {};
