@@ -1670,7 +1670,7 @@ body.ro-on .side{touch-action:none}
 .osg{display:grid;gap:6px;padding:10px}.osg button{display:grid;gap:2px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;font:inherit;text-align:start;cursor:pointer;color:var(--ink)}.osg button.sel{border-color:#c9a227;box-shadow:0 0 0 2px color-mix(in srgb,#c9a227 35%,transparent)}.osg b{font-size:13px}.osg small{color:var(--muted);font-size:11px}
 @media (max-width:1000px){.trwrap{grid-template-columns:1fr}.trside{position:static;max-height:none}.ocrow.two{grid-template-columns:1fr}}
 /* ---- إدارة السير والإركاب (4.19) ---- */
-.captree{margin-top:6px}.ntsw{border:0;background:none;cursor:pointer;color:inherit;transition:transform .2s}.ntsw.open{transform:rotate(-90deg)}#navTree{margin-inline-start:14px;padding-inline-start:8px;border-inline-start:2px solid color-mix(in srgb,#e8b04a 45%,transparent)}
+.opw,.opw>*{min-width:0;max-width:100%}.opt{overflow-x:auto}.qrib{max-width:100%;min-width:0}.qrib .qrt{min-width:0;flex:1 1 auto;overflow-x:auto;scrollbar-width:none}.captree{margin-top:6px}.ntsw{border:0;background:none;cursor:pointer;color:inherit;transition:transform .2s}.ntsw.open{transform:rotate(-90deg)}#navTree{margin-inline-start:14px;padding-inline-start:8px;border-inline-start:2px solid color-mix(in srgb,#e8b04a 45%,transparent)}
 
 .flw .ifh{background:linear-gradient(90deg,#0f2a6e,#1d4fd6)}
 .flk{align-items:stretch}.flkc{display:grid;gap:10px;align-content:start;padding:14px 16px;border-radius:22px;border:1px solid color-mix(in srgb,var(--c) 25%,var(--line));background:linear-gradient(150deg,color-mix(in srgb,var(--c) 9%,var(--surface)),var(--surface) 70%);font:inherit;color:var(--ink);text-align:start}button.flkc{cursor:pointer}.flkc>header{display:grid;grid-template-columns:1fr auto;align-items:center}.flkc>header b{font-size:20px;font-family:var(--f-display)}.flkc>header b small{font-size:12px;font-family:inherit;color:var(--muted)}.flkc>header strong{grid-row:2;font-family:var(--f-display);font-size:clamp(40px,5vw,64px);line-height:1;color:color-mix(in srgb,var(--c),#000 20%)}.flkc>header .i3{grid-row:span 2}.flkc>small{color:var(--muted);font-weight:700}
@@ -2841,9 +2841,10 @@ const TK_EXT={"إدارة مهام الموظفين":"data","إنشاء مهمة
 const FL_MODS={"لوحة المركبات وحركتها":"home","سجل المركبات":"vehs","إضافة مركبة":"vnew","حركة المركبات":"trips","تسجيل رحلة":"trip","السائقون":"drivers","الوقود والمسافات":"fuel","الصيانة والتجديدات":"mnt","تقارير المركبات":"reports","إعدادات المركبات":"settings","دليل المركبات":"guide"};
 const FL_EXT={"إدارة السيارات":"vehs","توفير السيارات":"trip","تسليم سيارة لموظف":"trip","استلام سيارة من موظف":"trips","قاعدة بيانات حركة السيارات":"trips","طلبات توفير السيارات":"trips","إدارة طلبات صيانة السيارات":"mnt","طلبات صيانة السيارات":"mnt","طلب توفير سيارة":"trip"};
 if(typeof IP==="object"&&!IP.FLT)IP.FLT=IP.car;
-const GOV_MODS={"إدارة الحوكمة":"ind","خارطة طريق الحوكمة":"ind","تسجيل إجابات المعايير":"ind","نموذج تقييم الحوكمة":"ind","تقرير تقييم الحوكمة":"ind","إدارة مرفقات التحقق":"miss","خارطة الملفات المؤسسية":"map"};
+const GOV_MODS={"مركز الحوكمة":"ind","إدارة الحوكمة":"ind","خارطة طريق الحوكمة":"ind","تسجيل إجابات المعايير":"ind","نموذج تقييم الحوكمة":"ind","تقرير تقييم الحوكمة":"ind","إدارة مرفقات التحقق":"miss","خارطة الملفات المؤسسية":"map"};
 function route(){
   const h=(location.hash||"#home").slice(1);let m;
+  if(h==="gov"){const gi=(BASE_G||[]).findIndex(x=>x.c==="GOV"),mi=gi<0?-1:BASE_G[gi].items.indexOf("مركز الحوكمة");if(gi>=0)return{v:"gov",g:gi,m:mi<0?undefined:mi}}
   if((m=h.match(/^m(\d+)-(\d+)$/))&&G[+m[1]]?.items[+m[2]]!=null){
     // وحدات الحوكمة تفتح مركز الحوكمة مباشرة على القسم المناسب
     const gt=GOV_MODS[G[+m[1]].items[+m[2]]];if(gt){ui.govTab=gt;return{v:"gov",g:+m[1],m:+m[2]}}
@@ -2873,7 +2874,7 @@ function route(){
   return{v:"home"};
 }
 let R=route();let navDepth=0;if((R.v==="grp"||R.v==="mod"||R.v==="gov")&&R.g!=null)navOpen.add(R.g);
-window.addEventListener("hashchange",()=>{R=route();if((R.v==="assets"||R.v==="purch"||R.v==="ctr"||R.v==="inv"||R.v==="exp"||R.v==="tsk"||R.v==="flt")&&R.g!=null)navOpen.add(R.g);if(R.v!=="themes"){if(thPrevSys){thPrevSys=null;applySysTheme()}}else{partsDraft=null}if((R.v==="grp"||R.v==="mod")&&!navOpen.has(R.g)){navOpen.add(R.g);saveNavOpen()}if(R.v==="users"||R.v==="perms"){usersCache=null;permDraft=null}if(R.v==="menus")navDraft=null;if(R.v==="orgs")orgsCache=null;if(!LAYOUT_PAGES(R.v))editMode=false;chOpen=null;if(R.v==="audit")auditCache=null;navDepth++;Object.assign(ui,{q:"",st:"",page:0,sort:{k:"date",d:-1}});closeSide();closeDrawer();render();window.scrollTo(0,0)});
+window.addEventListener("hashchange",()=>{R=route();if((R.v==="assets"||R.v==="purch"||R.v==="ctr"||R.v==="inv"||R.v==="exp"||R.v==="tsk"||R.v==="flt")&&R.g!=null)navOpen.add(R.g);if(R.v!=="themes"){if(thPrevSys){thPrevSys=null;applySysTheme()}}else{partsDraft=null}if((R.v==="grp"||R.v==="mod")&&!navOpen.has(R.g)){navOpen.add(R.g);saveNavOpen()}if(R.v==="users"||R.v==="perms"){usersCache=null;permDraft=null}if(R.v==="menus")navDraft=null;if(R.v==="orgs"||(R.v==="home"&&S.member))orgsCache=null;if(!LAYOUT_PAGES(R.v))editMode=false;chOpen=null;if(R.v==="audit")auditCache=null;navDepth++;Object.assign(ui,{q:"",st:"",page:0,sort:{k:"date",d:-1}});closeSide();closeDrawer();render();window.scrollTo(0,0)});
 
 /* ================= Charts (SVG, theme tokens) ================= */
 function niceMax(v){if(v<=4)return 4;const p=Math.pow(10,Math.floor(Math.log10(v)));const n=v/p;return (n<=1?1:n<=2?2:n<=5?5:10)*p}
@@ -3500,7 +3501,7 @@ function viewOrgs(){
 }
 function bindOrgs(main){
   main.querySelectorAll("[data-setorg]").forEach(b=>b.onclick=e=>{e.stopPropagation();setOrg(b.dataset.setorg)});
-  if(R.v!=="orgs")return;
+  if(R.v!=="orgs"&&!(R.v==="home"&&S.member))return;
   const re=()=>{render()};
   const oq=$("#oq");if(oq)oq.oninput=()=>{ui.oq=oq.value;re()};
   const opq=$("#opq");if(opq)opq.oninput=()=>{ui.opq=opq.value;const pos=opq.selectionStart;re();const n=$("#opq");if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}};
@@ -3709,7 +3710,7 @@ function render(){
   $("#addBtn").hidden=!S.canWrite;
   let v;
   if(!S.loaded)v=`<div class="skel" style="height:120px"></div><div class="kpis"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></div><div class="skel" style="height:240px"></div>`;
-  else v=banners()+({mod:()=>R.g===0?viewReport():viewModule(),grp:viewGroup,inbox:viewInbox,trash:viewTrash,org:viewOrg,focus:viewFocus,flow:viewFlow,users:viewUsers,audit:viewAudit,menus:viewMenus,perms:viewPerms,orgs:viewOrgs,themes:viewThemes,gov:viewGov,structure:viewStructure,assets:viewAssets,purch:viewPurch,ctr:viewCtr,inv:viewInv,exp:viewExp,tsk:viewTsk,flt:viewFlt}[R.v]||viewHome)();
+  else v=banners()+({mod:()=>R.g===0?viewReport():viewModule(),grp:viewGroup,inbox:viewInbox,trash:viewTrash,org:viewOrg,focus:viewFocus,flow:viewFlow,users:viewUsers,audit:viewAudit,menus:viewMenus,perms:viewPerms,orgs:viewOrgs,themes:viewThemes,gov:viewGov,structure:viewStructure,assets:viewAssets,purch:viewPurch,ctr:viewCtr,inv:viewInv,exp:viewExp,tsk:viewTsk,flt:viewFlt}[R.v]||(S.member?viewOrgs:viewHome))();
   $("#main").innerHTML=`<div class="wrap">${v}</div>`;
   decorateHead();
   bindMain();
@@ -3760,7 +3761,7 @@ function renderNav(){
   const trash=S.recs.filter(r=>r.deleted).length;
   const openN=A.filter(r=>isOpen(r)).length;const nOrgs=(S.orgs||[]).length;
   const qk=(h,ic,t,sub,col,n,hotN)=>`<a href="#${h}" class="qk ${R.v===h?"on":""}" style="--qc:${col}"${R.v===h?' aria-current="page"':""}><span class="qki">${ico(ic)}</span><span class="qkt"><b>${t}</b><small>${sub}</small></span>${n?`<span class="qkn ${hotN?"pulse":""}">${n}</span>`:`<span class="qka">${ico("chev")}</span>`}</a>`;
-  const topItems=[["focus",qk("focus","focus","مهامي والأولويات",hot?`${hot} تحتاج متابعتك`:"لا شيء عاجل","#e0573a",hot,hot>0)],["inbox",qk("inbox","inbox","صندوق الاعتمادات",pend?`${pend} بانتظار الاعتماد`:"لا شيء معلّق","#7b5ce0",pend,false)],["flow",qk("flow","flow","مسار المعاملات","تتبّع المراحل","#13a597",0)],["gov",qk("gov","GOV","مركز الحوكمة",govCache&&govCache.score?`جاهزية ${govCache.score.readyPct}٪`:"المعايير والشواهد","#8a3b12",0)]];
+  const topItems=[["focus",qk("focus","focus","مهامي والأولويات",hot?`${hot} تحتاج متابعتك`:"لا شيء عاجل","#e0573a",hot,hot>0)],["inbox",qk("inbox","inbox","صندوق الاعتمادات",pend?`${pend} بانتظار الاعتماد`:"لا شيء معلّق","#7b5ce0",pend,false)],["flow",qk("flow","flow","مسار المعاملات","تتبّع المراحل","#13a597",0)]];
   if(S.member)topItems.push(["orgs",qk("orgs","building","الكشاف",`${nOrgs} ${nOrgs>2&&nOrgs<11?"مؤسسات":"مؤسسة"} في المنصة`,"#2f86d8",nOrgs,false)]);
   $("#navTop").innerHTML=`<a href="#home" class="qhero ${R.v==="home"?"on":""}"${R.v==="home"?' aria-current="page"':""}><span class="qhi">${ico("home")}</span><span class="qht"><small>لوحة القيادة</small><b>الرئيسية</b></span><span class="qhs"><b>${openN}</b><small>مفتوحة</small></span></a>`
    +roSort(topItems.map(x=>x[0]),"topOrder").map(k=>topItems.find(x=>x[0]===k)[1].replace('<a ',`<a data-ro="top" data-k="${k}" `)).join("");
@@ -6124,7 +6125,7 @@ function bindExp(main){if(R.v!=="exp"||!exC||exC.err||exC.overview)return;const 
 
 /* ===== الأنظمة التشغيلية المترابطة في اللوحة الرئيسية ===== */
 let opM={},opL={};
-async function opLoad(k){if(opL[k])return;opL[k]=1;try{opM[k]=await call("opsGet",k==="*"?{__org:"*"}:{})}catch(e){opM[k]={err:e.message||""}}finally{opL[k]=0;if(R.v==="home"||R.v==="orgs")render()}}
+async function opLoad(k){if(opL[k])return;opL[k]=1;try{opM[k]=await call("opsGet",k==="*"?{__org:"*"}:{})}catch(e){opM[k]={err:e.message||""}}finally{opL[k]=0;if(R.v==="home"||R.v==="orgs"||R.v==="home")render()}}
 const OP_MODS=[["flt","car","المركبات وحركتها","#2f6fdf",s=>[["جاهزة",s.ready],["رحلات جارية",s.open],["تجديدات قريبة",s.renew,1]],s=>s.vehs+" مركبة · "+s.maint+" بالصيانة"],["tsk","clipCheck","متابعة المهام","#0e7a5f",s=>[["مهام مفتوحة",s.open],["مكتملة",s.done],["متأخرة",s.late,1]],s=>s.total+" مهمة"],["purch","cart","المشتريات وطلبات الشراء","#e08a1e",s=>[["طلبات قيد الاعتماد",s.pending],["قيد التوفير",s.supply],["متأخرة",s.late,1]],s=>s.total+" طلب · "+s.sups+" مورد"],
  ["inv","WHS","حركة المخزون والأرصدة","#0b6e8f",s=>[["أصناف نافدة",s.out,1],["دون حد الطلب",s.low],["جرد بانتظار الاعتماد",s.counts]],s=>s.items+" صنف · "+s.whs+" مخزن · "+s.movs+" قيد"],
  ["assets","monitor","الأصول والعهد","#7b5ce0",s=>[["عهد مسلّمة",s.custody],["في الصيانة",s.maint],["عهد متأخرة",s.late,1]],s=>s.total+" أصل"],
