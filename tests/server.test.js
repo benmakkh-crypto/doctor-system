@@ -339,5 +339,30 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
   ok(AM(T, "astSamples", { clear: 1 }).data.assets.every(x => !x.sample), "sample data cleared");
   ok(A.api(T, "astGet", { __org: "*" }).data.overview.length >= 1, "platform overview of custody per organisation");
   ok(A.api(T, "astMove", { __org: "*", type: "issue" }).code === "VALIDATION", "custody actions need an organisation"); }
+
+// ===== طلبات الشراء =====
+{ let g = AM(T, "prGet"); ok(g.ok && g.data.set.units.length && g.data.reqs.length === 0, "procurement starts empty with default lists");
+  const S0 = g.data.set; let r = AM(T, "prSave", { item: { title: "" } }); ok(r.code === "VALIDATION", "request needs a description");
+  r = AM(T, "prSave", { item: { title: "تجهيز أجهزة", dept: S0.depts[0].id, need: "2026-12-30", date: "2026-11-01", lines: [{ desc: "حاسب", unit: S0.units[0].id, qty: 2, asset: true }, { desc: "شاشة", qty: 4 }] } });
+  ok(r.ok && r.data.reqs[0].status === "draft" && r.data.reqs[0].no === "PR-0001", "draft saved with number");
+  const rid = r.data.id;
+  ok(AM(T, "prSave", { item: { id: rid, title: "تجهيز أجهزة", dept: S0.depts[0].id, need: "2026-12-30", lines: [{ desc: "حاسب", qty: 2 }] }, submit: 1 }).code === "VALIDATION", "justification required on submit");
+  r = AM(T, "prSave", { item: { id: rid, title: "تجهيز أجهزة", dept: S0.depts[0].id, need: "2026-12-30", date: "2026-11-01", just: "موظفون جدد", lines: [{ desc: "حاسب", unit: S0.units[0].id, qty: 2, asset: true, price: 4000 }, { desc: "شاشة", qty: 4 }] }, submit: 1 });
+  ok(r.data.reqs[0].status === "pending", "request submitted for approval");
+  ok(AM(T, "prSave", { item: { id: rid, title: "x" } }).code === "VALIDATION", "submitted request is locked");
+  ok(AM(T, "prReceive", { id: rid, q: { 0: 1 } }).code === "VALIDATION", "cannot receive before approval");
+  ok(AM(T, "prDecide", { id: rid, decision: "reject" }).code === "VALIDATION", "rejection needs a reason");
+  r = AM(T, "prDecide", { id: rid, decision: "approve", approver: "المدير" }); ok(r.data.reqs[0].status === "supply", "approved goes to supply");
+  r = AM(T, "prSup", { item: { name: "مورد أول", cat: S0.scats[0].id } }); const sid = r.data.id; ok(r.data.sups[0].no === "SUP-001", "supplier added");
+  r = AM(T, "prSupply", { id: rid, sup: sid, newPo: 1, eta: "2026-12-01", officer: "مسؤول المشتريات" }); ok(r.data.reqs[0].sp.po === "PO-0001", "supply updated with purchase order");
+  ok(AM(T, "prReceive", { id: rid, q: { 0: 5 } }).code === "VALIDATION", "cannot receive more than remaining");
+  r = AM(T, "prReceive", { id: rid, q: { 0: 2, 1: 1 }, receiver: "أمين المستودع", toAssets: 1 }); ok(r.data.reqs[0].status === "partial" && r.data.rcv[0].no === "RC-0001" && r.data.assets === 2, "partial receipt registered and assets created");
+  ok(AM(T, "astGet").data.assets.filter(a => /PR-0001/.test(a.note || "")).length === 2, "received items appear in the asset register");
+  r = AM(T, "prReceive", { id: rid, q: { 1: 3 } }); ok(r.data.reqs[0].status === "closed", "request closes automatically when all lines received");
+  ok(AM(T, "prDel", { id: rid }).code === "VALIDATION", "submitted requests cannot be deleted");
+  ok(AM(T, "prSup", { del: sid }).ok, "supplier without open supply can be deleted");
+  r = AM(T, "prSamples", {}); ok(r.ok && r.data.reqs.filter(x => x.sample).length === 8 && r.data.sups.length >= 5, "procurement sample data added");
+  ok(AM(T, "prSamples", { clear: 1 }).data.reqs.every(x => !x.sample), "procurement sample data cleared");
+  ok(A.api(T, "prGet", { __org: "*" }).data.overview.length >= 1, "platform overview of procurement"); }
 console.log("server tests passed:", pass);
 module.exports = {};

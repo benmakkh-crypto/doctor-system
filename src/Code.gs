@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.13.0';
+const APP_VERSION = '4.14.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -465,7 +465,7 @@ function api(token, action, payload) {
   } catch (e) { return fail_(e); }
 }
 /** إجراءات تحتاج مؤسسة محددة (لا تُنفذ في عرض «كل المؤسسات»). */
-const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'astCount'];
+const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'astCount', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples'];
 function isPlatform_(me) { return me.role === 'admin' && me.org === '*'; }
 /** عضو المنصة: حساب على مستوى نافذ (org = '*') بأي دور؛ المشاهد منهم يطّلع على كل المؤسسات دون أي تعديل. */
 function isPlatformMember_(me) { return me.org === '*'; }
@@ -482,7 +482,7 @@ function inUserScope_(me, u) {
   if (isPlatform_(me)) return CUR_ORG === '*' || uo === CUR_ORG || uo === '*';
   return uo === me.org;
 }
-const WRITE_ACTIONS = ['astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+const WRITE_ACTIONS = ['prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -653,6 +653,7 @@ const ACTIONS = {
   govCopy: actGovCopy_,
   govCustomDoc: actGovCustomDoc_,
   astGet: actAstGet_, astSaveAsset: actAstSaveAsset_, astDelAsset: actAstDelAsset_, astSaveEmp: actAstSaveEmp_, astDelEmp: actAstDelEmp_, astMove: actAstMove_, astSet: actAstSet_, astUpload: actAstUpload_, astFile: actAstFile_, astSamples: actAstSamples_, astCount: actAstCount_,
+  prGet: actPrGet_, prSave: actPrSave_, prDecide: actPrDecide_, prSupply: actPrSupply_, prReceive: actPrReceive_, prClose: actPrClose_, prDel: actPrDel_, prSup: actPrSup_, prSet: actPrSet_, prUpload: actPrUpload_, prFile: actPrFile_, prSamples: actPrSamples_,
   treeGet: actTreeGet_,
   treeSave: actTreeSave_,
   removeFile: actRemoveFile_,
@@ -1601,6 +1602,157 @@ function actAstSamples_(me, p) {
   astMoveAdd_(st, me, { type: 'return', asset: A[4].id, from: { emp: E[5].id, dept: E[5].dept, loc: A[4].loc }, to: { loc: store, st: 'store' }, date: d(-2), cond: good, receiver: S.officer || 'مسؤول العهد', acc: S.acc.slice(0, 2), issuedAt: d(-90), dueWas: d(-40), sample: true }); A[4].status = 'store'; A[4].holder = ''; A[4].due = ''; A[4].loc = store;
   A[11].status = 'maint'; A[11].loc = maint; A[11].cond = (S.conds[1] || {}).id || good; astMoveAdd_(st, me, { type: 'status', asset: A[11].id, from: { st: 'store' }, to: { st: 'maint', loc: maint }, date: d(-4), cond: A[11].cond, note: 'عطل في وحدة التغذية', sample: true });
   audit_(me.username, 'إضافة بيانات توضيحية للعهد', '', '', ''); govSave_(org, '_assets', st); return astOut_(st);
+}
+
+/* ================= طلبات الشراء =================
+ * حالة واحدة لكل مؤسسة في ورقة «الحوكمة» بالدورة '_purch': { set, reqs[], sups[], rcv[] }.
+ * المسار: مسودة ← بانتظار الاعتماد ← (معاد للاستكمال | مرفوض | قيد التوفير) ← استلام جزئي ← مغلق. */
+const PR_ST = { draft: 'مسودة', pending: 'بانتظار الاعتماد', returned: 'معاد للاستكمال', rejected: 'مرفوض', supply: 'قيد التوفير', partial: 'استلام جزئي', closed: 'مغلق' };
+function prDefaults_() {
+  const L = function (a, c) { return a.map(function (n, i) { return { id: 'd' + (i + 1), n: n, c: c[i % c.length] }; }); };
+  return { orgName: '', officer: '', approver: '', depts: L(['الموارد البشرية', 'المالية', 'المشتريات', 'المشاريع', 'تقنية المعلومات', 'الخدمات العامة'], ['#2f6fdf', '#e08a1e', '#7b5ce0', '#13a06f', '#d64545', '#0b6e8f']),
+    units: L(['جهاز', 'قطعة', 'علبة', 'رزمة', 'كرتون', 'لتر', 'كيلو', 'خدمة'], ['#2f6fdf', '#e08a1e', '#0b6e8f', '#b07a12']), pris: [{ id: 'high', n: 'عالية', c: '#d64545' }, { id: 'normal', n: 'عادية', c: '#e08a1e' }, { id: 'low', n: 'منخفضة', c: '#64748b' }],
+    scats: L(['مستلزمات مكتبية', 'أثاث', 'أجهزة تقنية', 'صيانة', 'خدمات', 'مواد غذائية'], ['#2f6fdf', '#e08a1e', '#7b5ce0', '#13a06f', '#0b6e8f', '#b07a12']),
+    rPre: 'PR-', rNext: 1, oPre: 'PO-', oNext: 1, cPre: 'RC-', cNext: 1, sPre: 'SUP-', sNext: 1, warnDays: 3, partial: true, reqJust: true, reqFile: false, currency: 'ريال', sod: true };
+}
+function prLoad_(org) { const st = govLoad_(org, '_purch'); st.set = Object.assign(prDefaults_(), st.set || {}); st.reqs = st.reqs || []; st.sups = st.sups || []; st.rcv = st.rcv || []; return st; }
+function prOut_(st, extra) { const o = { set: st.set, reqs: st.reqs, sups: st.sups, rcv: st.rcv, sts: PR_ST }; if (extra) Object.keys(extra).forEach(function (k) { o[k] = extra[k]; }); return o; }
+function prLog_(r, me, act, note) { r.log = r.log || []; r.log.unshift({ at: now_(), by: me.username, act: act, note: str_(String(note || ''), 300) }); if (r.log.length > 60) r.log.length = 60; }
+function prLines_(L) { return (Array.isArray(L) ? L : []).slice(0, 60).map(function (x) { const q = Number(x.qty); return { desc: str_(String(x.desc || ''), 160), spec: str_(String(x.spec || ''), 300), unit: str_(String(x.unit || ''), 20), qty: isFinite(q) && q > 0 ? Math.round(q * 100) / 100 : 0, price: Math.max(0, Number(x.price) || 0), rcv: 0, asset: !!x.asset }; }).filter(function (x) { return x.desc; }); }
+function actPrGet_(me) {
+  if (!CUR_ORG || CUR_ORG === '*') {
+    if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
+    return { overview: loadOrgs_().filter(function (o) { return o.status !== 'archived'; }).map(function (o) { const st = prLoad_(o.id), c = {}; st.reqs.forEach(function (r) { c[r.status] = (c[r.status] || 0) + 1; }); return { id: o.id, code: o.code, name: o.name, total: st.reqs.length, c: c, sups: st.sups.length }; }) };
+  }
+  const st = prLoad_(astNeed_()); if (!st.set.orgName) st.set.orgName = String(getSettings_().orgName || ''); return prOut_(st);
+}
+function actPrSave_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = prLoad_(org), S = st.set, x = p.item || {};
+  let r = x.id ? astList_(st.reqs, String(x.id)) : null;
+  if (r && ['draft', 'returned'].indexOf(r.status) < 0) throw err_('VALIDATION', 'لا يُعدَّل الطلب بعد إرساله للاعتماد إلا إذا أُعيد للاستكمال.');
+  if (r && r.by !== me.username && me.role !== 'admin') throw err_('FORBIDDEN', 'يعدّل الطلب مقدّمه أو مسؤول النظام.');
+  const lines = prLines_(x.lines), submit = !!p.submit;
+  const c = { dept: str_(x.dept, 20), requester: str_(x.requester, 120), date: str_(x.date, 10) || today_(), need: str_(x.need, 10), title: str_(x.title, 160), just: str_(x.just, 1000), pri: str_(x.pri, 20) || 'normal', est: Math.max(0, Number(x.est) || 0), note: str_(x.note, 1000), sup: str_(x.sup, 20) };
+  if (!c.title) throw err_('VALIDATION', 'اكتب وصف الاحتياج.');
+  if (submit) {
+    if (!c.dept) throw err_('VALIDATION', 'اختر الإدارة الطالبة.'); if (!c.need) throw err_('VALIDATION', 'حدّد تاريخ الاحتياج.'); if (c.need < c.date) throw err_('VALIDATION', 'تاريخ الاحتياج قبل تاريخ الطلب.');
+    if (!lines.length) throw err_('VALIDATION', 'أضف بندًا واحدًا على الأقل.'); if (lines.some(function (l) { return !(l.qty > 0); })) throw err_('VALIDATION', 'حدّد الكمية لكل بند.');
+    if (S.reqJust && !c.just) throw err_('VALIDATION', 'اكتب مبرر الطلب (الإعدادات تلزم به).');
+    if (S.reqFile && !((r && r.files || []).length) && !p.hasFile) throw err_('VALIDATION', 'أرفق مستندًا للطلب (الإعدادات تلزم به).');
+  }
+  if (r) { Object.assign(r, c); r.lines = lines; } else { r = Object.assign(c, { id: 'r' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), no: S.rPre + astPad_(S.rNext++, 4), status: 'draft', lines: lines, files: [], by: me.username, at: now_(), log: [] }); st.reqs.unshift(r); prLog_(r, me, 'إنشاء الطلب'); }
+  if (submit) { r.status = 'pending'; r.sent = now_(); prLog_(r, me, 'إرسال للاعتماد'); audit_(me.username, 'إرسال طلب شراء للاعتماد', '', r.no, r.title); } else prLog_(r, me, 'حفظ مسودة');
+  govSave_(org, '_purch', st); return prOut_(st, { id: r.id });
+}
+function actPrDecide_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = prLoad_(org), r = astList_(st.reqs, String(p.id || '')), d = String(p.decision || '');
+  if (!r) throw err_('NOTFOUND', 'الطلب غير موجود.'); if (r.status !== 'pending') throw err_('VALIDATION', 'الطلب ليس بانتظار الاعتماد.');
+  if (st.set.sod && r.by === me.username && me.role !== 'admin') throw err_('FORBIDDEN', 'لا يعتمد مقدّم الطلب طلبه (فصل المهام).');
+  const note = str_(p.note, 600); if ((d === 'return' || d === 'reject') && !note) throw err_('VALIDATION', 'اكتب سبب ' + (d === 'reject' ? 'الرفض' : 'الإعادة') + ' في ملاحظات القرار.');
+  const map = { approve: 'supply', return: 'returned', reject: 'rejected' }; if (!map[d]) throw err_('VALIDATION', 'قرار غير معروف.');
+  r.status = map[d]; r.dec = { d: d, by: str_(p.approver, 120) || me.username, user: me.username, date: str_(p.date, 10) || today_(), note: note, at: now_() };
+  prLog_(r, me, { approve: 'اعتماد الطلب', return: 'إعادة للاستكمال', reject: 'رفض الطلب' }[d], note);
+  audit_(me.username, { approve: 'اعتماد طلب شراء', return: 'إعادة طلب شراء', reject: 'رفض طلب شراء' }[d], '', r.no, note); govSave_(org, '_purch', st); return prOut_(st);
+}
+function actPrSupply_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = prLoad_(org), S = st.set, r = astList_(st.reqs, String(p.id || ''));
+  if (!r) throw err_('NOTFOUND', 'الطلب غير موجود.'); if (['supply', 'partial'].indexOf(r.status) < 0) throw err_('VALIDATION', 'متابعة التوفير للطلبات المعتمدة فقط.');
+  const sup = str_(p.sup, 20); if (sup && !astList_(st.sups, sup)) throw err_('VALIDATION', 'المورد غير موجود.');
+  let po = str_(p.po, 30); if (!po && p.newPo) po = S.oPre + astPad_(S.oNext++, 4);
+  r.sp = { officer: str_(p.officer, 120), sup: sup, po: po, eta: str_(p.eta, 10), note: str_(p.note, 600), at: now_() }; if (sup) r.sup = sup;
+  prLog_(r, me, 'تحديث التوفير', [po, p.eta].filter(Boolean).join(' · ')); govSave_(org, '_purch', st); return prOut_(st);
+}
+function actPrReceive_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = prLoad_(org), S = st.set, r = astList_(st.reqs, String(p.id || ''));
+  if (!r) throw err_('NOTFOUND', 'الطلب غير موجود.'); if (['supply', 'partial'].indexOf(r.status) < 0) throw err_('VALIDATION', 'الاستلام للطلبات المعتمدة قيد التوفير فقط.');
+  const q = p.q || {}; let tot = 0; const got = [];
+  r.lines.forEach(function (l, i) { const v = Math.max(0, Number(q[i]) || 0); if (!v) return; if (v > l.qty - l.rcv + 1e-9) throw err_('VALIDATION', 'الكمية الواردة للبند «' + l.desc + '» أكبر من المتبقي (' + (l.qty - l.rcv) + ').'); got.push({ i: i, q: v }); tot += v; });
+  if (!tot) throw err_('VALIDATION', 'أدخل الكمية الواردة لبند واحد على الأقل.');
+  const remainAfter = r.lines.reduce(function (s, l, i) { const g = got.filter(function (x) { return x.i === i; })[0]; return s + (l.qty - l.rcv - (g ? g.q : 0)); }, 0);
+  if (remainAfter > 1e-9 && !S.partial) throw err_('VALIDATION', 'الإعدادات لا تسمح بالاستلام الجزئي؛ استلم الكميات كاملة.');
+  got.forEach(function (x) { r.lines[x.i].rcv = Math.round((r.lines[x.i].rcv + x.q) * 100) / 100; });
+  const c = { id: 'c' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), no: S.cPre + astPad_(S.cNext++, 4), req: r.id, date: str_(p.date, 10) || today_(), sup: str_(p.sup, 20) || r.sup || (r.sp || {}).sup || '', po: str_(p.po, 30) || (r.sp || {}).po || '', receiver: str_(p.receiver, 120), insp: str_(p.insp, 40) || 'مقبول', note: str_(p.note, 600), got: got, by: me.username, at: now_() };
+  if (r.sample) c.sample = true;
+  st.rcv.unshift(c); r.status = remainAfter > 1e-9 ? 'partial' : 'closed'; if (r.status === 'closed') { r.closed = now_(); prLog_(r, me, 'إغلاق تلقائي بعد اكتمال البنود'); }
+  prLog_(r, me, 'تسجيل استلام ' + c.no, got.map(function (x) { return r.lines[x.i].desc + ' ×' + x.q; }).join('، '));
+  // إضافة البنود المستلمة إلى سجل الأصول (إدارة العهد)
+  let made = 0;
+  if (p.toAssets) { const as = astLoad_(org), cat = str_(p.cat, 20) || (as.set.cats[0] || {}).id || '', loc = str_(p.loc, 20) || ((as.set.locs.filter(function (l) { return /مخزن/.test(l.n); })[0] || as.set.locs[0]) || {}).id || '';
+    got.forEach(function (x) { const l = r.lines[x.i]; if (!l.asset) return; for (let k = 0; k < Math.min(50, Math.floor(x.q)); k++) { const a = { id: 'a' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), no: as.set.aPre + astPad_(as.set.aNext++, 4), name: l.desc, brand: l.spec ? l.spec.slice(0, 120) : '', cat: cat, loc: loc, dept: '', cond: (as.set.conds[0] || {}).id || '', date: c.date, cost: l.price || undefined, supplier: (astList_(st.sups, c.sup) || {}).name || '', status: 'store', holder: '', files: [], created: now_(), note: 'من طلب الشراء ' + r.no + ' — استلام ' + c.no }; if (r.sample) a.sample = true; as.assets.unshift(a); astMoveAdd_(as, me, { type: 'add', asset: a.id, to: { loc: loc, st: 'store' }, date: c.date, cond: a.cond, note: 'استلام مشتريات ' + c.no, sample: r.sample }); made++; } });
+    if (made) { govSave_(org, '_assets', as); c.assets = made; } }
+  audit_(me.username, 'تسجيل استلام مشتريات', '', c.no, r.no); govSave_(org, '_purch', st); return prOut_(st, { rid: c.id, assets: made });
+}
+function actPrClose_(me, p) {
+  astAdmin_(me); const org = astNeed_(), st = prLoad_(org), r = astList_(st.reqs, String(p.id || ''));
+  if (!r) throw err_('NOTFOUND', 'الطلب غير موجود.'); if (['supply', 'partial'].indexOf(r.status) < 0) throw err_('VALIDATION', 'يُغلق يدويًا الطلب قيد التوفير أو المستلم جزئيًا فقط.');
+  const note = str_(p.note, 300); if (!note) throw err_('VALIDATION', 'اكتب سبب الإغلاق قبل اكتمال البنود.');
+  r.status = 'closed'; r.closed = now_(); r.shortClose = note; prLog_(r, me, 'إغلاق يدوي', note); govSave_(org, '_purch', st); return prOut_(st);
+}
+function actPrDel_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = prLoad_(org), r = astList_(st.reqs, String(p.id || ''));
+  if (!r) throw err_('NOTFOUND', 'الطلب غير موجود.'); if (['draft', 'returned'].indexOf(r.status) < 0) throw err_('VALIDATION', 'يُحذف الطلب المسودة أو المعاد فقط؛ الطلبات المرسلة تبقى في السجل.');
+  if (r.by !== me.username && me.role !== 'admin') throw err_('FORBIDDEN', 'يحذف الطلب مقدّمه أو مسؤول النظام.');
+  st.reqs = st.reqs.filter(function (x) { return x !== r; }); audit_(me.username, 'حذف طلب شراء', '', r.no, r.title); govSave_(org, '_purch', st); return prOut_(st);
+}
+function actPrSup_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = prLoad_(org), x = p.item || {};
+  if (p.del) { astAdmin_(me); const s0 = astList_(st.sups, String(p.del)); if (!s0) throw err_('NOTFOUND', 'المورد غير موجود.'); if (st.reqs.some(function (r) { return (r.sup === s0.id || (r.sp || {}).sup === s0.id) && ['supply', 'partial'].indexOf(r.status) >= 0; })) throw err_('VALIDATION', 'للمورد طلبات قيد التوفير؛ عطّله بدل حذفه.'); st.sups = st.sups.filter(function (y) { return y !== s0; }); govSave_(org, '_purch', st); return prOut_(st); }
+  const c = astClean_(x, [['no', 30], ['name', 160], ['cat', 20], ['contact', 120], ['phone', 30], ['email', 120], ['cr', 30], ['vat', 30], ['city', 80], ['address', 300], ['iban', 40], ['note', 600], ['rating', 'n']]);
+  c.active = x.active !== false && x.active !== 'false' && x.active !== 0;
+  if (!c.name) throw err_('VALIDATION', 'اسم المورد مطلوب.');
+  let s = x.id ? astList_(st.sups, String(x.id)) : null;
+  if (c.no && st.sups.some(function (y) { return y.no === c.no && (!s || y.id !== s.id); })) throw err_('VALIDATION', 'رقم المورد مستخدم.');
+  if (s) { const id = s.id, sm = s.sample; Object.keys(s).forEach(function (k) { delete s[k]; }); Object.assign(s, c, { id: id, sample: sm }); if (!s.no) s.no = st.set.sPre + astPad_(st.set.sNext++, 3); }
+  else { s = Object.assign(c, { id: 's' + Utilities.getUuid().replace(/-/g, '').slice(0, 10) }); if (!s.no) s.no = st.set.sPre + astPad_(st.set.sNext++, 3); st.sups.push(s); }
+  audit_(me.username, 'حفظ مورد', '', s.no, s.name); govSave_(org, '_purch', st); return prOut_(st, { id: s.id });
+}
+function actPrSet_(me, p) {
+  astAdmin_(me); const org = astNeed_(), st = prLoad_(org), x = p.set || {}, s = st.set;
+  const lst = function (L) { return (Array.isArray(L) ? L : []).slice(0, 60).map(function (o, i) { return { id: str_(String(o.id || ''), 20).replace(/[^A-Za-z0-9_-]/g, '') || ('x' + i + Date.now().toString(36)), n: str_(String(o.n || ''), 80), c: /^#[0-9a-fA-F]{6}$/.test(o.c) ? o.c : '#2f6fdf' }; }).filter(function (o) { return o.n; }); };
+  ['depts', 'units', 'pris', 'scats'].forEach(function (k) { if (x[k]) { const v = lst(x[k]); if (!v.length) throw err_('VALIDATION', 'لا تترك القائمة فارغة.'); s[k] = v; } });
+  ['orgName', 'officer', 'approver', 'currency'].forEach(function (k) { if (x[k] != null) s[k] = str_(String(x[k]), 120); });
+  ['rPre', 'oPre', 'cPre', 'sPre'].forEach(function (k) { if (x[k] != null) s[k] = str_(String(x[k]), 8) || s[k]; });
+  ['rNext', 'oNext', 'cNext', 'sNext'].forEach(function (k) { const n = parseInt(x[k], 10); if (n > 0 && n < 1e7) s[k] = n; });
+  if (x.warnDays != null) s.warnDays = Math.max(0, Math.min(60, parseInt(x.warnDays, 10) || 0));
+  ['partial', 'reqJust', 'reqFile', 'sod'].forEach(function (k) { if (x[k] != null) s[k] = !!x[k]; });
+  audit_(me.username, 'إعدادات المشتريات', '', '', ''); govSave_(org, '_purch', st); return prOut_(st);
+}
+function actPrUpload_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = prLoad_(org), kind = p.kind === 'rcv' ? 'rcv' : 'req';
+  const t = astList_(kind === 'rcv' ? st.rcv : st.reqs, String(p.id || '')); if (!t) throw err_('NOTFOUND', 'العنصر غير موجود.');
+  const name = str_(p.name, 120).replace(/[\\/:*?"<>|]/g, '_') || 'مستند', mime = String(p.mime || '');
+  if (GOV_TYPES.indexOf(mime) < 0) throw err_('VALIDATION', 'الأنواع المسموحة: PDF وWord وExcel وصور JPG/PNG/WEBP.');
+  const bytes = Utilities.base64Decode(String(p.data || '')); if (!bytes.length) throw err_('VALIDATION', 'الملف فارغ.'); if (bytes.length > MAX_FILE * 2) throw err_('VALIDATION', 'حجم الملف أكبر من 10 ميجابايت.');
+  const folder = DriveApp.getFolderById(PropertiesService.getScriptProperties().getProperty('FILES_FOLDER_ID'));
+  const file = folder.createFile(Utilities.newBlob(bytes, mime, 'مشتريات — ' + name)), fid = Utilities.getUuid();
+  sheet_('files').appendRow([fid, 'pr:' + org + ':' + t.id, name, mime, bytes.length, file.getId(), me.username, now_()]);
+  const f = { fid: fid, name: name, mime: mime, size: bytes.length, at: now_(), by: me.username };
+  if (kind === 'rcv') t.form = f; else { t.files = t.files || []; t.files.unshift(f); t.files = t.files.slice(0, 12); prLog_(t, me, 'إرفاق مستند', name); }
+  govSave_(org, '_purch', st); return prOut_(st);
+}
+function actPrFile_(me, p) {
+  const org = astNeed_(); if (me.role === 'viewer') throw err_('FORBIDDEN', 'صلاحية المشاهد لا تشمل تنزيل المستندات.');
+  const row = findRow_('files', String(p.fid || '')); if (!row) throw err_('NOTFOUND', 'الملف غير موجود.');
+  const v = sheet_('files').getRange(row, 1, 1, HEAD.files.length).getValues()[0];
+  if (String(v[1]).indexOf('pr:' + org + ':') !== 0) throw err_('FORBIDDEN', 'غير مسموح.');
+  return { name: String(v[2]), mime: String(v[3]), data: Utilities.base64Encode(DriveApp.getFileById(String(v[5])).getBlob().getBytes()) };
+}
+function actPrSamples_(me, p) {
+  astAdmin_(me); const org = astNeed_(), st = prLoad_(org), S = st.set;
+  if (p.clear) { st.reqs = st.reqs.filter(function (r) { return !r.sample; }); st.sups = st.sups.filter(function (x) { return !x.sample; }); st.rcv = st.rcv.filter(function (x) { return !x.sample; }); govSave_(org, '_purch', st); return prOut_(st); }
+  if (st.reqs.some(function (r) { return r.sample; })) throw err_('VALIDATION', 'البيانات التوضيحية مضافة من قبل.');
+  const d = function (n) { const x = new Date(); x.setDate(x.getDate() + n); return Utilities.formatDate(x, 'Asia/Riyadh', 'yyyy-MM-dd'); }, D = S.depts, U = S.units, C = S.scats;
+  const sups = [['مؤسسة الإمداد المكتبي', 0], ['شركة الأثاث الحديث', 1], ['مركز الصيانة المتكاملة', 3], ['تقنيات المستقبل', 2], ['خدمات النخبة', 4]].map(function (r, i) { const s = { id: 's' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), no: S.sPre + astPad_(S.sNext++, 3), name: r[0], cat: (C[r[1]] || {}).id || '', contact: 'مسؤول المبيعات', phone: '05000000' + (10 + i), active: i !== 4, rating: 4 - (i % 2), sample: true }; st.sups.push(s); return s; });
+  const mk = function (title, di, need, pri, lines, status, extra) { const r = { id: 'r' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), no: S.rPre + astPad_(S.rNext++, 4), dept: (D[di % D.length] || {}).id || '', requester: ['أحمد الشهري', 'سارة العتيبي', 'خالد القحطاني', 'نورة الدوسري', 'محمد الزهراني'][di % 5], date: d(need - 8), need: d(need), title: title, just: 'احتياج تشغيلي لـ' + title, pri: pri, est: 0, status: status, lines: lines.map(function (l) { return { desc: l[0], spec: l[1], unit: (U[l[2]] || {}).id || '', qty: l[3], price: l[4] || 0, rcv: l[5] || 0, asset: !!l[6] }; }), files: [], by: me.username, at: now_(), log: [{ at: now_(), by: me.username, act: 'إنشاء الطلب' }], sample: true }; r.est = r.lines.reduce(function (s, l) { return s + l.qty * l.price; }, 0); Object.assign(r, extra || {}); st.reqs.unshift(r); return r; };
+  mk('أدوات صيانة', 5, 9, 'high', [['مفكات متعددة', 'طقم 12 قطعة', 1, 3, 85]], 'pending');
+  mk('أدوات مكتبية', 3, 8, 'normal', [['دباسات', 'حجم متوسط', 1, 10, 12], ['أقلام', 'أزرق', 2, 20, 9]], 'pending');
+  mk('أحبار طابعات', 2, -6, 'normal', [['حبر HP 85A', 'أصلي', 1, 6, 160, 6]], 'closed', { sup: sups[0].id, sp: { officer: 'مسؤول المشتريات', sup: sups[0].id, po: S.oPre + astPad_(S.oNext++, 4), eta: d(-8) }, dec: { d: 'approve', by: 'مسؤول الاعتماد', date: d(-14) }, closed: now_() });
+  mk('كراسي مكتبية', 0, 7, 'normal', [['كرسي مكتبي', 'ظهر شبكي مع مسند', 1, 10, 450, 6, true]], 'partial', { sup: sups[1].id, sp: { officer: 'مسؤول المشتريات', sup: sups[1].id, po: S.oPre + astPad_(S.oNext++, 4), eta: d(1) }, dec: { d: 'approve', by: 'مسؤول الاعتماد', date: d(-6) } });
+  mk('مستلزمات طباعة', 1, -2, 'normal', [['ورق A4', '80 جرام', 3, 20, 22]], 'supply', { sup: sups[0].id, sp: { officer: 'مسؤول المشتريات', sup: sups[0].id, po: S.oPre + astPad_(S.oNext++, 4), eta: d(-2) }, dec: { d: 'approve', by: 'مسؤول الاعتماد', date: d(-9) } });
+  mk('تجهيز أجهزة مكتبية', 4, 4, 'high', [['حاسب محمول مكتبي', 'معالج حديث، ذاكرة 16GB، قرص SSD', 0, 2, 4200, 0, true], ['شاشة 24 بوصة', 'شاشة LED بدقة عالية', 0, 4, 780, 0, true]], 'pending');
+  mk('أثاث قاعة الاجتماعات', 3, 20, 'low', [['طاولة اجتماعات', '12 مقعدًا', 1, 1, 3800, 0, true]], 'rejected', { dec: { d: 'reject', by: 'مسؤول الاعتماد', date: d(-1), note: 'لا توجد ميزانية معتمدة هذا الربع' } });
+  mk('مواد نظافة', 5, 12, 'normal', [['منظف أرضيات', '4 لتر', 5, 6, 35]], 'draft');
+  audit_(me.username, 'إضافة بيانات توضيحية للمشتريات', '', '', ''); govSave_(org, '_purch', st); return prOut_(st);
 }
 
 function actGovCustomDoc_(me, p) {
