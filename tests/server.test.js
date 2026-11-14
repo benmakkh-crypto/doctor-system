@@ -306,5 +306,31 @@ A.logout(ST);
 ok(A.api(ST, "bootstrap").code === "AUTH", "logout ends session");
 ok(A.api("forged-token", "bootstrap").code === "AUTH", "forged token rejected");
 ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
+
+// ===== إدارة العهد =====
+{ let g = AM(T, "astGet"); ok(g.ok && g.data.set.depts.length && g.data.assets.length === 0, "custody module starts empty with default lists");
+  const st0 = g.data.set; const loc = st0.locs[2].id, cat = st0.cats[0].id;
+  ok(AM(T, "astSaveAsset", { item: { name: "" } }).code === "VALIDATION", "asset needs a name");
+  let r = AM(T, "astSaveAsset", { item: { name: "حاسب محمول", cat, loc, sn: "SN-1" } }); ok(r.ok && r.data.assets[0].no === "A-0001" && r.data.assets[0].status === "store", "asset added with auto number in store");
+  const aid = r.data.id; ok(AM(T, "astSaveAsset", { item: { name: "شاشة", cat, loc, sn: "SN-1" } }).code === "VALIDATION", "duplicate serial rejected");
+  r = AM(T, "astSaveEmp", { item: { name: "موظف أول", dept: st0.depts[0].id, loc: st0.locs[0].id } }); const e1 = r.data.id; ok(r.ok && r.data.emps[0].no === "E-001", "employee added");
+  const e2 = AM(T, "astSaveEmp", { item: { name: "موظف ثان" } }).data.id;
+  ok(AM(T, "astMove", { type: "transfer", asset: aid, emp: e2 }).code === "VALIDATION", "cannot transfer an asset in store");
+  ok(AM(T, "astMove", { type: "issue", asset: aid, emp: e1, date: "2026-11-10", due: "2026-11-01" }).code === "VALIDATION", "due date before issue rejected");
+  r = AM(T, "astMove", { type: "issue", asset: aid, emp: e1, date: "2026-11-10", due: "2026-12-10", purpose: "مهام العمل" });
+  let a = r.data.assets.find(x => x.id === aid); ok(r.ok && a.status === "custody" && a.holder === e1 && r.data.moves[0].type === "issue" && r.data.moves[0].no === "M-0002", "asset issued to employee");
+  ok(AM(T, "astMove", { type: "issue", asset: aid, emp: e2 }).code === "VALIDATION", "cannot issue an asset already in custody");
+  ok(AM(T, "astMove", { type: "transfer", asset: aid, emp: e1 }).code === "VALIDATION", "cannot transfer to the same holder");
+  r = AM(T, "astMove", { type: "transfer", asset: aid, emp: e2, reason: "تغيير مهام" }); a = r.data.assets.find(x => x.id === aid); ok(a.holder === e2 && r.data.moves[0].from.emp === e1, "custody transferred");
+  ok(AM(T, "astDelEmp", { id: e2 }).code === "VALIDATION", "employee with custody cannot be deleted");
+  ok(AM(T, "astDelAsset", { id: aid }).code === "VALIDATION", "asset in custody cannot be deleted");
+  r = AM(T, "astMove", { type: "return", asset: aid, status: "maint", loc: st0.locs[3].id, acc: ["كابل الطاقة"] }); a = r.data.assets.find(x => x.id === aid); ok(a.status === "maint" && !a.holder && r.data.moves[0].acc[0] === "كابل الطاقة", "custody returned to maintenance");
+  r = AM(T, "astSaveAsset", { item: Object.assign({}, a, { name: "حاسب محمول Dell" }), status: "store" }); ok(r.data.assets.find(x => x.id === aid).status === "store" && r.data.moves[0].type === "status", "status change recorded as a movement");
+  ok(AM(T, "astSet", { set: { aPre: "AS-", aNext: 50, warnDays: 10, depts: [{ id: "d1", n: "الإدارة العامة", c: "#123456" }] } }).data.set.aNext === 50, "settings saved");
+  ok(AM(T, "astSaveAsset", { item: { name: "طابعة", cat, loc } }).data.assets[0].no === "AS-0050", "numbering follows settings");
+  r = AM(T, "astSamples", {}); ok(r.ok && r.data.assets.filter(x => x.sample).length === 12 && r.data.moves.some(m => m.type === "transfer"), "explanatory sample data added");
+  ok(AM(T, "astSamples", { clear: 1 }).data.assets.every(x => !x.sample), "sample data cleared");
+  ok(A.api(T, "astGet", { __org: "*" }).data.overview.length >= 1, "platform overview of custody per organisation");
+  ok(A.api(T, "astMove", { __org: "*", type: "issue" }).code === "VALIDATION", "custody actions need an organisation"); }
 console.log("server tests passed:", pass);
 module.exports = {};
