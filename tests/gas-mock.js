@@ -37,7 +37,7 @@ function makeGas() {
       base64Decode: s => [...Buffer.from(s, "base64")].map(b => b > 127 ? b - 256 : b),
       base64Encode: a => Buffer.from(a.map(b => b < 0 ? b + 256 : b)).toString("base64"),
       newBlob: (bytes, mime, name) => ({ bytes, mime, name, getBytes: () => bytes }),
-      formatDate: d => d.toISOString()
+      formatDate: (d, tz, f) => f === 'yyyy-MM-dd' ? d.toISOString().slice(0, 10) : d.toISOString()
     },
     DriveApp: { createFolder: () => folder(), getFolderById: () => folder(), getFileById: id => ({ moveTo() { }, makeCopy() { }, setTrashed() { delete files[id] }, getBlob: () => files[id] }) },
     MailApp: { getRemainingDailyQuota: () => 100, sendEmail: o => mails.push(o) },

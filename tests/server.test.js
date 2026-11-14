@@ -364,5 +364,29 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
   r = AM(T, "prSamples", {}); ok(r.ok && r.data.reqs.filter(x => x.sample).length === 8 && r.data.sups.length >= 5, "procurement sample data added");
   ok(AM(T, "prSamples", { clear: 1 }).data.reqs.every(x => !x.sample), "procurement sample data cleared");
   ok(A.api(T, "prGet", { __org: "*" }).data.overview.length >= 1, "platform overview of procurement"); }
+
+// ===== العقود والالتزامات =====
+{ let g = AM(T, "ctGet"); ok(g.ok && g.data.set.types.length && g.data.cts.length === 0, "contracts start empty");
+  const S0 = g.data.set; let r = AM(T, "ctSet", { set: { parties: [{ n: "شركة أ" }], owners: [{ n: "مسؤول 1" }] } }); const P = r.data.set.parties[0].id, O = r.data.set.owners[0].id;
+  ok(AM(T, "ctSave", { item: { title: "خدمات", party: P, start: "2026-12-01", end: "2026-11-01" } }).code === "VALIDATION", "end before start rejected");
+  r = AM(T, "ctSave", { item: { title: "خدمات تشغيل", party: P, type: S0.types[0].id, start: "2026-01-01", end: "2027-01-01", value: 60000, owner: O } }); const cid = r.data.id; ok(r.data.cts[0].no === "CT-0001" && r.data.cts[0].status === "draft", "contract draft created");
+  ok(AM(T, "ctInst", { id: cid, insts: [{ due: "2026-02-01", amount: 40000 }, { due: "2026-06-01", amount: 30000 }] }).code === "VALIDATION", "installments cannot exceed contract value");
+  r = AM(T, "ctInst", { id: cid, insts: [{ due: "2026-02-01", amount: 30000 }, { due: "2026-06-01", amount: 30000 }] }); ok(r.data.cts[0].insts.length === 2 && r.data.cts[0].insts[0].no === "INS-0001", "installment schedule saved");
+  ok(AM(T, "ctPay", { ct: cid, inst: r.data.cts[0].insts[0].id, amount: 100 }).code === "VALIDATION", "no payment before activation");
+  r = AM(T, "ctSave", { item: { id: cid }, status: "active" }); ok(r.data.cts[0].status === "active", "contract activated");
+  ok(AM(T, "ctSave", { item: { id: cid, title: "خدمات تشغيل", party: P, start: "2026-01-01", end: "2027-01-01", value: 99999 } }).code === "VALIDATION", "active contract value changes only via change request");
+  const i1 = r.data.cts[0].insts[0].id; ok(AM(T, "ctPay", { ct: cid, inst: i1, amount: 31000 }).code === "VALIDATION", "payment cannot exceed installment remaining");
+  r = AM(T, "ctPay", { ct: cid, inst: i1, amount: 15000, method: S0.methods[0].id }); ok(r.data.pays[0].no === "PAY-0001" && r.data.pays[0].amount === 15000, "partial payment recorded");
+  r = AM(T, "ctOb", { item: { ct: cid, title: "تسليم تقرير", due: "2026-03-01", owner: O } }); const bid = r.data.id; ok(r.data.obs[0].no === "OBL-0001" && r.data.obs[0].status === "open", "obligation added");
+  ok(AM(T, "ctOb", { item: { id: bid }, done: 1 }).code === "VALIDATION", "completion requires proof document");
+  ok(AM(T, "ctOb", { item: { id: bid }, follow: "تم التواصل مع المورد" }).data.obs[0].fol.length === 1, "follow-up note recorded");
+  ok(AM(T, "ctSave", { item: { id: cid }, status: "closed", note: "انتهاء" }).code === "VALIDATION", "cannot close with open obligations");
+  r = AM(T, "ctChg", { item: { ct: cid, title: "تمديد", reason: "زيادة النطاق", delta: 5000, newEnd: "2027-03-01" }, submit: 1 }); const gid = r.data.id; ok(r.data.chgs[0].status === "pending" && r.data.cts[0].value === 60000, "change request does not alter the contract before approval");
+  r = AM(T, "ctChg", { item: { id: gid }, decide: "approve", approver: "المدير" }); ok(r.data.cts[0].value === 65000 && r.data.cts[0].end === "2027-03-01" && r.data.chgs[0].status === "approved", "approved change updates value and end date");
+  ok(AM(T, "ctDel", { id: cid }).code === "VALIDATION", "active contract cannot be deleted");
+  r = AM(T, "ctSamples", {}); ok(r.ok && r.data.cts.filter(c => c.sample).length === 4 && r.data.chgs.some(x => x.sample), "contracts sample data added");
+  ok(AM(T, "ctSamples", { clear: 1 }).data.cts.every(c => !c.sample), "contracts sample data cleared");
+  ok(Array.isArray(AM(T, "ctGet").data.sups), "procurement suppliers available as contract parties");
+  ok(A.api(T, "ctGet", { __org: "*" }).data.overview.length >= 1, "platform overview of contracts"); }
 console.log("server tests passed:", pass);
 module.exports = {};
