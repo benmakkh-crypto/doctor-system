@@ -2469,8 +2469,7 @@ function applyNav(){
       const used=new Set(g.sec.flatMap(s=>s[1]));base.forEach(b=>{const miss=b[1].filter(m=>!used.has(m));if(!miss.length)return;let t=g.sec.find(s=>s[0]===b[0]);if(!t){t=[b[0],[],""];g.sec.push(t)}t[1]=t[1].concat(miss);miss.forEach(m=>used.add(m))})});
     Object.keys(nav.mod||{}).forEach(k=>{const [g,m]=k.split("-").map(Number),x=nav.mod[k];if(!G[g]||G[g].items[m]==null)return;if(x.n)G[g].items[m]=x.n;if(x.i)G[g].mi[m]=x.i;if(x.h)G[g].mh[m]=true});
   }
-  ORDER=nav&&Array.isArray(nav.order)&&nav.order.length?nav.order.filter(i=>i>=0&&i<G.length):G.map((_,i)=>i);G.forEach((_,i)=>{if(!ORDER.includes(i))ORDER.push(i)});
-  G.forEach((_,i)=>{if(!ORDER.includes(i))ORDER.push(i)}); // الإدارات الجديدة تُلحق بآخر القائمة
+  ORDER=nav&&Array.isArray(nav.order)&&nav.order.length?nav.order.filter(i=>i>=0&&i<G.length):G.map((_,i)=>i);{if(!(nav&&Array.isArray(nav.order)&&nav.order.length))ORDER=ORDER.filter(i=>!G[i].after);let pend=G.map((_,i)=>i).filter(i=>!ORDER.includes(i));for(let k=0;k<6&&pend.length;k++)pend=pend.filter(i=>{const a=G[i].after?G.findIndex(x=>x.c===G[i].after):-1;const at=a>=0?ORDER.indexOf(a):-1;if(at<0)return true;ORDER.splice(at+1,0,i);return false});pend.forEach(i=>ORDER.push(i))}
   Object.keys(_mi).forEach(k=>delete _mi[k]);
 }
 const shownDept=i=>canDept(i)&&!G[i]?.hid;
@@ -2838,11 +2837,11 @@ const IV_MODS={"لوحة المخزون":"home","إدارة بيانات الم�
 const IV_EXT={"إدارة أصناف المستودعات":"items","محتويات المستودعات":"reports:bal","أصناف أوشكت على الانتهاء":"reports:low","كارت الصنف":"items","إدارة جرد المستودعات":"counts","إدارة عمليات الجرد":"counts","اعتماد الجرد":"counts","سجلات عمليات الجرد المعتمدة":"counts","سجلات عمليات الجرد المرفوضة مع ملاحظة":"counts","محاضر الجرد":"counts","سندات الاستلام":"movs","سندات الصرف":"movs","اعتماد إدخال للمستودع":"movs","إعدادات إدارة المستودعات":"settings","إدارة المستودعات":"whs"};
 const EX_MODS={"لوحة المصروفات التشغيلية":"home","إدارة بيانات المصروفات":"data","سجل المصروفات التشغيلية":"list","مصروف تشغيلي جديد":"new","اعتماد وسداد المصروفات":"appr","بنود الصرف":"cats","تقارير المصروفات التشغيلية":"reports","طباعة كشف المصروفات":"print","إعدادات المصروفات التشغيلية":"settings","دليل المصروفات التشغيلية":"guide"};
 const EX_EXT={"إدارة المصروفات النقدية":"list","مراجعة المصروفات النقدية":"appr","سجل المصروفات المكتملة":"list","إدارة مراكز التكلفة":"cats","إحصائيات المصروفات":"reports","إحصائيات تغير المصروفات":"reports:month","دفتر سجلات المصروفات":"list","تقرير كشف مركز تكلفة":"reports:cc","إصدار سند صرف عام":"new"};
-const TK_MODS={"لوحة متابعة المهام":"home","بيانات المهام":"data","إعدادات متابعة المهام":"settings","دليل متابعة المهام":"guide"};
+const TK_MODS={"لوحة متابعة المهام":"home","بيانات المهام":"data","مهامي":"data:mine","المهام المتأخرة":"data:late","تقارير المهام":"home","إعدادات متابعة المهام":"settings","دليل متابعة المهام":"guide"};
 const TK_EXT={"إدارة مهام الموظفين":"data","إنشاء مهمة عامة":"data","إنشاء مهمة لموظف":"data","سجل مهامي":"data","قواعد بيانات المهام":"data","المهام المعينة للإدارة":"data","تقارير المهام":"home","إحصائيات المهام":"home","إنجاز مهمة منتهية":"data","تحويل مهمة متعثرة":"data"};
 const FL_MODS={"لوحة المركبات وحركتها":"home","سجل المركبات":"vehs","إضافة مركبة":"vnew","حركة المركبات":"trips","تسجيل رحلة":"trip","السائقون":"drivers","الوقود والمسافات":"fuel","الصيانة والتجديدات":"mnt","تقارير المركبات":"reports","إعدادات المركبات":"settings","دليل المركبات":"guide"};
 const FL_EXT={"إدارة السيارات":"vehs","توفير السيارات":"trip","تسليم سيارة لموظف":"trip","استلام سيارة من موظف":"trips","قاعدة بيانات حركة السيارات":"trips","طلبات توفير السيارات":"trips","إدارة طلبات صيانة السيارات":"mnt","طلبات صيانة السيارات":"mnt","طلب توفير سيارة":"trip"};
-if(typeof IP==="object"&&!IP.FLT)IP.FLT=IP.car;
+if(typeof IP==="object"){if(!IP.FLT)IP.FLT=IP.car;if(!IP.AST)IP.AST=IP.monitor;if(!IP.PUR)IP.PUR=IP.cart;if(!IP.CTR)IP.CTR=IP.contract||IP.doc;if(!IP.OPX)IP.OPX=IP.receipt;if(!IP.TSK)IP.TSK=IP.clipCheck}
 const GOV_MODS={"مركز الحوكمة":"ind","إدارة الحوكمة":"ind","خارطة طريق الحوكمة":"ind","تسجيل إجابات المعايير":"ind","نموذج تقييم الحوكمة":"ind","تقرير تقييم الحوكمة":"ind","إدارة مرفقات التحقق":"miss","خارطة الملفات المؤسسية":"map"};
 function route(){
   const h=(location.hash||"#home").slice(1);let m;
@@ -2855,7 +2854,7 @@ function route(){
     const fl=FL_MODS[bn]||FL_EXT[bn];
     if(fl&&(FL_MODS[bn]||!(S.recs||[]).some(r=>r.g===+m[1]&&r.m===+m[2]&&!r.deleted))){if(fl==="vnew"){ui.flEdit=null;if(ui.flD)delete ui.flD.vnew}if(fl==="trip"&&ui.flD)delete ui.flD.trip;ui.flTab=fl;return{v:"flt",g:+m[1],m:+m[2]}}
     const tk=TK_MODS[bn]||TK_EXT[bn];
-    if(tk&&(TK_MODS[bn]||!(S.recs||[]).some(r=>r.g===+m[1]&&r.m===+m[2]&&!r.deleted))){ui.tkTab=tk;return{v:"tsk",g:+m[1],m:+m[2]}}
+    if(tk&&(TK_MODS[bn]||!(S.recs||[]).some(r=>r.g===+m[1]&&r.m===+m[2]&&!r.deleted))){const [t0,f0]=tk.split(":");ui.tkTab=t0;ui.tkD=ui.tkD||{};if(f0==="late")ui.tkD.data={st:"late"};else if(f0==="mine"){const nm=((S.meP&&S.meP.name)||"").trim(),e=tkC&&!tkC.err&&tkC.set?(tkC.set.emps||[]).find(x=>nm&&(x.n===nm||nm.includes(x.n))):null;ui.tkD.data=e?{emp:e.id}:{q:nm}}else if(t0==="data")ui.tkD.data={};return{v:"tsk",g:+m[1],m:+m[2]}}
     const ex=EX_MODS[bn]||EX_EXT[bn];
     if(ex&&(EX_MODS[bn]||!(S.recs||[]).some(r=>r.g===+m[1]&&r.m===+m[2]&&!r.deleted))){const [t,rp]=ex.split(":");ui.exTab=t;if(rp){ui.exD=ui.exD||{};(ui.exD.reports=ui.exD.reports||{}).rep=rp}if(t==="new"){ui.exEdit=null;if(ui.exD)delete ui.exD.new}return{v:"exp",g:+m[1],m:+m[2]}}
     const iv=IV_MODS[bn]||IV_EXT[bn];
@@ -3235,7 +3234,7 @@ async function setOrg(id){S.org=id;try{localStorage.setItem("ds.org",id)}catch(e
  * الترتيب لكل مستخدم: S.prefs.navOrder (الإدارات) · S.prefs.modOrder["إدارة:عنوان"] (الوحدات) · S.prefs.topOrder (الروابط السريعة)
  */
 function roSort(list,key,sub){let o=S.prefs&&S.prefs[key];if(sub!=null)o=o&&o[sub];if(!Array.isArray(o)||!o.length)return list.slice();
-  const pos=new Map(o.map((k,i)=>[String(k),i]));return list.slice().sort((a,b)=>(pos.has(String(a))?pos.get(String(a)):1e3+list.indexOf(a))-(pos.has(String(b))?pos.get(String(b)):1e3+list.indexOf(b)))}
+  const pos=new Map(o.map((k,i)=>[String(k),i]));const fb=(a,d=0)=>{if(key==="navOrder"&&d<6){const g=G[a];if(g&&g.after){const ai=G.findIndex(x=>x.c===g.after);if(ai>=0)return (pos.has(String(ai))?pos.get(String(ai)):fb(ai,d+1))+0.01}}return 1e3+list.indexOf(a)};return list.slice().sort((a,b)=>(pos.has(String(a))?pos.get(String(a)):fb(a))-(pos.has(String(b))?pos.get(String(b)):fb(b)))}
 function roCustom(){const p=S.prefs||{};return !!((p.navOrder&&p.navOrder.length)||(p.topOrder&&p.topOrder.length)||(p.modOrder&&Object.keys(p.modOrder).length))}
 let roDrag=null,roTimer=null,roStart=null,roJust=false;
 const RO_HOLD=650;
@@ -3775,7 +3774,7 @@ function renderNav(){
     const c=i?A.filter(r=>r.g===i).length:0;const secs=secsOf(i);
     const dHit=hit(g.n);
     const body=secs.map(([t,ids,sic])=>{const mm=ids.filter(m=>dHit||hit(t)||hit(g.items[m]));if(!mm.length)return "";
-      const ord=roSort(mm,"modOrder",i+":"+t),same=ord.find(m=>g.items[m]===t),lead=same!=null?same:ord[0],secOn=(R.v==="mod"||R.v==="gov"||R.v==="assets"||R.v==="purch"||R.v==="ctr"||R.v==="inv"||R.v==="exp"||R.v==="tsk"||R.v==="flt")&&R.g===i&&R.m===lead,rest=ord.filter(m=>m!==same);
+      const ord=roSort(mm,"modOrder",i+":"+t),same=ord.length===1?ord[0]:ord.find(m=>g.items[m]===t),lead=same!=null?same:ord[0],secOn=(R.v==="mod"||R.v==="gov"||R.v==="assets"||R.v==="purch"||R.v==="ctr"||R.v==="inv"||R.v==="exp"||R.v==="tsk"||R.v==="flt")&&R.g===i&&R.m===lead,rest=ord.filter(m=>m!==same);
       return `<div class="nsg"><a href="#m${i}-${lead}" class="nsec nsecl ${secOn?"on":""}" title="فتح ${esc(g.items[lead])}"><span class="nsi">${ico(secIco(t,sic))}</span><span class="nst">${hl(t)}</span><em>${mm.length}</em></a><div class="nmods" data-rg="${i}:${esc(t)}">${rest.map(m=>{const k=i?A.filter(r=>r.g===i&&r.m===m).length:0;const on=(R.v==="mod"||R.v==="gov"||R.v==="assets"||R.v==="purch"||R.v==="ctr"||R.v==="inv"||R.v==="exp"||R.v==="tsk"||R.v==="flt")&&R.g===i&&R.m===m;
         return `<a href="#m${i}-${m}" data-ro="mod" data-k="${m}" class="sub ${on?"on":""}" title="${esc(idesc(i,m))}"${on?' aria-current="page"':""}><span class="si">${ico(modIco(i,m))}</span><span class="sn">${hl(g.items[m])}</span>${k?`<span class="cnt">${k}</span>`:""}</a>`}).join("")}</div></div>`}).join("");
     if(nq&&!dHit&&!body)return "";shown++;
@@ -4984,7 +4983,7 @@ function asXls(k){const s=asC.set;if(k==="register"){const L=asFilt(asC.assets,a
   if(k==="moves"){exportXlsx("حركات العهد",[{name:"الحركات",head:["رقم الحركة","التاريخ","النوع","رقم الأصل","الأصل","من","إلى","الإعادة المتوقعة","الحالة","المحضر","ملاحظات"],rows:asC.moves.map(m=>{const a=asAst(m.asset)||{};return[m.no,m.date,(AS_MV[m.type]||[m.type])[0],a.no||"",a.name||"",asWho(m.from).replace(/&[^;]+;/g,""),asWho(m.to).replace(/&[^;]+;/g,""),m.due||"",asN(s.conds,m.cond),m.form?"مرفق":"",m.note||""]})}]);return}
   if(k==="emps"||k==="emp"){const E=k==="emp"?[asEmp(asD("emps").emp)]:asC.emps;exportXlsx("عهد الموظفين",[{name:"العهد",head:["الرقم الوظيفي","الموظف","الإدارة","رقم الأصل","الأصل","تاريخ التسليم","الإعادة المتوقعة","المتابعة"],rows:E.flatMap(e=>asC.assets.filter(a=>a.status==="custody"&&a.holder===e.id).map(a=>[e.no,e.name,asN(s.depts,e.dept),a.no,a.name,a.issued||"",a.due||"",({late:"متأخرة",soon:"قريبة الإعادة",ok:"سارية",open:"مفتوحة"})[asDue(a).k]||""]))}]);return}
   if(k==="rep"){const kk=asD("reports").rep||"status",R0=AS_REPS.find(x=>x[0]===kk),D=asRepData(kk);exportXlsx(R0[1],[{name:R0[1].slice(0,30),head:D.head,rows:D.rows.map(r=>r.slice(0,D.head.length))}])}}
-function asWhs(t){const g=(BASE_G||[]).findIndex(x=>x.c==="WHS");if(g<0)return{};const nm=Object.keys(AST_MODS).find(k=>AST_MODS[k]===(t==="guide"?"home":t));const m=BASE_G[g].items.indexOf(nm);return{g,m:m<0?undefined:m}}
+function asWhs(t){const g=(BASE_G||[]).findIndex(x=>x.c==="AST");if(g<0)return{};const nm=Object.keys(AST_MODS).find(k=>AST_MODS[k]===(t==="guide"?"home":t));const m=BASE_G[g].items.indexOf(nm);return{g,m:m<0?undefined:m}}
 function asBook(a){const c=+a.cost;if(!c||!a.date||!(+a.life>0))return null;const sal=Math.min(c,+a.salvage||0),age=Math.max(0,(new Date(todayISO())-new Date(a.date))/(365.25*864e5)),r=Math.min(1,age/(+a.life)),dep=(c-sal)*r;return{book:Math.round((c-dep)*100)/100,dep:Math.round(dep*100)/100,pct:Math.round(r*100),age:Math.round(age*10)/10}}
 function asWarr(a){if(!a.warranty||a.status==="out")return null;const d=Math.round((new Date(a.warranty)-new Date(todayISO()))/864e5);return d<0?{k:"exp",d}:d<=(asC.set.warrantyDays||30)?{k:"soon",d}:null}
 function asCount(){const s=asC.set,C=asC.counts||[];const c=ui.asCount&&C.find(x=>x.id===ui.asCount);
@@ -5035,7 +5034,7 @@ function prStChip(r){if(prLate(r))return `<span class="ach" style="--c:#d64545">
 function prPriChip(id){const p=(prC.set.pris||[]).find(x=>x.id===id)||{n:"—",c:"#64748b"};return `<span class="ach" style="--c:${p.c}">${ico("flag")} ${esc(p.n)}</span>`}
 async function prLoad(){if(prL)return;prL=true;try{prC=await call("prGet",{});prC.__org=S.org||""}catch(e){prC={err:e.message||"تعذّر التحميل",__org:S.org||""}}finally{prL=false;if(R.v==="purch")render()}}
 function prApply(d){if(d){d.__org=S.org||"";prC=d;render();return d}return null}
-function prWhs(t){const g=(BASE_G||[]).findIndex(x=>x.c==="WHS");if(g<0)return{};const nm=Object.keys(PR_MODS).find(k=>PR_MODS[k]===(t==="card"?"list":t==="guide"?"home":t));const m=BASE_G[g].items.indexOf(nm);return{g,m:m<0?undefined:m}}
+function prWhs(t){const g=(BASE_G||[]).findIndex(x=>x.c==="PUR");if(g<0)return{};const nm=Object.keys(PR_MODS).find(k=>PR_MODS[k]===(t==="card"?"list":t==="guide"?"home":t));const m=BASE_G[g].items.indexOf(nm);return{g,m:m<0?undefined:m}}
 function prGo(t,extra){ui.prTab=t;Object.assign(ui,extra||{});Object.assign(R,{g:undefined,m:undefined},prWhs(t));const h="#purch/"+t;if(location.hash!==h)history.pushState(null,"",h);if(R.g!=null&&!navOpen.has(R.g))navOpen.add(R.g);render();window.scrollTo({top:0,behavior:"smooth"})}
 function prHead(t,sub,acts=""){const T=PR_TABS.find(x=>x[0]===t)||(t==="card"?["card","doc","بطاقة الطلب","#1d5fd6"]:["new","filePlus","طلب شراء جديد","#e08a1e"]);
   return `<div class="ahead"><div class="aht">${as3(T[1],T[3],"lg")}<div><small>المشتريات · PROCUREMENT</small><h1>${t==="new"?(ui.prEdit?"تعديل طلب شراء":"طلب شراء جديد"):T[2]}</h1><p>${sub}</p></div></div><div class="aha">${acts}<button class="btn" data-phelp="${t}">${ico("alert")} بيانات توضيحية</button></div></div>`}
@@ -5280,7 +5279,7 @@ function ctObK(b){if(b.status!=="open")return b.status;const d=Math.round((new D
 function ctObChip(b){const k=ctObK(b),d=Math.round((new Date(b.due)-new Date(todayISO()))/864e5);return {late:`<span class="ach" style="--c:#d64545">${ico("alert")} مفتوح متأخر ${NF.format(-d)} يوم</span>`,soon:`<span class="ach" style="--c:#e08a1e">${ico("clock")} خلال ${NF.format(d)} يوم</span>`,open:`<span class="ach" style="--c:#2f6fdf">${ico("clock")} مفتوح</span>`,done:`<span class="ach" style="--c:#13a06f">${ico("check")} مكتمل</span>`,cancelled:`<span class="ach" style="--c:#64748b">${ico("xcircle")} ملغى</span>`}[k]}
 async function ctLoad(){if(ctL)return;ctL=true;try{ctC=await call("ctGet",{});ctC.__org=S.org||""}catch(e){ctC={err:e.message||"تعذّر التحميل",__org:S.org||""}}finally{ctL=false;if(R.v==="ctr")render()}}
 function ctApply(d){if(d){d.__org=S.org||"";ctC=d;render();return d}return null}
-function ctWhs(t){const g=(BASE_G||[]).findIndex(x=>x.c==="PRJ");if(g<0)return{};const nm=Object.keys(CT_MODS).find(k=>CT_MODS[k]===(t==="card"?"list":t==="guide"?"home":t));const m=BASE_G[g].items.indexOf(nm);return{g,m:m<0?undefined:m}}
+function ctWhs(t){const g=(BASE_G||[]).findIndex(x=>x.c==="CTR");if(g<0)return{};const nm=Object.keys(CT_MODS).find(k=>CT_MODS[k]===(t==="card"?"list":t==="guide"?"home":t));const m=BASE_G[g].items.indexOf(nm);return{g,m:m<0?undefined:m}}
 function ctGo(t,extra){ui.ctTab=t;Object.assign(ui,extra||{});Object.assign(R,{g:undefined,m:undefined},ctWhs(t));const h="#ctr/"+t;if(location.hash!==h)history.pushState(null,"",h);if(R.g!=null&&!navOpen.has(R.g))navOpen.add(R.g);render();window.scrollTo({top:0,behavior:"smooth"})}
 function ctHead(t,sub,acts=""){const T=CT_TABS.find(x=>x[0]===t)||["card","doc","بطاقة العقد","#1d5fd6"];
   return `<div class="ahead"><div class="aht">${as3(T[1],T[3],"lg")}<div><small>العقود والالتزامات · CONTRACTS</small><h1>${t==="new"&&ui.ctEdit?"تعديل عقد":T[2]}</h1><p>${sub}</p></div></div><div class="aha">${acts}<button class="btn" data-chelp="${t}">${ico("alert")} بيانات توضيحية</button></div></div>`}
@@ -5899,7 +5898,7 @@ function exFilt(L,f){const q=(f.q||"").trim();return L.filter(e=>(!f.dept||e.dep
 function exTot(L){const A=L.filter(e=>e.status==="approved"),ap=A.reduce((a,e)=>a+e.amount,0),pd=A.reduce((a,e)=>a+exPaid(e),0);return{ap:Math.round(ap*100)/100,pd:Math.round(pd*100)/100,rem:Math.round((ap-pd)*100)/100,pend:L.filter(e=>e.status==="pending").length,late:A.filter(e=>exLate(e)).length,paidN:A.filter(e=>exPS(e)==="paid").length,n:L.length,ratio:ap?Math.round(pd/ap*100):0}}
 async function exLoad(){if(exL)return;exL=true;try{exC=await call("exGet",{});exC.__org=S.org||""}catch(e){exC={err:e.message||"تعذّر التحميل",__org:S.org||""}}finally{exL=false;if(R.v==="exp")render()}}
 function exApply(d){if(d){d.__org=S.org||"";exC=d;render();return d}return null}
-function exWhs(t){const g=(BASE_G||[]).findIndex(x=>x.c==="FIN");if(g<0)return{};const tt={card:"list",print:"print"}[t]||t;const nm=Object.keys(EX_MODS).find(k=>EX_MODS[k]===tt);const m=nm?BASE_G[g].items.indexOf(nm):-1;return{g,m:m<0?undefined:m}}
+function exWhs(t){const g=(BASE_G||[]).findIndex(x=>x.c==="OPX");if(g<0)return{};const tt={card:"list",print:"print"}[t]||t;const nm=Object.keys(EX_MODS).find(k=>EX_MODS[k]===tt);const m=nm?BASE_G[g].items.indexOf(nm):-1;return{g,m:m<0?undefined:m}}
 function exGo(t,extra){ui.exTab=t;Object.assign(ui,extra||{});Object.assign(R,{g:undefined,m:undefined},exWhs(t));const h="#exp/"+t;if(location.hash!==h)history.pushState(null,"",h);if(R.g!=null&&!navOpen.has(R.g))navOpen.add(R.g);render();window.scrollTo({top:0,behavior:"smooth"})}
 function exHead(t,sub,acts=""){const T=EX_TABS.find(x=>x[0]===t),X=EX_X[t],ic=T?T[1]:X[0],l=T?T[2]:X[1],c=T?T[3]:X[2];
   return `<div class="ahead"><div class="aht">${as3(ic,c,"lg")}<div><small>المصروفات التشغيلية · OPEX</small><h1>${t==="new"&&ui.exEdit?"تعديل مصروف":l}</h1><p>${sub}</p></div></div><div class="aha">${acts}<button class="btn" data-ehelp="${t}">${ico("alert")} بيانات توضيحية</button></div></div>`}
@@ -6162,7 +6161,7 @@ const tkSoon=t=>tkOpen(t)&&t.due&&t.due>=todayISO()&&tkDays(t.due,todayISO())<=(
 const tkChip=(k)=>`<span class="tkst" style="--c:${TK_STS[k][1]}">${TK_STS[k][0]}</span>`;
 async function tkLoad(){if(tkL)return;tkL=true;try{tkC=await call("tskGet",{});tkC.__org=S.org||""}catch(e){tkC={err:e.message||"تعذّر التحميل",__org:S.org||""}}finally{tkL=false;if(R.v==="tsk")render()}}
 function tkApply(d){if(d){d.__org=S.org||"";tkC=d;render();return d}return null}
-function tkWhs(t){const g=(BASE_G||[]).findIndex(x=>x.c==="EXE");if(g<0)return{};const nm=Object.keys(TK_MODS).find(k=>TK_MODS[k]===t);const m=nm?BASE_G[g].items.indexOf(nm):-1;return{g,m:m<0?undefined:m}}
+function tkWhs(t){const g=(BASE_G||[]).findIndex(x=>x.c==="TSK");if(g<0)return{};const nm=Object.keys(TK_MODS).find(k=>TK_MODS[k]===t);const m=nm?BASE_G[g].items.indexOf(nm):-1;return{g,m:m<0?undefined:m}}
 function tkGo(t,extra){ui.tkTab=t;Object.assign(ui,extra||{});Object.assign(R,{g:undefined,m:undefined},tkWhs(t));const h="#tsk/"+t;if(location.hash!==h)history.pushState(null,"",h);if(R.g!=null&&!navOpen.has(R.g))navOpen.add(R.g);render();window.scrollTo({top:0,behavior:"smooth"})}
 function tkHead(t,title,sub,acts=""){const T=TK_TABS.find(x=>x[0]===t);return `<div class="tkhd"><div class="tkht">${as3(T[1],T[3],"lg")}<div><h1>${title}</h1><p>${sub}</p></div></div><div class="aha">${acts}<span class="tksamp" ${tkC.tasks.some(x=>x.sample)?"":"hidden"}>بيانات تجريبية</span><button class="btn" data-khelp="${t}">${ico("alert")} مساعدة</button></div></div>`}
 function tkTabsBar(t){return `<nav class="atabs" aria-label="أقسام المهام">${TK_TABS.map(([k,ic,l,c])=>`<a href="#tsk/${k}" data-ktab="${k}" class="${t===k?"on":""}" style="--c:${c}">${as3(ic,c,"xs")}<span>${l}</span></a>`).join("")}</nav>`}
