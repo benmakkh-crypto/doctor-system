@@ -3959,7 +3959,7 @@ function viewOrgs(){
      ${L.length?(view==="table"?table:`<div class="ogrid">${L.map(card).join("")}</div>`):`<div class="tw"><div class="empty"><b>لا مؤسسات مطابقة</b></div></div>`}</section>`}];
   return `<div class="crow">${crumb([["الكشاف"]])}${qRibbon()}</div>
    <div class="head"><div><h1>الكشاف: دليل المؤسسات</h1><p>كل مؤسسة تعمل في نافذ بحساباتها وبياناتها المنفصلة، وأنت تراها جميعًا من هنا.</p></div>
-    <div class="actions">${ro?`<span class="badge tone-info">اطلاع فقط</span>`:`<button class="btn pri" data-onew>${ico("building")} مؤسسة جديدة</button><button class="btn ${ui.oarch?"pri":""}" data-oarch>${ico("trash")} ${ui.oarch?"العودة إلى المؤسسات":"المحذوفة ("+NF.format((orgsCache||[]).filter(o=>o.status==="archived").length)+")"}</button><button class="btn" data-oimport>${ico("down")} استيراد من Excel</button><button class="btn" data-otpl>نموذج الاستيراد</button>`}${repBtn("orgs")}</div></div>
+    <div class="actions">${ro?`<span class="badge tone-info">اطلاع فقط</span>`:`<button class="btn pri" data-onew>${ico("building")} مؤسسة جديدة</button><button class="btn ${ui.oarch?"pri":""}" data-oarch>${ico("trash")} ${ui.oarch?"العودة إلى المؤسسات":"المحذوفة ("+NF.format((orgsCache||[]).filter(o=>o.status==="archived").length)+")"}</button><button class="btn" data-oimport>${ico("down")} استيراد من Excel</button><button class="btn" data-otpl>نموذج الاستيراد</button>${S.platform?`<button class="btn" data-odemo="1">${ico("filePlus")} 100 مؤسسة تجريبية</button>${(orgsCache||[]).some(o=>o.demo)?`<button class="btn" data-odemo="0">${ico("trash")} حذف التجريبية (${NF.format((orgsCache||[]).filter(o=>o.demo).length)})</button>`:""}`:""}`}${repBtn("orgs")}</div></div>
    ${layoutPage("orgs",W)}`;
 }
 function bindOrgs(main){
@@ -3970,6 +3970,7 @@ function bindOrgs(main){
   const opq=$("#opq");if(opq)opq.oninput=()=>{ui.opq=opq.value;const pos=opq.selectionStart;re();const n=$("#opq");if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}};
   [["#ost","ost"],["#oty","oty"],["#org2","org2"],["#oar","oar"],["#osc","osc"]].forEach(([s,k])=>{const e=$(s);if(e)e.onchange=()=>{ui[k]=e.value;re()}});
   main.querySelectorAll("[data-oview]").forEach(b=>b.onclick=()=>{ui.oview=b.dataset.oview;re()});
+  main.querySelectorAll("[data-odemo]").forEach(b=>b.onclick=()=>{const add=b.dataset.odemo==="1";confirmBox(add?"إضافة 100 مؤسسة تجريبية":"حذف المؤسسات التجريبية",add?"تُضاف 100 مؤسسة بأسماء مبتكرة وبيانات كاملة (النوع والمجال والمنطقة والمدير والرؤية والرسالة) دون إنشاء حسابات دخول، وتُعلَّم «تجريبية» لتُحذف بزر واحد.":"تُحذف المؤسسات التجريبية التي لا حسابات ولا معاملات فيها، وتُؤرشف التي استُخدمت.",add?"إضافة":"حذف",async()=>{const d=await act("demoOrgs",add?{count:100}:{clear:1},"");if(d){toast(add?`أُضيفت ${NF.format(d.added)} مؤسسة تجريبية`:`حُذفت ${NF.format(d.removed)}${d.archived?` وأُرشفت ${NF.format(d.archived)}`:""}`);orgsCache=null;opM={};render()}})});
   main.querySelectorAll("[data-osel]").forEach(c=>c.onchange=()=>{c.checked?ui.osel.add(c.dataset.osel):ui.osel.delete(c.dataset.osel);re()});
   const all=main.querySelector("[data-oselall]");if(all)all.onchange=()=>{orgFiltered().forEach(o=>all.checked?ui.osel.add(o.id):ui.osel.delete(o.id));re()};
   const cl=main.querySelector("[data-oselclear]");if(cl)cl.onclick=()=>{ui.osel.clear();re()};

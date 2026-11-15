@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.22.2';
+const APP_VERSION = '4.22.3';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -482,7 +482,7 @@ function inUserScope_(me, u) {
   if (isPlatform_(me)) return CUR_ORG === '*' || uo === CUR_ORG || uo === '*';
   return uo === me.org;
 }
-const WRITE_ACTIONS = ['wsSave', 'wsDraw', 'wsSet', 'wsSms', 'wsUpload', 'wsSamples', 'pjSave', 'pjLedger', 'pjTask', 'pjKpi', 'pjAct', 'pjSup', 'pjSms', 'pjNeed', 'pjRh', 'pjSet', 'pjUpload', 'pjSamples', 'fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples', 'tskSave', 'tskSet', 'tskSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+const WRITE_ACTIONS = ['demoOrgs', 'wsSave', 'wsDraw', 'wsSet', 'wsSms', 'wsUpload', 'wsSamples', 'pjSave', 'pjLedger', 'pjTask', 'pjKpi', 'pjAct', 'pjSup', 'pjSms', 'pjNeed', 'pjRh', 'pjSet', 'pjUpload', 'pjSamples', 'fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples', 'tskSave', 'tskSet', 'tskSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -656,7 +656,7 @@ const ACTIONS = {
   prGet: actPrGet_, prSave: actPrSave_, prDecide: actPrDecide_, prSupply: actPrSupply_, prReceive: actPrReceive_, prClose: actPrClose_, prDel: actPrDel_, prSup: actPrSup_, prSet: actPrSet_, prUpload: actPrUpload_, prFile: actPrFile_, prSamples: actPrSamples_,
   ctGet: actCtGet_, ctSave: actCtSave_, ctDel: actCtDel_, ctInst: actCtInst_, ctPay: actCtPay_, ctOb: actCtOb_, ctChg: actCtChg_, ctSet: actCtSet_, ctUpload: actCtUpload_, ctFile: actCtFile_, ctSamples: actCtSamples_,
   invGet: actInvGet_, invItem: actInvItem_, invWh: actInvWh_, invMov: actInvMov_, invTr: actInvTr_, invCount: actInvCount_, invSet: actInvSet_, invUpload: actInvUpload_, invFile: actInvFile_, invSamples: actInvSamples_,
-  wsSave: actWsSave_, wsDraw: actWsDraw_, wsSet: actWsSet_, wsSms: actWsSms_, wsUpload: actWsUpload_, wsSamples: actWsSamples_, wsGet: actWsGet_, wsFile: actWsFile_,
+  demoOrgs: actDemoOrgs_, wsSave: actWsSave_, wsDraw: actWsDraw_, wsSet: actWsSet_, wsSms: actWsSms_, wsUpload: actWsUpload_, wsSamples: actWsSamples_, wsGet: actWsGet_, wsFile: actWsFile_,
   pjSave: actPjSave_, pjLedger: actPjLedger_, pjTask: actPjTask_, pjKpi: actPjKpi_, pjAct: actPjAct_, pjSup: actPjSup_, pjSms: actPjSms_, pjNeed: actPjNeed_, pjRh: actPjRh_, pjSet: actPjSet_, pjUpload: actPjUpload_, pjSamples: actPjSamples_, pjGet: actPjGet_, pjFile: actPjFile_,
   exGet: actExGet_, exSave: actExSave_, exPay: actExPay_, exCat: actExCat_, exSet: actExSet_, exUpload: actExUpload_, exFile: actExFile_, exSamples: actExSamples_, opsGet: actOpsGet_, tskGet: actTskGet_, tskSave: actTskSave_, tskSet: actTskSet_, tskSamples: actTskSamples_,
   fltGet: actFltGet_, fltVeh: actFltVeh_, fltDrv: actFltDrv_, fltTrip: actFltTrip_, fltFuel: actFltFuel_, fltMnt: actFltMnt_, fltSet: actFltSet_, fltUpload: actFltUpload_, fltFile: actFltFile_, fltSamples: actFltSamples_,
@@ -2884,6 +2884,50 @@ function actWsSamples_(me, p) {
   audit_(me.username, 'بيانات توضيحية للموقع', '', '', ''); govSave_(org, '_web', st); return wsOut_(st);
 }
 function wsSum_(org) { const st = wsLoad_(org), c = st.c; return { news: c.news.length, inbox: c.inbox.filter(function (r) { return r.st === 'new'; }).length, accounts: c.accounts.length, visits: c.visits.length, partners: c.partnerships.filter(function (r) { return !r.d2 || r.d2 >= today_(); }).length, events: c.events.length, off: st.set.site.status === 'on' ? 0 : 1 }; }
+
+/* ================= مؤسسات تجريبية بأسماء مبتكرة (4.22.3) ================= */
+// أسماء مركّبة مبتكرة (اسم شعري + وصف + مجال) لا تُنسب لجهة قائمة، وتُعلَّم demo لتُحذف بزر واحد.
+const DEMO_A = ['أفنان', 'رُبى', 'شذا', 'وارِف', 'سنا', 'مَيسم', 'رواء', 'أريج', 'غيث', 'بيارق', 'مرافئ', 'سحائب', 'قطوف', 'دانة', 'نبراس', 'جادة', 'رابية', 'سواقي', 'ضياء', 'وهج', 'نسائم', 'تلال', 'مرابع', 'لُجين', 'زُهى', 'أثير', 'سُرى', 'هَتون', 'مزن', 'يُنع'];
+const DEMO_B = ['الوارفة', 'المضيئة', 'الزاهرة', 'الندية', 'الهادئة', 'الممتدة', 'الباسقة', 'الدافئة', 'النيّرة', 'الواعدة'];
+const DEMO_F = [['للتنمية الأسرية', 'اجتماعي وأسري'], ['لرعاية الأيتام', 'رعاية الأيتام'], ['للخدمات الصحية', 'صحي'], ['للتعليم المستمر', 'تعليمي'], ['لتحفيظ القرآن الكريم', 'تحفيظ القرآن'], ['للتمكين الاقتصادي', 'تنموي وتمكين'], ['للإسكان الميسّر', 'إسكاني'], ['لرعاية كبار السن', 'كبار السن'], ['لذوي الإعاقة', 'ذوي الإعاقة'], ['للإغاثة والإطعام', 'إغاثي'], ['للبيئة والتشجير', 'بيئي'], ['لتمكين الشباب', 'شبابي ورياضي'], ['للمرأة والطفل', 'المرأة والطفل'], ['للتقنية والتحول الرقمي', 'تقني'], ['للتدريب المهني', 'مهني']];
+const DEMO_PRE = [['جمعية', 'جمعية خيرية', 'القطاع غير الربحي'], ['مؤسسة', 'مؤسسة أهلية', 'القطاع غير الربحي'], ['وقف', 'وقف', 'القطاع الوقفي'], ['جمعية', 'جمعية تعاونية', 'القطاع غير الربحي'], ['جمعية', 'جمعية مهنية', 'القطاع غير الربحي']];
+const DEMO_CITY = [['منطقة الرياض', 'الرياض'], ['منطقة مكة المكرمة', 'جدة'], ['منطقة مكة المكرمة', 'مكة المكرمة'], ['منطقة المدينة المنورة', 'المدينة المنورة'], ['المنطقة الشرقية', 'الدمام'], ['منطقة القصيم', 'بريدة'], ['منطقة عسير', 'أبها'], ['منطقة تبوك', 'تبوك'], ['منطقة حائل', 'حائل'], ['منطقة جازان', 'جازان'], ['منطقة نجران', 'نجران'], ['منطقة الباحة', 'الباحة'], ['منطقة الجوف', 'سكاكا'], ['منطقة الحدود الشمالية', 'عرعر'], ['المنطقة الشرقية', 'الأحساء'], ['منطقة مكة المكرمة', 'الطائف']];
+const DEMO_FIRST = ['عبدالرحمن', 'نواف', 'ريان', 'مشاري', 'هتان', 'بندر', 'يزيد', 'فيصل', 'عمار', 'زياد', 'لمى', 'غدير', 'شهد', 'جود', 'رهف', 'دانة', 'ميار', 'وعد', 'لين', 'تالا'];
+const DEMO_LAST = ['المطيري', 'الدوسري', 'الشمري', 'العنزي', 'الغامدي', 'الزهراني', 'القرني', 'الحارثي', 'السبيعي', 'البقمي', 'الرشيدي', 'الجهني', 'العمري', 'الشهراني', 'المالكي'];
+function actDemoOrgs_(me, p) {
+  needPlatform_(me);
+  if (p.clear) {
+    const users = table_('users').rows, recs = loadAllRecords_();
+    let del = 0, arch = 0;
+    loadOrgs_().filter(function (o) { return o.demo; }).slice().reverse().forEach(function (o) {
+      const used = users.some(function (u) { return String(u.org || '') === o.id; }) || recs.some(function (r) { return r.org === o.id; });
+      if (used) { o.status = 'archived'; saveOrgRow_(o); arch++; return; }
+      const row = findRow_('orgs', o.id); if (row) { sheet_('orgs').deleteRow(row); del++; } ORGS_CACHE_ = null;
+    });
+    ORGS_CACHE_ = null; audit_(me.username, 'حذف المؤسسات التجريبية', '', '', del + ' محذوفة · ' + arch + ' مؤرشفة'); return { removed: del, archived: arch };
+  }
+  const n = Math.max(1, Math.min(200, parseInt(p.count, 10) || 100));
+  const names = {}, codes = {}; loadOrgs_().forEach(function (o) { names[o.name] = 1; codes[o.code] = 1; });
+  let seq = 1; while (codes['DM' + astPad_(seq, 3)]) seq++;
+  const out = []; let k = 0, guard = 0;
+  while (out.length < n && guard < 5000) {
+    guard++; const a = DEMO_A[(k * 7) % DEMO_A.length], b = DEMO_B[(k * 3 + Math.floor(k / DEMO_A.length)) % DEMO_B.length], f = DEMO_F[(k * 11) % DEMO_F.length], pr = DEMO_PRE[(k * 2 + Math.floor(k / 5)) % DEMO_PRE.length], c = DEMO_CITY[(k * 13) % DEMO_CITY.length]; k++;
+    const name = pr[0] + ' ' + a + ' ' + b + ' ' + f[0] + (pr[1] === 'جمعية تعاونية' ? ' التعاونية' : pr[1] === 'جمعية مهنية' ? ' المهنية' : '') + ' بـ' + c[1];
+    if (names[name]) continue; names[name] = 1;
+    while (codes['DM' + astPad_(seq, 3)]) seq++; const code = 'DM' + astPad_(seq++, 3); codes[code] = 1;
+    const i = out.length, yr = 1995 + (i * 7) % 29, mgr = DEMO_FIRST[i % DEMO_FIRST.length] + ' ' + DEMO_LAST[(i * 3) % DEMO_LAST.length], chair = DEMO_FIRST[(i + 7) % DEMO_FIRST.length] + ' ' + DEMO_LAST[(i * 5 + 2) % DEMO_LAST.length];
+    const o = { id: 'o' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), code: code, name: name, status: i % 17 === 16 ? 'suspended' : 'active', created: now_(), demo: true,
+      type: pr[1], sector: pr[2], areas: f[1] + (i % 3 === 0 ? '، تنموي وتمكين' : ''), region: c[0], city: c[1], district: 'حي ' + ['النخيل', 'الروضة', 'الياسمين', 'الصفا', 'العزيزية', 'الشفا', 'المروج', 'الفيحاء'][i % 8],
+      license: String(1000 + i * 37), founded: yr + '-0' + (1 + i % 9) + '-1' + (i % 9), licenseExpiry: (2027 + i % 3) + '-12-31', manager: mgr, chair: chair,
+      phone: '01' + astPad_(1100000 + i * 911, 7).slice(0, 7) + '0', email: 'info@' + code.toLowerCase() + '.example.org', managerEmail: 'ceo@' + code.toLowerCase() + '.example.org',
+      employees: String(4 + (i * 13) % 90), beneficiaries: String(120 + (i * 377) % 9000),
+      vision: 'أن نكون نموذجًا رائدًا ' + f[0].replace(/^ل/, 'في ') + ' في ' + c[1] + '.', mission: 'تقديم برامج نوعية مستدامة ' + f[0] + ' بشراكات فاعلة وكفاءة عالية.',
+      goals: 'رفع جودة الخدمات\nتوسيع قاعدة المستفيدين\nتنمية الموارد المالية\nبناء شراكات استراتيجية', notes: 'مؤسسة تجريبية بأسماء مبتكرة لأغراض العرض والتدريب.',
+      settings: { threshold: 5000, sod: false, notify: false, publicStats: false } };
+    saveOrgRow_(o); out.push({ code: code, name: name });
+  }
+  audit_(me.username, 'إضافة مؤسسات تجريبية', '', '', String(out.length)); return { added: out.length, orgs: out };
+}
 
 function aggOrgs_(me, load, recKeys, extra) {
   if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');

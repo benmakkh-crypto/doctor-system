@@ -578,5 +578,11 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
   r = AM(T, "wsSamples", { clear: 1 }); ok(r.data.c.menu.length === 2 && r.data.c.visits.length === 1, "website sample data cleared");
   ok(AM(T, "opsGet").data.tot.web.visits === 1, "website in operational summary");
   ok(A.api(T, "wsGet", { __org: "*" }).data.all === 1, "platform overview of website"); }
+// مؤسسات تجريبية
+{ const n0 = A.api(T, "listOrgs").data.length; let r = A.api(T, "demoOrgs", { count: 100 }); ok(r.ok && r.data.added === 100, "100 demo orgs added");
+  const L = A.api(T, "listOrgs").data, D = L.filter(o => o.demo); ok(L.length === n0 + 100 && new Set(D.map(o => o.name)).size === 100 && new Set(D.map(o => o.code)).size === 100, "demo org names and codes unique");
+  ok(D.every(o => o.type && o.city && o.manager && o.vision && /^DM\d{3}$/.test(o.code)), "demo orgs have full profiles");
+  ok(A.api(T, "listUsers").data.every(u => !D.some(o => o.id === u.org)), "no login accounts created for demo orgs");
+  r = A.api(T, "demoOrgs", { clear: 1 }); ok(r.data.removed === 100 && A.api(T, "listOrgs").data.length === n0, "demo orgs removed"); }
 console.log("server tests passed:", pass);
 module.exports = {};
