@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.21.0';
+const APP_VERSION = '4.22.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -465,7 +465,7 @@ function api(token, action, payload) {
   } catch (e) { return fail_(e); }
 }
 /** إجراءات تحتاج مؤسسة محددة (لا تُنفذ في عرض «كل المؤسسات»). */
-const ORG_REQUIRED = ['pjSave', 'pjLedger', 'pjTask', 'pjKpi', 'pjAct', 'pjSup', 'pjSms', 'pjNeed', 'pjRh', 'pjSet', 'pjUpload', 'pjSamples', 'pjFile', 'saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'astCount', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'tskSave', 'tskSet', 'tskSamples', 'fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples'];
+const ORG_REQUIRED = ['wsSave', 'wsDraw', 'wsSet', 'wsSms', 'wsUpload', 'wsSamples', 'wsFile', 'pjSave', 'pjLedger', 'pjTask', 'pjKpi', 'pjAct', 'pjSup', 'pjSms', 'pjNeed', 'pjRh', 'pjSet', 'pjUpload', 'pjSamples', 'pjFile', 'saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'astCount', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'tskSave', 'tskSet', 'tskSamples', 'fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples'];
 function isPlatform_(me) { return me.role === 'admin' && me.org === '*'; }
 /** عضو المنصة: حساب على مستوى نافذ (org = '*') بأي دور؛ المشاهد منهم يطّلع على كل المؤسسات دون أي تعديل. */
 function isPlatformMember_(me) { return me.org === '*'; }
@@ -482,7 +482,7 @@ function inUserScope_(me, u) {
   if (isPlatform_(me)) return CUR_ORG === '*' || uo === CUR_ORG || uo === '*';
   return uo === me.org;
 }
-const WRITE_ACTIONS = ['pjSave', 'pjLedger', 'pjTask', 'pjKpi', 'pjAct', 'pjSup', 'pjSms', 'pjNeed', 'pjRh', 'pjSet', 'pjUpload', 'pjSamples', 'fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples', 'tskSave', 'tskSet', 'tskSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+const WRITE_ACTIONS = ['wsSave', 'wsDraw', 'wsSet', 'wsSms', 'wsUpload', 'wsSamples', 'pjSave', 'pjLedger', 'pjTask', 'pjKpi', 'pjAct', 'pjSup', 'pjSms', 'pjNeed', 'pjRh', 'pjSet', 'pjUpload', 'pjSamples', 'fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples', 'tskSave', 'tskSet', 'tskSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -656,6 +656,7 @@ const ACTIONS = {
   prGet: actPrGet_, prSave: actPrSave_, prDecide: actPrDecide_, prSupply: actPrSupply_, prReceive: actPrReceive_, prClose: actPrClose_, prDel: actPrDel_, prSup: actPrSup_, prSet: actPrSet_, prUpload: actPrUpload_, prFile: actPrFile_, prSamples: actPrSamples_,
   ctGet: actCtGet_, ctSave: actCtSave_, ctDel: actCtDel_, ctInst: actCtInst_, ctPay: actCtPay_, ctOb: actCtOb_, ctChg: actCtChg_, ctSet: actCtSet_, ctUpload: actCtUpload_, ctFile: actCtFile_, ctSamples: actCtSamples_,
   invGet: actInvGet_, invItem: actInvItem_, invWh: actInvWh_, invMov: actInvMov_, invTr: actInvTr_, invCount: actInvCount_, invSet: actInvSet_, invUpload: actInvUpload_, invFile: actInvFile_, invSamples: actInvSamples_,
+  wsSave: actWsSave_, wsDraw: actWsDraw_, wsSet: actWsSet_, wsSms: actWsSms_, wsUpload: actWsUpload_, wsSamples: actWsSamples_, wsGet: actWsGet_, wsFile: actWsFile_,
   pjSave: actPjSave_, pjLedger: actPjLedger_, pjTask: actPjTask_, pjKpi: actPjKpi_, pjAct: actPjAct_, pjSup: actPjSup_, pjSms: actPjSms_, pjNeed: actPjNeed_, pjRh: actPjRh_, pjSet: actPjSet_, pjUpload: actPjUpload_, pjSamples: actPjSamples_, pjGet: actPjGet_, pjFile: actPjFile_,
   exGet: actExGet_, exSave: actExSave_, exPay: actExPay_, exCat: actExCat_, exSet: actExSet_, exUpload: actExUpload_, exFile: actExFile_, exSamples: actExSamples_, opsGet: actOpsGet_, tskGet: actTskGet_, tskSave: actTskSave_, tskSet: actTskSet_, tskSamples: actTskSamples_,
   fltGet: actFltGet_, fltVeh: actFltVeh_, fltDrv: actFltDrv_, fltTrip: actFltTrip_, fltFuel: actFltFuel_, fltMnt: actFltMnt_, fltSet: actFltSet_, fltUpload: actFltUpload_, fltFile: actFltFile_, fltSamples: actFltSamples_,
@@ -2416,7 +2417,7 @@ function opsSum_(org) {
   const CA = ct.cts.filter(function (c) { return c.status === 'active'; });
   const TK = tskLoad_(org).tasks, FL = fltLoad_(org), wd = new Date(); wd.setDate(wd.getDate() + (FL.set.warnDays || 7)); const WD = Utilities.formatDate(wd, 'Asia/Riyadh', 'yyyy-MM-dd');
   return {
-    prj: pjSum_(org),
+    prj: pjSum_(org), web: wsSum_(org),
     flt: { vehs: FL.vehs.length, ready: FL.vehs.filter(function (v) { return v.status === 'ready' && !FL.trips.some(function (t) { return t.veh === v.id && t.status === 'open'; }); }).length, open: FL.trips.filter(function (t) { return t.status === 'open'; }).length, maint: FL.vehs.filter(function (v) { return v.status === 'maint'; }).length, renew: FL.mnts.filter(function (m) { return !m.done && m.due <= WD; }).length },
     tsk: { total: TK.length, open: TK.filter(function (t) { return ['done', 'cancel'].indexOf(t.status) < 0; }).length, done: TK.filter(function (t) { return t.status === 'done'; }).length, late: TK.filter(function (t) { return ['done', 'cancel'].indexOf(t.status) < 0 && t.due && t.due < T; }).length },
     assets: { total: A.length, custody: A.filter(function (x) { return x.status === 'custody'; }).length, maint: A.filter(function (x) { return x.status === 'maint'; }).length, late: A.filter(function (x) { return x.status === 'custody' && x.due && x.due < T; }).length },
@@ -2701,6 +2702,188 @@ function pjSum_(org) {
   return { total: P.length, run: P.filter(function (p) { return p.status === 'run'; }).length, done: P.filter(function (p) { return p.status === 'done'; }).length, late: P.filter(function (p) { return p.status !== 'done' && p.end < T && pct(p) < 100; }).length,
     bal: Math.round(P.reduce(function (s, p) { return s + pjBal_(st, p.id); }, 0) * 100) / 100, sups: st.sups.length, rh: st.rh.length, rlate: st.rh.reduce(function (s, r) { return s + (r.inst || []).filter(function (i) { return i.due < T && (i.paid || 0) < i.amount - 0.009; }).length; }, 0) };
 }
+
+/* ================= الموقع الإلكتروني والعلاقات العامة والتواصل الخارجي (4.22) ================= */
+const WS_SPEC = {
+  menu: { title: 't!', icon: 'i', link: 'u!', img: 'img', subs: 'L:t,link' },
+  slider: { img: 'img!', title: 't', body: 'ta', ref: 't', link: 'u', btns: 'L:t,link' },
+  counters: { title: 't!', icon: 'i!', num: 'n!', word: 't' },
+  about: { title: 't!', body: 'r!', img: 'img' },
+  news: { title: 't!', date: 'd!', sum: 'ta', body: 'r!', cover: 'img', album: 'imgs' },
+  albums: { title: 't!', sum: 'ta', body: 'r', imgs: 'imgs' },
+  videos: { title: 't!', yt: 'yt!' },
+  partners: { title: 't', logo: 'img!', site: 'u' },
+  policies: { title: 't!', file: 'f!' },
+  reports: { title: 't!', year: 'n', file: 'f!' },
+  initiatives: { title: 't!', date: 'd!', body: 'r!', goals: 'r', how: 'r', cover: 'img', rep: 'f', imgs: 'imgs' },
+  testimonials: { name: 't!', job: 't', body: 'ta!', img: 'img' },
+  services: { title: 't!', icon: 'i!', link: 'u!' },
+  links: { title: 't!', url: 'u!', icon: 'i' },
+  popups: { title: 't!', body: 'ta', img: 'img', link: 'u', d1: 'd', d2: 'd', on: 'b' },
+  contests: { title: 't!', body: 'r', d1: 'd!', d2: 'd!', prize: 't', parts: 'L:n,mobile' },
+  formpages: { title: 't!', desc: 'ta', fields: 'L:label,type,req', on: 'b' },
+  inbox: { kind: 's!', form: 't', name: 't!', mobile: 'm', email: 'e', subject: 't', body: 'ta', st: 's' },
+  shortlinks: { code: 't!', url: 'u!' },
+  templates: { name: 't!', h1: 't', h1c: 'c', h2: 't', h2c: 'c', links: 'L:t,link', ts: 's', cs: 's', ss: 's', ds: 's' },
+  pages: { title: 't!', desc: 'ta', hidden: 'b' },
+  fonts: { name: 't!', items: 'L:family,url,weight' },
+  accounts: { name: 't!', mobile: 'm!', email: 'e', pw: 'pw', off: 'b', ben: 't', spon: 't', donor: 't', member: 't', vol: 't', emp: 't', student: 't' },
+  visits: { cat: 's!', side: 's!', title: 't!', place: 't!', date: 'd!', dur: 't', goal: 'ta', results: 'ta', team: 'tags!', notes: 'ta', imgs: 'imgs', files: 'fs' },
+  partnerships: { side: 's!', name: 't!', d1: 'd!', d2: 'd!', desc: 'ta', results: 'ta', notes: 'ta', imgs: 'imgs', files: 'fs', dept: 't', fwd: 't', emp: 't' },
+  events: { name: 't!', place: 't!', d1: 'd!', d2: 'd!', goal: 'ta', parties: 'ta', role: 'ta', results: 'ta', notes: 'ta', imgs: 'imgs', files: 'fs' },
+  smslists: { title: 't!', nums: 'nums!' },
+  msgs: { title: 't!', sms: 'b', email: 'b', push: 'b', wa: 'b', txt: 'ta' }
+};
+const WS_PAGES = ['نبذة عنا', 'اتصل بنا', 'حسابات الأعضاء', 'البوم الفيديو', 'سياسة الخصوصية', 'مكتبة الصور', 'الأخبار', 'البث المباشر', 'الوظائف', 'اللوائح والسياسات', 'التقرير السنوي', 'الفرص التطوعية', 'المسابقات', 'طلب متطوعين', 'المبادرات', 'الحالات', 'المشاريع', 'الشركاء', 'الخدمات الإلكترونية', 'صفحة التبرعات', 'حاسبة الزكاة', 'طلب إعانة', 'طلب تسجيل كمستفيد', 'أدلة الحوكمة', 'التزكيات', 'تبرعات البرامج', 'تسجيل البرامج', 'التبرعات العامة', 'فرص التبرع', 'التبرعات الخارجية', 'الحلقات التعليمية', 'التعازي', 'إبلاغ عن وفاة', 'فرص التبرع العينية', 'طلبات التبرع', 'طلب استلام تبرع', 'التحقق من المستندات', 'إنشاء طلب لجهة', 'طلب تسجيل جهة', 'قوالب المسابقات', 'مكاتب التحفيظ', 'مراكز التحفيظ', 'مدارس التحفيظ', 'خريطة حلقات الجمعية'];
+const WS_MSGS = [['قبول طلب الانضمام لبرنامج مدفوع'], ['تسجيل بلاغ جنازة'], ['فعاليات البرامج'], ['محضر اجتماع', 1, 1], ['حضور اجتماع', 1, 1], ['طلب تحديث ذاتي لملف مستفيد'], ['القسائم الشرائية'], ['سداد اشتراك جمعية عمومية'], ['سداد رسوم اشتراك برنامج قيد المراجعة', 1], ['سداد رسوم اشتراك برنامج', 1], ['قبول طلب الانضمام لبرنامج', 1], ['رفض طلب الانضمام لبرنامج', 1], ['تسليم كفالة متجر خارجي', 1], ['كود القسائم الشرائية'], ['قبول طلب إعانة من الموقع'], ['قبول ملف مستفيد من الموقع'], ['تسليم كفالة عينية', 1], ['رفض طلب إعانة من الموقع', 1], ['رفض التحديث الذاتي', 1], ['رفض طلب تسجيل مستفيد من الموقع', 1]];
+function wsDefaults_() {
+  const M = { on: true, note: '' }, mt = function (rep) { return { e: Object.assign({}, M), bank: Object.assign({}, M), rep: { on: !!rep, note: '' }, hq: Object.assign({}, M), wallet: Object.assign({}, M) }; };
+  return {
+    orgName: '',
+    site: { status: 'on', title: '', maint: 'الموقع تحت الصيانة، نعود قريبًا بإذن الله.', regAcc: true, regBen: false, regAid: false, privacy: '', terms: '', refund: '' },
+    store: { pay: true, btn: 'تبرع الآن', minAmt: 10, matrix: { don: mt(0), prg: mt(1), mem: mt(0), spon: mt(0), zak: mt(0) }, confMsg: 'شكرًا لك، تم استلام تبرعك بنجاح وسيصلك الإيصال.', confSms: true, confMail: true, mobReq: true, gift: true, giftMobReq: true, quick: true, quickPrj: 'سهم التشغيل', zakat: false, inkind: false },
+    seo: { title: '', desc: '', keys: '', author: '', ogImg: null, sitemap: '', robots: 'User-agent: *\nAllow: /\nDisallow: /system/' },
+    social: { mode: 'direct', ga: '', meta: '', snap: '', tiktok: '', xpx: '', gtm: '', x: '', insta: '', yt: '', wa: '', snapAcc: '', tiktokAcc: '', linkedin: '', fb: '', tg: '' },
+    design: { primary: '#4d341a', secondary: '#4d3400', accent: '#0e7a5f', dark: 0.35, light: 0.85, radius: 14, font: 'IBM Plex Sans Arabic', btn: 'pill', home: ['slider', 'counters', 'services', 'projects', 'news', 'initiatives', 'testimonials', 'partners'], theme: '' },
+    visitCats: ['شركات ومؤسسات', 'جهات حكومية', 'جمعيات خيرية', 'جهات تعليمية', 'أفراد ومتبرعون'], partnerCats: ['شركات ومؤسسات', 'جهات حكومية', 'جمعيات ومؤسسات أهلية', 'جهات تعليمية', 'جهات صحية'], teams: [], depts: ['إدارة الأوقاف', 'العلاقات العامة', 'الموارد المالية', 'البرامج والمشاريع'], roles: ['مدير الإدارة', 'المدير التنفيذي', 'منسق الشراكات']
+  };
+}
+function wsMerge_(def, val) { if (Array.isArray(def)) return Array.isArray(val) ? val : def; if (def && typeof def === 'object') { const o = {}; Object.keys(def).forEach(function (k) { o[k] = val && Object.prototype.hasOwnProperty.call(val, k) ? wsMerge_(def[k], val[k]) : def[k]; }); return o; } return val == null ? def : val; }
+function wsLoad_(org) {
+  const st = govLoad_(org, '_web'); st.set = wsMerge_(wsDefaults_(), st.set || {}); st.c = st.c || {}; st.seq = st.seq || {}; st.sms = st.sms || [];
+  Object.keys(WS_SPEC).forEach(function (k) { st.c[k] = st.c[k] || []; });
+  if (!st.c.pages.length) st.c.pages = WS_PAGES.map(function (n, i) { return { id: 'pg' + i, no: i + 1, page: n, title: n, desc: '', hidden: false, ord: i }; });
+  if (!st.seeded) { st.seeded = 1; st.c.msgs = WS_MSGS.map(function (r, i) { return { id: 'mg' + i, no: i + 1, title: r[0], sms: !!r[1], email: !!r[2], push: false, wa: false, txt: '', ord: i }; }); }
+  return st;
+}
+function wsOut_(st, extra) { const c = {}; Object.keys(st.c).forEach(function (k) { c[k] = k === 'accounts' ? st.c[k].map(function (a) { const o = Object.assign({}, a); delete o.pwh; delete o.salt; o.hasPw = !!a.pwh; return o; }) : st.c[k]; }); const o = { set: st.set, c: c, sms: st.sms }; if (extra) Object.keys(extra).forEach(function (k) { o[k] = extra[k]; }); return o; }
+function wsClean_(h) {
+  return String(h || '').slice(0, 60000).replace(/<\s*(script|style|iframe|object|embed|form|button|textarea|select)\b[\s\S]*?<\s*\/\s*\1\s*>/gi, '').replace(/<\s*\/?\s*(script|style|iframe|object|embed|form|input|button|meta|link|base|textarea|select)\b[^>]*>/gi, '').replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '').replace(/(href|src)\s*=\s*("|')\s*(javascript|vbscript|data:text)[^"']*\2/gi, '$1="#"');
+}
+function wsFileMeta_(v) { if (!v || typeof v !== 'object') return null; const fid = str_(v.fid, 60); if (!fid) return null; return { fid: fid, name: str_(v.name, 160), mime: str_(v.mime, 120), size: Math.max(0, parseInt(v.size, 10) || 0) }; }
+function wsVal_(type, v, lbl) {
+  switch (type) {
+    case 't': case 's': return str_(v == null ? '' : String(v), 300).trim();
+    case 'ta': return str_(v == null ? '' : String(v), 4000);
+    case 'r': return wsClean_(v);
+    case 'i': return str_(String(v || ''), 30).replace(/[^A-Za-z0-9_-]/g, '');
+    case 'n': { if (v === '' || v == null) return ''; const n = Number(v); if (!isFinite(n)) throw err_('VALIDATION', lbl + ': رقم غير صحيح.'); return n; }
+    case 'b': return !!v && v !== '0' && v !== 'false';
+    case 'c': return /^#[0-9a-f]{6}$/i.test(String(v || '')) ? String(v) : '';
+    case 'd': { const s = str_(v, 10); if (s && !/^\d{4}-\d{2}-\d{2}$/.test(s)) throw err_('VALIDATION', lbl + ': تاريخ غير صحيح.'); return s; }
+    case 'u': { const s = str_(String(v || ''), 500).trim(); if (s && !/^(https?:\/\/|\/|#|mailto:|tel:)/i.test(s)) throw err_('VALIDATION', lbl + ': الرابط يبدأ بـ https:// أو /.'); return s; }
+    case 'yt': { const s = str_(String(v || ''), 300).trim(); if (s && !/^https?:\/\/(www\.)?(youtube\.com\/(watch\?v=|shorts\/|embed\/)|youtu\.be\/)[\w-]{6,}/i.test(s)) throw err_('VALIDATION', 'رابط يوتيوب غير صحيح.'); return s; }
+    case 'm': { const s = String(v || '').replace(/\D/g, ''); if (s && !/^05\d{8}$/.test(s)) throw err_('VALIDATION', lbl + ': الجوال 10 أرقام يبدأ بـ 05.'); return s; }
+    case 'e': { const s = str_(String(v || ''), 120).trim(); if (s && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)) throw err_('VALIDATION', lbl + ': بريد غير صحيح.'); return s; }
+    case 'img': case 'f': return wsFileMeta_(v);
+    case 'imgs': case 'fs': return (Array.isArray(v) ? v : []).slice(0, 40).map(wsFileMeta_).filter(Boolean);
+    case 'tags': return (Array.isArray(v) ? v : String(v || '').split(/[\n،,]/)).map(function (x) { return str_(String(x), 100).trim(); }).filter(Boolean).slice(0, 60);
+    case 'nums': { const L = (Array.isArray(v) ? v : String(v || '').split(/[\s,،;]+/)).map(function (x) { return String(x).replace(/\D/g, '').replace(/^9665/, '05').replace(/^5(\d{8})$/, '05$1'); }).filter(Boolean); const bad = L.filter(function (x) { return !/^05\d{8}$/.test(x); }); if (bad.length) throw err_('VALIDATION', 'أرقام غير صحيحة: ' + bad.slice(0, 5).join('، ')); const u = []; L.forEach(function (x) { if (u.indexOf(x) < 0) u.push(x); }); return u.slice(0, 20000); }
+    default: if (type.indexOf('L:') === 0) { const ks = type.slice(2).split(','); return (Array.isArray(v) ? v : []).slice(0, 100).map(function (o) { const r = {}; ks.forEach(function (k) { r[k] = k === 'link' || k === 'url' ? wsVal_('u', o && o[k], lbl) : k === 'mobile' ? wsVal_('m', o && o[k], 'جوال المشارك') : k === 'req' ? !!(o && o[k]) : str_(String((o && o[k]) || ''), 300).trim(); }); return r; }).filter(function (r) { return ks.some(function (k) { return r[k] && r[k] !== true; }); }); }
+      return '';
+  }
+}
+function wsEmpty_(v) { return v == null || v === '' || (Array.isArray(v) && !v.length) || v === false; }
+function wsCol_(c) { if (!WS_SPEC[c]) throw err_('VALIDATION', 'قسم غير معروف.'); return WS_SPEC[c]; }
+const WS_LBL = { title: 'العنوان', name: 'الاسم', link: 'الرابط', url: 'الرابط', img: 'الصورة', logo: 'الشعار', icon: 'الرمز', num: 'العدد', body: 'المحتوى', date: 'التاريخ', yt: 'رابط يوتيوب', file: 'الملف', d1: 'تاريخ البداية', d2: 'تاريخ النهاية', kind: 'النوع', code: 'الرمز المختصر', mobile: 'رقم الجوال', cat: 'تصنيف الزيارة', side: 'الجهة', place: 'المكان', team: 'فريق الزيارة', nums: 'الأرقام' };
+function actWsGet_(me) {
+  if (!CUR_ORG || CUR_ORG === '*') { if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.'); const orgs = loadOrgs_().filter(function (o) { return o.status !== 'archived'; }); const out = { all: 1, orgs: orgs.map(function (o) { return { id: o.id, code: o.code, name: o.name }; }), c: {}, sms: [] }; let set = null;
+    orgs.forEach(function (o) { const st = wsOut_(wsLoad_(o.id)); if (!set) set = st.set; Object.keys(st.c).forEach(function (k) { out.c[k] = (out.c[k] || []).concat(st.c[k].map(function (r) { return Object.assign({}, r, { __o: o.id, __on: o.name }); })); }); st.sms.forEach(function (m) { out.sms.push(Object.assign({}, m, { __o: o.id, __on: o.name })); }); });
+    out.set = set || wsDefaults_(); out.set.orgName = 'كل مؤسسات المنصة'; return out; }
+  const org = astNeed_(), st = wsLoad_(org); if (!st.set.orgName) st.set.orgName = String(getSettings_().orgName || ''); return wsOut_(st);
+}
+function actWsSave_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = wsLoad_(org), col = String(p.col || ''), S = wsCol_(col), L = st.c[col], x = p.item || {};
+  let r = x.id ? astList_(L, String(x.id)) : null;
+  if (p.del) { if (!r) throw err_('NOTFOUND', 'السجل غير موجود.'); if (col === 'pages') throw err_('VALIDATION', 'الصفحات المدمجة لا تُحذف؛ يمكن إخفاؤها.'); st.c[col] = L.filter(function (y) { return y !== r; }); audit_(me.username, 'حذف من الموقع', col, String(r.no || ''), String(r.title || r.name || '')); govSave_(org, '_web', st); return wsOut_(st); }
+  if (p.order) { const ids = (Array.isArray(p.order) ? p.order : []).map(String); ids.forEach(function (id, i) { const y = astList_(L, id); if (y) y.ord = i; }); L.sort(function (a, b) { return (a.ord || 0) - (b.ord || 0); }); govSave_(org, '_web', st); return wsOut_(st); }
+  if (p.status != null) { if (!r) throw err_('NOTFOUND', 'السجل غير موجود.'); if (col === 'inbox') { if (['new', 'read', 'done'].indexOf(p.status) < 0) throw err_('VALIDATION', 'حالة غير معروفة.'); r.st = p.status; } else if ('on' in S || 'hidden' in S || 'off' in S) { const k = 'on' in S ? 'on' : 'hidden' in S ? 'hidden' : 'off'; r[k] = !!p.status; } else if (col === 'msgs') { const ch = String(p.ch || ''); if (['sms', 'email', 'push', 'wa'].indexOf(ch) < 0) throw err_('VALIDATION', 'قناة غير معروفة.'); r[ch] = !!p.status; } govSave_(org, '_web', st); return wsOut_(st); }
+  if (!r && col === 'pages') throw err_('VALIDATION', 'الصفحات المدمجة ثابتة؛ عدّل الموجود فقط.');
+  const v = {};
+  Object.keys(S).forEach(function (k) { const t = S[k].replace('!', ''), req = S[k].slice(-1) === '!', lbl = WS_LBL[k] || k; if (t === 'pw') return; v[k] = wsVal_(t, x[k], lbl); if (req && wsEmpty_(v[k])) throw err_('VALIDATION', 'الحقل مطلوب: ' + lbl + '.'); });
+  if (v.d1 && v.d2 && v.d2 < v.d1) throw err_('VALIDATION', 'تاريخ النهاية قبل تاريخ البداية.');
+  if (col === 'shortlinks') { v.code = v.code.toLowerCase(); if (!/^[a-z0-9-]{2,40}$/.test(v.code)) throw err_('VALIDATION', 'الرمز المختصر: حروف إنجليزية صغيرة وأرقام وشرطة.'); if (L.some(function (y) { return y !== r && y.code === v.code; })) throw err_('VALIDATION', 'الرمز المختصر مستخدم.'); }
+  if (col === 'counters' && !(v.num >= 0)) throw err_('VALIDATION', 'العدد غير صحيح.');
+  if (col === 'inbox') { if (['form', 'contact'].indexOf(v.kind) < 0) throw err_('VALIDATION', 'نوع غير معروف.'); v.st = ['new', 'read', 'done'].indexOf(v.st) >= 0 ? v.st : 'new'; }
+  if (col === 'visits' && ['داخلية', 'خارجية'].indexOf(v.side) < 0) throw err_('VALIDATION', 'جهة الزيارة: داخلية أو خارجية.');
+  if (col === 'accounts') { if (L.some(function (y) { return y !== r && y.mobile === v.mobile; })) throw err_('VALIDATION', 'رقم الجوال مسجل لحساب آخر.'); const pw = String(x.pw || ''); if (!r && !pw) throw err_('VALIDATION', 'اكتب كلمة المرور.'); if (pw) { if (pw.length < 8 || !/\d/.test(pw) || !/[A-Za-z؀-ۿ]/.test(pw)) throw err_('VALIDATION', 'كلمة المرور 8 أحرف على الأقل وتحوي حروفًا وأرقامًا.'); v.salt = Utilities.getUuid().replace(/-/g, '').slice(0, 16); v.pwh = hashPw_(v.salt, pw); } }
+  if (r) { Object.assign(r, v, { upd: now_(), updBy: me.username }); }
+  else { st.seq[col] = (st.seq[col] || (col === 'accounts' ? 23043300 : 0)) + 1; r = Object.assign(v, { id: 'w' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), no: st.seq[col], by: me.username, at: now_(), ord: -Date.now() }); if (col === 'shortlinks') r.clicks = 0; L.unshift(r); }
+  audit_(me.username, x.id ? 'تعديل في الموقع' : 'إضافة في الموقع', col, String(r.no), String(r.title || r.name || r.code || '')); govSave_(org, '_web', st); return wsOut_(st, { id: r.id });
+}
+function actWsDraw_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = wsLoad_(org), r = astList_(st.c.contests, String(p.id || '')); if (!r) throw err_('NOTFOUND', 'المسابقة غير موجودة.');
+  if (p.reset) { r.winners = []; govSave_(org, '_web', st); return wsOut_(st); }
+  if (r.d2 && r.d2 > today_()) throw err_('VALIDATION', 'لا يجري السحب قبل انتهاء المسابقة (' + r.d2 + ').');
+  r.winners = r.winners || []; const pool = (r.parts || []).filter(function (x) { return !r.winners.some(function (w) { return w.n === x.n && w.mobile === x.mobile; }); }), n = Math.max(1, Math.min(20, parseInt(p.n, 10) || 1));
+  if (!pool.length) throw err_('VALIDATION', 'لا مشاركون متبقون للسحب.');
+  for (let i = 0; i < n && pool.length; i++) { const k = Math.floor(Math.random() * pool.length); const w = pool.splice(k, 1)[0]; r.winners.push({ n: w.n, mobile: w.mobile, at: now_(), by: me.username }); }
+  audit_(me.username, 'سحب على مسابقة', '', String(r.no), r.title); govSave_(org, '_web', st); return wsOut_(st, { id: r.id });
+}
+function actWsSet_(me, p) {
+  astAdmin_(me); const org = astNeed_(), st = wsLoad_(org), key = String(p.key || ''), D = wsDefaults_();
+  if (['site', 'store', 'seo', 'social', 'design'].indexOf(key) < 0 && ['visitCats', 'partnerCats', 'teams', 'depts', 'roles'].indexOf(key) < 0) throw err_('VALIDATION', 'قسم إعدادات غير معروف.');
+  if (Array.isArray(D[key])) { st.set[key] = (Array.isArray(p.val) ? p.val : []).map(function (x) { return str_(String(x), 120).trim(); }).filter(Boolean).slice(0, 100); }
+  else {
+    const coerce = function (d, v) { if (Array.isArray(d)) return (Array.isArray(v) ? v : d).map(function (x) { return str_(String(x), 60); }).slice(0, 30); if (d && typeof d === 'object') { const o = {}; Object.keys(d).forEach(function (k) { o[k] = coerce(d[k], v && v[k]); }); return o; } if (d === null) return wsFileMeta_(v); if (typeof d === 'boolean') return v == null ? d : !!v; if (typeof d === 'number') { const n = Number(v); return isFinite(n) ? n : d; } return v == null ? d : String(v).slice(0, 60000); };
+    const cur = wsMerge_(D[key], st.set[key]), nv = coerce(D[key], wsMerge_(cur, p.val || {}));
+    if (key === 'site') { ['privacy', 'terms', 'refund'].forEach(function (k) { nv[k] = wsClean_(nv[k]); }); if (['on', 'maint', 'off'].indexOf(nv.status) < 0) throw err_('VALIDATION', 'حالة الموقع غير صحيحة.'); }
+    if (key === 'design') { ['primary', 'secondary', 'accent'].forEach(function (k) { if (!/^#[0-9a-f]{6}$/i.test(nv[k])) throw err_('VALIDATION', 'لون غير صحيح.'); }); nv.dark = Math.max(0.05, Math.min(0.9, nv.dark)); nv.light = Math.max(0.1, Math.min(0.97, nv.light)); nv.radius = Math.max(0, Math.min(40, nv.radius)); }
+    if (key === 'social') { if (['direct', 'gtm'].indexOf(nv.mode) < 0) throw err_('VALIDATION', 'آلية الربط غير صحيحة.'); if (nv.gtm && !/^GTM-[A-Z0-9]+$/.test(nv.gtm)) throw err_('VALIDATION', 'معرّف Google Tag Manager بصيغة GTM-XXXX.'); if (nv.ga && !/^(G|UA|AW)-[A-Z0-9-]+$/i.test(nv.ga)) throw err_('VALIDATION', 'معرّف Google Analytics بصيغة G-XXXX.'); }
+    if (key === 'seo') { nv.sitemap = nv.sitemap.split(/\n+/).map(function (s) { return s.trim(); }).filter(Boolean).slice(0, 5000).join('\n'); const bad = nv.sitemap.split('\n').filter(function (s) { return s && !/^https?:\/\//.test(s); }); if (bad.length) throw err_('VALIDATION', 'روابط الخارطة تبدأ بـ https://: ' + bad[0]); }
+    if (key === 'store' && !(nv.minAmt >= 0)) throw err_('VALIDATION', 'الحد الأدنى غير صحيح.');
+    st.set[key] = nv;
+  }
+  audit_(me.username, 'إعدادات الموقع', '', key, ''); govSave_(org, '_web', st); return wsOut_(st);
+}
+function actWsSms_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = wsLoad_(org), text = str_(p.text, 700).trim(); if (!text) throw err_('VALIDATION', 'اكتب نص الرسالة.');
+  let nums = [], src = 'bulk', lst = '';
+  if (p.list) { const l = astList_(st.c.smslists, String(p.list)); if (!l) throw err_('VALIDATION', 'اختر القائمة.'); nums = l.nums; src = 'list'; lst = l.title; } else nums = wsVal_('nums', p.nums, 'الأرقام');
+  if (!nums.length) throw err_('VALIDATION', 'لا أرقام للإرسال.');
+  const m = { id: 'sm' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), at: now_(), by: me.username, text: text, n: nums.length, nums: nums.slice(0, 3000), parts: Math.ceil(text.length / 70), src: src, list: lst, st: 'queued' };
+  st.sms.unshift(m); if (st.sms.length > 500) st.sms.length = 500; audit_(me.username, 'رسالة نصية', src, lst, String(nums.length)); govSave_(org, '_web', st); return wsOut_(st, { id: m.id });
+}
+function actWsUpload_(me, p) {
+  astCanW_(me); const org = astNeed_(), name = str_(p.name, 120).replace(/[\\/:*?"<>|]/g, '_') || 'ملف', mime = String(p.mime || '');
+  if (GOV_TYPES.indexOf(mime) < 0) throw err_('VALIDATION', 'الأنواع المسموحة: PDF وWord وExcel وصور JPG/PNG/WEBP.');
+  const bytes = Utilities.base64Decode(String(p.data || '')); if (!bytes.length) throw err_('VALIDATION', 'الملف فارغ.'); if (bytes.length > MAX_FILE * 2) throw err_('VALIDATION', 'حجم الملف أكبر من 10 ميجابايت.');
+  const folder = DriveApp.getFolderById(PropertiesService.getScriptProperties().getProperty('FILES_FOLDER_ID'));
+  const file = folder.createFile(Utilities.newBlob(bytes, mime, 'الموقع — ' + name)), fid = Utilities.getUuid();
+  sheet_('files').appendRow([fid, 'web:' + org + ':' + fid, name, mime, bytes.length, file.getId(), me.username, now_()]);
+  return { f: { fid: fid, name: name, mime: mime, size: bytes.length } };
+}
+function actWsFile_(me, p) {
+  const org = astNeed_(); const row = findRow_('files', String(p.fid || '')); if (!row) throw err_('NOTFOUND', 'الملف غير موجود.');
+  const v = sheet_('files').getRange(row, 1, 1, HEAD.files.length).getValues()[0];
+  if (String(v[1]).indexOf('web:' + org + ':') !== 0) throw err_('FORBIDDEN', 'غير مسموح.');
+  return { name: String(v[2]), mime: String(v[3]), data: Utilities.base64Encode(DriveApp.getFileById(String(v[5])).getBlob().getBytes()) };
+}
+function actWsSamples_(me, p) {
+  astAdmin_(me); const org = astNeed_(), st = wsLoad_(org);
+  if (p.clear) { Object.keys(st.c).forEach(function (k) { st.c[k] = st.c[k].filter(function (r) { return !r.sample; }); }); st.sms = st.sms.filter(function (m) { return !m.sample; }); govSave_(org, '_web', st); return wsOut_(st); }
+  if (Object.keys(st.c).some(function (k) { return st.c[k].some(function (r) { return r.sample; }); })) throw err_('VALIDATION', 'البيانات التوضيحية مضافة من قبل.');
+  const d = function (n) { const x = new Date(); x.setDate(x.getDate() + n); return Utilities.formatDate(x, 'Asia/Riyadh', 'yyyy-MM-dd'); };
+  const add = function (col, list) { list.forEach(function (o, i) { st.seq[col] = (st.seq[col] || (col === 'accounts' ? 23043300 : 0)) + 1; st.c[col].push(Object.assign({ id: 'w' + Utilities.getUuid().replace(/-/g, '').slice(0, 10), no: st.seq[col], by: me.username, at: now_(), ord: i, sample: true }, o)); }); };
+  add('menu', [['الرئيسية', 'home', '/'], ['عن الجمعية', 'alert', '/about'], ['متجر التبرع الإلكتروني', 'cart', '/store'], ['البرامج', 'PRG', '/programs'], ['خدمات المستفيدين', 'users', '/services'], ['الحوكمة', 'GOV', '/governance'], ['بوابة التطوع', 'VOL', '/volunteer'], ['المركز الإعلامي', 'news', '/media'], ['اتصل بنا', 'phone', '/contact']].map(function (r) { return { title: r[0], icon: r[1], link: r[2], img: null, subs: r[0] === 'المركز الإعلامي' ? [{ t: 'الأخبار', link: '/news' }, { t: 'مكتبة الصور', link: '/gallery' }, { t: 'مكتبة الفيديو', link: '/videos' }] : [] }; }));
+  add('counters', [['المستفيدين', 'users', 5300, 'مستفيد'], ['الحالات', 'heart', 1500, 'حالة'], ['الأيتام', 'userHeart', 250, 'يتيم'], ['المشاريع', 'PRJ', 18, 'مشروع']].map(function (r) { return { title: r[0], icon: r[1], num: r[2], word: r[3] }; }));
+  add('services', [['تبرعات المشاريع', 'PRJ', '/projects'], ['تبرعات الحالات', 'heart', '/cases'], ['المبادرات', 'handshake', '/initiatives'], ['الأخبار', 'news', '/news'], ['مكتبة الصور', 'image', '/gallery'], ['مكتبة الفيديو', 'video', '/videos'], ['اللوائح والسياسات', 'book', '/policies'], ['المسابقات', 'trophy', '/contests'], ['اتصل بنا', 'phone', '/contact']].map(function (r) { return { title: r[0], icon: r[1], link: r[2] }; }));
+  add('about', [{ title: 'نبذة عن الجمعية', body: '<p>جمعية خيرية تعنى برعاية الأسر المحتاجة والأيتام وتمكينهم.</p>', img: null }, { title: 'الرؤية والرسالة', body: '<p><b>الرؤية:</b> مجتمع متكافل ومنتج.</p><p><b>الرسالة:</b> تقديم خدمات نوعية مستدامة بشراكات فاعلة.</p>', img: null }]);
+  add('news', [['توزيع السلة الغذائية لشهر جمادى', -5], ['توقيع شراكة مع وقف القصواء', -12], ['اختتام برنامج الحقيبة المدرسية', -30]].map(function (r) { return { title: r[0], date: d(r[1]), sum: 'خبر من أخبار الجمعية.', body: '<p>' + r[0] + ' بحمد الله.</p>', cover: null, album: [] }; }));
+  add('videos', [['مشروع السلة الغذائية', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'], ['مشروع ترميم المساكن للأسر الفقيرة', 'https://www.youtube.com/watch?v=aqz-KE-bpKQ']].map(function (r) { return { title: r[0], yt: r[1] }; }));
+  add('testimonials', [{ name: 'أ. خالد العمري', job: 'رجل أعمال', body: 'جمعية متميزة في الشفافية وسرعة الإنجاز.', img: null }]);
+  add('links', [{ title: 'المركز الوطني لتنمية القطاع غير الربحي', url: 'https://ncnp.gov.sa', icon: 'link' }, { title: 'منصة إحسان', url: 'https://ehsan.sa', icon: 'heart' }]);
+  add('initiatives', [{ title: 'مبادرة كسوة الشتاء', date: d(-40), body: '<p>توزيع الكسوة الشتوية على الأسر.</p>', goals: '<ul><li>تغطية 300 أسرة</li></ul>', how: '', cover: null, rep: null, imgs: [] }]);
+  add('contests', [{ title: 'مسابقة حفظ جزء عم', body: '<p>للأبناء من 7 إلى 12 سنة.</p>', d1: d(-60), d2: d(-2), prize: 'جهاز لوحي', parts: [{ n: 'أحمد سالم', mobile: '0551110001' }, { n: 'ريم علي', mobile: '0551110002' }, { n: 'يوسف خالد', mobile: '0551110003' }, { n: 'سارة محمد', mobile: '0551110004' }] }]);
+  add('shortlinks', [{ code: 'zakat', url: '/zakat', clicks: 0 }, { code: 'ramadan', url: '/projects', clicks: 0 }]);
+  add('visits', [{ cat: st.set.visitCats[0], side: 'خارجية', title: 'زيارة شركة الخير للتجارة', place: 'جدة', date: d(-8), dur: 'ساعتان', goal: 'عرض مشاريع الجمعية', results: 'وعد بدعم مشروع السلة', team: ['أ. سامي العتيبي', 'أ. هدى الزهراني'], notes: '', imgs: [], files: [] }, { cat: st.set.visitCats[1], side: 'داخلية', title: 'استقبال وفد الموارد البشرية', place: 'مقر الجمعية', date: d(-20), dur: '3 ساعات', goal: 'التعريف بالبرامج', results: 'تنسيق برنامج تدريبي', team: ['أ. فهد القحطاني'], notes: '', imgs: [], files: [] }]);
+  add('partnerships', [{ side: st.set.partnerCats[0], name: 'شراكة مع وقف القصواء', d1: d(-90), d2: d(275), desc: 'دعم برامج الأيتام', results: '', notes: '', imgs: [], files: [], dept: st.set.depts[0], fwd: st.set.roles[0], emp: '' }]);
+  add('events', [{ name: 'حفل تكريم الداعمين', place: 'قاعة الجمعية', d1: d(-15), d2: d(-15), goal: 'شكر الداعمين', parties: 'الداعمون والشركاء', role: 'التنظيم', results: 'حضور 120 شخصًا', notes: '', imgs: [], files: [] }]);
+  add('smslists', [{ title: 'أرقام مجمع', nums: ['0550000001', '0550000002', '0550000003'] }, { title: 'السلة الرمضانية', nums: ['0560000001', '0560000002'] }]);
+  add('inbox', [{ kind: 'contact', form: '', name: 'محمد سعيد', mobile: '0532426062', email: '', subject: 'استفسار عن التبرع', body: 'كيف أتبرع لمشروع السقيا؟', st: 'new' }, { kind: 'form', form: 'طلب متطوعين', name: 'نورة أحمد', mobile: '0541112233', email: '', subject: 'تطوع', body: 'أرغب بالتطوع في الفعاليات.', st: 'read' }]);
+  audit_(me.username, 'بيانات توضيحية للموقع', '', '', ''); govSave_(org, '_web', st); return wsOut_(st);
+}
+function wsSum_(org) { const st = wsLoad_(org), c = st.c; return { news: c.news.length, inbox: c.inbox.filter(function (r) { return r.st === 'new'; }).length, accounts: c.accounts.length, visits: c.visits.length, partners: c.partnerships.filter(function (r) { return !r.d2 || r.d2 >= today_(); }).length, events: c.events.length, off: st.set.site.status === 'on' ? 0 : 1 }; }
 
 function aggOrgs_(me, load, recKeys, extra) {
   if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
