@@ -490,5 +490,55 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
   r = AM(T, "fltSamples", {}); ok(r.data.vehs.filter(v => v.sample).length === 6 && r.data.trips.some(t => t.status === "open"), "fleet sample data added");
   r = AM(T, "fltSamples", { clear: 1 }); ok(r.data.vehs.length === 1 && r.data.drivers.length === 1, "fleet sample data cleared");
   ok(AM(T, "opsGet").data.tot.flt.vehs === 1, "fleet in operational summary"); }
+// المشاريع والمتابعة والداعمون والتأهيل
+{ let g = AM(T, "pjGet"); ok(g.ok && g.data.projects.length === 0 && g.data.set.types.length && g.data.set.regions.length, "projects start empty");
+  const s = g.data.set, base = { type: s.types[0].id, target: s.targets[0].id, region: s.regions[0].id, start: "2026-10-01", end: "2026-12-31", budget: 5000 };
+  ok(AM(T, "pjSave", { item: Object.assign({}, base, { name: "" }) }).code === "VALIDATION", "project needs a name");
+  ok(AM(T, "pjSave", { item: Object.assign({}, base, { name: "س", end: "2026-09-01" }) }).code === "VALIDATION", "end cannot precede start");
+  let r = AM(T, "pjSave", { item: Object.assign({}, base, { name: "السلة الغذائية" }) }); const P = r.data.id; ok(r.data.projects[0].no === "001001" && r.data.projects[0].status === "plan", "project created with number");
+  ok(AM(T, "pjSave", { item: Object.assign({}, base, { name: "السلة الغذائية" }) }).code === "VALIDATION", "project names are unique");
+  r = AM(T, "pjSave", { item: Object.assign({}, base, { name: "الحقيبة المدرسية" }) }); const P2 = r.data.id;
+  ok(AM(T, "pjLedger", { item: { kind: "out", pid: P, amount: 100, date: "2026-10-05" } }).code === "VALIDATION", "spending cannot exceed balance");
+  r = AM(T, "pjLedger", { item: { kind: "in", pid: P, amount: 1000, date: "2026-10-05" } }); ok(r.data.ledger.length === 1, "income recorded");
+  ok(AM(T, "pjLedger", { item: { kind: "in", pid: P, amount: 10, date: "2099-01-01" } }).code === "VALIDATION", "no future ledger dates");
+  r = AM(T, "pjLedger", { item: { kind: "out", pid: P, amount: 300, date: "2026-10-06" } }); ok(r.data.projects.find(p => p.id === P).status === "run", "spending starts the project");
+  r = AM(T, "pjLedger", { item: { kind: "tr", pid: P, to: P2, amount: 200, date: "2026-10-07" } }); ok(r.data.ledger.filter(e => e.tr).length === 2, "transfer creates two linked entries");
+  ok(AM(T, "pjLedger", { item: { kind: "tr", pid: P, to: P2, amount: 900, date: "2026-10-07" } }).code === "VALIDATION", "transfer cannot exceed balance");
+  r = AM(T, "pjTask", { item: { pid: P, title: "دراسة", phase: "prep", start: "2026-10-01", end: "2026-10-10" } }); const K1 = r.data.id;
+  ok(AM(T, "pjTask", { item: { pid: P, title: "تنفيذ", start: "2026-10-05", end: "2026-10-20", dep: K1 } }).code === "VALIDATION", "dependent task starts after predecessor");
+  ok(AM(T, "pjTask", { item: { pid: P, title: "x", start: "2026-10-10", end: "2026-10-01" } }).code === "VALIDATION", "task end before start rejected");
+  r = AM(T, "pjTask", { item: { id: K1 }, move: "done" }); ok(r.data.tasks[0].pct === 100 && r.data.tasks[0].st === "done", "kanban move to done completes task");
+  r = AM(T, "pjKpi", { item: { pid: P, n: "الأسر المستفيدة", target: 100, actual: 40 } }); const KP = r.data.id; r = AM(T, "pjKpi", { item: { id: KP, pid: P, n: "الأسر المستفيدة", target: 100, actual: 70 } }); ok(r.data.kpis[0].hist.length === 2, "kpi history kept");
+  r = AM(T, "pjAct", { item: { pid: P, kind: "ben", title: "دفعة أولى", date: "2026-10-08", count: 12 } }); ok(r.data.acts[0].count === 12, "beneficiaries attached");
+  ok(AM(T, "pjSave", { item: { id: P }, life: "delete", note: "x" }).code === "VALIDATION", "cannot delete project with balance");
+  r = AM(T, "pjSave", { item: { id: P }, life: "complete" }); ok(r.data.projects.find(p => p.id === P).status === "done", "project completed");
+  ok(AM(T, "pjLedger", { item: { kind: "in", pid: P, amount: 5, date: "2026-10-09" } }).code === "VALIDATION", "completed project takes no entries");
+  ok(AM(T, "pjSave", { item: { id: P }, life: "reopen" }).code === "VALIDATION", "reopen needs a reason");
+  r = AM(T, "pjSave", { item: { id: P }, life: "reopen", note: "استكمال" }); ok(r.data.projects.find(p => p.id === P).status === "run", "project reopened");
+  r = AM(T, "pjSave", { item: { id: P2 }, life: "delete", note: "مكرر", force: 1 }); ok(r.data.projects.find(p => p.id === P2).deleted === 1, "project soft deleted");
+  r = AM(T, "pjSave", { item: { id: P2 }, life: "restore" }); ok(!r.data.projects.find(p => p.id === P2).deleted, "project restored");
+  // الداعمون
+  ok(AM(T, "pjSup", { item: { name: "داعم", mobile: "0512" } }).code === "VALIDATION", "supporter mobile must be 05 + 8 digits");
+  ok(AM(T, "pjSup", { item: { name: "شركة", mobile: "0551234567", taxable: 1, taxType: s.taxIds[0].id, taxNo: "123" } }).code === "VALIDATION", "VAT number format enforced");
+  r = AM(T, "pjSup", { item: { name: "شركة الخير", mobile: "0551234567", taxable: 1, taxType: s.taxIds[0].id, taxNo: "300000000000003" } }); const SP = r.data.id; ok(r.data.sups[0].no === "001001", "supporter account added");
+  ok(AM(T, "pjSup", { item: { name: "آخر", mobile: "0551234567" } }).code === "VALIDATION", "supporter mobile unique");
+  r = AM(T, "pjSms", { to: [SP], text: "شكرًا لدعمكم" }); ok(r.data.sms.length === 1 && r.data.sms[0].n === 1, "sms logged");
+  // التأهيل
+  r = AM(T, "pjNeed", { item: { name: "نورة", idNo: "1023456781", cat: "ben" } }); const N = r.data.id; ok(r.data.needs[0].status === "need", "rehab candidate added");
+  const rb = { rp: s.rhProjects[0].id, kind: s.rhKinds[0].id, need: N, name: "مشغل خياطة", place: "جدة", value: 1200, start: "2026-09-01", end: "2027-09-01", g: { name: "كافل", idNo: "1012345678", mobile: "0550000001" } };
+  ok(AM(T, "pjRh", { item: rb }).code === "VALIDATION", "project requires qualified candidate");
+  ok(AM(T, "pjNeed", { item: { id: N }, decide: "no" }).code === "VALIDATION", "negative opinion needs justification");
+  r = AM(T, "pjNeed", { item: { id: N }, decide: "ok", note: "جدية" }); ok(r.data.needs[0].status === "ok", "candidate qualified");
+  ok(AM(T, "pjRh", { item: Object.assign({}, rb, { inst: [{ due: "2026-10-01", amount: 500 }] }) }).code === "VALIDATION", "installments must equal loan value");
+  r = AM(T, "pjRh", { item: Object.assign({}, rb, { inst: [{ due: "2026-10-01", amount: 600 }, { due: "2026-11-01", amount: 600 }] }) }); const RH = r.data.id, I1 = r.data.rh[0].inst[0].id; ok(r.data.rh[0].no === "RH-00001" && r.data.rh[0].person === "نورة", "rehab project registered");
+  ok(AM(T, "pjRh", { item: Object.assign({}, rb) }).code === "VALIDATION", "one open rehab project per candidate");
+  ok(AM(T, "pjRh", { item: { id: RH }, pay: { iid: I1, amount: 700, date: "2026-10-02" } }).code === "VALIDATION", "payment cannot exceed installment");
+  r = AM(T, "pjRh", { item: { id: RH }, pay: { iid: I1, amount: 600, date: "2026-10-02" } }); ok(r.data.rh[0].inst[0].paid === 600, "installment paid");
+  r = AM(T, "pjRh", { item: { id: RH }, pay: { iid: r.data.rh[0].inst[1].id, amount: 600, date: "2026-11-02" } }); ok(r.data.rh[0].status === "done", "fully paid project completes");
+  ok(AM(T, "pjSet", { set: { rhKinds: [] } }).code === "VALIDATION", "used rehab kind cannot be removed");
+  r = AM(T, "pjSamples", {}); ok(r.data.projects.filter(p => p.sample).length === 10 && r.data.rh.some(x => x.sample) && r.data.tasks.some(t => t.sample), "projects sample data added");
+  r = AM(T, "pjSamples", { clear: 1 }); ok(r.data.projects.length === 2 && r.data.sups.length === 1 && r.data.rh.length === 1, "projects sample data cleared");
+  ok(AM(T, "opsGet").data.tot.prj.total === 2, "projects in operational summary");
+  ok(A.api(T, "pjGet", { __org: "*" }).data.all === 1, "platform overview of projects"); }
 console.log("server tests passed:", pass);
 module.exports = {};

@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.20.0';
+const APP_VERSION = '4.21.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -465,7 +465,7 @@ function api(token, action, payload) {
   } catch (e) { return fail_(e); }
 }
 /** إجراءات تحتاج مؤسسة محددة (لا تُنفذ في عرض «كل المؤسسات»). */
-const ORG_REQUIRED = ['saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'astCount', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'tskSave', 'tskSet', 'tskSamples', 'fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples'];
+const ORG_REQUIRED = ['pjSave', 'pjLedger', 'pjTask', 'pjKpi', 'pjAct', 'pjSup', 'pjSms', 'pjNeed', 'pjRh', 'pjSet', 'pjUpload', 'pjSamples', 'pjFile', 'saveTheme', 'create', 'importData', 'addSamples', 'clearSamples', 'emptyTrash', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'astCount', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'tskSave', 'tskSet', 'tskSamples', 'fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples'];
 function isPlatform_(me) { return me.role === 'admin' && me.org === '*'; }
 /** عضو المنصة: حساب على مستوى نافذ (org = '*') بأي دور؛ المشاهد منهم يطّلع على كل المؤسسات دون أي تعديل. */
 function isPlatformMember_(me) { return me.org === '*'; }
@@ -482,7 +482,7 @@ function inUserScope_(me, u) {
   if (isPlatform_(me)) return CUR_ORG === '*' || uo === CUR_ORG || uo === '*';
   return uo === me.org;
 }
-const WRITE_ACTIONS = ['fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples', 'tskSave', 'tskSet', 'tskSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+const WRITE_ACTIONS = ['pjSave', 'pjLedger', 'pjTask', 'pjKpi', 'pjAct', 'pjSup', 'pjSms', 'pjNeed', 'pjRh', 'pjSet', 'pjUpload', 'pjSamples', 'fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples', 'tskSave', 'tskSet', 'tskSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -656,6 +656,7 @@ const ACTIONS = {
   prGet: actPrGet_, prSave: actPrSave_, prDecide: actPrDecide_, prSupply: actPrSupply_, prReceive: actPrReceive_, prClose: actPrClose_, prDel: actPrDel_, prSup: actPrSup_, prSet: actPrSet_, prUpload: actPrUpload_, prFile: actPrFile_, prSamples: actPrSamples_,
   ctGet: actCtGet_, ctSave: actCtSave_, ctDel: actCtDel_, ctInst: actCtInst_, ctPay: actCtPay_, ctOb: actCtOb_, ctChg: actCtChg_, ctSet: actCtSet_, ctUpload: actCtUpload_, ctFile: actCtFile_, ctSamples: actCtSamples_,
   invGet: actInvGet_, invItem: actInvItem_, invWh: actInvWh_, invMov: actInvMov_, invTr: actInvTr_, invCount: actInvCount_, invSet: actInvSet_, invUpload: actInvUpload_, invFile: actInvFile_, invSamples: actInvSamples_,
+  pjSave: actPjSave_, pjLedger: actPjLedger_, pjTask: actPjTask_, pjKpi: actPjKpi_, pjAct: actPjAct_, pjSup: actPjSup_, pjSms: actPjSms_, pjNeed: actPjNeed_, pjRh: actPjRh_, pjSet: actPjSet_, pjUpload: actPjUpload_, pjSamples: actPjSamples_, pjGet: actPjGet_, pjFile: actPjFile_,
   exGet: actExGet_, exSave: actExSave_, exPay: actExPay_, exCat: actExCat_, exSet: actExSet_, exUpload: actExUpload_, exFile: actExFile_, exSamples: actExSamples_, opsGet: actOpsGet_, tskGet: actTskGet_, tskSave: actTskSave_, tskSet: actTskSet_, tskSamples: actTskSamples_,
   fltGet: actFltGet_, fltVeh: actFltVeh_, fltDrv: actFltDrv_, fltTrip: actFltTrip_, fltFuel: actFltFuel_, fltMnt: actFltMnt_, fltSet: actFltSet_, fltUpload: actFltUpload_, fltFile: actFltFile_, fltSamples: actFltSamples_,
   treeGet: actTreeGet_,
@@ -2415,6 +2416,7 @@ function opsSum_(org) {
   const CA = ct.cts.filter(function (c) { return c.status === 'active'; });
   const TK = tskLoad_(org).tasks, FL = fltLoad_(org), wd = new Date(); wd.setDate(wd.getDate() + (FL.set.warnDays || 7)); const WD = Utilities.formatDate(wd, 'Asia/Riyadh', 'yyyy-MM-dd');
   return {
+    prj: pjSum_(org),
     flt: { vehs: FL.vehs.length, ready: FL.vehs.filter(function (v) { return v.status === 'ready' && !FL.trips.some(function (t) { return t.veh === v.id && t.status === 'open'; }); }).length, open: FL.trips.filter(function (t) { return t.status === 'open'; }).length, maint: FL.vehs.filter(function (v) { return v.status === 'maint'; }).length, renew: FL.mnts.filter(function (m) { return !m.done && m.due <= WD; }).length },
     tsk: { total: TK.length, open: TK.filter(function (t) { return ['done', 'cancel'].indexOf(t.status) < 0; }).length, done: TK.filter(function (t) { return t.status === 'done'; }).length, late: TK.filter(function (t) { return ['done', 'cancel'].indexOf(t.status) < 0 && t.due && t.due < T; }).length },
     assets: { total: A.length, custody: A.filter(function (x) { return x.status === 'custody'; }).length, maint: A.filter(function (x) { return x.status === 'maint'; }).length, late: A.filter(function (x) { return x.status === 'custody' && x.due && x.due < T; }).length },
@@ -2435,6 +2437,271 @@ function actOpsGet_(me) {
 }
 
 /* ===== عرض مجمّع لكل المؤسسات داخل كل نظام (4.19.3) ===== */
+/* ================= المشاريع والمتابعة + حسابات الداعمين + المشاريع التأهيلية (4.21) ================= */
+const PJ_ST = { plan: 'لم يبدأ', run: 'جاري', hold: 'متوقف', done: 'مكتمل' };
+const PJ_TST = { todo: 'للتنفيذ', doing: 'قيد العمل', review: 'للمراجعة', done: 'منجزة' };
+const PJ_PH = { prep: 'التجهيز والبدء', plan: 'الإعداد والتخطيط', exec: 'التنفيذ', ctrl: 'المتابعة والتحكم', close: 'الإغلاق والتقييم' };
+const RH_ST = { new: 'لم يبدأ', run: 'جاري', stop: 'متعثر', done: 'مكتمل' };
+function pjDefaults_() {
+  const L = function (p, a) { return a.map(function (n, i) { return { id: p + (i + 1), n: n }; }); };
+  return {
+    orgName: '', types: L('t', ['اجتماعي', 'اقتصادي', 'تعليمي', 'صحي', 'إغاثي', 'موسمي', 'أخرى']),
+    targets: L('g', ['الفقراء والأسر المحتاجة', 'الأيتام', 'الأرامل والمطلقات', 'كبار السن', 'ذوو الإعاقة', 'الطلاب', 'أخرى']),
+    regions: L('r', ['جدة', 'مكة المكرمة', 'الرياض', 'المدينة المنورة', 'الدمام']), villages: [], managers: [],
+    pPre: '', pNext: 1001, warnPct: 85,
+    supKinds: L('k', ['فرد', 'شركة', 'جهة حكومية', 'جمعية أو مؤسسة', 'صندوق مانح']), taxIds: L('x', ['الرقم الضريبي', 'السجل التجاري', 'الهوية الوطنية', 'رقم الإقامة']), sPre: '', sNext: 1001, smsSign: '',
+    rhProjects: L('p', ['ماكينة خياطة', 'عربة طعام متنقلة', 'بقالة صغيرة', 'مشغل نسائي', 'صيانة جوالات', 'تربية مواشي', 'أسر منتجة']),
+    rhKinds: L('q', ['قرض حسن', 'منحة', 'قرض بضمان']), skills: L('s', ['خياطة وتفصيل', 'طبخ وإعداد طعام', 'تجارة وبيع', 'حرف يدوية', 'صيانة وتقنية', 'زراعة ورعي']), rPre: 'RH-', rNext: 1, nPre: 'TA-', nNext: 1, graceDays: 0
+  };
+}
+function pjLoad_(org) {
+  const st = govLoad_(org, '_prj'), d = pjDefaults_(); st.set = Object.assign(d, st.set || {});
+  ['projects', 'ledger', 'tasks', 'kpis', 'acts', 'sups', 'sms', 'needs', 'rh'].forEach(function (k) { st[k] = st[k] || []; }); return st;
+}
+function pjOut_(st, extra) { const o = { set: st.set, projects: st.projects, ledger: st.ledger, tasks: st.tasks, kpis: st.kpis, acts: st.acts, sups: st.sups, sms: st.sms, needs: st.needs, rh: st.rh, sts: PJ_ST, tsts: PJ_TST, phases: PJ_PH, rsts: RH_ST }; if (extra) Object.keys(extra).forEach(function (k) { o[k] = extra[k]; }); return o; }
+function pjId_(p) { return p + Utilities.getUuid().replace(/-/g, '').slice(0, 10); }
+function pjLog_(x, me, a, note) { x.log = x.log || []; x.log.unshift({ at: now_(), by: me.username, act: a, note: str_(String(note || ''), 300) }); if (x.log.length > 60) x.log.length = 60; }
+function pjD_(x, k, req, lbl) { const v = str_(x[k], 10); if (!v) { if (req) throw err_('VALIDATION', 'حدد ' + lbl + '.'); return ''; } if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) throw err_('VALIDATION', 'تاريخ غير صحيح: ' + lbl + '.'); return v; }
+function pjM_(v) { const n = Math.round(Number(v) * 100) / 100; return isFinite(n) ? n : NaN; }
+function pjIn_(L, id, lbl, req) { const v = str_(String(id == null ? '' : id), 30); if (!v) { if (req) throw err_('VALIDATION', 'اختر ' + lbl + '.'); return ''; } if (!astList_(L, v)) throw err_('VALIDATION', lbl + ' غير موجود في القائمة.'); return v; }
+function pjBal_(st, pid) { return Math.round(st.ledger.reduce(function (s, e) { return e.pid !== pid ? s : s + (e.kind === 'in' || e.kind === 'tin' ? e.amount : -e.amount); }, 0) * 100) / 100; }
+function pjMob_(v, req, lbl) { const s = String(v || '').replace(/[\s-]/g, ''); if (!s) { if (req) throw err_('VALIDATION', 'اكتب ' + lbl + '.'); return ''; } if (!/^05\d{8}$/.test(s)) throw err_('VALIDATION', lbl + ' يجب أن يبدأ بـ 05 ويتكون من 10 أرقام.'); return s; }
+function pjPrj_(st, id, open) { const p = astList_(st.projects, String(id || '')); if (!p) throw err_('NOTFOUND', 'المشروع غير موجود.'); if (open && p.deleted) throw err_('VALIDATION', 'المشروع محذوف؛ استعده أولًا.'); if (open === 2 && p.status === 'done') throw err_('VALIDATION', 'المشروع مكتمل؛ افتحه أولًا للتعديل.'); return p; }
+
+function actPjGet_(me) {
+  if (!CUR_ORG || CUR_ORG === '*') return aggOrgs_(me, pjLoad_, ['projects', 'ledger', 'tasks', 'kpis', 'acts', 'sups', 'sms', 'needs', 'rh'], { sts: PJ_ST, tsts: PJ_TST, phases: PJ_PH, rsts: RH_ST });
+  const org = astNeed_(), st = pjLoad_(org); if (!st.set.orgName) st.set.orgName = String(getSettings_().orgName || ''); return pjOut_(st);
+}
+// ===== المشاريع
+function actPjSave_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = pjLoad_(org), S = st.set, x = p.item || {};
+  if (p.life) {
+    const pr = pjPrj_(st, x.id), note = str_(p.note, 300);
+    if (p.life === 'complete') { if (pr.deleted || pr.status === 'done') throw err_('VALIDATION', 'لا يمكن إكمال هذا المشروع.'); const open = st.tasks.filter(function (t) { return t.pid === pr.id && t.st !== 'done'; }).length; if (open && !p.force) throw err_('VALIDATION', 'للمشروع ' + open + ' مهمة غير منجزة. أنجزها أو أكّد الإكمال.'); pr.prev = pr.status; pr.status = 'done'; pr.doneAt = today_(); pjLog_(pr, me, 'إكمال المشروع', note); }
+    else if (p.life === 'reopen') { if (pr.status !== 'done') throw err_('VALIDATION', 'المشروع غير مكتمل.'); if (!note) throw err_('VALIDATION', 'اكتب سبب فتح المشروع.'); pr.status = 'run'; pr.doneAt = ''; pjLog_(pr, me, 'فتح مشروع مكتمل', note); }
+    else if (p.life === 'delete') { if (pr.deleted) throw err_('VALIDATION', 'المشروع محذوف من قبل.'); if (!note) throw err_('VALIDATION', 'اكتب سبب الحذف.'); if (pjBal_(st, pr.id) !== 0 && !p.force) throw err_('VALIDATION', 'رصيد المشروع ليس صفرًا؛ حوّل الرصيد أولًا أو أكّد الحذف.'); pr.deleted = 1; pr.delAt = now_(); pr.delBy = me.username; pr.delNote = note; pjLog_(pr, me, 'حذف المشروع', note); }
+    else if (p.life === 'restore') { if (!pr.deleted) throw err_('VALIDATION', 'المشروع غير محذوف.'); pr.deleted = 0; pr.delAt = ''; pjLog_(pr, me, 'استعادة المشروع', note); }
+    else if (p.life === 'purge') { astAdmin_(me); if (!pr.deleted) throw err_('VALIDATION', 'احذف المشروع أولًا.'); ['tasks', 'kpis', 'acts', 'ledger'].forEach(function (k) { st[k] = st[k].filter(function (y) { return y.pid !== pr.id; }); }); st.projects = st.projects.filter(function (y) { return y !== pr; }); }
+    else throw err_('VALIDATION', 'إجراء غير معروف.');
+    audit_(me.username, 'دورة حياة مشروع', '', pr.no, p.life); govSave_(org, '_prj', st); return pjOut_(st, { id: pr.id });
+  }
+  const v = {
+    name: str_(x.name, 160), type: pjIn_(S.types, x.type, 'نوع الدعم', 1), target: pjIn_(S.targets, x.target, 'الفئة المستهدفة', 1), region: pjIn_(S.regions, x.region, 'القطاع - المحافظة', 1), village: pjIn_(S.villages, x.village, 'القرية - الحي'),
+    manager: pjIn_(S.managers, x.manager, 'مدير المشروع'), status: PJ_ST[x.status] && x.status !== 'done' ? String(x.status) : 'plan', budget: pjM_(x.budget || 0), start: pjD_(x, 'start', 1, 'تاريخ البداية'), end: pjD_(x, 'end', 1, 'تاريخ النهاية'),
+    goal: str_(x.goal, 600), desc: str_(x.desc, 1500), place: str_(x.place, 160), bens: Math.max(0, parseInt(x.bens, 10) || 0), donor: str_(x.donor, 30), partners: str_(x.partners, 400), note: str_(x.note, 800), color: /^#[0-9a-f]{6}$/i.test(String(x.color || '')) ? String(x.color) : ''
+  };
+  if (!v.name) throw err_('VALIDATION', 'اكتب اسم المشروع.');
+  if (!(v.budget >= 0)) throw err_('VALIDATION', 'الميزانية غير صحيحة.');
+  if (v.end < v.start) throw err_('VALIDATION', 'تاريخ النهاية قبل تاريخ البداية.');
+  if (v.village) { const vl = astList_(S.villages, v.village); if (vl.reg && vl.reg !== v.region) throw err_('VALIDATION', 'القرية/الحي «' + vl.n + '» لا يتبع المحافظة المختارة.'); }
+  if (v.donor && !astList_(st.sups, v.donor)) throw err_('VALIDATION', 'الداعم غير موجود.');
+  let pr = x.id ? pjPrj_(st, x.id, 2) : null;
+  if (st.projects.some(function (y) { return y !== pr && !y.deleted && y.name === v.name; })) throw err_('VALIDATION', 'يوجد مشروع بالاسم نفسه.');
+  if (pr) { if (pr.status === 'done') v.status = 'done'; Object.assign(pr, v, { upd: now_(), updBy: me.username }); pjLog_(pr, me, 'تحديث بيانات المشروع'); }
+  else { const no = (S.pPre || '') + astPad_(S.pNext++, 6); pr = Object.assign(v, { id: pjId_('p'), no: no, by: me.username, at: now_(), files: [], log: [] }); pjLog_(pr, me, 'إنشاء المشروع'); st.projects.unshift(pr); }
+  audit_(me.username, x.id ? 'تحديث مشروع' : 'إضافة مشروع', '', pr.no, pr.name); govSave_(org, '_prj', st); return pjOut_(st, { id: pr.id });
+}
+// ===== الإيرادات والمصروفات والتحويل
+function actPjLedger_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = pjLoad_(org), x = p.item || {};
+  if (p.del) { astAdmin_(me); const e = astList_(st.ledger, String(p.del)); if (!e) throw err_('NOTFOUND', 'القيد غير موجود.'); const ids = e.tr ? st.ledger.filter(function (y) { return y.tr === e.tr; }) : [e];
+    ids.forEach(function (y) { if ((y.kind === 'in' || y.kind === 'tin') && pjBal_(st, y.pid) - y.amount < -0.001) throw err_('VALIDATION', 'حذف القيد يجعل رصيد المشروع سالبًا.'); });
+    st.ledger = st.ledger.filter(function (y) { return ids.indexOf(y) < 0; }); const pr = astList_(st.projects, e.pid); if (pr) pjLog_(pr, me, 'حذف قيد مالي', e.no); govSave_(org, '_prj', st); return pjOut_(st); }
+  const kind = ['in', 'out', 'tr'].indexOf(x.kind) >= 0 ? x.kind : ''; if (!kind) throw err_('VALIDATION', 'نوع القيد غير معروف.');
+  const pr = pjPrj_(st, x.pid, 2), amt = pjM_(x.amount), date = pjD_(x, 'date', 1, 'التاريخ');
+  if (!(amt > 0)) throw err_('VALIDATION', 'اكتب مبلغًا أكبر من صفر.'); if (date > today_()) throw err_('VALIDATION', 'لا يكون تاريخ القيد مستقبليًا.');
+  const base = { date: date, note: str_(x.note, 300), ref: str_(x.ref, 40), src: str_(x.src, 120), by: me.username, at: now_() };
+  const no = function () { return 'L' + astPad_(st.ledger.length + 1, 5) + '-' + Utilities.getUuid().slice(0, 3).toUpperCase(); };
+  if (kind === 'out' && amt > pjBal_(st, pr.id) + 0.001) throw err_('VALIDATION', 'المبلغ أكبر من رصيد المشروع (' + pjBal_(st, pr.id) + ').');
+  if (kind === 'tr') {
+    const to = pjPrj_(st, x.to, 2); if (to.id === pr.id) throw err_('VALIDATION', 'اختر مشروعًا آخر للتحويل.'); if (amt > pjBal_(st, pr.id) + 0.001) throw err_('VALIDATION', 'المبلغ أكبر من رصيد المشروع المحوَّل منه.');
+    const tr = pjId_('tr');
+    st.ledger.unshift(Object.assign({ id: pjId_('l'), no: no(), pid: pr.id, kind: 'tout', amount: amt, tr: tr, peer: to.id }, base));
+    st.ledger.unshift(Object.assign({ id: pjId_('l'), no: no(), pid: to.id, kind: 'tin', amount: amt, tr: tr, peer: pr.id }, base));
+    pjLog_(pr, me, 'تحويل رصيد إلى ' + to.name, amt); pjLog_(to, me, 'استلام تحويل من ' + pr.name, amt);
+  } else { st.ledger.unshift(Object.assign({ id: pjId_('l'), no: no(), pid: pr.id, kind: kind, amount: amt }, base)); pjLog_(pr, me, kind === 'in' ? 'تسجيل إيراد' : 'تسجيل صرف', amt); if (pr.status === 'plan' && kind === 'out') pr.status = 'run'; }
+  audit_(me.username, kind === 'in' ? 'إيراد مشروع' : kind === 'out' ? 'صرف مشروع' : 'تحويل رصيد مشروع', '', pr.no, String(amt)); govSave_(org, '_prj', st); return pjOut_(st);
+}
+// ===== مهام المخطط (جانت/كانبان)
+function actPjTask_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = pjLoad_(org), x = p.item || {};
+  let t = x.id ? astList_(st.tasks, String(x.id)) : null;
+  if (p.del) { if (!t) throw err_('NOTFOUND', 'المهمة غير موجودة.'); st.tasks.forEach(function (y) { if (y.dep === t.id) y.dep = ''; }); st.tasks = st.tasks.filter(function (y) { return y !== t; }); govSave_(org, '_prj', st); return pjOut_(st); }
+  if (p.move) { if (!t) throw err_('NOTFOUND', 'المهمة غير موجودة.'); pjPrj_(st, t.pid, 2); const s = String(p.move); if (!PJ_TST[s]) throw err_('VALIDATION', 'حالة غير معروفة.'); t.st = s; if (s === 'done') { t.pct = 100; t.doneAt = today_(); } else if (t.pct === 100) t.pct = 90; if (s === 'doing' && !t.pct) t.pct = 10; t.upd = now_(); govSave_(org, '_prj', st); return pjOut_(st); }
+  const pr = pjPrj_(st, x.pid, 2), S = st.set;
+  const v = { pid: pr.id, title: str_(x.title, 200), phase: PJ_PH[x.phase] ? String(x.phase) : 'exec', owner: pjIn_(S.managers, x.owner, 'المسؤول'), start: pjD_(x, 'start', 1, 'بداية المهمة'), end: pjD_(x, 'end', 1, 'نهاية المهمة'), st: PJ_TST[x.st] ? String(x.st) : 'todo', pct: Math.max(0, Math.min(100, parseInt(x.pct, 10) || 0)), w: Math.max(1, Math.min(10, parseInt(x.w, 10) || 1)), prio: ['low', 'mid', 'high'].indexOf(x.prio) >= 0 ? x.prio : 'mid', ms: x.ms ? 1 : 0, dep: str_(x.dep, 20), note: str_(x.note, 500) };
+  if (!v.title) throw err_('VALIDATION', 'اكتب اسم المهمة.'); if (v.end < v.start) throw err_('VALIDATION', 'نهاية المهمة قبل بدايتها.');
+  if (v.dep) { const d = astList_(st.tasks, v.dep); if (!d || d.pid !== pr.id) throw err_('VALIDATION', 'المهمة السابقة غير موجودة في المشروع.'); if (t && d.id === t.id) throw err_('VALIDATION', 'لا تعتمد المهمة على نفسها.'); if (v.start < d.end) throw err_('VALIDATION', 'تبدأ المهمة بعد نهاية المهمة السابقة «' + d.title + '» (' + d.end + ').'); }
+  if (v.st === 'done') v.pct = 100; else if (v.pct === 100) v.st = 'done';
+  if (t) { if (v.st === 'done' && t.st !== 'done') v.doneAt = today_(); Object.assign(t, v, { upd: now_() }); }
+  else { t = Object.assign(v, { id: pjId_('k'), by: me.username, at: now_(), doneAt: v.st === 'done' ? today_() : '' }); st.tasks.push(t); pjLog_(pr, me, 'إضافة مهمة', v.title); }
+  if (pr.status === 'plan' && (v.st === 'doing' || v.st === 'done')) pr.status = 'run';
+  govSave_(org, '_prj', st); return pjOut_(st, { id: t.id });
+}
+// ===== مؤشرات الأداء
+function actPjKpi_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = pjLoad_(org), x = p.item || {};
+  let k = x.id ? astList_(st.kpis, String(x.id)) : null;
+  if (p.del) { if (!k) throw err_('NOTFOUND', 'المؤشر غير موجود.'); st.kpis = st.kpis.filter(function (y) { return y !== k; }); govSave_(org, '_prj', st); return pjOut_(st); }
+  const pr = pjPrj_(st, x.pid, 2), v = { pid: pr.id, n: str_(x.n, 160), unit: str_(x.unit, 30), base: pjM_(x.base || 0), target: pjM_(x.target), actual: pjM_(x.actual || 0), dir: x.dir === 'down' ? 'down' : 'up', freq: str_(x.freq, 30), src: str_(x.src, 160) };
+  if (!v.n) throw err_('VALIDATION', 'اكتب اسم المؤشر.'); if (!(v.target >= 0) || isNaN(v.actual) || isNaN(v.base)) throw err_('VALIDATION', 'قيم المؤشر غير صحيحة.');
+  if (k) { k.hist = k.hist || []; if (k.actual !== v.actual) k.hist.unshift({ at: today_(), v: v.actual }); k.hist = k.hist.slice(0, 24); Object.assign(k, v); }
+  else { k = Object.assign(v, { id: pjId_('i'), at: now_(), hist: [{ at: today_(), v: v.actual }] }); st.kpis.push(k); }
+  govSave_(org, '_prj', st); return pjOut_(st, { id: k.id });
+}
+// ===== النشاطات والمستفيدون الملحقون
+function actPjAct_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = pjLoad_(org), x = p.item || {};
+  if (p.del) { const a = astList_(st.acts, String(p.del)); if (!a) throw err_('NOTFOUND', 'النشاط غير موجود.'); st.acts = st.acts.filter(function (y) { return y !== a; }); govSave_(org, '_prj', st); return pjOut_(st); }
+  const pr = pjPrj_(st, x.pid, 2), v = { pid: pr.id, kind: ['act', 'ben', 'party'].indexOf(x.kind) >= 0 ? x.kind : 'act', title: str_(x.title, 200), date: pjD_(x, 'date', 1, 'التاريخ'), count: Math.max(0, parseInt(x.count, 10) || 0), note: str_(x.note, 500) };
+  if (!v.title) throw err_('VALIDATION', 'اكتب العنوان.'); const a = Object.assign(v, { id: pjId_('a'), by: me.username, at: now_() }); st.acts.unshift(a);
+  pjLog_(pr, me, v.kind === 'ben' ? 'إلحاق مستفيدين' : v.kind === 'party' ? 'إلحاق جهة' : 'تسجيل نشاط', v.title); govSave_(org, '_prj', st); return pjOut_(st);
+}
+// ===== حسابات الداعمين
+function actPjSup_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = pjLoad_(org), S = st.set, x = p.item || {};
+  let s = x.id ? astList_(st.sups, String(x.id)) : null;
+  if (p.del) { if (!s) throw err_('NOTFOUND', 'الحساب غير موجود.'); if (st.projects.some(function (y) { return y.donor === s.id; })) { s.off = s.off ? 0 : 1; pjLog_(s, me, s.off ? 'إيقاف الحساب' : 'تفعيل الحساب'); } else st.sups = st.sups.filter(function (y) { return y !== s; }); govSave_(org, '_prj', st); return pjOut_(st); }
+  const v = { name: str_(x.name, 160), kind: pjIn_(S.supKinds, x.kind, 'نوع الحساب'), mobile: pjMob_(x.mobile, 1, 'رقم الجوال'), email: str_(x.email, 120), taxable: x.taxable ? 1 : 0, taxType: '', taxNo: '', city: str_(x.city, 80), note: str_(x.note, 800) };
+  if (!v.name) throw err_('VALIDATION', 'اكتب اسم الداعم.');
+  if (v.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) throw err_('VALIDATION', 'البريد الإلكتروني غير صحيح.');
+  if (v.taxable) { v.taxType = pjIn_(S.taxIds, x.taxType, 'المعرف الضريبي', 1); v.taxNo = str_(x.taxNo, 30).replace(/\s/g, ''); if (!v.taxNo) throw err_('VALIDATION', 'اكتب رقم المعرف الضريبي.'); if (/ضريبي/.test(astList_(S.taxIds, v.taxType).n) && !/^3\d{13}3$/.test(v.taxNo)) throw err_('VALIDATION', 'الرقم الضريبي 15 رقمًا يبدأ وينتهي بـ 3.'); }
+  if (st.sups.some(function (y) { return y !== s && y.mobile === v.mobile; })) throw err_('VALIDATION', 'رقم الجوال مسجل لداعم آخر.');
+  if (s) { Object.assign(s, v, { upd: now_() }); pjLog_(s, me, 'تحديث بيانات الحساب'); }
+  else { s = Object.assign(v, { id: pjId_('s'), no: (S.sPre || '') + astPad_(S.sNext++, 6), by: me.username, at: now_(), files: [], log: [] }); pjLog_(s, me, 'إنشاء الحساب'); st.sups.unshift(s); }
+  audit_(me.username, x.id ? 'تحديث حساب داعم' : 'إضافة حساب داعم', '', s.no, s.name); govSave_(org, '_prj', st); return pjOut_(st, { id: s.id });
+}
+function actPjSms_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = pjLoad_(org), text = str_(p.text, 600), ids = (Array.isArray(p.to) ? p.to : []).map(String);
+  if (!text) throw err_('VALIDATION', 'اكتب نص الرسالة.'); const L = st.sups.filter(function (s) { return ids.indexOf(s.id) >= 0 && s.mobile && !s.off; });
+  if (!L.length) throw err_('VALIDATION', 'اختر داعمًا واحدًا على الأقل لديه رقم جوال.');
+  const m = { id: pjId_('m'), at: now_(), by: me.username, text: text, to: L.map(function (s) { return s.id; }), n: L.length, parts: Math.ceil(text.length / 70) };
+  st.sms.unshift(m); if (st.sms.length > 300) st.sms.length = 300; L.forEach(function (s) { pjLog_(s, me, 'رسالة نصية', text.slice(0, 60)); });
+  audit_(me.username, 'رسالة نصية للداعمين', '', '', L.length + ' داعم'); govSave_(org, '_prj', st); return pjOut_(st, { id: m.id });
+}
+// ===== المرشحون للتأهيل ورأي إدارة التأهيل
+function actPjNeed_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = pjLoad_(org), S = st.set, x = p.item || {};
+  let n = x.id ? astList_(st.needs, String(x.id)) : null;
+  if (p.del) { if (!n) throw err_('NOTFOUND', 'السجل غير موجود.'); if (st.rh.some(function (r) { return r.need === n.id; })) throw err_('VALIDATION', 'للمرشح مشروع تأهيلي مسجل؛ لا يُحذف.'); st.needs = st.needs.filter(function (y) { return y !== n; }); govSave_(org, '_prj', st); return pjOut_(st); }
+  if (p.decide) { if (!n) throw err_('NOTFOUND', 'السجل غير موجود.'); const d = String(p.decide); if (['ok', 'no', 'review'].indexOf(d) < 0) throw err_('VALIDATION', 'قرار غير معروف.'); const note = str_(p.note, 500); if (d !== 'ok' && !note) throw err_('VALIDATION', 'اكتب مبررات الرأي.');
+    if (st.rh.some(function (r) { return r.need === n.id; }) && d !== 'ok') throw err_('VALIDATION', 'سُجّل للمرشح مشروع تأهيلي؛ لا يُغيَّر رأيه.');
+    n.status = d; n.op = { d: d, note: note, by: me.username, at: now_(), rp: pjIn_(S.rhProjects, p.rp, 'المشروع المقترح'), amt: pjM_(p.amt || 0) || 0 }; pjLog_(n, me, 'رأي إدارة التأهيل: ' + ({ ok: 'مؤهل', no: 'غير مؤهل', review: 'يحتاج دراسة' })[d], note);
+    audit_(me.username, 'رأي إدارة التأهيل', '', n.no, d); govSave_(org, '_prj', st); return pjOut_(st); }
+  const v = { cat: x.cat === 'dep' ? 'dep' : 'ben', name: str_(x.name, 160), idNo: str_(x.idNo, 10).replace(/\D/g, ''), mobile: pjMob_(x.mobile, 0, 'رقم الجوال'), file: str_(x.file, 40), city: str_(x.city, 80), family: Math.max(0, parseInt(x.family, 10) || 0), income: pjM_(x.income || 0) || 0, skill: pjIn_(S.skills, x.skill, 'المهارة'), want: pjIn_(S.rhProjects, x.want, 'المشروع المرغوب'), reason: str_(x.reason, 600), note: str_(x.note, 600) };
+  if (!v.name) throw err_('VALIDATION', 'اكتب الاسم.'); if (v.idNo && !/^[12]\d{9}$/.test(v.idNo)) throw err_('VALIDATION', 'رقم الهوية 10 أرقام يبدأ بـ 1 أو 2.');
+  if (v.idNo && st.needs.some(function (y) { return y !== n && y.idNo === v.idNo; })) throw err_('VALIDATION', 'رقم الهوية مسجل من قبل.');
+  if (n) Object.assign(n, v, { upd: now_() });
+  else { n = Object.assign(v, { id: pjId_('n'), no: (S.nPre || '') + astPad_(S.nNext++, 5), status: 'need', by: me.username, at: now_(), log: [] }); pjLog_(n, me, 'ترشيح للتأهيل'); st.needs.unshift(n); }
+  govSave_(org, '_prj', st); return pjOut_(st, { id: n.id });
+}
+// ===== مشاريع المستفيدين التأهيلية والأقساط
+function actPjRh_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = pjLoad_(org), S = st.set, x = p.item || {};
+  let r = x.id ? astList_(st.rh, String(x.id)) : null;
+  if (p.del) { if (!r) throw err_('NOTFOUND', 'المشروع غير موجود.'); if ((r.inst || []).some(function (i) { return i.paid > 0; })) astAdmin_(me); st.rh = st.rh.filter(function (y) { return y !== r; }); audit_(me.username, 'حذف مشروع تأهيلي', '', r.no, r.name); govSave_(org, '_prj', st); return pjOut_(st); }
+  if (p.pay) {
+    if (!r) throw err_('NOTFOUND', 'المشروع غير موجود.'); const i = astList_(r.inst, String(p.pay.iid)); if (!i) throw err_('NOTFOUND', 'القسط غير موجود.');
+    if (p.pay.undo) { astAdmin_(me); i.paid = 0; i.paidAt = ''; i.rcpt = ''; pjLog_(r, me, 'إلغاء سداد قسط', i.n); }
+    else { const amt = pjM_(p.pay.amount), date = pjD_(p.pay, 'date', 1, 'تاريخ السداد'); if (!(amt > 0)) throw err_('VALIDATION', 'اكتب مبلغ السداد.'); if (amt > Math.round((i.amount - (i.paid || 0)) * 100) / 100 + 0.001) throw err_('VALIDATION', 'المبلغ أكبر من المتبقي على القسط.'); if (date > today_()) throw err_('VALIDATION', 'لا يكون السداد بتاريخ مستقبلي.'); if (date < r.start) throw err_('VALIDATION', 'السداد قبل بداية المشروع.');
+      i.paid = Math.round(((i.paid || 0) + amt) * 100) / 100; i.paidAt = date; i.rcpt = str_(p.pay.rcpt, 40); pjLog_(r, me, 'سداد قسط ' + i.n, amt); }
+    const rem = r.inst.reduce(function (s, y) { return s + y.amount - (y.paid || 0); }, 0); if (rem < 0.01 && r.status !== 'done') { r.status = 'done'; r.doneAt = today_(); } else if (rem >= 0.01 && r.status === 'done') r.status = 'run';
+    govSave_(org, '_prj', st); return pjOut_(st);
+  }
+  const loan = function (k) { const o = astList_(S.rhKinds, k); return o && !/منحة/.test(o.n); };
+  const v = {
+    rp: pjIn_(S.rhProjects, x.rp, 'المشروع التأهيلي', 1), cat: x.cat === 'dep' ? 'dep' : 'ben', need: str_(x.need, 30), person: str_(x.person, 160), idNo: str_(x.idNo, 10).replace(/\D/g, ''), mobile: pjMob_(x.mobile, 0, 'جوال المستفيد'),
+    kind: pjIn_(S.rhKinds, x.kind, 'نوع الدعم', 1), status: RH_ST[x.status] ? String(x.status) : 'new', name: str_(x.name, 160), place: str_(x.place, 160), value: pjM_(x.value), start: pjD_(x, 'start', 1, 'تاريخ البداية'), end: pjD_(x, 'end', 1, 'تاريخ النهاية'),
+    desc: str_(x.desc, 1500), note: str_(x.note, 800), g: { name: str_((x.g || {}).name, 160), idNo: str_((x.g || {}).idNo, 10).replace(/\D/g, ''), mobile: str_((x.g || {}).mobile, 12).replace(/\D/g, ''), job: str_((x.g || {}).job, 100) }, prj: str_(x.prj, 30)
+  };
+  if (v.need) { const n = astList_(st.needs, v.need); if (!n) throw err_('VALIDATION', 'ملف المرشح غير موجود.'); if (n.status !== 'ok') throw err_('VALIDATION', 'المرشح لم يُعتمد مؤهلًا من إدارة التأهيل.'); v.person = n.name; v.idNo = v.idNo || n.idNo; v.mobile = v.mobile || n.mobile; v.cat = n.cat; if (st.rh.some(function (y) { return y !== r && y.need === n.id && y.status !== 'done'; })) throw err_('VALIDATION', 'للمستفيد مشروع تأهيلي قائم.'); }
+  if (!v.person) throw err_('VALIDATION', 'اختر ملف المستفيد أو التابع.'); if (!v.name) throw err_('VALIDATION', 'اكتب اسم المشروع.'); if (!v.place) throw err_('VALIDATION', 'اكتب مكان المشروع.');
+  if (!(v.value > 0)) throw err_('VALIDATION', 'اكتب قيمة المشروع.'); if (v.end < v.start) throw err_('VALIDATION', 'تاريخ النهاية قبل تاريخ البداية.');
+  if (v.prj && !astList_(st.projects, v.prj)) throw err_('VALIDATION', 'مشروع التمويل غير موجود.');
+  const isLoan = loan(v.kind);
+  if (isLoan) { if (!v.g.name) throw err_('VALIDATION', 'اكتب اسم الكافل.'); if (!/^[12]\d{9}$/.test(v.g.idNo)) throw err_('VALIDATION', 'رقم هوية الكافل 10 أرقام.'); pjMob_(v.g.mobile, 1, 'جوال الكافل'); }
+  const old = r ? r.inst || [] : [], src = Array.isArray(x.inst) ? x.inst : [];
+  const inst = src.slice(0, 120).map(function (i, k) { const o = astList_(old, String(i.id || '')); const a = pjM_(i.amount), d = pjD_(i, 'due', 1, 'استحقاق القسط ' + (k + 1)); if (!(a > 0)) throw err_('VALIDATION', 'مبلغ القسط ' + (k + 1) + ' غير صحيح.'); if (o && (o.paid || 0) > a + 0.001) throw err_('VALIDATION', 'مبلغ القسط ' + (k + 1) + ' أقل من المسدد منه.'); return { id: o ? o.id : pjId_('q'), n: k + 1, due: d, amount: a, paid: o ? o.paid || 0 : 0, paidAt: o ? o.paidAt || '' : '', rcpt: o ? o.rcpt || '' : '' }; }).sort(function (a, b) { return a.due < b.due ? -1 : 1; });
+  inst.forEach(function (i, k) { i.n = k + 1; });
+  old.forEach(function (o) { if ((o.paid || 0) > 0 && !inst.some(function (i) { return i.id === o.id; })) throw err_('VALIDATION', 'لا يُحذف قسط مسدد.'); });
+  if (isLoan) { if (!inst.length) throw err_('VALIDATION', 'أضف جدول الأقساط للقرض.'); const sum = Math.round(inst.reduce(function (s, i) { return s + i.amount; }, 0) * 100) / 100; if (Math.abs(sum - v.value) > 0.01) throw err_('VALIDATION', 'مجموع الأقساط (' + sum + ') لا يساوي قيمة المشروع (' + v.value + ').'); if (inst[0].due < v.start) throw err_('VALIDATION', 'أول قسط قبل بداية المشروع.'); }
+  else if (inst.length) throw err_('VALIDATION', 'المنحة لا تحتاج أقساطًا؛ احذف جدول الأقساط.');
+  v.inst = inst;
+  if (r) { Object.assign(r, v, { upd: now_() }); pjLog_(r, me, 'تحديث المشروع التأهيلي'); }
+  else { r = Object.assign(v, { id: pjId_('h'), no: (S.rPre || '') + astPad_(S.rNext++, 5), by: me.username, at: now_(), files: [], log: [] }); pjLog_(r, me, 'تسجيل مشروع مستفيد'); st.rh.unshift(r); if (v.need) { const n = astList_(st.needs, v.need); pjLog_(n, me, 'سُجّل له مشروع ' + r.no); } }
+  audit_(me.username, x.id ? 'تحديث مشروع تأهيلي' : 'تسجيل مشروع تأهيلي', '', r.no, r.name); govSave_(org, '_prj', st); return pjOut_(st, { id: r.id });
+}
+// ===== الإعدادات
+function actPjSet_(me, p) {
+  astAdmin_(me); const org = astNeed_(), st = pjLoad_(org), x = p.set || {}, s = st.set;
+  const lst = function (L) { return (Array.isArray(L) ? L : []).slice(0, 200).map(function (o, i) { return { id: str_(String(o.id || ''), 20).replace(/[^A-Za-z0-9_-]/g, '') || ('x' + i + Date.now().toString(36)), n: str_(String(o.n || ''), 120), reg: str_(String(o.reg || ''), 20), c: /^#[0-9a-f]{6}$/i.test(String(o.c || '')) ? String(o.c) : '' }; }).filter(function (o) { return o.n; }); };
+  const used = { types: [['projects', 'type']], targets: [['projects', 'target']], regions: [['projects', 'region']], villages: [['projects', 'village']], managers: [['projects', 'manager'], ['tasks', 'owner']], supKinds: [['sups', 'kind']], taxIds: [['sups', 'taxType']], rhProjects: [['rh', 'rp'], ['needs', 'want']], rhKinds: [['rh', 'kind']], skills: [['needs', 'skill']] };
+  Object.keys(used).forEach(function (k) { if (!x[k]) return; const v = lst(x[k]); s[k].forEach(function (o) { if (!v.some(function (y) { return y.id === o.id; }) && used[k].some(function (u) { return st[u[0]].some(function (r) { return r[u[1]] === o.id; }); })) throw err_('VALIDATION', '«' + o.n + '» مستخدم؛ لا يُحذف.'); }); s[k] = v; });
+  ['orgName', 'smsSign'].forEach(function (k) { if (x[k] != null) s[k] = str_(String(x[k]), 160); });
+  ['pPre', 'sPre', 'rPre', 'nPre'].forEach(function (k) { if (x[k] != null) s[k] = str_(String(x[k]), 8); });
+  ['pNext', 'sNext', 'rNext', 'nNext'].forEach(function (k) { const n = parseInt(x[k], 10); if (n > 0 && n < 1e9) s[k] = n; });
+  if (x.warnPct != null) s.warnPct = Math.max(50, Math.min(100, parseInt(x.warnPct, 10) || 85)); if (x.graceDays != null) s.graceDays = Math.max(0, Math.min(90, parseInt(x.graceDays, 10) || 0));
+  audit_(me.username, 'إعدادات المشاريع', '', '', ''); govSave_(org, '_prj', st); return pjOut_(st);
+}
+function actPjUpload_(me, p) {
+  astCanW_(me); const org = astNeed_(), st = pjLoad_(org), K = { prj: 'projects', sup: 'sups', rh: 'rh' }[p.kind]; if (!K) throw err_('VALIDATION', 'نوع غير معروف.');
+  const t = astList_(st[K], String(p.id || '')); if (!t) throw err_('NOTFOUND', 'العنصر غير موجود.');
+  const name = str_(p.name, 120).replace(/[\\/:*?"<>|]/g, '_') || 'مستند', mime = String(p.mime || '');
+  if (GOV_TYPES.indexOf(mime) < 0) throw err_('VALIDATION', 'الأنواع المسموحة: PDF وWord وExcel وصور JPG/PNG/WEBP.');
+  const bytes = Utilities.base64Decode(String(p.data || '')); if (!bytes.length) throw err_('VALIDATION', 'الملف فارغ.'); if (bytes.length > MAX_FILE * 2) throw err_('VALIDATION', 'حجم الملف أكبر من 10 ميجابايت.');
+  const folder = DriveApp.getFolderById(PropertiesService.getScriptProperties().getProperty('FILES_FOLDER_ID'));
+  const file = folder.createFile(Utilities.newBlob(bytes, mime, 'مشاريع — ' + name)), fid = Utilities.getUuid();
+  sheet_('files').appendRow([fid, 'prj:' + org + ':' + t.id, name, mime, bytes.length, file.getId(), me.username, now_()]);
+  t.files = t.files || []; t.files.unshift({ fid: fid, name: name, mime: mime, size: bytes.length, at: now_(), by: me.username, tag: str_(p.tag, 40) }); t.files = t.files.slice(0, 25);
+  govSave_(org, '_prj', st); return pjOut_(st);
+}
+function actPjFile_(me, p) {
+  const org = astNeed_(); if (me.role === 'viewer') throw err_('FORBIDDEN', 'صلاحية المشاهد لا تشمل تنزيل المستندات.');
+  const row = findRow_('files', String(p.fid || '')); if (!row) throw err_('NOTFOUND', 'الملف غير موجود.');
+  const v = sheet_('files').getRange(row, 1, 1, HEAD.files.length).getValues()[0];
+  if (String(v[1]).indexOf('prj:' + org + ':') !== 0) throw err_('FORBIDDEN', 'غير مسموح.');
+  return { name: String(v[2]), mime: String(v[3]), data: Utilities.base64Encode(DriveApp.getFileById(String(v[5])).getBlob().getBytes()) };
+}
+function actPjSamples_(me, p) {
+  astAdmin_(me); const org = astNeed_(), st = pjLoad_(org), S = st.set;
+  if (p.clear) { ['projects', 'ledger', 'tasks', 'kpis', 'acts', 'sups', 'needs', 'rh', 'sms'].forEach(function (k) { st[k] = st[k].filter(function (x) { return !x.sample; }); }); ['managers', 'villages'].forEach(function (k) { S[k] = S[k].filter(function (x) { return !x.sample; }); }); govSave_(org, '_prj', st); return pjOut_(st); }
+  if (st.projects.some(function (x) { return x.sample; })) throw err_('VALIDATION', 'البيانات التوضيحية مضافة من قبل.');
+  const d = function (n) { const x = new Date(); x.setDate(x.getDate() + n); return Utilities.formatDate(x, 'Asia/Riyadh', 'yyyy-MM-dd'); }, ts = Date.now().toString(36);
+  const M = ['أ. سامي العتيبي', 'أ. هدى الزهراني', 'أ. فهد القحطاني', 'أ. ريم الشهري'].map(function (n, i) { const o = { id: 'sm' + i + ts, n: n, sample: true }; S.managers.push(o); return o.id; });
+  const reg0 = (S.regions[0] || {}).id, V = ['أبحر الجنوبية', 'الصفا', 'النسيم', 'الروضة'].map(function (n, i) { const o = { id: 'sv' + i + ts, n: n, reg: reg0, sample: true }; S.villages.push(o); return o.id; });
+  const T = function (k) { return (S.types[k] || S.types[0]).id; }, G = function (k) { return (S.targets[k] || S.targets[0]).id; };
+  const sup = [['معالي منصور بن إسحاق بن يوسف', 0, '0552241863'], ['شركة الخير للتجارة', 1, '0568860688'], ['صندوق دعم الجمعيات', 4, '0540251565'], ['فاعل خير', 0, '0504667075'], ['مؤسسة البر الخيرية', 3, '0541711532']].map(function (r, i) { const o = { id: pjId_('s'), no: (S.sPre || '') + astPad_(S.sNext++, 6), name: r[0], kind: (S.supKinds[r[1]] || {}).id || '', mobile: r[2], email: i === 1 ? 'info@example.com' : '', taxable: i === 1 ? 1 : 0, taxType: i === 1 ? (S.taxIds[0] || {}).id : '', taxNo: i === 1 ? '300000000000003' : '', city: 'جدة', note: '', by: me.username, at: now_(), files: [], log: [], sample: true }; st.sups.push(o); return o.id; });
+  const P = [['أوقاف الجمعية', 1, 6, 'run', -120, 240, 250000, 0], ['التوصيل المدرسي', 2, 5, 'run', -60, 120, 80000, 1], ['السلة الغذائية الشهرية', 0, 0, 'run', -90, 30, 150000, 2], ['الحقيبة المدرسية', 2, 5, 'run', -30, 15, 45000, 3], ['مصروف الفسحة المدرسية', 2, 0, 'hold', -45, 60, 30000, 1], ['فرحة العيد', 0, 0, 'run', -20, 10, 60000, 4], ['سقيا الماء', 4, 0, 'plan', 10, 70, 40000, 2], ['سقيا المعتمرين والحجاج', 4, 6, 'done', -200, -20, 90000, 0], ['تأثيث منزل المحتاجين', 0, 0, 'run', -15, 75, 70000, 3], ['تفريج كربة', 0, 2, 'run', -100, 20, 35000, 1]];
+  const ids = P.map(function (r, i) { const pr = { id: pjId_('p'), no: (S.pPre || '') + astPad_(S.pNext++, 6), name: r[0], type: T(r[1]), target: G(r[2]), region: reg0, village: V[i % V.length], manager: M[i % M.length], status: r[3], budget: r[6], start: d(r[4]), end: d(r[5]), goal: 'خدمة ' + (S.targets[r[2]] || {}).n + ' وتحقيق أثر مستدام.', desc: 'مشروع ' + r[0] + ' ضمن خطة الجمعية السنوية.', place: 'جدة', bens: 20 + i * 15, donor: sup[r[7]], partners: '', note: '', color: '', by: me.username, at: now_(), files: [], log: [{ at: now_(), by: me.username, act: 'إنشاء المشروع', note: '' }], sample: true, doneAt: r[3] === 'done' ? d(r[5]) : '' }; st.projects.push(pr); return pr; });
+  ids.forEach(function (pr, i) {
+    const inn = Math.round(pr.budget * (0.45 + (i % 4) * 0.15)), out = Math.round(inn * (pr.status === 'plan' ? 0 : 0.35 + (i % 3) * 0.2));
+    st.ledger.push({ id: pjId_('l'), no: 'L' + astPad_(st.ledger.length + 1, 5), pid: pr.id, kind: 'in', amount: inn, date: d(Math.min(-1, -50 + i * 3)), note: 'تبرع لمشروع', ref: '', src: '', by: me.username, at: now_(), sample: true });
+    if (out) st.ledger.push({ id: pjId_('l'), no: 'L' + astPad_(st.ledger.length + 1, 5), pid: pr.id, kind: 'out', amount: out, date: d(Math.min(-1, -20 + i)), note: 'صرف على المشروع', ref: '', src: '', by: me.username, at: now_(), sample: true });
+    const ph = [['prep', 'دراسة الاحتياج وتحديد المستفيدين', 0, 0.15], ['plan', 'إعداد الخطة والميزانية', 0.12, 0.3], ['exec', 'التعاقد والتوريد', 0.28, 0.55], ['exec', 'التنفيذ والتوزيع', 0.5, 0.85], ['ctrl', 'المتابعة الميدانية', 0.3, 0.95], ['close', 'التقييم والتقرير الختامي', 0.9, 1]];
+    const s0 = new Date(pr.start), len = (new Date(pr.end) - s0) / 864e5, T0 = today_(); let prev = '';
+    ph.forEach(function (h, k) { const a = new Date(s0.getTime() + Math.round(len * h[2]) * 864e5), b = new Date(s0.getTime() + Math.round(len * h[3]) * 864e5), A = Utilities.formatDate(a, 'Asia/Riyadh', 'yyyy-MM-dd'), B = Utilities.formatDate(b, 'Asia/Riyadh', 'yyyy-MM-dd');
+      const stt = pr.status === 'done' || B < T0 ? (k === 4 && i % 3 === 0 && pr.status !== 'done' ? 'review' : 'done') : A <= T0 ? 'doing' : 'todo';
+      const t = { id: pjId_('k'), pid: pr.id, title: h[1], phase: h[0], owner: M[(i + k) % M.length], start: A, end: B, st: stt, pct: stt === 'done' ? 100 : stt === 'review' ? 90 : stt === 'doing' ? 30 + (i * 7 + k * 11) % 50 : 0, w: k === 3 ? 3 : k === 2 ? 2 : 1, prio: k === 3 ? 'high' : 'mid', ms: k === 5 ? 1 : 0, dep: k === 1 || k === 2 || k === 3 ? prev : '', note: '', by: me.username, at: now_(), doneAt: stt === 'done' ? B : '', sample: true };
+      if (k !== 4) prev = t.id; st.tasks.push(t); });
+    [['عدد المستفيدين', 'مستفيد', pr.bens, Math.round(pr.bens * (0.4 + (i % 5) * 0.15))], ['نسبة رضا المستفيدين', '%', 90, 70 + (i * 3) % 25], ['الالتزام بالميزانية', '%', 100, 80 + (i * 5) % 30]].forEach(function (k) { st.kpis.push({ id: pjId_('i'), pid: pr.id, n: k[0], unit: k[1], base: 0, target: k[2], actual: k[3], dir: 'up', freq: 'شهري', src: 'تقارير المتابعة', at: now_(), hist: [{ at: today_(), v: k[3] }], sample: true }); });
+    st.acts.push({ id: pjId_('a'), pid: pr.id, kind: 'ben', title: 'إلحاق دفعة مستفيدين', date: d(-10 + i), count: 10 + i * 3, note: '', by: me.username, at: now_(), sample: true });
+  });
+  const NN = [['نورة سعيد', 'ben', '1023456781', '0551112233', 0, 0, 'ok'], ['أم خالد الحربي', 'ben', '1034567892', '0552223344', 1, 1, 'ok'], ['سالم محمد', 'dep', '1045678903', '0553334455', 2, 2, 'ok'], ['فاطمة علي', 'ben', '1056789014', '0554445566', 3, 3, 'need'], ['عبدالله ناصر', 'dep', '1067890125', '0555556677', 4, 4, 'review'], ['منيرة أحمد', 'ben', '1078901236', '0556667788', 0, 5, 'no']].map(function (r) { const n = { id: pjId_('n'), no: (S.nPre || '') + astPad_(S.nNext++, 5), cat: r[1], name: r[0], idNo: r[2], mobile: r[3], file: '', city: 'جدة', family: 3 + (r[4] % 4), income: 1500 + r[4] * 400, skill: (S.skills[r[4]] || {}).id || '', want: (S.rhProjects[r[5]] || {}).id || '', reason: 'دخل غير كافٍ ورغبة في مشروع منتج.', note: '', status: r[6], op: r[6] === 'need' ? null : { d: r[6], note: r[6] === 'ok' ? 'تتوفر المهارة والجدية.' : r[6] === 'no' ? 'لا تتوفر المهارة المطلوبة حاليًا.' : 'يحتاج زيارة ميدانية.', by: me.username, at: now_(), rp: (S.rhProjects[r[5]] || {}).id || '', amt: 0 }, by: me.username, at: now_(), log: [], sample: true }; st.needs.push(n); return n; });
+  const loan = (S.rhKinds[0] || {}).id, grant = ((S.rhKinds.filter(function (k) { return /منحة/.test(k.n); })[0]) || S.rhKinds[1] || {}).id;
+  [[0, loan, 12000, -200, 12, 'مشغل خياطة منزلي'], [1, loan, 9000, -120, 9, 'عربة طعام'], [2, grant, 6000, -60, 0, 'صيانة جوالات']].forEach(function (r, k) {
+    const n = NN[r[0]], v = r[2], cnt = r[4], inst = [];
+    for (let j = 0; j < cnt; j++) { const due = d(r[3] + 30 * (j + 1)), amt = Math.round(v / cnt * 100) / 100 + (j === cnt - 1 ? Math.round((v - Math.round(v / cnt * 100) / 100 * cnt) * 100) / 100 : 0); const paidOk = due < today_() && !(k === 1 && j >= 2); inst.push({ id: pjId_('q'), n: j + 1, due: due, amount: amt, paid: paidOk ? amt : 0, paidAt: paidOk ? due : '', rcpt: '' }); }
+    st.rh.push({ id: pjId_('h'), no: (S.rPre || '') + astPad_(S.rNext++, 5), rp: n.op.rp, cat: n.cat, need: n.id, person: n.name, idNo: n.idNo, mobile: n.mobile, kind: r[1], status: 'run', name: r[5], place: 'جدة - ' + ['الصفا', 'النسيم', 'الروضة'][k], value: v, start: d(r[3]), end: d(r[3] + 30 * Math.max(cnt, 3) + 10), desc: '', note: '', g: cnt ? { name: 'كافل ' + (k + 1), idNo: '10' + astPad_(12345670 + k, 8), mobile: '055000000' + k, job: 'موظف' } : { name: '', idNo: '', mobile: '', job: '' }, prj: '', inst: inst, by: me.username, at: now_(), files: [], log: [], sample: true });
+  });
+  audit_(me.username, 'إضافة بيانات توضيحية للمشاريع', '', '', ''); govSave_(org, '_prj', st); return pjOut_(st);
+}
+function pjSum_(org) {
+  const st = pjLoad_(org), T = today_(), P = st.projects.filter(function (p) { return !p.deleted; });
+  const pct = function (p) { const L = st.tasks.filter(function (t) { return t.pid === p.id; }); const W = L.reduce(function (s, t) { return s + (t.w || 1); }, 0); return W ? L.reduce(function (s, t) { return s + (t.w || 1) * (t.pct || 0); }, 0) / W : 0; };
+  return { total: P.length, run: P.filter(function (p) { return p.status === 'run'; }).length, done: P.filter(function (p) { return p.status === 'done'; }).length, late: P.filter(function (p) { return p.status !== 'done' && p.end < T && pct(p) < 100; }).length,
+    bal: Math.round(P.reduce(function (s, p) { return s + pjBal_(st, p.id); }, 0) * 100) / 100, sups: st.sups.length, rh: st.rh.length, rlate: st.rh.reduce(function (s, r) { return s + (r.inst || []).filter(function (i) { return i.due < T && (i.paid || 0) < i.amount - 0.009; }).length; }, 0) };
+}
+
 function aggOrgs_(me, load, recKeys, extra) {
   if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.');
   const orgs = loadOrgs_().filter(function (o) { return o.status !== 'archived'; }), out = { all: 1, orgs: orgs.map(function (o) { return { id: o.id, code: o.code, name: o.name }; }) };
