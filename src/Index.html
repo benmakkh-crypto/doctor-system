@@ -2615,6 +2615,25 @@ body.dhid #nav{display:none}body.dhid .cap.capd{opacity:1}
 .ocloose,.ocoth{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}.ocloose .ocb,.ocoth .ocb{width:auto;min-width:200px}
 .ocoth{padding-top:14px;border-top:1px dashed var(--line);align-items:center}.ocoth small{flex-basis:100%;text-align:center;color:var(--muted);font-weight:700}
 @media (max-width:900px){.occols{grid-template-columns:1fr;padding-top:10px}.occols::before,.occ::before,.occ::after,.octop .big::after{display:none}.octop{grid-template-columns:1fr;gap:10px}.octop>i{display:none}.octop .ocs::after,.octop .ocs::before{display:none}.octop .big{order:-1}}
+.octop:not(.hasc) .big::after{display:none}
+.oclv{display:inline-flex;align-items:center;gap:2px;padding:3px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line)}.oclv small{padding:0 8px;color:var(--muted);font-size:12px;font-weight:700}.oclv button{min-width:32px;height:30px;border:0;border-radius:9px;background:none;font:inherit;font-weight:800;color:var(--ink);cursor:pointer}.oclv button.on{background:#9c7c3c;color:#fff}.oclv button:hover:not(.on){background:var(--surface)}
+.ocw>header .cnact .btn svg{width:15px;height:15px}
+.ochint{margin:0;display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,#b8862b 10%,var(--surface));color:#7a5b12;font-size:12.5px;font-weight:600}.ochint svg{width:16px;height:16px;flex:none}
+.oci{display:grid;gap:8px}
+.ocsub{margin-inline:22px 0!important;gap:7px!important}
+.ocsub::before{top:-8px!important;bottom:18px!important}
+.ocb.sm{min-height:36px;padding:5px 8px;background:color-mix(in srgb,var(--ob) 14%,var(--surface));color:var(--ink);box-shadow:none;border:1px solid color-mix(in srgb,var(--ob) 40%,var(--line))}.ocb.sm b{font-size:12.5px;font-weight:600}.ocb.sm .oca{width:26px;height:26px;background:var(--ob);color:#fff}.ocb.sm .oca svg{width:14px;height:14px}
+.ocsub .ocsub .ocb.sm{background:var(--surface-2);border-style:dashed}
+.occnt{justify-self:end;font-size:11.5px;color:var(--ob);font-weight:700;cursor:pointer;padding:0 6px}
+.ocpen{position:absolute;top:-7px;inset-inline-end:-7px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#deb24e;color:#2b1a03;font-style:normal;box-shadow:0 2px 6px rgb(0 0 0 / 30%);opacity:0;transition:opacity .15s}.ocpen svg{width:12px;height:12px}
+.oced .ocb:hover .ocpen,.oced .ocb:focus-visible .ocpen{opacity:1}
+.oced .ocb{cursor:grab;outline:1.5px dashed transparent;outline-offset:3px}.oced .ocb:hover{outline-color:#deb24e}
+.ocb.ocdrag{opacity:.4}.ocover{outline:3px solid #deb24e!important;outline-offset:3px;transform:scale(1.02)}
+.ocadd{display:flex;gap:6px;align-items:center;justify-content:center;width:100%;min-height:36px;border:2px dashed color-mix(in srgb,var(--ob) 55%,var(--line));border-radius:9px;background:color-mix(in srgb,var(--ob) 6%,var(--surface));color:var(--ob);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}.ocadd svg{width:14px;height:14px}.ocadd:hover{background:color-mix(in srgb,var(--ob) 14%,var(--surface))}
+.ocl .ocadd::before,.ocl .ocadd::after{display:none}
+.ocroot{display:flex;justify-content:center}.ocroot .ocadd{max-width:420px;min-height:44px}
+.ocmod{display:grid;gap:12px}.ocmact{display:flex;flex-wrap:wrap;gap:6px}.ocmact .btn svg{width:15px;height:15px}.ocmact .btn.bad{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 40%,var(--line))}
+.dh h2 svg{width:20px;height:20px;vertical-align:-3px;color:#b8862b}
 </style>
 </head>
 <body class="auth">
@@ -8081,37 +8100,78 @@ function viewCouncil(){
     return `<article class="cnkc" style="--tc:${c2}" ${ed?"":`data-cnp="${k.id}" tabindex="0" role="link"`}><header><span class="cnki">${ico(i2)}</span><div><small>${esc(k.type)}</small><b ${ed?`contenteditable="true" spellcheck="false" data-cnren="${k.id}" class="cned"`:""}>${esc(k.name)}</b></div></header>${(k.meta||{})["الاختصاص"]?`<p>${esc(k.meta["الاختصاص"])}</p>`:""}<footer>${sub?`<em>${NF.format(K.desc)}</em><span>${ts||"وحدة"}</span>`:`<span>${k.head?esc(k.head):"لا وحدات تابعة"}</span>`}${ed?`<span class="cnkt"><button data-cnmv="${k.id}" data-d="-1" ${i===0?"disabled":""} aria-label="تقديم">${ico("up")}</button><button data-cnmv="${k.id}" data-d="1" ${i===kids.length-1?"disabled":""} aria-label="تأخير">${ico("dn")}</button><button data-cnp="${k.id}" aria-label="فتح">${ico("eye")}</button><button class="bad" data-cndel="${k.id}" aria-label="حذف">${ico("trash")}</button></span>`:`<i>${ico("chev")}</i>`}</footer></article>`};
   const list=`<section class="cncard wide"><header><h3>${ico("tree")} الوحدات التابعة <em>${NF.format(kids.length)}</em></h3>${kids.length>12?`<label class="cnkq">${ico("search")}<input id="cnKq" type="search" placeholder="تصفية التوابع…" value="${esc(ui.cnKq||"")}"></label>`:""}</header>${ed?`<form class="cnadd" id="cnAdd"><input name="nm" placeholder="اسم الوحدة الجديدة" maxlength="200" required><select name="tp">${CN_TYPES.map(t=>`<option ${t===(kids[0]||{}).type?"selected":""}>${t}</option>`).join("")}</select><button class="btn pri">${ico("plus")} إضافة تابع</button></form>`:""}${shown.length?`<div class="cngrid">${shown.map(k=>card(k,kids.indexOf(k))).join("")}</div>`:`<div class="oze">${ico("tree")}<div><b>${q?"لا نتائج":"لا توجد وحدات تابعة"}</b><small>${ed?"أضف وحدة من النموذج أعلاه.":""}</small></div></div>`}${kf.length>lim?`<div class="cnmore"><button class="btn" id="cnMore">عرض ${NF.format(Math.min(kf.length-lim,96))} أخرى من ${NF.format(kf.length-lim)}</button></div>`:""}</section>`;
   const foot=isRoot?`<section class="cncard wide"><header><h3>${ico("activity")} سجل التعديلات</h3>${cnCanEdit()?`<button class="btn" id="cnReset">${ico("refresh")} استعادة القالب الأصلي</button>`:""}</header>${(cnC.log||[]).length?`<ul class="cnlog">${cnC.log.map(l=>`<li><b>${esc(l.t)}</b><span>${esc(l.by)} · ${dFmt(String(l.at).slice(0,10))}</span></li>`).join("")}</ul>`:`<p class="ozmut">${cnC.template?"يُعرض القالب الأصلي؛ يُحفظ نسخة خاصة عند أول تعديل.":"لا توجد تعديلات مسجّلة."}</p>`}<p class="cnsec">${ico("lock")} هذا الهيكل سرّي: لا يظهر إلا لأعضاء المنصة، ولا يعدّله إلا المشرف العام. الأسماء الجغرافية مؤقتة ويمكن تعديلها.</p></section>`:"";
-  return `<div class="cnw ${ed?"edit":""}">${top}${hero}${ed?"":cnChart(n)}${band}<div class="cnlay">${info}${comp}${chain}</div>${list}${foot}</div>`;
+  return `<div class="cnw ${ed?"edit":""}">${top}${hero}${cnChart(n)}${band}<div class="cnlay">${info}${comp}${chain}</div>${list}${foot}</div>`;
 }
 async function cnSave(log){const d=await act("cnSave",{tree:cnC.tree,log},"حُفظ: "+log);if(d&&d.tree){const sel=ui.cnSel;cnC=d;cnIndex();ui.cnSel=cnI(sel)?sel:cnC.tree.id;render();renderNavCn()}else{cnC=null;cnLoad()}}
 function cnPrint(){const T=cnC.tree,id=ui.cnSel&&cnI(ui.cnSel)?ui.cnSel:T.id,n=cnI(id).n,M=n.meta||{},w=window.open("","_blank");if(!w){toast("اسمح بالنوافذ المنبثقة للطباعة.");return}
   const rows=(x,d)=>d>3?"":(x.children||[]).slice(0,200).map(k=>`<tr><td style="padding-inline-start:${8+d*18}px">${esc(k.name)}</td><td>${esc(k.type)}</td><td>${esc(k.head||"")}</td><td>${NF.format(cnI(k.id).desc)}</td></tr>`+rows(k,d+1)).join("");
   w.document.write(`<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>${esc(n.name)}</title><style>body{font-family:system-ui,Tahoma;margin:28px;color:#13211d}h1{margin:0 0 4px}p{color:#555}table{width:100%;border-collapse:collapse;margin-top:14px;font-size:12.5px}th,td{border:1px solid #ddd;padding:6px 8px;text-align:start}th{background:#f3efe6}.k{display:grid;grid-template-columns:140px 1fr;gap:6px 12px;margin-top:10px}.k b{color:#7a5b12}small{color:#888}</style></head><body><small>المجلس العام · وثيقة داخلية سرّية</small><h1>${esc(n.name)}</h1><p>${cnPath(id).slice(0,-1).map(p=>esc(p.name)).join(" ‹ ")}</p><div class="k">${n.head?`<b>المسؤول</b><span>${esc(n.head)}</span>`:""}${Object.keys(M).map(k=>`<b>${esc(k)}</b><span>${esc(M[k])}</span>`).join("")}</div><table><thead><tr><th>الوحدة</th><th>النوع</th><th>المسؤول</th><th>التوابع</th></tr></thead><tbody>${rows(n,0)}</tbody></table><script>print()<\/script></body></html>`);w.document.close()}
-/* المخطط الهيكلي للوحدة (بطريقة نموذج المالك): رأس، وجهات جانبية، وأعمدة فروع بتوابعها */
-function cnChart(n){const K=n.children||[];if(!K.length)return"";
-  const lead=K.find(c=>c.type==="قيادة"&&(c.children||[]).length);let headN=null,sides=[];
+/* المخطط الهيكلي للوحدة (بطريقة نموذج المالك): رأس، وجهات جانبية، وأعمدة فروع بتوابعها — عرض كامل وتحرير مباشر */
+function ocKids(c){const L=[];(c.children||[]).forEach(k=>{if(k.type==="تصنيف"&&(k.children||[]).length>6)L.push(k);else if(k.type==="تصنيف")L.push(...k.children);else L.push(k)});return L}
+function cnChart(n){const K=n.children||[],ed=cnCanEdit()&&ui.ocEd,lv=ui.ocLv||2,full=lv>1;if(!K.length&&!ed)return"";
+  const lead=K.find(c=>c.type==="قيادة"&&(c.children||[]).length);
   const pool=lead?lead.children:K.filter(c=>!(c.children||[]).length);
-  headN=pool.find(c=>c.type==="منصب")||null;
-  sides=pool.filter(c=>c!==headN&&["مجلس","جهاز","جهة","لجنة","منصب"].includes(c.type)).slice(0,2);
+  const headN=pool.find(c=>c.type==="منصب")||null,sides=pool.filter(c=>c!==headN&&["مجلس","جهاز","جهة","لجنة","منصب"].includes(c.type)).slice(0,2);
   const used=new Set([lead,headN,...sides].filter(Boolean));
   let cols=K.filter(c=>!used.has(c)&&(c.children||[]).length);
   const loose=K.filter(c=>!used.has(c)&&!(c.children||[]).length);
   const paths=cols.filter(c=>c.type==="مسار"),others=paths.length?cols.filter(c=>c.type!=="مسار"):[];if(paths.length)cols=paths;
-  const ttl=n.name==="المجلس العام"?"الهيكل التنظيمي العام للمجلس العام":"الهيكل التنظيمي — "+n.name;
-  const box=(x,cls)=>`<button type="button" class="ocb ${cls}" data-cnp="${x.id}"><span class="oca">${ico(cls==="ocg"?"user":ct(x.type)[0])}</span><b>${esc(x.name)}</b></button>`;
-  const head=headN?box(headN,"ocd big"):`<button type="button" class="ocb ocd big" data-cnp="${n.id}"><span class="oca">${ico(ct(n.type)[0])}</span><b>${esc(n.head||n.name)}</b></button>`;
-  const kidsOf=c=>{const L=[];(c.children||[]).forEach(k=>{if(k.type==="تصنيف"&&(k.children||[]).length>6)L.push(k);else if(k.type==="تصنيف")L.push(...k.children);else L.push(k)});return L};
-  const col=c=>{const L=kidsOf(c),sh=L.slice(0,8);return `<div class="occ">${box(c,"ocd")}<div class="ocl">${sh.map(k=>{const d=(cnI(k.id)||{}).desc||0;return `<button type="button" class="ocb ocg" data-cnp="${k.id}"><span class="oca">${ico("user")}</span><b>${esc(k.name)}${d&&k.type==="تصنيف"&&!/\(/.test(k.name)?` (${NF.format((k.children||[]).length)})`:""}</b></button>`}).join("")}${L.length>8?`<button type="button" class="ocb ocg more" data-cnp="${c.id}"><b>+ ${NF.format(L.length-8)} أخرى</b></button>`:""}</div></div>`};
-  return `<section class="cncard wide ocw"><header><h3>${ico("tree")} المخطط الهيكلي</h3><button class="btn" id="ocPrint">${ico("print")} طباعة المخطط</button></header><div class="occhart" id="ocChart"><div class="octitle">${esc(ttl)}</div>
-   <div class="octop ${sides.length?"":"solo"}">${sides[0]?box(sides[0],"ocd ocs"):`<i></i>`}${head}${sides[1]?box(sides[1],"ocd ocs"):`<i></i>`}</div>
-   ${loose.length?`<div class="ocloose">${loose.slice(0,10).map(x=>box(x,"ocg")).join("")}</div>`:""}
+  const ttl=n===cnC.tree?"الهيكل التنظيمي العام للمجلس العام":"الهيكل التنظيمي — "+n.name;
+  const dr=ed?`draggable="true"`:"";
+  const box=(x,cls,ic)=>`<button type="button" class="ocb ${cls}" data-ocb="${x.id}" ${dr} title="${ed?"اضغط للتعديل · اسحب لإعادة الترتيب":"اضغط للانتقال"}"><span class="oca">${ico(ic||ct(x.type)[0])}</span><b>${esc(x.name)}</b>${ed?`<i class="ocpen">${ico("pen")}</i>`:""}</button>`;
+  const add=(own,lbl)=>ed?`<button type="button" class="ocadd" data-ocadd="${own.id}">${ico("plus")} ${lbl||"إضافة"}</button>`:"";
+  const list=(own,L,d)=>{const lim=full?(d?40:60):8,sh=L.slice(0,lim);
+    return `<div class="ocl ${d?"ocsub":""}">${sh.map(k=>{const kk=ocKids(k);return `<div class="oci">${box(k,"ocg"+(d?" sm":""),d?ct(k.type)[0]:"user")}${kk.length&&d<lv-1?list(k,kk,d+1):kk.length?`<span class="occnt" data-ocb="${k.id}">${NF.format(cnI(k.id).desc)} وحدة ←</span>`:""}</div>`}).join("")}${L.length>lim?`<button type="button" class="ocb ocg more" data-ocgo="${own.id}"><b>+ ${NF.format(L.length-lim)} أخرى — افتح صفحتها</b></button>`:""}${add(own,d?"تابع":"إضافة")}</div>`};
+  const col=c=>`<div class="occ">${box(c,"ocd")}${list(c,ocKids(c),0)}</div>`;
+  const head=headN?box(headN,"ocd big"):`<button type="button" class="ocb ocd big" data-ocb="${n.id}"><span class="oca">${ico(ct(n.type)[0])}</span><b>${esc(n.head||n.name)}</b>${ed?`<i class="ocpen">${ico("pen")}</i>`:""}</button>`;
+  return `<section class="cncard wide ocw ${ed?"oced":""}"><header><h3>${ico("tree")} المخطط الهيكلي</h3><div class="cnact"><span class="oclv" role="group" aria-label="عمق العرض"><small>المستويات</small>${[1,2,3,4].map(v=>`<button type="button" data-oclv="${v}" class="${v===lv?"on":""}" aria-pressed="${v===lv}">${NF.format(v)}</button>`).join("")}</span>${cnCanEdit()?`<button class="btn ${ed?"pri":""}" id="ocEdT" aria-pressed="${!!ed}">${ico("pen")} ${ed?"إنهاء تحرير المخطط":"تحرير المخطط"}</button>`:""}<button class="btn" id="ocPrint">${ico("print")} طباعة المخطط</button></div></header>
+  ${ed?`<p class="ochint">${ico("finger")} اضغط أي صندوق لتعديله أو حذفه أو إضافة تابع له · اسحب صندوقًا وأفلته على آخر ليأخذ مكانه، أو على «إضافة» لينتقل تحت تلك الجهة</p>`:""}
+  <div class="occhart" id="ocChart"><div class="octitle">${esc(ttl)}</div>
+   <div class="octop ${cols.length?"hasc":""}">${sides[0]?box(sides[0],"ocd ocs"):`<i></i>`}${head}${sides[1]?box(sides[1],"ocd ocs"):`<i></i>`}</div>
+   ${loose.length?`<div class="ocloose">${loose.map(x=>box(x,"ocg")).join("")}</div>`:""}
    ${cols.length?`<div class="occols" style="--n:${Math.min(cols.length,4)}">${cols.map(col).join("")}</div>`:""}
-   ${others.length?`<div class="ocoth"><small>أقسام مكمّلة</small>${others.map(x=>box(x,"ocg")).join("")}</div>`:""}</div></section>`}
+   ${others.length?`<div class="ocoth"><small>أقسام مكمّلة</small>${others.map(x=>box(x,"ocg")).join("")}</div>`:""}
+   ${ed?`<div class="ocroot">${add(n,"إضافة فرع جديد تحت «"+esc(n.name)+"»")}</div>`:""}</div></section>`}
 function ocPrint(){const el=$("#ocChart");if(!el)return;const css=[...document.querySelectorAll("style")].map(s=>s.textContent).join("\n");const w=window.open("","_blank");if(!w){toast("اسمح بالنوافذ المنبثقة للطباعة.");return}
-  w.document.write(`<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>المخطط الهيكلي</title><style>${css}body{background:#fff;padding:20px}@page{size:landscape;margin:10mm}</style></head><body>${el.outerHTML}<script>setTimeout(()=>print(),300)<\/script></body></html>`);w.document.close()}
+  w.document.write(`<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>المخطط الهيكلي</title><style>${css}body{background:#fff;padding:20px}.ocadd,.ocpen{display:none!important}@page{size:landscape;margin:10mm}</style></head><body>${el.outerHTML}<script>setTimeout(()=>print(),300)<\/script></body></html>`);w.document.close()}
+function ocIsUnder(a,b){let x=cnI(b);while(x){if(x.n.id===a)return true;x=x.par?cnI(x.par.id):null}return false}
+function ocMove(id,toPar,before){const I=cnI(id),P=cnI(toPar);if(!I||!P||!I.par||ocIsUnder(id,toPar))return toast("لا يمكن نقل جهة تحت نفسها أو تحت أحد توابعها."),false;
+  const L=I.par.children;L.splice(L.indexOf(I.n),1);const T=(P.n.children=P.n.children||[]);let i=before?T.indexOf(cnI(before).n):-1;if(i<0)T.push(I.n);else T.splice(i,0,I.n);return true}
+function ocEditor(id){const I=cnI(id);if(!I)return;const n=I.n,M=n.meta||{},sib=I.par?I.par.children:[],ix=sib.indexOf(n);
+  modal(`<div class="dh"><h2>${ico(ct(n.type)[0])} تعديل: ${esc(n.name)}</h2><button class="x" data-close aria-label="إغلاق">✕</button></div><div class="db ocmod">
+   <p class="ozmut">${cnPath(id).slice(0,-1).map(p=>esc(p.name)).join(" ‹ ")||"الجذر"}</p>
+   <div class="cnform"><label class="full"><span>${ico("pen")} الاسم</span><input id="ocN" value="${esc(n.name)}" maxlength="200"></label>
+   <label><span>${ico("list")} النوع</span><select id="ocT">${CN_TYPES.map(t=>`<option ${t===n.type?"selected":""}>${t}</option>`).join("")}</select></label>
+   <label><span>${ico("user")} المسؤول</span><input id="ocH" value="${esc(n.head||"")}" maxlength="120"></label>
+   <label class="full"><span>${ico("compass")} الاختصاص</span><textarea id="ocX" rows="2" maxlength="1000">${esc(M["الاختصاص"]||"")}</textarea></label></div>
+   <div class="ocmact">${I.par?`<button class="btn" data-ocmv="-1" ${ix<=0?"disabled":""}>${ico("up")} تقديم</button><button class="btn" data-ocmv="1" ${ix>=sib.length-1?"disabled":""}>${ico("dn")} تأخير</button>`:""}${I.par&&I.par.id!==cnC.tree.id?`<button class="btn" data-ocmv="out">${ico("swap")} رفعها مستوى</button>`:""}<button class="btn" data-ocopen="1">${ico("eye")} فتح صفحتها</button>${I.par?`<button class="btn bad" data-ocdel="1">${ico("trash")} حذف${I.desc?` (+${NF.format(I.desc)})`:""}</button>`:""}</div>
+   <form class="cnadd" id="ocAddF"><input name="nm" placeholder="اسم تابع جديد تحت «${esc(n.name)}»" maxlength="200"><select name="tp">${CN_TYPES.map(t=>`<option ${t===((n.children||[])[0]||{}).type?"selected":""}>${t}</option>`).join("")}</select><button class="btn">${ico("plus")} إضافة تابع</button></form>
+  </div><div class="df"><button class="btn pri" id="ocSv">${ico("check")} حفظ</button><button class="btn" data-close>إلغاء</button></div>`,"md");
+  const R2=$("#modalRoot");
+  R2.querySelector("#ocSv").onclick=()=>{const v=R2.querySelector("#ocN").value.replace(/\s+/g," ").trim();if(!v)return toast("اكتب الاسم.");n.name=v;n.type=R2.querySelector("#ocT").value;const h=R2.querySelector("#ocH").value.trim();if(h)n.head=h;else delete n.head;const x=R2.querySelector("#ocX").value.trim();n.meta=n.meta||{};if(x)n.meta["الاختصاص"]=x;else delete n.meta["الاختصاص"];closeModal();cnSave("تعديل «"+v+"»")};
+  R2.querySelector("#ocAddF").onsubmit=e=>{e.preventDefault();const f=e.target,v=f.nm.value.trim();if(!v)return toast("اكتب اسم التابع.");(n.children=n.children||[]).push({id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),name:v,type:f.tp.value,meta:{},children:[]});closeModal();cnSave("إضافة «"+v+"» تحت «"+n.name+"»")};
+  R2.querySelectorAll("[data-ocmv]").forEach(b=>b.onclick=()=>{const d=b.dataset.ocmv;if(d==="out"){const gp=I.par&&cnI(I.par.id).par;if(!gp)return;if(ocMove(id,gp.id,I.par.id)){closeModal();cnSave("رفع «"+n.name+"» مستوى")}return}const j=ix+(+d);sib.splice(ix,1);sib.splice(j,0,n);closeModal();cnSave("إعادة ترتيب «"+n.name+"»")});
+  R2.querySelector("[data-ocopen]").onclick=()=>{closeModal();ui.cnSel=id;cnOpenPath(id);cnGo(id);renderNavCn()};
+  const dl=R2.querySelector("[data-ocdel]");if(dl)dl.onclick=()=>{closeModal();confirmBox("حذف جهة","سيُحذف «"+n.name+"»"+(I.desc?" مع "+NF.format(I.desc)+" وحدة تابعة":"")+". يمكنك استعادة القالب الأصلي لاحقًا.","حذف",()=>{sib.splice(sib.indexOf(n),1);cnSave("حذف «"+n.name+"»")})};
+  setTimeout(()=>{const f=R2.querySelector("#ocN");if(f)f.focus()},30)}
+function bindChart(main){const w=main.querySelector(".ocw");if(!w)return;const ed=cnCanEdit()&&ui.ocEd;
+  w.querySelectorAll("[data-oclv]").forEach(b=>b.onclick=()=>{ui.ocLv=+b.dataset.oclv;try{localStorage.setItem("ds.ocLv",ui.ocLv)}catch(x){}render()});
+  const et=w.querySelector("#ocEdT");if(et)et.onclick=()=>{ui.ocEd=!ui.ocEd;render()};
+  const pr=w.querySelector("#ocPrint");if(pr)pr.onclick=ocPrint;
+  w.addEventListener("click",e=>{const go=e.target.closest("[data-ocgo]");if(go){e.preventDefault();ui.cnSel=go.dataset.ocgo;cnOpenPath(ui.cnSel);cnGo(ui.cnSel);renderNavCn();return}
+    const ad=e.target.closest("[data-ocadd]");if(ad){e.preventDefault();ocEditor(ad.dataset.ocadd);setTimeout(()=>{const f=$("#ocAddF");if(f)f.nm.focus()},60);return}
+    const b=e.target.closest("[data-ocb]");if(!b)return;e.preventDefault();const id=b.dataset.ocb;if(ed)ocEditor(id);else{ui.cnSel=id;cnOpenPath(id);cnGo(id);renderNavCn()}});
+  if(!ed)return;let drag=null;
+  w.addEventListener("dragstart",e=>{const b=e.target.closest("[data-ocb]");if(!b)return;drag=b.dataset.ocb;e.dataTransfer.effectAllowed="move";try{e.dataTransfer.setData("text/plain",drag)}catch(x){}b.classList.add("ocdrag")});
+  w.addEventListener("dragend",()=>{drag=null;w.querySelectorAll(".ocdrag,.ocover").forEach(x=>x.classList.remove("ocdrag","ocover"))});
+  w.addEventListener("dragover",e=>{const t=e.target.closest("[data-ocb],[data-ocadd]");if(!t||!drag)return;e.preventDefault();w.querySelectorAll(".ocover").forEach(x=>x!==t&&x.classList.remove("ocover"));t.classList.add("ocover")});
+  w.addEventListener("dragleave",e=>{const t=e.target.closest(".ocover");if(t&&!t.contains(e.relatedTarget))t.classList.remove("ocover")});
+  w.addEventListener("drop",e=>{const t=e.target.closest("[data-ocb],[data-ocadd]");if(!t||!drag)return;e.preventDefault();const src=drag;drag=null;const I=cnI(src);if(!I)return;
+    if(t.dataset.ocadd){if(ocMove(src,t.dataset.ocadd,null))cnSave("نقل «"+I.n.name+"» تحت «"+cnI(t.dataset.ocadd).n.name+"»");return}
+    const tg=t.dataset.ocb;if(tg===src)return;const T=cnI(tg);if(!T||!T.par)return;if(ocMove(src,T.par.id,tg))cnSave("نقل «"+I.n.name+"» قبل «"+T.n.name+"»")})}
 function bindCouncil(main){if(R.v!=="council"||!cnC||!cnC.tree)return;const q=(s,f)=>main.querySelectorAll(s).forEach(f);
   q("[data-cnp]",b=>{const go=e=>{if(e.target.closest("[data-cnmv],[data-cndel],.cned")&&!e.target.closest("button[data-cnp]"))return;e.preventDefault();e.stopPropagation();ui.cnSel=b.dataset.cnp;ui.cnKq="";ui.cnLim=0;cnOpenPath(ui.cnSel);cnGo(ui.cnSel);renderNavCn()};b.onclick=go;if(b.tagName==="ARTICLE")b.onkeydown=e=>{if(e.key==="Enter")go(e)}});
-  const pr=main.querySelector("#cnPrint");if(pr)pr.onclick=cnPrint;const op=main.querySelector("#ocPrint");if(op)op.onclick=ocPrint;
+  const pr=main.querySelector("#cnPrint");if(pr)pr.onclick=cnPrint;bindChart(main);
   const et=main.querySelector("#cnEditT");if(et)et.onclick=()=>{ui.cnEdit=!ui.cnEdit;render()};
   const mo=main.querySelector("#cnMore");if(mo)mo.onclick=()=>{ui.cnLim=(ui.cnLim||48)+96;render()};
   const kq=main.querySelector("#cnKq");if(kq){let t=null;kq.oninput=()=>{ui.cnKq=kq.value;clearTimeout(t);t=setTimeout(()=>{ui.cnLim=0;render();const k=$("#cnKq");if(k){k.focus();k.setSelectionRange(k.value.length,k.value.length)}},250)}}
@@ -8658,7 +8718,7 @@ $("#nav").addEventListener("click",e=>{
   const a=e.target.closest("[data-asn]");if(a){e.preventDefault();const t=a.dataset.asn;if(t==="add"){ui.asEdit=null;if(ui.asD)delete ui.asD.add}ui.asTab=t;ui.asNav=true;const h="#assets/"+t;if(location.hash!==h)location.hash=h;else render();if(typeof closeSide==="function")closeSide()}});
 try{if(localStorage.getItem("ds.dhid"))document.body.classList.add("dhid")}catch(e){}$("#dHideBtn").onclick=dpToggle;$("#dPermBtn").onclick=qpOpen;$("#dPermBtn").innerHTML=ico("key")+"<span>صلاحيات</span>";
 $("#capTree").addEventListener("click",e=>{if(e.target.closest("a.qk")&&!e.target.closest("[data-ntsw]")){ui.trProf=null;if(R.v==="structure")setTimeout(render,0)}const b=e.target.closest("[data-ntsw]");if(b){e.preventDefault();e.stopPropagation();ui.ntShow=ui.ntShow===false;renderNavTree()}});
-try{ui.cnNav=localStorage.getItem("ds.cnNav")==="1"}catch(e){}bindNavCn();
+try{ui.cnNav=localStorage.getItem("ds.cnNav")==="1";ui.ocLv=+localStorage.getItem("ds.ocLv")||2}catch(e){}bindNavCn();
 $("#navTree").addEventListener("click",e=>{const g=e.target.closest("[data-ntg]");if(g){e.preventDefault();const o=ui.ntOpen||(ui.ntOpen=new Set()),id=g.dataset.ntg;o.has(id)?o.delete(id):o.add(id);renderNavTree();return}
   const a=e.target.closest("[data-nts]");if(a){e.preventDefault();navTreeGo(a.dataset.nts);renderNavTree();if(typeof closeSide==="function")closeSide()}});
 $("#backBtn").onclick=goBack;
