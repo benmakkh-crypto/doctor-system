@@ -8,7 +8,7 @@
  * التثبيت: شغّل الدالة setup() مرة واحدة من المحرر، ثم انشر تطبيق ويب.
  */
 
-const APP_VERSION = '4.22.4';
+const APP_VERSION = '4.23.0';
 /** المشرف العام: أول حساب مسؤول يُنشأ عند التثبيت. كلمة مروره مؤقتة تظهر في سجل التنفيذ. */
 const FIRST_ADMIN = { username: 'zubair', name: 'د.م. زبير الفضل', email: 'benmakkh@gmail.com' };
 const SH = {
@@ -482,7 +482,7 @@ function inUserScope_(me, u) {
   if (isPlatform_(me)) return CUR_ORG === '*' || uo === CUR_ORG || uo === '*';
   return uo === me.org;
 }
-const WRITE_ACTIONS = ['demoOrgs', 'wsSave', 'wsDraw', 'wsSet', 'wsSms', 'wsUpload', 'wsSamples', 'pjSave', 'pjLedger', 'pjTask', 'pjKpi', 'pjAct', 'pjSup', 'pjSms', 'pjNeed', 'pjRh', 'pjSet', 'pjUpload', 'pjSamples', 'fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples', 'tskSave', 'tskSet', 'tskSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
+const WRITE_ACTIONS = ['cnSave', 'demoOrgs', 'wsSave', 'wsDraw', 'wsSet', 'wsSms', 'wsUpload', 'wsSamples', 'pjSave', 'pjLedger', 'pjTask', 'pjKpi', 'pjAct', 'pjSup', 'pjSms', 'pjNeed', 'pjRh', 'pjSet', 'pjUpload', 'pjSamples', 'fltVeh', 'fltDrv', 'fltTrip', 'fltFuel', 'fltMnt', 'fltSet', 'fltUpload', 'fltSamples', 'tskSave', 'tskSet', 'tskSamples', 'exSave', 'exPay', 'exCat', 'exSet', 'exUpload', 'exSamples', 'invItem', 'invWh', 'invMov', 'invTr', 'invCount', 'invSet', 'invUpload', 'invSamples', 'ctSave', 'ctDel', 'ctInst', 'ctPay', 'ctOb', 'ctChg', 'ctSet', 'ctUpload', 'ctSamples', 'prSave', 'prDecide', 'prSupply', 'prReceive', 'prClose', 'prDel', 'prSup', 'prSet', 'prUpload', 'prSamples', 'astCount', 'astSaveAsset', 'astDelAsset', 'astSaveEmp', 'astDelEmp', 'astMove', 'astSet', 'astUpload', 'astSamples', 'saveOrg', 'setOrgStatus', 'importOrgs', 'orderOrgs', 'govUpload', 'govClear', 'govDocMeta', 'govAnswer', 'govCopy', 'govCustomDoc', 'treeSave', 'bulkResetPasswords', 'savePrefs', 'saveLayout', 'saveNav', 'saveTheme', 'create', 'update', 'status', 'route', 'escalate', 'deescalate', 'note', 'remove', 'restore', 'purge', 'emptyTrash',
   'saveSettings', 'saveUser', 'resetPassword', 'changePassword', 'upload', 'removeFile', 'importData', 'clearSamples', 'addSamples', 'backupNow'];
 
 const ACTIONS = {
@@ -660,6 +660,8 @@ const ACTIONS = {
   pjSave: actPjSave_, pjLedger: actPjLedger_, pjTask: actPjTask_, pjKpi: actPjKpi_, pjAct: actPjAct_, pjSup: actPjSup_, pjSms: actPjSms_, pjNeed: actPjNeed_, pjRh: actPjRh_, pjSet: actPjSet_, pjUpload: actPjUpload_, pjSamples: actPjSamples_, pjGet: actPjGet_, pjFile: actPjFile_,
   exGet: actExGet_, exSave: actExSave_, exPay: actExPay_, exCat: actExCat_, exSet: actExSet_, exUpload: actExUpload_, exFile: actExFile_, exSamples: actExSamples_, opsGet: actOpsGet_, tskGet: actTskGet_, tskSave: actTskSave_, tskSet: actTskSet_, tskSamples: actTskSamples_,
   fltGet: actFltGet_, fltVeh: actFltVeh_, fltDrv: actFltDrv_, fltTrip: actFltTrip_, fltFuel: actFltFuel_, fltMnt: actFltMnt_, fltSet: actFltSet_, fltUpload: actFltUpload_, fltFile: actFltFile_, fltSamples: actFltSamples_,
+  cnGet: actCnGet_,
+  cnSave: actCnSave_,
   treeGet: actTreeGet_,
   treeSave: actTreeSave_,
   removeFile: actRemoveFile_,
@@ -807,7 +809,7 @@ function now_() { return new Date().toISOString(); }
 let SCHEMA_CLIENT_ = null;
 /** المخطط المرسل للمتصفح عند كل تحميل: دون تعريف الحوكمة وقالب الهيكل (يُجلبان عند فتح صفحتيهما فقط). */
 function schemaClient_() {
-  if (!SCHEMA_CLIENT_) { SCHEMA_CLIENT_ = {}; Object.keys(SCHEMA).forEach(function (k) { if (k !== 'GOV' && k !== 'ORGTREE') SCHEMA_CLIENT_[k] = SCHEMA[k]; }); }
+  if (!SCHEMA_CLIENT_) { SCHEMA_CLIENT_ = {}; Object.keys(SCHEMA).forEach(function (k) { if (k !== 'GOV' && k !== 'ORGTREE' && k !== 'COUNCIL') SCHEMA_CLIENT_[k] = SCHEMA[k]; }); }
   return SCHEMA_CLIENT_;
 }
 function recSum_(r) { return SCHEMA.MONEY_KEYS.reduce(function (a, k) { return a + (+(r.f && r.f[k]) || 0); }, 0); }
@@ -2974,6 +2976,26 @@ function treeClean_(x, depth, cnt, ids) {
   ['head', 'phone', 'email'].forEach(function (k) { const v = str_(String(x[k] || ''), 120); if (v) o[k] = v; });
   (Array.isArray(x.children) ? x.children : []).forEach(function (c) { const y = treeClean_(c, depth + 1, cnt, ids); if (y) o.children.push(y); });
   return o;
+}
+/* =====================================================================
+ * المجلس العام: هيكل سري مستقل على مستوى المنصة (لا يمس الهيكل التنظيمي للمؤسسات).
+ * يُطّلع عليه أعضاء المنصة فقط، ويعدّله المشرف العام. القالب SCHEMA.COUNCIL ويُحفظ عند أول تعديل.
+ * ===================================================================== */
+function cnNeed_(me) { if (!isPlatformMember_(me)) throw err_('FORBIDDEN', 'غير مسموح.'); }
+function cnOut_(st) { const t = st && st.tree; return { tree: t || SCHEMA.COUNCIL, saved: !!t, template: !t, by: t ? st.by || '' : '', at: t ? st.at || '' : '', log: (st && st.log || []).slice(0, 30), canEdit: false }; }
+function actCnGet_(me) { cnNeed_(me); const o = cnOut_(govLoad_('*', '_council')); o.canEdit = isPlatform_(me); return o; }
+function actCnSave_(me, p) {
+  cnNeed_(me); needPlatform_(me);
+  const st = govLoad_('*', '_council');
+  let tree = p.reset === 'template' ? JSON.parse(JSON.stringify(SCHEMA.COUNCIL)) : p.tree;
+  tree = treeClean_(tree, 0, { n: 0 }, {});
+  if (!tree) throw err_('VALIDATION', 'هيكل غير صالح.');
+  st.tree = tree; st.by = me.username; st.at = now_();
+  const what = p.reset === 'template' ? 'استعادة القالب' : (str_(p.log || '', 200) || 'تعديل');
+  st.log = [{ by: me.username, at: st.at, t: what }].concat(st.log || []).slice(0, 60);
+  govSave_('*', '_council', st);
+  audit_(me.username, 'المجلس العام: ' + what, '', '', '');
+  return actCnGet_(me);
 }
 function treeGeneral_() { const g = govLoad_('*', '_tree'); return g.tree ? g : null; }
 function actTreeGet_(me) {

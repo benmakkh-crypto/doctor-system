@@ -584,5 +584,14 @@ ok(AM(T, "emptyTrash").ok && AM(T, "clearSamples").ok, "admin cleanup");
   ok(D.every(o => o.type && o.city && o.manager && o.vision && /^DM\d{3}$/.test(o.code)), "demo orgs have full profiles");
   ok(A.api(T, "listUsers").data.every(u => !D.some(o => o.id === u.org)), "no login accounts created for demo orgs");
   r = A.api(T, "demoOrgs", { clear: 1 }); ok(r.data.removed === 100 && A.api(T, "listOrgs").data.length === n0, "demo orgs removed"); }
+// المجلس العام
+{ let r = A.api(T, "cnGet"); ok(r.ok && r.data.template && r.data.canEdit && r.data.tree.name === "المجلس العام", "council template served to platform admin");
+  const txt = JSON.stringify(r.data.tree); ok(!/أراكان|روهنج|وزار|الوزير|حكومة|الدولة/.test(txt), "council names are confidential");
+  let n = 0; (function w(x) { n++; (x.children || []).forEach(w); })(r.data.tree); ok(n > 2000, "council tree complete");
+  ok(!("COUNCIL" in AM(T, "bootstrap").data.schema), "council template not sent in client schema");
+  const t2 = JSON.parse(JSON.stringify(r.data.tree)); t2.children[0].name = "القيادة"; t2.children.push({ name: "<b>فرع جديد</b>", type: "إدارة" });
+  r = A.api(T, "cnSave", { tree: t2, log: "تجربة" }); ok(r.ok && r.data.saved && r.data.tree.children[0].name === "القيادة" && r.data.log[0].t === "تجربة", "council saved");
+  { const x = A.api(ST, "cnSave", { tree: t2 }); if (x.code !== "FORBIDDEN") console.log("CN", x.code, x.error); ok(["FORBIDDEN", "AUTH"].includes(x.code) && A.api(ST, "cnGet").ok === false, "council hidden from org users"); }
+  r = A.api(T, "cnSave", { reset: "template" }); ok(r.data.tree.children[0].name === "القيادة العليا", "council reset to template"); }
 console.log("server tests passed:", pass);
 module.exports = {};

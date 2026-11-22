@@ -2524,6 +2524,69 @@ body.dhid #nav{display:none}body.dhid .cap.capd{opacity:1}
 @media (max-width:560px){.opw .opg{grid-template-columns:minmax(0,1fr)!important}}
 .opw .opt td,.opw .opt th{white-space:nowrap;text-align:center}.opw .opt td:first-child,.opw .opt th:first-child{text-align:start;position:sticky;inset-inline-start:0;background:var(--surface);z-index:1}
 .opw .opt tfoot td{font-weight:800;background:var(--surface-2)}.opw .opgo svg{width:13px;height:13px;transform:rotate(90deg)}
+/* المجلس العام — القائمة الجانبية */
+.cntree{margin:2px 0 6px}
+.cnhd{display:flex;align-items:center;gap:4px;margin:0 4px;padding:6px;border-radius:16px;background:linear-gradient(135deg,rgb(222 178 78 / 26%),rgb(123 45 67 / 22%));box-shadow:inset 0 0 0 1px rgb(222 178 78 / 38%);transition:box-shadow .2s}
+.cnhd.on{box-shadow:inset 0 0 0 2px #deb24e}
+.cnha{flex:1;min-width:0;display:flex!important;gap:10px;align-items:center;padding:2px 4px!important;color:#fff!important;text-decoration:none;background:none!important}
+.cnha .dn{display:grid;min-width:0}.cnha b{font-size:14px;letter-spacing:.2px}.cnha small{font-size:11px;color:rgb(255 255 255 / 70%)}
+.cnem{position:relative;width:38px;height:38px;flex:none;display:grid;place-items:center;border-radius:12px;background:conic-gradient(from 210deg,#f3d27a,#b8862b,#7b2d43,#f3d27a);color:#2b1a03;box-shadow:0 6px 16px -6px rgb(222 178 78 / 70%)}
+.cnem::after{content:"";position:absolute;inset:3px;border-radius:10px;background:linear-gradient(145deg,#f6dc93,#c9962f)}
+.cnem svg{position:relative;z-index:1;width:20px;height:20px}
+.cnsw{width:30px;height:30px;flex:none;display:grid;place-items:center;border:0;border-radius:10px;background:rgb(255 255 255 / 10%);color:#fff;cursor:pointer}
+.cnsw svg{width:15px;height:15px;transform:rotate(90deg);transition:transform .25s}.cnhd.open .cnsw svg{transform:rotate(-90deg)}.cnsw:hover{background:rgb(222 178 78 / 35%)}
+.cnside{margin:6px 4px 0;padding:8px 6px;border-radius:14px;background:rgb(0 0 0 / 16%);animation:cnin .22s ease}
+@keyframes cnin{from{opacity:0;transform:translateY(-4px)}}
+.cnsq{display:flex;align-items:center;gap:6px;padding:0 9px;border-radius:10px;background:rgb(255 255 255 / 9%);color:rgb(255 255 255 / 60%)}.cnsq svg{width:14px;height:14px;flex:none}
+.cnsq input{flex:1;min-width:0;border:0;background:none;color:#fff;padding:7px 0;font:inherit;font-size:12.5px;outline:0}.cnsq input::placeholder{color:rgb(255 255 255 / 45%)}.cnsq:focus-within{box-shadow:inset 0 0 0 1.5px #deb24e}
+.cntl{display:flex;gap:4px;margin:6px 0 4px;flex-wrap:wrap}.cntl button,.cntl a{display:inline-flex!important;gap:4px;align-items:center;padding:3px 8px!important;border:0;border-radius:999px;background:rgb(255 255 255 / 8%);color:rgb(255 255 255 / 78%)!important;font:inherit;font-size:11px;cursor:pointer;text-decoration:none}.cntl svg{width:11px;height:11px}.cntl button:hover,.cntl a:hover{background:rgb(222 178 78 / 30%);color:#fff!important}
+.cnrs{display:grid;gap:2px;margin:4px 0}.cnrs a{display:flex!important;gap:8px;align-items:center;padding:6px!important;border-radius:9px;color:#fff!important;text-decoration:none}.cnrs a:hover{background:rgb(255 255 255 / 9%)}.cnrs .dn{display:grid;min-width:0}.cnrs b{font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cnrs small{font-size:10.5px;color:rgb(255 255 255 / 55%);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cnrs mark{background:#deb24e;color:#2b1a03;border-radius:3px;padding:0 2px}
+.cnbr{display:grid;gap:3px}
+.cnb{border-radius:12px;transition:background .2s}.cnb.open{background:rgb(255 255 255 / 4%)}
+.cnbh{display:flex;align-items:center;gap:2px}.cnbh a{flex:1;min-width:0;display:flex!important;gap:9px;align-items:center;padding:6px!important;border-radius:11px;color:#fff!important;text-decoration:none}.cnbh a:hover{background:rgb(255 255 255 / 8%)}.cnbh a.on{background:color-mix(in srgb,var(--bc) 45%,transparent)}
+.cnbh .dn{display:grid;min-width:0}.cnbh b{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cnbh small{font-size:10.5px;color:rgb(255 255 255 / 58%);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cnbi{width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:10px;background:linear-gradient(145deg,var(--bc),color-mix(in srgb,var(--bc) 55%,#000));color:#fff;box-shadow:inset 0 0 0 1px rgb(255 255 255 / 18%)}.cnbi svg{width:16px;height:16px}
+.cnbh .tg{width:26px;height:26px;flex:none;display:grid;place-items:center;border:0;border-radius:8px;background:none;color:rgb(255 255 255 / 65%);cursor:pointer}.cnbh .tg svg{width:13px;height:13px;transform:rotate(90deg);transition:transform .2s}.cnb.open .cnbh .tg svg{transform:rotate(-90deg)}.cnb.open .cnbh .tg{color:#deb24e}
+.cnbb{padding:0 4px 6px 0;margin-inline-start:14px;border-inline-start:2px solid color-mix(in srgb,var(--bc) 60%,rgb(255 255 255 / 10%))}
+.cnn .nti{background:color-mix(in srgb,var(--tc) 55%,transparent)}.cnk{border-inline-start-color:color-mix(in srgb,var(--bc) 50%,rgb(255 255 255 / 12%))!important}.cnr.on a{background:color-mix(in srgb,var(--bc) 50%,transparent)!important}
+/* المجلس العام — الصفحة */
+.cnw{display:grid;gap:14px}
+.cntop{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
+.cncr{display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:12.5px;min-width:0}.cncr a{color:var(--muted);text-decoration:none;padding:3px 8px;border-radius:999px;background:var(--surface-2)}.cncr a:hover{color:var(--brand)}.cncr b{padding:3px 10px;border-radius:999px;background:color-mix(in srgb,var(--brand) 12%,transparent);color:var(--brand)}.cncr i{font-style:normal;color:var(--muted);opacity:.6}
+.cnact{display:flex;gap:6px;flex-wrap:wrap}.cnact .btn svg{width:15px;height:15px}
+.cnhero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:center;padding:26px;border-radius:28px;color:#fff;background:linear-gradient(125deg,var(--tc),color-mix(in srgb,var(--tc) 50%,#0b1220) 70%,#0b1220);box-shadow:0 26px 50px -30px var(--tc)}
+.cnhp{position:absolute;inset:0;opacity:.14;background:repeating-linear-gradient(45deg,#fff 0 1px,transparent 1px 22px),radial-gradient(circle at 90% 10%,#deb24e 0,transparent 40%)}
+.cnhero::after{content:"";position:absolute;inset-inline-end:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:30px solid rgb(222 178 78 / 18%)}
+.cnht{position:relative;z-index:1;display:flex;gap:16px;align-items:flex-start;flex:1 1 440px;min-width:0}
+.cnhi{flex:none;width:76px;height:76px;border-radius:24px;display:grid;place-items:center;background:linear-gradient(145deg,#f6dc93,#c9962f);color:#2b1a03;box-shadow:0 10px 24px -10px #000}.cnhi svg{width:38px;height:38px}
+.cnhx{display:grid;gap:6px;min-width:0}.cnty{justify-self:start;padding:3px 10px;border-radius:999px;background:rgb(255 255 255 / 16%);font-size:12px;font-weight:700}
+.cnhx h1{margin:0;font-family:var(--f-display);font-size:clamp(22px,3vw,32px);line-height:1.3;color:#fff}.cnhx p{margin:0;opacity:.88;line-height:1.9;max-width:70ch}
+.cnhs{position:relative;z-index:1;display:flex;gap:10px;flex-wrap:wrap}.cnhs>div{display:grid;justify-items:center;min-width:92px;padding:12px 14px;border-radius:18px;background:rgb(255 255 255 / 13%);border:1px solid rgb(255 255 255 / 24%);backdrop-filter:blur(4px)}.cnhs b{font-family:var(--f-display);font-size:24px}.cnhs small{font-size:11.5px;opacity:.85}
+.cnband{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px}.cnband>div{position:relative;display:grid;justify-items:start;gap:2px;padding:14px;border-radius:18px;background:var(--surface);border:1px solid var(--line);overflow:hidden}.cnband>div::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:4px;background:var(--tc)}
+.cnband span{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--tc) 13%,transparent);color:var(--tc)}.cnband span svg{width:17px;height:17px}.cnband b{font-family:var(--f-display);font-size:24px;color:var(--ink)}.cnband small{color:var(--muted);font-size:12px}
+.cnlay{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.cncard{display:grid;gap:12px;align-content:start;padding:16px 18px;border-radius:22px;background:var(--surface);border:1px solid var(--line)}.cncard.wide{grid-column:1/-1}
+.cncard>header{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center}.cncard h3{margin:0;display:flex;gap:8px;align-items:center;font-size:15.5px}.cncard h3 svg{width:18px;height:18px;color:#b8862b}.cncard h3 em{font-style:normal;font-size:12px;padding:1px 9px;border-radius:999px;background:var(--surface-2);color:var(--muted)}.cncard>header small{color:var(--muted)}
+.cnkv{display:grid;gap:8px}.cnkv>div{display:grid;gap:4px;padding:10px 12px;border-radius:14px;background:var(--surface-2);border-inline-start:3px solid #b8862b}.cnkv span{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted);font-weight:700}.cnkv span svg{width:14px;height:14px;color:#b8862b}.cnkv p{margin:0;line-height:1.9;white-space:pre-line}
+.cncomp{display:flex;flex-wrap:wrap;gap:8px}.cncomp span{display:grid;justify-items:center;gap:2px;min-width:92px;padding:12px 10px;border-radius:16px;background:color-mix(in srgb,var(--tc) 8%,var(--surface));border:1px solid color-mix(in srgb,var(--tc) 25%,var(--line));color:var(--tc)}.cncomp svg{width:20px;height:20px}.cncomp b{font-family:var(--f-display);font-size:21px}.cncomp small{color:var(--muted);font-size:11.5px}
+.cnchain{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;align-items:center;counter-reset:c}.cnchain li{position:relative;display:flex;gap:8px;align-items:center;padding:8px 14px 8px 10px;border-radius:14px;background:color-mix(in srgb,#c2334d calc(6% + var(--i)*2%),var(--surface));border:1px solid color-mix(in srgb,#c2334d 25%,var(--line))}.cnchain li:not(:last-child)::after{content:"←";margin-inline-start:8px;color:#c2334d;font-weight:900}.cnchain span{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:#c2334d;color:#fff;font-size:12px;font-weight:800}
+.cnkq{display:flex;align-items:center;gap:6px;padding:0 10px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2)}.cnkq svg{width:14px;height:14px;color:var(--muted)}.cnkq input{border:0;background:none;padding:7px 0;font:inherit;min-width:180px;outline:0;color:var(--ink)}
+.cngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.cnkc{position:relative;display:grid;gap:8px;align-content:space-between;padding:12px 14px;border-radius:18px;background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--tc);cursor:pointer;transition:transform .15s,box-shadow .15s}.cnkc[role=link]:hover,.cnkc[role=link]:focus-visible{transform:translateY(-2px);box-shadow:0 14px 30px -18px var(--tc);outline:0}
+.cnkc header{display:flex;gap:10px;align-items:center;min-width:0}.cnki{width:36px;height:36px;flex:none;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--tc) 13%,transparent);color:var(--tc)}.cnki svg{width:18px;height:18px}.cnkc header div{display:grid;min-width:0}.cnkc header small{font-size:11px;color:var(--tc);font-weight:700}.cnkc header b{font-size:14px;line-height:1.5}
+.cnkc p{margin:0;font-size:12px;color:var(--muted);line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cnkc footer{display:flex;gap:8px;align-items:center;font-size:11.5px;color:var(--muted)}.cnkc footer em{font-style:normal;font-weight:800;color:var(--tc);padding:1px 8px;border-radius:999px;background:color-mix(in srgb,var(--tc) 10%,transparent)}.cnkc footer>span:not(.cnkt){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cnkc footer i svg{width:13px;height:13px;transform:rotate(90deg);color:var(--tc)}
+.cnkt{display:flex;gap:3px}.cnkt button{width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);color:var(--ink);cursor:pointer}.cnkt button svg{width:14px;height:14px}.cnkt button:disabled{opacity:.35;cursor:default}.cnkt button.bad{color:var(--bad)}.cnkt button:hover:not(:disabled){border-color:var(--tc);color:var(--tc)}
+.cned{cursor:text;border-radius:6px;outline:1.5px dashed color-mix(in srgb,#deb24e 80%,transparent);outline-offset:3px}.cned:focus{outline:2px solid #deb24e;background:rgb(255 255 255 / 92%);color:#13211d!important}
+.cnw.edit .cnkc{cursor:default}
+.cnform{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.cnform label{display:grid;gap:4px;font-size:12.5px;color:var(--muted)}.cnform label.full,.cnform .full{grid-column:1/-1}.cnform label span{display:flex;gap:5px;align-items:center;font-weight:700}.cnform svg{width:14px;height:14px}.cnform .actions{display:flex;justify-content:flex-start}
+.cnadd{display:flex;flex-wrap:wrap;gap:8px;padding:10px;border-radius:14px;border:2px dashed color-mix(in srgb,#b8862b 50%,var(--line));background:color-mix(in srgb,#b8862b 5%,var(--surface))}.cnadd input{flex:1 1 220px}.cnadd .btn svg{width:15px;height:15px}
+.cnform input,.cnform textarea,.cnform select,.cnadd input,.cnadd select{width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface-2);color:var(--ink);font:inherit;font-size:13.5px;line-height:1.8;transition:border-color .2s,box-shadow .2s,background .2s}.cnform textarea{resize:vertical}.cnform :is(input,textarea,select):focus,.cnadd :is(input,select):focus{outline:0;border-color:#b8862b;background:var(--surface);box-shadow:0 0 0 3px rgb(184 134 11 / 16%)}.cnadd select{width:auto;min-width:130px}
+.cnmore{display:flex;justify-content:center}
+.cnlog{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-height:280px;overflow:auto}.cnlog li{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;padding:8px 12px;border-radius:12px;background:var(--surface-2);font-size:13px}.cnlog span{color:var(--muted);font-size:12px}
+.cnsec{margin:0;display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:14px;background:color-mix(in srgb,#7b2d43 8%,var(--surface));color:#7b2d43;font-size:12.5px;font-weight:600}.cnsec svg{width:16px;height:16px;flex:none}
+@media (max-width:640px){.cnhero{padding:18px;border-radius:22px}.cnhi{width:56px;height:56px;border-radius:18px}.cnhi svg{width:28px;height:28px}.cnform{grid-template-columns:1fr}.cnhs>div{min-width:76px;padding:8px 10px}.cnkq input{min-width:0;width:100%}}
+@media print{.cnact,.cnadd,.cnkt{display:none!important}}
 </style>
 </head>
 <body class="auth">
@@ -2601,6 +2664,7 @@ body.dhid #nav{display:none}body.dhid .cap.capd{opacity:1}
     <nav class="nav" id="navTop"></nav>
     <nav class="nav captree" id="capTree" hidden></nav>
     <nav class="nav navtree" id="navTree" hidden></nav>
+    <nav class="nav cntree" id="navCn" hidden aria-label="المجلس العام"></nav>
     <div class="cap capd"><span>الإدارات</span><button type="button" class="capb" id="dPermBtn" hidden></button><button type="button" class="capb" id="dHideBtn" aria-pressed="false"></button></div>
     <nav class="nav" id="nav"></nav>
     <div class="cap">النظام</div>
@@ -3189,7 +3253,7 @@ function enterApp(){
   toast(`أهلًا ${S.meP.name.split(" ")[0]} — ${S.admin?"مسؤول النظام":S.canWrite?"مساهم":"مشاهد"}`);
 }
 function sessionExpired(msg){
-  clearToken();TOKEN=null;clearInterval(pollT);closeModal();closeDrawer();S.loaded=false;S.recs=[];
+  clearToken();TOKEN=null;clearInterval(pollT);closeModal();closeDrawer();S.loaded=false;cnC=null;cnIdx=null;ui.cnEdit=false;S.recs=[];
   showLogin(msg||"انتهت الجلسة. سجّل الدخول مرة أخرى.");
 }
 function logout(){
@@ -3324,6 +3388,7 @@ function route(){
     const at=AST_MODS[bn];if(at){if(at==="add"&&ui.asTab!=="add"){ui.asEdit=null;if(ui.asD)delete ui.asD.add}ui.asTab=at;return{v:"assets",g:+m[1],m:+m[2]}}
     return{v:"mod",g:+m[1],m:+m[2]}}
   if((m=h.match(/^g(\d+)$/))&&G[+m[1]])return{v:"grp",g:+m[1]};
+  if((m=h.match(/^council(?:\/([A-Za-z0-9_-]+))?$/))){ui.cnSel=m[1]||null;return{v:"council"}}
   if(["inbox","trash","org","focus","flow","users","audit","menus","perms","orgs","themes","gov","structure"].includes(h))return{v:h};
   if((m=h.match(/^flt(?:\/([a-z]+))?$/))){ui.flTab=m[1]||"home";return Object.assign({v:"flt"},flWhs(ui.flTab))}
   if((m=h.match(/^web(?:\/([a-z-]+))?$/))){ui.wsTab=m[1]||"home";return Object.assign({v:"web"},wsWhs(ui.wsTab))}
@@ -4174,14 +4239,14 @@ function render(){
   $("#addBtn").hidden=!S.canWrite;
   let v;
   if(!S.loaded)v=`<div class="skel" style="height:120px"></div><div class="kpis"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></div><div class="skel" style="height:240px"></div>`;
-  else v=banners()+({mod:()=>R.g===0?viewReport():viewModule(),grp:viewGroup,inbox:viewInbox,trash:viewTrash,org:viewOrg,focus:viewFocus,flow:viewFlow,users:viewUsers,audit:viewAudit,menus:viewMenus,perms:viewPerms,orgs:viewOrgs,themes:viewThemes,gov:viewGov,structure:viewStructure,assets:viewAssets,purch:viewPurch,ctr:viewCtr,inv:viewInv,exp:viewExp,tsk:viewTsk,flt:viewFlt,prj:viewPrj,web:viewWeb}[R.v]||(S.member?viewOrgs:viewHome))();
+  else v=banners()+({mod:()=>R.g===0?viewReport():viewModule(),grp:viewGroup,inbox:viewInbox,trash:viewTrash,org:viewOrg,focus:viewFocus,flow:viewFlow,users:viewUsers,audit:viewAudit,menus:viewMenus,perms:viewPerms,orgs:viewOrgs,themes:viewThemes,gov:viewGov,structure:viewStructure,assets:viewAssets,purch:viewPurch,ctr:viewCtr,inv:viewInv,exp:viewExp,tsk:viewTsk,flt:viewFlt,prj:viewPrj,web:viewWeb,council:viewCouncil}[R.v]||(S.member?viewOrgs:viewHome))();
   $("#main").innerHTML=`<div class="wrap">${v}</div>`;
   decorateHead();
   bindMain();
   if(aid){const n=document.getElementById(aid);if(n){n.focus();if(sel)try{n.setSelectionRange(sel[0],sel[1])}catch(e){}}}
   if(drawerId)paintDrawer();
 }
-const PH={structure:["tree","#1d4e89","Organization Structure"],gov:["GOV","#8a3b12","Governance Center"],focus:["focus","#d9702a","Priorities"],inbox:["inbox","#6d3fc0","Approvals"],flow:["flow","#3157b8","Workflow"],trash:["trash","#cf3f3f","Trash"],org:["org","#4B5563","Settings & Data"],users:["users","#0F766E","Users & Access"],audit:["audit","#243B6B","Audit Log"],menus:["menu","#B03A8C","Menus & Headings"],perms:["shieldCheck","#0B6E4F","Permissions Matrix"],orgs:["building","#0e7a5f","Organizations Directory"]};
+const PH={council:["crown","#b8862b","General Council"],structure:["tree","#1d4e89","Organization Structure"],gov:["GOV","#8a3b12","Governance Center"],focus:["focus","#d9702a","Priorities"],inbox:["inbox","#6d3fc0","Approvals"],flow:["flow","#3157b8","Workflow"],trash:["trash","#cf3f3f","Trash"],org:["org","#4B5563","Settings & Data"],users:["users","#0F766E","Users & Access"],audit:["audit","#243B6B","Audit Log"],menus:["menu","#B03A8C","Menus & Headings"],perms:["shieldCheck","#0B6E4F","Permissions Matrix"],orgs:["building","#0e7a5f","Organizations Directory"]};
 function decorateHead(){
   const h=$("#main .wrap>.head");if(!h)return;
   let k=null;if(PH[R.v])k=PH[R.v];else if(R.v==="mod"&&R.g===0)k=[modIco(0,R.m),G[0].col,G[0].en];
@@ -5027,7 +5092,7 @@ function trCellEdit(el){if(el.isContentEditable)return;const id=el.dataset.trc,k
   el.onclick=e=>{e.stopPropagation()};el.onblur=()=>fin(true)}
 function renderNavTree(){dpCap();const el=$("#navTree"),cap=$("#capTree");if(!el)return;
   /* أُزيل الهيكل التنظيمي من القائمة الجانبية بطلب المالك (بانتظار نموذج جديد) */
-  el.hidden=true;el.innerHTML="";if(cap){cap.hidden=true;cap.innerHTML=""}return;const open=ui.ntShow!==false;const hide=v=>{el.hidden=v||!open;if(cap){cap.hidden=!S.scope;cap.innerHTML=`<a href="#structure" class="qk ${R.v==="structure"?"on":""}" style="--qc:#1d4e89"><span class="qki">${ico("tree")}</span><span class="qkt"><b>الهيكل التنظيمي</b><small>المجلس واللجان والقطاعات والإدارات</small></span><button type="button" class="qka ntsw ${open?"open":""}" data-ntsw="1" aria-label="${open?"طي":"عرض"} الهيكل في القائمة">${ico("chev")}</button></a>`}};
+  el.hidden=true;el.innerHTML="";if(cap){cap.hidden=true;cap.innerHTML=""}renderNavCn();return;const open=ui.ntShow!==false;const hide=v=>{el.hidden=v||!open;if(cap){cap.hidden=!S.scope;cap.innerHTML=`<a href="#structure" class="qk ${R.v==="structure"?"on":""}" style="--qc:#1d4e89"><span class="qki">${ico("tree")}</span><span class="qkt"><b>الهيكل التنظيمي</b><small>المجلس واللجان والقطاعات والإدارات</small></span><button type="button" class="qka ntsw ${open?"open":""}" data-ntsw="1" aria-label="${open?"طي":"عرض"} الهيكل في القائمة">${ico("chev")}</button></a>`}};
   if(!S.scope||!S.loaded&&!trCache){hide(true);return}
   if(!trCache||trCache.__org!==(S.org||"")){hide(false);el.innerHTML=`<div class="ntl">جارٍ تحميل الهيكل…</div>`;if(!trLoading)loadTree();return}
   if(trCache.err){hide(true);return}hide(false);
@@ -7931,6 +7996,85 @@ async function qpOpen(){if(!S.admin)return;if(!usersCache){toast("جارٍ تح�
     usersCache=null;permDraft=null;await loadUsers();closeModal();toast(`حُفظت صلاحيات ${NF.format(okN)} موظف`);render()}};
   draw()}
 
+/* ================= المجلس العام (هيكل سري على مستوى المنصة) ================= */
+Object.assign(IP,{crown:"M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5zM5 19h14",scale:"M12 3v18M8 21h8M4 7h16M6 7l-3 6a3 3 0 0 0 6 0zM18 7l-3 6a3 3 0 0 0 6 0z",pin:"M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12zM12 6.5a2.5 2.5 0 1 0 0 5a2.5 2.5 0 1 0 0-5z",pillar:"M3 21h18M5 21V10M9.5 21V10M14.5 21V10M19 21V10M2 10h20L12 3z",plus:"M12 5v14M5 12h14",up:"M12 19V5M6 11l6-6 6 6",dn:"M12 5v14M6 13l6 6 6-6",pen:"M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4",print:"M6 9V3h12v6M6 18H4v-7h16v7h-2M6 14h12v7H6z"});
+const CN_T={"قيادة":["crown","#b8862b"],"منصب":["user","#1d4e89"],"مجلس":["meeting","#5b3a8c"],"جهاز":["briefcase","#0b4639"],"مسار":["pillar","#1d4e89"],"تصنيف":["folder","#6b7280"],"وحدة":["grid","#0b6e8f"],"لجنة":["users","#7b2d43"],"مجموعة":["layout","#b07a12"],"إدارة":["building","#0e7a5f"],"وكالة":["folder","#3d6b35"],"جهة":["stamp","#8a3b12"],"وحدة ميدانية":["flag","#456b8a"],"جغرافي":["compass","#0f5f73"],"منطقة":["pin","#0f5f73"],"محافظة":["building","#5a4a8c"],"مدينة":["grid","#8a5a12"],"حي":["people","#c2334d"],"قرية":["home","#3d6b35"],"نموذج":["template","#1d4e89"],"تسلسل":["route","#c2334d"]};
+const CN_TYPES=Object.keys(CN_T),CN_BR=["#b8862b","#1d4e89","#0e7a5f","#7b2d43","#0f5f73","#5b3a8c","#c2334d","#456b8a","#8a3b12"];
+const CN_F=[["الاختصاص","الاختصاص والفكرة","compass"],["head","المسؤول","user"],["المهام","المهام الرئيسة","clipCheck"],["مقر الإدارة","المقر","pin"],["الإجمالي","الإجمالي","pie"],["ملاحظات","ملاحظات","doc"]];
+let cnC=null,cnLoading=false,cnIdx=null;
+const ct=t=>CN_T[t]||["doc","#456b8a"];
+async function cnLoad(){if(cnLoading)return;cnLoading=true;try{cnC=await call("cnGet",{});cnIndex()}catch(e){cnC={err:e.message||"تعذّر التحميل"}}finally{cnLoading=false;if(R.v==="council")render();else renderNavCn()}}
+function cnIndex(){cnIdx=new Map();const T=cnC&&cnC.tree;if(!T)return;(function w(n,par,br,d){const c=d===1?CN_BR[(T.children||[]).indexOf(n)%CN_BR.length]:br;let s=0,h=0;(n.children||[]).forEach(k=>{w(k,n,c,d+1);const K=cnIdx.get(k.id);s+=1+K.desc;h=Math.max(h,K.h+1)});cnIdx.set(n.id,{n,par,br:c||"#b8862b",d,desc:s,h})})(T,null,null,0)}
+const cnI=id=>cnIdx&&cnIdx.get(id);
+function cnPath(id){const o=[];let x=cnI(id);while(x){o.unshift(x.n);x=x.par?cnI(x.par.id):null}return o}
+function cnTypes(n){const m={};(function w(x){(x.children||[]).forEach(k=>{m[k.type]=(m[k.type]||0)+1;w(k)})})(n);return Object.entries(m).filter(([t])=>t!=="تصنيف").sort((a,b)=>b[1]-a[1])}
+function cnGo(id){const h="#council"+(id&&cnC&&id!==cnC.tree.id?"/"+id:"");if(location.hash!==h)location.hash=h.slice(1);else render();window.scrollTo({top:0,behavior:"smooth"})}
+function cnOpenPath(id){const o=ui.cnOpen||(ui.cnOpen=new Set());cnPath(id).forEach(n=>o.add(n.id))}
+/* ---------- القائمة الجانبية ---------- */
+function renderNavCn(){const el=$("#navCn");if(!el)return;
+  if(!S.member||!S.loaded){el.hidden=true;el.innerHTML="";return}el.hidden=false;
+  if(!cnC){el.innerHTML=cnHead(null);if(!cnLoading)cnLoad();return}
+  if(cnC.err){el.innerHTML=cnHead(null)+`<div class="ntl">${esc(cnC.err)}</div>`;return}
+  const T=cnC.tree,open=ui.cnNav===true,cur=R.v==="council"?(ui.cnSel||T.id):null,op=ui.cnOpen||(ui.cnOpen=new Set());
+  const row=n=>{const k=n.children||[],o=op.has(n.id),[ic,col]=ct(n.type),I=cnI(n.id),more=k.length>60;
+    return `<div class="cnn" style="--tc:${col};--bc:${I.br}"><div class="ntr cnr ${cur===n.id?"on":""}">${k.length?`<button class="ntt" data-cng="${n.id}" aria-expanded="${o}" aria-label="${o?"طي":"فتح"} ${esc(n.name)}">${ico("chev")}</button>`:`<span class="ntt0"></span>`}<a href="#council/${n.id}" data-cns="${n.id}"><span class="nti">${ico(ic)}</span><span class="ntx">${esc(n.name)}</span>${I.desc?`<em>${NF.format(I.desc)}</em>`:""}</a></div>${o&&k.length?`<div class="ntk cnk">${k.slice(0,60).map(row).join("")}${more?`<a href="#council/${n.id}" class="ntmore" data-cns="${n.id}">+ ${NF.format(k.length-60)} أخرى — افتح الصفحة</a>`:""}</div>`:""}</div>`};
+  el.innerHTML=cnHead(T,open)+(open?`<div class="cnside"><label class="cnsq">${ico("search")}<input id="cnQ" type="search" placeholder="ابحث في المجلس العام…" value="${esc(ui.cnQ||"")}" autocomplete="off"></label><div class="cntl"><button type="button" data-cnall="1">${ico("down")} توسيع</button><button type="button" data-cnall="0">${ico("chev")} طي الكل</button><a href="#council" data-cns="${T.id}">${ico("grid")} الصفحة الرئيسة</a></div><div id="cnRes">${cnResults()}</div><div class="cnbr" ${ui.cnQ?"hidden":""}>${(T.children||[]).map(c=>{const o=op.has(c.id),I=cnI(c.id),[ic]=ct(c.type),sm=cnTypes(c).slice(0,2).map(([t,v])=>`${NF.format(v)} ${t}`).join(" · ");
+    return `<div class="cnb ${o?"open":""}" style="--bc:${I.br}"><div class="cnbh"><a href="#council/${c.id}" data-cns="${c.id}" class="${cur===c.id?"on":""}"><span class="cnbi">${ico(ic)}</span><span class="dn"><b>${esc(c.name)}</b><small>${sm||"—"}</small></span></a><button type="button" class="tg" data-cng="${c.id}" aria-expanded="${o}" aria-label="${o?"طي":"فتح"} ${esc(c.name)}">${ico("chev")}</button></div>${o?`<div class="cnbb">${(c.children||[]).map(row).join("")}</div>`:""}</div>`}).join("")}</div></div>`:"");
+}
+function cnHead(T,open){const n=T?cnI(T.id).desc:0;return `<div class="cnhd ${open?"open":""} ${R.v==="council"?"on":""}"><a href="#council" data-cns="${T?T.id:""}" class="cnha"><span class="cnem">${ico("crown")}</span><span class="dn"><b>المجلس العام</b><small>${T?`${NF.format(n)} وحدة · سرّي`:"جارٍ التحميل…"}</small></span></a><button type="button" class="cnsw" data-cnsw="1" aria-expanded="${!!open}" aria-label="${open?"طي":"عرض"} قائمة المجلس العام">${ico("chev")}</button></div>`}
+function cnResults(){const q=(ui.cnQ||"").trim();if(!q||!cnIdx)return"";const qs=q.toLowerCase(),o=[];for(const [,I] of cnIdx){if(o.length>=40)break;const n=I.n;if(String(n.name).toLowerCase().includes(qs)||String(n.head||"").toLowerCase().includes(qs))o.push(n)}
+  return o.length?`<div class="cnrs">${o.map(n=>{const [ic,col]=ct(n.type),p=cnPath(n.id).slice(1,-1).filter(x=>x.type!=="تصنيف").slice(-2).map(x=>esc(x.name)).join(" ‹ ");return `<a href="#council/${n.id}" data-cns="${n.id}" style="--tc:${col}"><span class="nti">${ico(ic)}</span><span class="dn"><b>${cnMark(n.name,q)}</b><small>${esc(n.type)}${p?" · "+p:""}</small></span></a>`}).join("")}${o.length>=40?`<p class="ntl">أول 40 نتيجة — دقّق البحث</p>`:""}</div>`:`<p class="ntl">لا نتائج لـ«${esc(q)}»</p>`}
+function cnMark(s,q){const t=String(s),i=t.toLowerCase().indexOf(q.toLowerCase());return i<0?esc(t):esc(t.slice(0,i))+`<mark>${esc(t.slice(i,i+q.length))}</mark>`+esc(t.slice(i+q.length))}
+function bindNavCn(){const el=$("#navCn");if(!el)return;
+  el.addEventListener("click",e=>{const sw=e.target.closest("[data-cnsw]");if(sw){e.preventDefault();ui.cnNav=!ui.cnNav;try{localStorage.setItem("ds.cnNav",ui.cnNav?"1":"")}catch(x){}renderNavCn();return}
+    const g=e.target.closest("[data-cng]");if(g){e.preventDefault();const o=ui.cnOpen||(ui.cnOpen=new Set()),id=g.dataset.cng;o.has(id)?o.delete(id):o.add(id);renderNavCn();return}
+    const al=e.target.closest("[data-cnall]");if(al){e.preventDefault();const o=ui.cnOpen=new Set();if(al.dataset.cnall==="1"&&cnIdx)for(const [id,I] of cnIdx)if(I.d<=2&&(I.n.children||[]).length<=60)o.add(id);renderNavCn();return}
+    const a=e.target.closest("[data-cns]");if(a){e.preventDefault();if(!cnC||cnC.err){location.hash="council";return}const id=a.dataset.cns||cnC.tree.id;ui.cnSel=id;cnOpenPath(id);cnGo(id);renderNavCn();if(typeof closeSide==="function")closeSide()}});
+  let tm=null;el.addEventListener("input",e=>{if(e.target.id!=="cnQ")return;ui.cnQ=e.target.value;clearTimeout(tm);tm=setTimeout(()=>{const r=$("#cnRes"),b=el.querySelector(".cnbr");if(r)r.innerHTML=cnResults();if(b)b.hidden=!!ui.cnQ.trim()},120)})}
+/* ---------- الصفحة ---------- */
+function cnCanEdit(){return !!(cnC&&cnC.canEdit)}
+function viewCouncil(){
+  if(!S.member)return `<div class="empty">هذه الصفحة غير متاحة.</div>`;
+  if(!cnC){if(!cnLoading)cnLoad();return `<div class="skel" style="height:180px"></div><div class="skel" style="height:260px"></div>`}
+  if(cnC.err)return `<div class="empty">${esc(cnC.err)}</div>`;
+  const T=cnC.tree,id=ui.cnSel&&cnI(ui.cnSel)?ui.cnSel:T.id,I=cnI(id),n=I.n,[ic,tc]=ct(n.type),ed=cnCanEdit()&&ui.cnEdit,path=cnPath(id),kids=n.children||[],types=cnTypes(n),M=n.meta||{},isRoot=n===T;
+  const q=(ui.cnKq||"").trim(),kf=q?kids.filter(k=>String(k.name).includes(q)):kids,lim=ui.cnLim||48,shown=kf.slice(0,lim);
+  const crumbs=path.map((p,i)=>i===path.length-1?`<b>${esc(p.name)}</b>`:`<a href="#council/${p.id}" data-cnp="${p.id}">${esc(p.name)}</a>`).join(`<i>‹</i>`);
+  const fields=CN_F.filter(([k])=>ed||(k==="head"?n.head:M[k])),extra=Object.keys(M).filter(k=>!CN_F.some(f=>f[0]===k));
+  const fval=k=>k==="head"?(n.head||""):(M[k]||"");
+  const hero=`<section class="cnhero" style="--tc:${I.br}"><div class="cnhp"></div><div class="cnht"><span class="cnhi" style="--ic:${tc}">${ico(ic)}</span><div class="cnhx"><span class="cnty">${esc(n.type)}${I.d?` · المستوى ${NF.format(I.d)}`:""}</span><h1 ${ed?`contenteditable="true" spellcheck="false" data-cnren="${n.id}" class="cned"`:""}>${esc(n.name)}</h1>${M["الاختصاص"]&&!ed?`<p>${esc(M["الاختصاص"])}</p>`:""}</div></div><div class="cnhs"><div><b>${NF.format(kids.length)}</b><small>تابع مباشر</small></div><div><b>${NF.format(I.desc)}</b><small>إجمالي الوحدات</small></div><div><b>${NF.format(I.h)}</b><small>مستويات تحتها</small></div></div></section>`;
+  const top=`<div class="cntop"><nav class="cncr">${crumbs}</nav><div class="cnact">${I.par?`<button class="btn" data-cnp="${I.par.id}">${ico("up")} المستوى الأعلى</button>`:""}<button class="btn" id="cnPrint">${ico("print")} طباعة</button>${cnCanEdit()?`<button class="btn ${ed?"pri":""}" id="cnEditT" aria-pressed="${!!ed}">${ico("pen")} ${ed?"إنهاء التعديل":"وضع التعديل"}</button>`:""}</div></div>`;
+  const band=isRoot?`<section class="cnband">${[["منطقة","المناطق"],["محافظة","المحافظات"],["مدينة","المدن"],["حي","الأحياء المحلية"],["قرية","المجالس القروية"],["إدارة","الإدارات"],["وكالة","الوكالات"],["لجنة","اللجان"]].map(([t,l])=>{const v=(types.find(x=>x[0]===t)||[0,0])[1],[i2,c2]=ct(t);return `<div style="--tc:${c2}"><span>${ico(i2)}</span><b>${NF.format(v)}</b><small>${l}</small></div>`}).join("")}</section>`:"";
+  const info=`<section class="cncard ${ed?"wide":""}"><header><h3>${ico("idCard")} بطاقة الوحدة</h3>${ed?`<small>عدّل ثم اضغط حفظ</small>`:""}</header>${ed?`<div class="cnform">${CN_F.map(([k,l,i2])=>`<label class="${k==="الاختصاص"||k==="المهام"||k==="ملاحظات"?"full":""}"><span>${ico(i2)} ${l}</span>${k==="head"?`<input data-cnf="head" value="${esc(fval(k))}" maxlength="120">`:`<textarea data-cnf="${esc(k)}" rows="${k==="الاختصاص"||k==="المهام"?3:1}" maxlength="1000">${esc(fval(k))}</textarea>`}</label>`).join("")}<label><span>${ico("list")} النوع</span><select data-cnf="__type">${CN_TYPES.map(t=>`<option ${t===n.type?"selected":""}>${t}</option>`).join("")}</select></label><div class="actions full"><button class="btn pri" id="cnSaveF">${ico("check")} حفظ البطاقة</button></div></div>`:
+    (fields.length||extra.length?`<div class="cnkv">${fields.map(([k,l,i2])=>`<div><span>${ico(i2)} ${l}</span><p>${esc(fval(k))}</p></div>`).join("")}${extra.map(k=>`<div><span>${ico("doc")} ${esc(k)}</span><p>${esc(M[k])}</p></div>`).join("")}</div>`:`<div class="oze">${ico("doc")}<div><b>لا توجد بيانات بعد</b><small>${cnCanEdit()?"افتح وضع التعديل لإضافة الاختصاص والمسؤول والمهام.":"لم تُضف بيانات لهذه الوحدة."}</small></div></div>`)}</section>`;
+  const comp=types.length?`<section class="cncard"><header><h3>${ico("pie")} مكوّنات الوحدة</h3></header><div class="cncomp">${types.slice(0,8).map(([t,v])=>{const [i2,c2]=ct(t);return `<span style="--tc:${c2}">${ico(i2)}<b>${NF.format(v)}</b><small>${esc(t)}</small></span>`}).join("")}</div></section>`:"";
+  const chain=n.type==="تسلسل"?`<section class="cncard wide"><header><h3>${ico("route")} التسلسل</h3></header><ol class="cnchain">${kids.map((k,i)=>`<li style="--i:${i}"><span>${NF.format(i+1)}</span><b>${esc(String(k.name).replace(/^\d+\.\s*/,""))}</b></li>`).join("")}</ol></section>`:"";
+  const card=(k,i)=>{const [i2,c2]=ct(k.type),K=cnI(k.id),sub=(k.children||[]).length,ts=cnTypes(k).slice(0,2).map(([t,v])=>`${NF.format(v)} ${t}`).join(" · ");
+    return `<article class="cnkc" style="--tc:${c2}" ${ed?"":`data-cnp="${k.id}" tabindex="0" role="link"`}><header><span class="cnki">${ico(i2)}</span><div><small>${esc(k.type)}</small><b ${ed?`contenteditable="true" spellcheck="false" data-cnren="${k.id}" class="cned"`:""}>${esc(k.name)}</b></div></header>${(k.meta||{})["الاختصاص"]?`<p>${esc(k.meta["الاختصاص"])}</p>`:""}<footer>${sub?`<em>${NF.format(K.desc)}</em><span>${ts||"وحدة"}</span>`:`<span>${k.head?esc(k.head):"لا وحدات تابعة"}</span>`}${ed?`<span class="cnkt"><button data-cnmv="${k.id}" data-d="-1" ${i===0?"disabled":""} aria-label="تقديم">${ico("up")}</button><button data-cnmv="${k.id}" data-d="1" ${i===kids.length-1?"disabled":""} aria-label="تأخير">${ico("dn")}</button><button data-cnp="${k.id}" aria-label="فتح">${ico("eye")}</button><button class="bad" data-cndel="${k.id}" aria-label="حذف">${ico("trash")}</button></span>`:`<i>${ico("chev")}</i>`}</footer></article>`};
+  const list=`<section class="cncard wide"><header><h3>${ico("tree")} الوحدات التابعة <em>${NF.format(kids.length)}</em></h3>${kids.length>12?`<label class="cnkq">${ico("search")}<input id="cnKq" type="search" placeholder="تصفية التوابع…" value="${esc(ui.cnKq||"")}"></label>`:""}</header>${ed?`<form class="cnadd" id="cnAdd"><input name="nm" placeholder="اسم الوحدة الجديدة" maxlength="200" required><select name="tp">${CN_TYPES.map(t=>`<option ${t===(kids[0]||{}).type?"selected":""}>${t}</option>`).join("")}</select><button class="btn pri">${ico("plus")} إضافة تابع</button></form>`:""}${shown.length?`<div class="cngrid">${shown.map(k=>card(k,kids.indexOf(k))).join("")}</div>`:`<div class="oze">${ico("tree")}<div><b>${q?"لا نتائج":"لا توجد وحدات تابعة"}</b><small>${ed?"أضف وحدة من النموذج أعلاه.":""}</small></div></div>`}${kf.length>lim?`<div class="cnmore"><button class="btn" id="cnMore">عرض ${NF.format(Math.min(kf.length-lim,96))} أخرى من ${NF.format(kf.length-lim)}</button></div>`:""}</section>`;
+  const foot=isRoot?`<section class="cncard wide"><header><h3>${ico("activity")} سجل التعديلات</h3>${cnCanEdit()?`<button class="btn" id="cnReset">${ico("refresh")} استعادة القالب الأصلي</button>`:""}</header>${(cnC.log||[]).length?`<ul class="cnlog">${cnC.log.map(l=>`<li><b>${esc(l.t)}</b><span>${esc(l.by)} · ${dFmt(String(l.at).slice(0,10))}</span></li>`).join("")}</ul>`:`<p class="ozmut">${cnC.template?"يُعرض القالب الأصلي؛ يُحفظ نسخة خاصة عند أول تعديل.":"لا توجد تعديلات مسجّلة."}</p>`}<p class="cnsec">${ico("lock")} هذا الهيكل سرّي: لا يظهر إلا لأعضاء المنصة، ولا يعدّله إلا المشرف العام. الأسماء الجغرافية مؤقتة ويمكن تعديلها.</p></section>`:"";
+  return `<div class="cnw ${ed?"edit":""}">${top}${hero}${band}<div class="cnlay">${info}${comp}${chain}</div>${list}${foot}</div>`;
+}
+async function cnSave(log){const d=await act("cnSave",{tree:cnC.tree,log},"حُفظ: "+log);if(d&&d.tree){const sel=ui.cnSel;cnC=d;cnIndex();ui.cnSel=cnI(sel)?sel:cnC.tree.id;render();renderNavCn()}else{cnC=null;cnLoad()}}
+function cnPrint(){const T=cnC.tree,id=ui.cnSel&&cnI(ui.cnSel)?ui.cnSel:T.id,n=cnI(id).n,M=n.meta||{},w=window.open("","_blank");if(!w){toast("اسمح بالنوافذ المنبثقة للطباعة.");return}
+  const rows=(x,d)=>d>3?"":(x.children||[]).slice(0,200).map(k=>`<tr><td style="padding-inline-start:${8+d*18}px">${esc(k.name)}</td><td>${esc(k.type)}</td><td>${esc(k.head||"")}</td><td>${NF.format(cnI(k.id).desc)}</td></tr>`+rows(k,d+1)).join("");
+  w.document.write(`<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"><title>${esc(n.name)}</title><style>body{font-family:system-ui,Tahoma;margin:28px;color:#13211d}h1{margin:0 0 4px}p{color:#555}table{width:100%;border-collapse:collapse;margin-top:14px;font-size:12.5px}th,td{border:1px solid #ddd;padding:6px 8px;text-align:start}th{background:#f3efe6}.k{display:grid;grid-template-columns:140px 1fr;gap:6px 12px;margin-top:10px}.k b{color:#7a5b12}small{color:#888}</style></head><body><small>المجلس العام · وثيقة داخلية سرّية</small><h1>${esc(n.name)}</h1><p>${cnPath(id).slice(0,-1).map(p=>esc(p.name)).join(" ‹ ")}</p><div class="k">${n.head?`<b>المسؤول</b><span>${esc(n.head)}</span>`:""}${Object.keys(M).map(k=>`<b>${esc(k)}</b><span>${esc(M[k])}</span>`).join("")}</div><table><thead><tr><th>الوحدة</th><th>النوع</th><th>المسؤول</th><th>التوابع</th></tr></thead><tbody>${rows(n,0)}</tbody></table><script>print()<\/script></body></html>`);w.document.close()}
+function bindCouncil(main){if(R.v!=="council"||!cnC||!cnC.tree)return;const q=(s,f)=>main.querySelectorAll(s).forEach(f);
+  q("[data-cnp]",b=>{const go=e=>{if(e.target.closest("[data-cnmv],[data-cndel],.cned")&&!e.target.closest("button[data-cnp]"))return;e.preventDefault();e.stopPropagation();ui.cnSel=b.dataset.cnp;ui.cnKq="";ui.cnLim=0;cnOpenPath(ui.cnSel);cnGo(ui.cnSel);renderNavCn()};b.onclick=go;if(b.tagName==="ARTICLE")b.onkeydown=e=>{if(e.key==="Enter")go(e)}});
+  const pr=main.querySelector("#cnPrint");if(pr)pr.onclick=cnPrint;
+  const et=main.querySelector("#cnEditT");if(et)et.onclick=()=>{ui.cnEdit=!ui.cnEdit;render()};
+  const mo=main.querySelector("#cnMore");if(mo)mo.onclick=()=>{ui.cnLim=(ui.cnLim||48)+96;render()};
+  const kq=main.querySelector("#cnKq");if(kq){let t=null;kq.oninput=()=>{ui.cnKq=kq.value;clearTimeout(t);t=setTimeout(()=>{ui.cnLim=0;render();const k=$("#cnKq");if(k){k.focus();k.setSelectionRange(k.value.length,k.value.length)}},250)}}
+  const rs=main.querySelector("#cnReset");if(rs)rs.onclick=()=>confirmBox("استعادة القالب الأصلي","ستُستبدل كل تعديلاتك على المجلس العام بالقالب الأصلي. يبقى السجل محفوظًا.","استعادة",async()=>{const d=await act("cnSave",{reset:"template"},"استُعيد القالب الأصلي");if(d&&d.tree){cnC=d;cnIndex();ui.cnSel=cnC.tree.id;render();renderNavCn()}});
+  if(!cnCanEdit()||!ui.cnEdit)return;
+  q("[data-cnren]",h=>{h.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();h.blur()}if(e.key==="Escape"){h.textContent=cnI(h.dataset.cnren).n.name;h.blur()}};h.onclick=e=>e.stopPropagation();
+    h.onblur=()=>{const I=cnI(h.dataset.cnren),v=h.textContent.replace(/\s+/g," ").trim().slice(0,200);if(!I)return;if(!v){h.textContent=I.n.name;return}if(v!==I.n.name){const old=I.n.name;I.n.name=v;cnSave("إعادة تسمية «"+old+"» إلى «"+v+"»")}}});
+  const sf=main.querySelector("#cnSaveF");if(sf)sf.onclick=()=>{const n=cnI(ui.cnSel||cnC.tree.id).n;n.meta=n.meta||{};q("[data-cnf]",f=>{const k=f.dataset.cnf,v=f.value.trim();if(k==="head"){if(v)n.head=v;else delete n.head}else if(k==="__type"){n.type=v}else{if(v)n.meta[k]=v;else delete n.meta[k]}});cnSave("تحديث بطاقة «"+n.name+"»")};
+  const ad=main.querySelector("#cnAdd");if(ad)ad.onsubmit=e=>{e.preventDefault();const n=cnI(ui.cnSel||cnC.tree.id).n,nm=ad.nm.value.trim();if(!nm)return;(n.children=n.children||[]).push({id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),name:nm,type:ad.tp.value,meta:{},children:[]});cnSave("إضافة «"+nm+"» تحت «"+n.name+"»")};
+  q("[data-cnmv]",b=>b.onclick=e=>{e.stopPropagation();const I=cnI(b.dataset.cnmv),L=I.par.children,i=L.indexOf(I.n),j=i+(+b.dataset.d);if(j<0||j>=L.length)return;L.splice(i,1);L.splice(j,0,I.n);cnSave("إعادة ترتيب «"+I.n.name+"»")});
+  q("[data-cndel]",b=>b.onclick=e=>{e.stopPropagation();const I=cnI(b.dataset.cndel);confirmBox("حذف وحدة","سيُحذف «"+I.n.name+"» مع "+NF.format(I.desc)+" وحدة تابعة. يمكنك استعادة القالب الأصلي لاحقًا من الصفحة الرئيسة.","حذف",()=>{const L=I.par.children;L.splice(L.indexOf(I.n),1);cnSave("حذف «"+I.n.name+"»")})});
+}
+
 function viewAssets(){
   if(!S.scope)return `<div class="head"><div><h1>إدارة العهد</h1><p></p></div></div>`;
   if(!asC||asC.__org!==(S.org||"")){if(!asL)asLoad();return `<div class="head"><div><h1>إدارة العهد</h1><p>جارٍ التحميل…</p></div></div><div class="skel" style="height:420px"></div>`}
@@ -7990,7 +8134,7 @@ function bindMain(){
   main.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(null,b.dataset.g!=null?+b.dataset.g:null,b.dataset.m!=null?+b.dataset.m:null));
   main.querySelectorAll("[data-back]").forEach(b=>b.onclick=goBack);
   main.querySelectorAll("[data-stage]").forEach(a=>a.onclick=e=>{e.preventDefault();openStage(a.dataset.stage)});
-  bindDash(main);bindMenus(main);bindPerms(main);bindCharts(main);bindLayout(main);bindReports(main);bindOrgs(main);bindThemes(main);bindGov(main);bindStructure(main);bindAssets(main);bindPurch(main);bindCtr(main);bindInv(main);bindExp(main);bindTsk(main);bindFlt(main);bindPrj(main);bindWeb(main);bindIvQuick(main);bindOps(main);if(R.v!=="home"&&R.v!=="orgs")opM={};
+  bindDash(main);bindMenus(main);bindPerms(main);bindCharts(main);bindLayout(main);bindReports(main);bindOrgs(main);bindThemes(main);bindGov(main);bindStructure(main);bindAssets(main);bindPurch(main);bindCtr(main);bindInv(main);bindExp(main);bindTsk(main);bindFlt(main);bindPrj(main);bindCouncil(main);bindWeb(main);bindIvQuick(main);bindOps(main);if(R.v!=="home"&&R.v!=="orgs")opM={};
   const fq=$("#fq"),fs=$("#fs");
   if(fq)fq.oninput=()=>{ui.q=fq.value;ui.page=0;render()};
   if(fs)fs.onchange=()=>{ui.st=fs.value;ui.page=0;render()};
@@ -8464,6 +8608,7 @@ $("#nav").addEventListener("click",e=>{
   const a=e.target.closest("[data-asn]");if(a){e.preventDefault();const t=a.dataset.asn;if(t==="add"){ui.asEdit=null;if(ui.asD)delete ui.asD.add}ui.asTab=t;ui.asNav=true;const h="#assets/"+t;if(location.hash!==h)location.hash=h;else render();if(typeof closeSide==="function")closeSide()}});
 try{if(localStorage.getItem("ds.dhid"))document.body.classList.add("dhid")}catch(e){}$("#dHideBtn").onclick=dpToggle;$("#dPermBtn").onclick=qpOpen;$("#dPermBtn").innerHTML=ico("key")+"<span>صلاحيات</span>";
 $("#capTree").addEventListener("click",e=>{if(e.target.closest("a.qk")&&!e.target.closest("[data-ntsw]")){ui.trProf=null;if(R.v==="structure")setTimeout(render,0)}const b=e.target.closest("[data-ntsw]");if(b){e.preventDefault();e.stopPropagation();ui.ntShow=ui.ntShow===false;renderNavTree()}});
+try{ui.cnNav=localStorage.getItem("ds.cnNav")==="1"}catch(e){}bindNavCn();
 $("#navTree").addEventListener("click",e=>{const g=e.target.closest("[data-ntg]");if(g){e.preventDefault();const o=ui.ntOpen||(ui.ntOpen=new Set()),id=g.dataset.ntg;o.has(id)?o.delete(id):o.add(id);renderNavTree();return}
   const a=e.target.closest("[data-nts]");if(a){e.preventDefault();navTreeGo(a.dataset.nts);renderNavTree();if(typeof closeSide==="function")closeSide()}});
 $("#backBtn").onclick=goBack;
