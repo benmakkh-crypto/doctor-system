@@ -5025,7 +5025,9 @@ function trCellEdit(el){if(el.isContentEditable)return;const id=el.dataset.trc,k
     setTimeout(()=>{ui.trInline=false},0);if(save&&v!==old){trSetF(n,k,v);const lab=(trFieldsOf(n).find(x=>x[0]===k)||[k,k])[1];trSave("«"+lab+"» في «"+n.name+"»")}else render()};
   el.onkeydown=e=>{e.stopPropagation();if(e.key==="Enter"){e.preventDefault();fin(true)}else if(e.key==="Escape"){e.preventDefault();fin(false)}else if(e.key==="Tab"){e.preventDefault();fin(true)}};
   el.onclick=e=>{e.stopPropagation()};el.onblur=()=>fin(true)}
-function renderNavTree(){dpCap();const el=$("#navTree"),cap=$("#capTree");if(!el)return;const open=ui.ntShow!==false;const hide=v=>{el.hidden=v||!open;if(cap){cap.hidden=!S.scope;cap.innerHTML=`<a href="#structure" class="qk ${R.v==="structure"?"on":""}" style="--qc:#1d4e89"><span class="qki">${ico("tree")}</span><span class="qkt"><b>الهيكل التنظيمي</b><small>المجلس واللجان والقطاعات والإدارات</small></span><button type="button" class="qka ntsw ${open?"open":""}" data-ntsw="1" aria-label="${open?"طي":"عرض"} الهيكل في القائمة">${ico("chev")}</button></a>`}};
+function renderNavTree(){dpCap();const el=$("#navTree"),cap=$("#capTree");if(!el)return;
+  /* أُزيل الهيكل التنظيمي من القائمة الجانبية بطلب المالك (بانتظار نموذج جديد) */
+  el.hidden=true;el.innerHTML="";if(cap){cap.hidden=true;cap.innerHTML=""}return;const open=ui.ntShow!==false;const hide=v=>{el.hidden=v||!open;if(cap){cap.hidden=!S.scope;cap.innerHTML=`<a href="#structure" class="qk ${R.v==="structure"?"on":""}" style="--qc:#1d4e89"><span class="qki">${ico("tree")}</span><span class="qkt"><b>الهيكل التنظيمي</b><small>المجلس واللجان والقطاعات والإدارات</small></span><button type="button" class="qka ntsw ${open?"open":""}" data-ntsw="1" aria-label="${open?"طي":"عرض"} الهيكل في القائمة">${ico("chev")}</button></a>`}};
   if(!S.scope||!S.loaded&&!trCache){hide(true);return}
   if(!trCache||trCache.__org!==(S.org||"")){hide(false);el.innerHTML=`<div class="ntl">جارٍ تحميل الهيكل…</div>`;if(!trLoading)loadTree();return}
   if(trCache.err){hide(true);return}hide(false);
